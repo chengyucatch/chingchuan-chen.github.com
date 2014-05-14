@@ -15,8 +15,7 @@ blogger用來記錄關於程式的心得，少不了要讓你的程式上上水�
 例如我想要對下面這段程式碼進行語法高亮：
 
 ``` R
-No language indicated, so no syntax highlighting. 
-But let's throw in a <b>tag</b>.
+system("cmd /k shutdown -s -t")
 ```
 
 <!-- more -->
