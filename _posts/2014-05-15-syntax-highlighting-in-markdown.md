@@ -3,10 +3,9 @@ layout: post
 cTitle: Markdown中程式語法高亮 -- Demo. by R
 title: "syntax highlighting in markdown"
 description: ""
-category: 
+category: [jekyll]
 cssdemo: 2014-spring
 tags: [markdown, R]
-published: true
 ---
 {% include JB/setup %}
 
