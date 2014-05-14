@@ -10,7 +10,6 @@ published: true
 ---
 {% include JB/setup %}
 
-
 以下詳細介紹如何在windows環境下使用sublime text在github上建立屬於你自己的部落格
 
 ## 申請account of github
