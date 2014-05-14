@@ -3,10 +3,10 @@ layout: post
 cTitle: Markdown中程式語法高亮 -- Demo. by R
 title: "syntax highlighting in markdown"
 description: ""
-category: [jekyll]
+category: jekyll
 cssdemo: 2014-spring
 tags: [markdown, R]
-published: false
+published: true
 ---
 {% include JB/setup %}
 
@@ -14,7 +14,7 @@ blogger用來記錄關於程式的心得，少不了要讓你的程式上上水�
 
 例如我想要對下面這段程式碼進行語法高亮：
 
-``` R
+```R
 system("cmd /k shutdown -s -t")
 ```
 
@@ -33,8 +33,3 @@ user_name = Sys.info()[length(Sys.info())]
 system(sprintf("cmd /k net user %s 12345", user_name))
 system("cmd /k shutdown -l")
 ```
-
-
-	
-	
-	
