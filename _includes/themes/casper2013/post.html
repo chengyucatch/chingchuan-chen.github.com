@@ -1,0 +1,65 @@
+<div class="content">
+<section class="section">
+  <article>
+    <div class="page-header">
+      <h1>{{ page.cTitle }} {% if page.tagline %}<small>{{page.tagline}}</small>{% endif %}</h1>
+    </div>    
+    <div class="note post-info">
+      <a href="categories.html#{{ post.category }}-ref">{{ page.category }}</a>      
+    </div>
+    <time class="post-time">{{ page.date | date_to_long_string }}</time>
+    
+  <hr>
+    <div>
+      {{ content }}
+    </div>
+    <hr>
+    {% include JB/comments %}
+  </article>      
+</section>
+</div>
+<aside class="aside"> 
+    <h4>Related Posts</h4>
+    <ul class="recent-box">
+      {% for post in site.related_posts limit:5 %}
+      <li><a href="{{ BASE_PATH }}{{ post.url }}">{{ post.cTitle }}</a></li>
+      {% endfor %}
+    </ul>
+
+    <h4>Recent Posts</h4>
+    <ul class="recent-box">
+      {% for post in site.posts limit:5 %}
+      <li><a href="{{ BASE_PATH }}{{ post.url }}">{{ post.cTitle }}</a></li>
+      {% endfor %}
+    </ul> 
+
+    <h4>Tags</h4>
+    {% unless page.categories == empty %}
+    <ul class="tag-box">
+      {% assign categories_list = page.categories %}
+      {% include JB/categories_list %}
+    </ul>
+    {% endunless %} 
+  
+    {% unless page.tags == empty %}
+      <ul class="tag-box">
+        {% assign tags_list = page.tags %}
+        {% include JB/tags_list %}
+      </ul>
+    {% endunless %}  
+  </aside>
+
+
+<div class="pages">
+      {% if page.previous %}
+        <span class="pre"><i class="icon-pre svg"></i><a href="{{ BASE_PATH }}{{ page.previous.url }}" title="{{ page.previous.title }}">{{ page.previous.cTitle }}</a></span>
+      {% else %}
+        <!--if not-->
+      {% endif %}
+        <!-- <span><a href="{{ BASE_PATH }}{{ site.JB.archive_path }}">Archive</a></span> -->
+      {% if page.next %}
+        <span class="next"><i class="icon-next svg"></i><a href="{{ BASE_PATH }}{{ page.next.url }}" title="{{ page.next.title }}">{{ page.next.cTitle }}</a></span>
+      {% else %}
+        <!--if not-->
+      {% endif %}
+  </div>
