@@ -13,8 +13,9 @@ published: true
 以下詳細介紹如何在windows環境下使用sublime text在github上建立屬於你自己的部落格
 
 以下教學來自下列兩個網站
-1. http://yizeng.me/2013/05/10/setup-jekyll-on-windows/
-2. http://www.madhur.co.in/blog/2011/09/01/runningjekyllwindows.html
+
+	1. [yizeng的blogger](http://yizeng.me/2013/05/10/setup-jekyll-on-windows/)
+	2. [madhur的blogger](http://www.madhur.co.in/blog/2011/09/01/runningjekyllwindows.html)
 
 <!-- more -->
 
