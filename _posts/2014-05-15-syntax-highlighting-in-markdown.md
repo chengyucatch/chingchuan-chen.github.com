@@ -6,7 +6,7 @@ description: ""
 category: jekyll
 cssdemo: 2014-spring
 tags: [markdown, R]
-published: true
+published: false
 ---
 {% include JB/setup %}
 
