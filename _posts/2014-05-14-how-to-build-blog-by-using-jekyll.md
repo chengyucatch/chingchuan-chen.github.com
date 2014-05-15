@@ -31,6 +31,7 @@ published: true
 
     $ ruby dk.rb install
     $ gem install jekyll
+	
 以上便完成了jekyll的安裝。
 
 ## blogger模板下載以及建立
@@ -42,7 +43,8 @@ published: true
     $ cd USERNAME.github.com
     $ git remote set-url origin https://github.com/USERNAME/USERNAME.github.com.git
     $ git push origin master
-git clone https://github.com/ChingChuan-Chen/chingchuan-chen.github.com reference.github.com
+	$ git clone https://github.com/ChingChuan-Chen/chingchuan-chen.github.com reference.github.com
+	
 第一個指令是下載jekyll-bootstrap的範本到USERNAME.github.com (USERNAME換上你的github的username)這個資料夾，第二個指令就是前往該資料夾，第三個指令是設定連接到你的github，第四個是把該目錄下的檔案上傳到你的github。如果想在本地瀏覽你的blog就執行：
 
     $ jekyll serve
