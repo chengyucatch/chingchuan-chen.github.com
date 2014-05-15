@@ -3,13 +3,9 @@
 permalink: /:categories/:year/:month/:day/:title
 
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
-hiligeter: true
 lsi: false
 safe: true
 #markdown: kramdown
-markdown: redcarpet
-redcarpet:
-  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "strikethrough", "superscript"]
 
 # Themes are encouraged to use these universal variables
 # so be sure to set them if your theme uses them.
@@ -32,7 +28,8 @@ author :
 # Finally if you are pushing to a GitHub project page, include the project name at the end.
 #
 production_url : chingchuan-chen.github.io
-
+markdown: redcarpet
+hiligeter: true
 # All Jekyll-Bootstrap specific configurations are namespaced into this hash
 #
 JB :
