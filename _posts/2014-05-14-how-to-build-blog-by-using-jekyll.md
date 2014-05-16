@@ -50,7 +50,7 @@ B. 為了工作方便，請先按下windows鍵(在Ctr跟Alt之間)+R，開啟執
 ![](/images/cmd_3.png)
 	
 鍵入指令`pip install pygments`，會幫你安裝python的pygments的package
-![](/images/python_install_pygments.png)
+![](/images/python_install_pygments.PNG)
 
 然後在cmd中輸入下列指令：
 
