@@ -68,9 +68,7 @@ B. 為了工作方便，請先按下windows鍵(在Ctr跟Alt之間)+R，開啟執
 ![](/images/ruby_install_jekyll_1.png)
 ![](/images/ruby_install_jekyll_2.png)
 
-C. 申請git，並且clone我的庫當作基底。請到 [Github](https://github.com/)申請一個帳號，假設你的使用者名稱(username)為USERNAME，在你的github中建立一個新的repository，repository的名稱請設定為USERNAME.github.com，這樣就完成github初步的設定。
-
-D. 接下來就是重頭戲了，請先建立好你的工作目錄，例如我設定在E:\website中，那我可以利用這個指令`cd /d E:\website`到該目錄下，你可以自行更改工作目錄，假設clone我的庫做為基底，輸入下方指令：
+C. 申請git，並且clone我的庫當作基底。請到 [Github](https://github.com/)申請一個帳號，假設你的使用者名稱(username)為USERNAME，在你的github中建立一個新的repository，repository的名稱請設定為USERNAME.github.com，這樣就完成github初步的設定。接下來，請先建立好你的工作目錄，例如我設定在E:\website中，那我可以利用這個指令`cd /d E:\website`到該目錄下，你可以自行更改工作目錄，假設clone我的庫做為基底，輸入下方指令：
 
 	mkdir USERNAME.github.com
 	git clone https://github.com/ChingChuan-Chen/chingchuan-chen.github.com USERNAME.github.com
@@ -96,7 +94,7 @@ D. 接下來就是重頭戲了，請先建立好你的工作目錄，例如我�
 
 如果想移除檔案，就輸入`git rm filename`，filename是你的檔案名稱，只是注意的是這個操作不只把從github抹除，同時也會把你硬碟的檔案刪除。其他的指令利用可能就要慢慢再去學習。
 
-E. 其他部分，最重要的是如何預覽，在cmd中輸入`jekyll serve`會出現下面：
+D. 其他部分，最重要的是如何預覽，在cmd中輸入`jekyll serve`會出現下面：
 ![](/images/cmd_6.png)
 
 然後在你的瀏覽器(例如IE, chrome or firefox)輸入`localhost:4000`，就可以出現你blogger的預覽畫面：
