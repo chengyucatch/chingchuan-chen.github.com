@@ -1,0 +1,92 @@
+// Building R in linux:
+
+sudo apt-get install R-base
+sudo apt-get install R-base-dev
+
+// use --with-x=no install X in following way:
+sudo apt-get install xorg-dev
+
+// use --with-readline=no or install readline in following way:
+apt-cache search readline
+sudo apt-get install libreadline6 libreadline6-dev
+
+// install libiconv
+wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz
+tar -xvzf libiconv-1.14.tar.gz
+cd libiconv-1.14
+./configure --prefix=/usr/local/libiconv
+make
+sudo make install
+
+// error in make libiconv-1.14: 'gets' undeclared here (not in a function)
+libiconv-1.14/srclib/stdio.in.h (698):
+_GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");
+
+replace above with following:
+
+#if defined(__GLIBC__) && !defined(__UCLIBC__) && !__GLIBC_PREREQ(2, 16)
+ _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");
+#endif
+
+// to compile html
+sudo apt-get install texinfo
+
+// to compile pdf manual
+sudo apt-get install texlive-binaries
+
+// install java
+sudo apt-get install openjdk-7-jdk
+
+tar -xvzf R-3.1.0.tar.gz
+.configure
+make
+make check
+
+sudo make install rhome=/usr/bin
+sudo make prefix=/usr/lib/R install-libR
+
+sudo make install-info
+sudo make install-pdf
+
+sudo R
+install.packages("SuppDists")
+q()
+
+cat R-benchmark-25.R | time R --slave
+
+
+// to use openblas
+sudo apt-get install libopenblas-base libatlas3gf-base
+sudo update-alternatives --config libblas.so.3
+// choose /usr/lib/openblas-base/libblas.so.3
+
+// install intel C++ compiler
+sudo apt-get install build-essential
+sudo apt-get install libstdc++6
+
+// compile with intel MKL
+su
+source /opt/intel/composer_xe_2013_sp1.3.174/mkl/bin/mklvars.sh intel64
+source /opt/intel/composer_xe_2013_sp1.3.174/bin/compilervars.sh intel64
+source /opt/intel/composer_xe_2013_sp1.3.174/bin/iccvars.sh intel64
+export LD="xild"
+export CC="icc"
+export CXX="icpc"
+export AR="xiar"
+
+MKL_LIB_PATH=/opt/intel/composer_xe_2013.3.163/mkl/lib/intel64
+export LD_LIBRARY_PATH=$MKL_LIB_PATH
+MKL="-lmkl_gf_lp64 -lmkl_intel_thread  -lmkl_core -liomp5 -lpthread"
+./configure --with-blas="-L{MKL_LIB_PATH} ${MKL}" --with-lapack
+make
+make check
+make install
+make install rhome=/usr/lib/R
+
+
+
+
+R
+update.packages(checkBuilt=TRUE)
+
+

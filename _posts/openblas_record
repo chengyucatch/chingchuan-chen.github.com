@@ -1,0 +1,41 @@
+   R Benchmark 2.5
+   ===============
+Number of times each test is run__________________________:  3
+
+   I. Matrix calculation
+   ---------------------
+Creation, transp., deformation of a 2500x2500 matrix (sec):  1.10366666666667
+2400x2400 normal distributed random matrix ^1000____ (sec):  0.740333333333333
+Sorting of 7,000,000 random values__________________ (sec):  0.732999999999999
+2800x2800 cross-product matrix (b = a' * a)_________ (sec):  0.538333333333333
+Linear regr. over a 3000x3000 matrix (c = a \ b')___ (sec):  0.452666666666667
+                      --------------------------------------------
+                 Trimmed geom. mean (2 extremes eliminated):  0.663530438270739
+
+   II. Matrix functions
+   --------------------
+FFT over 2,400,000 random values____________________ (sec):  0.564333333333335
+Eigenvalues of a 640x640 random matrix______________ (sec):  1.53666666666667
+Determinant of a 2500x2500 random matrix____________ (sec):  0.382666666666665
+Cholesky decomposition of a 3000x3000 matrix________ (sec):  0.316666666666665
+Inverse of a 1600x1600 random matrix________________ (sec):  0.406333333333334
+                      --------------------------------------------
+                Trimmed geom. mean (2 extremes eliminated):  0.444371566596793
+
+   III. Programmation
+   ------------------
+3,500,000 Fibonacci numbers calculation (vector calc)(sec):  0.747666666666665
+Creation of a 3000x3000 Hilbert matrix (matrix calc) (sec):  0.350999999999999
+Grand common divisors of 400,000 pairs (recursion)__ (sec):  0.987666666666665
+Creation of a 500x500 Toeplitz matrix (loops)_______ (sec):  0.902333333333334
+Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.5
+                      --------------------------------------------
+                Trimmed geom. mean (2 extremes eliminated):  0.696116094179688
+
+
+Total time for all 15 tests_________________________ (sec):  10.2633333333333
+Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.589878991592286
+                      --- End of test ---
+
+81.28user 21.99system 0:59.59elapsed 173%CPU (0avgtext+0avgdata 439156maxresident)k
+0inputs+0outputs (0major+130139minor)pagefaults 0swaps
