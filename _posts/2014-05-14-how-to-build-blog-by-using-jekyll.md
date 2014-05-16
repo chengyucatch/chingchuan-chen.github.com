@@ -38,7 +38,7 @@ A. 下載我壓縮的工具包：[Dropbox](https://www.dropbox.com/s/pphmfw6gfk8
 * 解壓縮ruby環境，方便說明，我設定解壓縮到C:\rubydevkit
 * 安裝python，預設安裝到C:\Python27，然後點擊兩下get-pip.py，便完成python安裝。
 * 安裝Git，中間要注意，勾選Use Git from the Windows Command Prompt
-![](/images/git_install.png)
+![](/images/git_install.PNG)
 * 把RedmondPathzip.rar解壓縮，打開Redmond Path.exe，在任意視窗中下方加入; C:\Python27; C:\Python27\Scripts，(你安裝路徑有更動，請跟著更改)，如下圖下示：
 ![](/images/path_setup.png)
 	
