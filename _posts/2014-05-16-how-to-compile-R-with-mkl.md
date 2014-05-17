@@ -243,8 +243,11 @@ Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.472869054369258
 最後只需要用到7.8秒就可以完成了，可是complitation過程是滿麻煩的，雖然參考了4個網站，可是有些東西長的都不一樣，所以還是弄了很久才成功compile成功，如果沒有特別要求速度下，其實直接用openblas就可以省下很多麻煩。另外，若使用Rcpp的話，速度也會大幅提升(因為用intel C++ compiler)。
 
 最後附上測試環境:
+
 windows 7 64 bits
+
 i7-3770K@4.3GHz
+
 use VMware workstation 10: ubuntu 14.04 with 2 porccesor (4 cores)
 
 
