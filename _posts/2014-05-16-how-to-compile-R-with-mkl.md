@@ -25,6 +25,7 @@ PS: 運行測試前，記得打開R安裝SuppDists的套件。
 
 測試結果如下：
 Default R：
+
 ```
    R Benchmark 2.5
    ===============
@@ -70,7 +71,9 @@ Overall mean (sum of I, II and III trimmed means/3)_ (sec):  1.5461874255574
 3:05.43 elapsed
 98% CPU
 ```
+
 R with Openblas:
+
 ```
    R Benchmark 2.5
    ===============
@@ -116,6 +119,7 @@ Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.589878991592286
 0:59.59 elapsed
 173% CPU
 ```
+
 可以看到total time已經從38秒到10秒左右，改善幅度已經不少，接著來compile R:
 
 1. 取得R與其開發包，並安裝需要的套件，在terminal use following commands:
@@ -126,38 +130,48 @@ apt-cache search readline xorg-dev sudo apt-get install libreadline6 libreadline
 ```
 
 有一個工具要另外安裝，方式如下：
+
 ```
 wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz
 tar -xvzf libiconv-1.14.tar.gz
 cd libiconv-1.14 && ./configure --prefix=/usr/local/libiconv
 make && sudo make install
 ```
+
 但是我在make過程中有出錯，我google之後找到的解法是修改libiconv-1.14/srclib/stdio.in.h的698列:
 原本的script:
+
 ```
 _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");
 ```
+
 修改後的scipt:
+
 ```
 #if defined(__GLIBC__) && !defined(__UCLIBC__) && !__GLIBC_PREREQ(2, 16)
  _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");
 #endif
 ```
+
 之後再重新make就成功了。
 
 2. 取得R source code:
+
 ```
 wget http://cran.csie.ntu.edu.tw/src/base/R-3/R-3.1.0.tar.gz
 tar -xvzf R-3.1.0.tar.gz
 ```
 
 3. 取得Intel C++ compiler and Intel MKL，你可以取得non-commercial license for this two software in intel website. 安裝前記得先取得需要的套件：
+
 ```
 sudo apt-get install build-essential libstdc++6
 ```
+
 另外，ubuntu 14.04不支援32 bits的compiler，安裝時記得取消掉IA32的安裝。
 
 4. compilitation:
+
 ```
 sudo -s
 source /opt/intel/composer_xe_2013_sp1.3.174/mkl/bin/mklvars.sh intel64
@@ -225,6 +239,7 @@ Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.472869054369258
 0:48.90 elapsed 
 191% CPU
 ```
+
 最後只需要用到7.8秒就可以完成了，可是complitation過程是滿麻煩的，雖然參考了4個網站，可是有些東西長的都不一樣，所以還是弄了很久才成功compile成功，如果沒有特別要求速度下，其實直接用openblas就可以省下很多麻煩。另外，若使用Rcpp的話，速度也會大幅提升(因為用intel C++ compiler)。
 
 最後附上測試環境:
