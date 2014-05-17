@@ -37,5 +37,7 @@ Total time for all 15 tests_________________________ (sec):  38.6080000000001
 Overall mean (sum of I, II and III trimmed means/3)_ (sec):  1.5461874255574
                       --- End of test ---
 
-180.72user 2.77system 3:05.43elapsed 98%CPU (0avgtext+0avgdata 425032maxresident)k
-256inputs+0outputs (1major+129313minor)pagefaults 0swaps
+180.72 user
+2.77 system
+3:05.43 elapsed
+98% CPU
