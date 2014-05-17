@@ -29,7 +29,7 @@ author :
 #
 production_url : chingchuan-chen.github.io
 markdown: redcarpet
-hiligeter: false
+#hiligeter: true
 # All Jekyll-Bootstrap specific configurations are namespaced into this hash
 #
 JB :
