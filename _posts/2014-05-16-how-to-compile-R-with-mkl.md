@@ -16,6 +16,7 @@ published: true
 2. [Build R-3.0.1 with Intel C++ Compiler and Intel MKL on Linux](https://software.intel.com/en-us/articles/build-r-301-with-intel-c-compiler-and-intel-mkl-on-linux)
 3. [Compiling R 3.0.1 with MKL support](http://www.r-bloggers.com/compiling-r-3-0-1-with-mkl-support/)
 4. [R Installation and Administraction](http://cran.r-project.org/doc/manuals/r-devel/R-admin.html)
+5. [Compile R with Intel Compiler](http://www.ansci.wisc.edu/morota/R/intel/intel-compiler.html)
 
 <!-- more -->
 
@@ -126,7 +127,7 @@ Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.589878991592286
 
 ```
 sudo apt-get install R-base R-base-dev
-apt-cache search readline xorg-dev sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries openjdk-7-jdk xorg-dev
+apt-cache search readline xorg-dev sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-fonts-extra openjdk-7-jdk xorg-dev
 ```
 
 有一個工具要另外安裝，方式如下：
@@ -176,16 +177,27 @@ sudo apt-get install build-essential libstdc++6
 sudo -s
 source /opt/intel/composer_xe_2013_sp1.3.174/mkl/bin/mklvars.sh intel64
 source /opt/intel/composer_xe_2013_sp1.3.174/bin/compilervars.sh intel64
+MKL_path=/opt/intel/composer_xe_2013_sp1.3.174/mkl
+ICC_path=/opt/intel/composer_xe_2013_sp1.3.174/compiler
 export LD="xild"
 export CC="icc"
 export CXX="icpc"
 export AR="xiar"
-export CFLAGS="-O3 -ipo -openmp -xHost"
-export CXXFLAGS="-O3 -ipo -openmp -xHost"
+export CFLAGS="-std=gnu99 -O3 -ipo -openmp -parallel -xHost -I$MKL_path/include -I$ICC_path/include"
+export CXXFLAGS="-g -O3 -m64 -ipo -openmp -parallel -xHost -I$MKL_path/include -I$ICC_path/include"
+export F77=ifort
+export FFLAGS="-g -O3 -ipo -openmp -parallel -xHost -I$MKL_path/include -I$ICC_path/include"
+export FC=ifort
+export FCFLAGS="-g -O3 -ipo -openmp -xHost -parallel -I$MKL_path/include -I$ICC_path/include"
+export ICC_LIBS=ICC_path/lib/intel64
+export IFC_LIBS=ICC_path/lib/intel64
+export LDFLAGS="-L$ICC_LIBS -L$IFC_LIBS -L/usr/lib64"
+export SHLIB_CXXLD=icpc
+export SHLIB_LDFLAGS="-shared -fPIC"
+export SHLIB_CXXLDFLAGS="-shared -fPIC"
 
-MKL="-lmkl_gf_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread"
-MKL_path="/opt/intel/composer_xe_2013_sp1.3.174/mkl/lib/intel64"
-./configure --with-blas="-L${MKL_path} ${MKL}" --with-lapack --enable-R-shlib --with-x
+MKL="-parallel -openmp -lmkl_gf_lp64 -lmkl_intel_lp64 -lmkl_rt -lmkl_intel_thread -lmkl_core -liomp5 -lpthread -lm"
+./configure --with-blas="-I$MKL_path/include -L$MKL_path/lib/intel64 ${MKL}" --with-lapack --enable-R-shlib --enable-BLAS-shlib --with-x --enable-memory-profiling R_PAPERSIZE=letter
 make
 make install
 ```
@@ -234,9 +246,9 @@ Total time for all 15 tests_________________________ (sec):  7.81133333333333
 Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.472869054369258
                       --- End of test ---
 
-89.84 user 
-4.00 system 
-0:48.90 elapsed 
+89.84 user
+4.00 system
+0:48.90 elapsed
 191% CPU
 ```
 

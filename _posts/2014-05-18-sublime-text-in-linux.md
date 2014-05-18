@@ -154,5 +154,21 @@ ls /usr/share/applications/sublime_text.desktop
 sudo subl /usr/share/applications/defaults.list
 ```
 
-按下Ctrl+H replace gedit with sublime_text即可。。
+按下Ctrl+H replace gedit with sublime_text。接著打開user的設定列表：
 
+```
+subl ~/.local/share/applications/mimeapps.list
+```
+
+修改或添加下列下列文字：
+
+```
+[Added Associations]
+text/plain=ubuntu-software-center.desktop;shotwell.desktop;sublime_text.desktop;
+text/x-chdr=shotwell-viewer.desktop;
+
+[Default Applications]
+text/plain=sublime_text.desktop
+text/x-c++src=sublime_text.desktop
+text/x-chdr=sublime_text.desktop
+```
