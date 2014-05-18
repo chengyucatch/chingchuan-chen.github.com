@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ---
 layout: post
 cTitle: 如何利用jekyll建立你的blogger
@@ -42,14 +41,14 @@ A. 下載我壓縮的工具包：[Dropbox](https://www.dropbox.com/s/pphmfw6gfk8
 ![](/images/git_install.PNG)
 * 把RedmondPathzip.rar解壓縮，打開Redmond Path.exe，在任意視窗中下方加入; C:\Python27; C:\Python27\Scripts，(你安裝路徑有更動，請跟著更改)，如下圖下示：
 ![](/images/path_setup.png)
-	
+
 B. 為了工作方便，請先按下windows鍵(在Ctr跟Alt之間)+R，開啟執行視窗，鍵入cmd，打開Windows Command Prompt，為了解釋方便，以後稱這個視窗為cmd。
 ![](/images/cmd_1.png)
 ![](/images/cmd_2.png)
-	
+
 打開cmd，他的預設目錄是在你的使用者下，請先輸入cd ../..，退到C:\>，如圖：
 ![](/images/cmd_3.png)
-	
+
 鍵入指令`pip install pygments`，會幫你安裝python的pygments的package
 ![](/images/python_install_pygments.PNG)
 
@@ -58,10 +57,10 @@ B. 為了工作方便，請先按下windows鍵(在Ctr跟Alt之間)+R，開啟執
 	cd rubydevkit
 	ruby dk.rb init
 	notepad config.yml
-	
+
 輸入完以上三行指令後，將會用記事本打開一個名為config.yml的檔案，最後一行改成 `- C:\Ruby200-x64`。
 ![](/images/dk_rb_edit.png)
-	
+
 回到cmd，鍵入`ruby dk.rb install`，如果成功會出現下面的訊息：
 ![](/images/dk_rb_edit_2.png)
 
@@ -73,17 +72,17 @@ C. 申請git，並且clone我的庫當作基底。請到 [Github](https://github
 
 	mkdir USERNAME.github.com
 	git clone https://github.com/ChingChuan-Chen/chingchuan-chen.github.com USERNAME.github.com
-	
+
 記得當中的USERNAME要改成你在github的username。例如我的username叫做imstupid，預期output如下圖：
 ![](/images/cmd_3.png)
 
 再來就是init github的本地倉庫，以及設定你的github遠端帳號，指令如下：
-	
+
 	cd USERNAME.github.com
 	git init
 	git remote set-url origin https://github.com/USERNAME/USERNAME.github.com.git
     git push origin master
-	
+
 過程中會要求輸入你的github的帳號(username)以及其密碼(password)，之後你就可以在你的github上看到你上傳的檔案了！最後就是一些簡單的修改，例如記事本去修改_config.yml (簡單的指令是notepad _config.yml，或是用記事本把它打開)：
 ![](/images/config.png)
 ![](/images/config2.png)
@@ -105,7 +104,7 @@ D. 其他部分，最重要的是如何預覽，在cmd中輸入`jekyll serve`會
 
 ```
 	---
-	layout: post   
+	layout: post
 	cTitle: 如何利用jekyll建立你的blogger
 	title: "how to build blog by using jekyll"
 	description: ""
@@ -168,14 +167,14 @@ A. 下載我壓縮的工具包：[Dropbox](https://www.dropbox.com/s/pphmfw6gfk8
 ![](/images/git_install.PNG)
 * 把RedmondPathzip.rar解壓縮，打開Redmond Path.exe，在任意視窗中下方加入; C:\Python27; C:\Python27\Scripts，(你安裝路徑有更動，請跟著更改)，如下圖下示：
 ![](/images/path_setup.png)
-	
+
 B. 為了工作方便，請先按下windows鍵(在Ctr跟Alt之間)+R，開啟執行視窗，鍵入cmd，打開Windows Command Prompt，為了解釋方便，以後稱這個視窗為cmd。
 ![](/images/cmd_1.png)
 ![](/images/cmd_2.png)
-	
+
 打開cmd，他的預設目錄是在你的使用者下，請先輸入cd ../..，退到C:\>，如圖：
 ![](/images/cmd_3.png)
-	
+
 鍵入指令`pip install pygments`，會幫你安裝python的pygments的package
 ![](/images/python_install_pygments.PNG)
 
@@ -184,10 +183,10 @@ B. 為了工作方便，請先按下windows鍵(在Ctr跟Alt之間)+R，開啟執
 	cd rubydevkit
 	ruby dk.rb init
 	notepad config.yml
-	
+
 輸入完以上三行指令後，將會用記事本打開一個名為config.yml的檔案，最後一行改成 `- C:\Ruby200-x64`。
 ![](/images/dk_rb_edit.png)
-	
+
 回到cmd，鍵入`ruby dk.rb install`，如果成功會出現下面的訊息：
 ![](/images/dk_rb_edit_2.png)
 
@@ -199,17 +198,17 @@ C. 申請git，並且clone我的庫當作基底。請到 [Github](https://github
 
 	mkdir USERNAME.github.com
 	git clone https://github.com/ChingChuan-Chen/chingchuan-chen.github.com USERNAME.github.com
-	
+
 記得當中的USERNAME要改成你在github的username。例如我的username叫做imstupid，預期output如下圖：
 ![](/images/cmd_3.png)
 
 再來就是init github的本地倉庫，以及設定你的github遠端帳號，指令如下：
-	
+
 	cd USERNAME.github.com
 	git init
 	git remote set-url origin https://github.com/USERNAME/USERNAME.github.com.git
     git push origin master
-	
+
 過程中會要求輸入你的github的帳號(username)以及其密碼(password)，之後你就可以在你的github上看到你上傳的檔案了！最後就是一些簡單的修改，例如記事本去修改_config.yml (簡單的指令是notepad _config.yml，或是用記事本把它打開)：
 ![](/images/config.png)
 ![](/images/config2.png)
@@ -231,7 +230,7 @@ D. 其他部分，最重要的是如何預覽，在cmd中輸入`jekyll serve`會
 
 ```
 	---
-	layout: post   
+	layout: post
 	cTitle: 如何利用jekyll建立你的blogger
 	title: "how to build blog by using jekyll"
 	description: ""
