@@ -183,24 +183,26 @@ export LD="xild"
 export CC="icc"
 export CXX="icpc"
 export AR="xiar"
-export CFLAGS="-std=gnu99 -O3 -ipo -openmp -parallel -xHost -I$MKL_path/include -I$ICC_path/include"
-export CXXFLAGS="-g -O3 -m64 -ipo -openmp -parallel -xHost -I$MKL_path/include -I$ICC_path/include"
+export CFLAGS="-std=gnu99 -O3 -ipo -openmp -xHost"
+export CXXFLAGS="-O3 -ipo -openmp -xHost"
 export F77=ifort
-export FFLAGS="-g -O3 -ipo -openmp -parallel -xHost -I$MKL_path/include -I$ICC_path/include"
+export FFLAGS="-O3 -ipo -openmp -xHost"
 export FC=ifort
-export FCFLAGS="-g -O3 -ipo -openmp -xHost -parallel -I$MKL_path/include -I$ICC_path/include"
+export FCFLAGS="-g -O3 -ipo -openmp  -xHost"
 export ICC_LIBS=ICC_path/lib/intel64
 export IFC_LIBS=ICC_path/lib/intel64
-export LDFLAGS="-L$ICC_LIBS -L$IFC_LIBS -L/usr/lib64"
+export LDFLAGS="-L$ICC_LIBS -L$IFC_LIBS -L$MKL_path/lib/intel64 -L/usr/lib"
+MKL="-lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread -ldl -lm"
 export SHLIB_CXXLD=icpc
-export SHLIB_LDFLAGS="-shared -fPIC"
-export SHLIB_CXXLDFLAGS="-shared -fPIC"
+export SHLIB_LDFLAGS="-fPIC -openmp -${MKL}"
+export SHLIB_CXXLDFLAGS="-fPIC -openmp -${MKL}"
 
-MKL="-parallel -openmp -lmkl_gf_lp64 -lmkl_intel_lp64 -lmkl_rt -lmkl_intel_thread -lmkl_core -liomp5 -lpthread -lm"
-./configure --with-blas="-I$MKL_path/include -L$MKL_path/lib/intel64 ${MKL}" --with-lapack --enable-R-shlib --enable-BLAS-shlib --with-x --enable-memory-profiling R_PAPERSIZE=letter
+./configure --with-blas="-L$MKL_path/lib/intel64 ${MKL}" --with-lapack --enable-R-shlib --enable-BLAS-shlib
 make
 make install
 ```
+
+
 
 然後他就會幫你把R安裝於usr/local/lib/R中，你之前如果有安裝過R，就記得把/usr/lib/R的目錄刪掉。
 
