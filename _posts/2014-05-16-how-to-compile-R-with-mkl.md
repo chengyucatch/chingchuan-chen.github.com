@@ -127,7 +127,7 @@ Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.589878991592286
 
 ```
 sudo apt-get install R-base R-base-dev
-apt-cache search readline xorg-dev sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-latex-extra texlive-fonts-extra openjdk-7-jdk xorg-dev
+apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-latex-base texlive-latex-extra texlive-fonts-extra openjdk-7-jdk xorg-dev
 ```
 
 有一個工具要另外安裝，方式如下：
@@ -197,7 +197,7 @@ export SHLIB_CXXLD=icpc
 export SHLIB_LDFLAGS="-shared -fPIC"
 export SHLIB_CXXLDFLAGS="-shared -fPIC"
 
-./configure --with-blas="-L$MKL_path/lib/intel64 ${MKL}" --with-lapack --enable-R-shlib --enable-BLAS-shlib
+./configure --with-blas="-L$MKL_path/lib/intel64 ${MKL}" --with-lapack --enable-R-shlib --enable-BLAS-shlib --with-X --enable-memory-profiling
 make
 make install
 ```
