@@ -213,46 +213,46 @@ Number of times each test is run__________________________:  3
 
    I. Matrix calculation
    ---------------------
-Creation, transp., deformation of a 2500x2500 matrix (sec):  1.03666666666667
-2400x2400 normal distributed random matrix ^1000____ (sec):  0.353666666666667
-Sorting of 7,000,000 random values__________________ (sec):  0.699666666666666
-2800x2800 cross-product matrix (b = a' * a)_________ (sec):  0.515
-Linear regr. over a 3000x3000 matrix (c = a \ b')___ (sec):  0.431999999999999
+Creation, transp., deformation of a 2500x2500 matrix (sec):  0.735
+2400x2400 normal distributed random matrix ^1000____ (sec):  0.260666666666666
+Sorting of 7,000,000 random values__________________ (sec):  0.573
+2800x2800 cross-product matrix (b = a' * a)_________ (sec):  0.363666666666667
+Linear regr. over a 3000x3000 matrix (c = a \ b')___ (sec):  0.179
                       --------------------------------------------
-                 Trimmed geom. mean (2 extremes eliminated):  0.537932008193843
+                 Trimmed geom. mean (2 extremes eliminated):  0.378716771862534
 
    II. Matrix functions
    --------------------
-FFT over 2,400,000 random values____________________ (sec):  0.568666666666667
-Eigenvalues of a 640x640 random matrix______________ (sec):  0.582333333333332
-Determinant of a 2500x2500 random matrix____________ (sec):  0.408666666666668
-Cholesky decomposition of a 3000x3000 matrix________ (sec):  0.238999999999997
-Inverse of a 1600x1600 random matrix________________ (sec):  0.307999999999997
+FFT over 2,400,000 random values____________________ (sec):  0.392333333333334
+Eigenvalues of a 640x640 random matrix______________ (sec):  0.431000000000001
+Determinant of a 2500x2500 random matrix____________ (sec):  0.195333333333334
+Cholesky decomposition of a 3000x3000 matrix________ (sec):  0.225333333333334
+Inverse of a 1600x1600 random matrix________________ (sec):  0.218333333333333
                       --------------------------------------------
-                Trimmed geom. mean (2 extremes eliminated):  0.415201806764736
+                Trimmed geom. mean (2 extremes eliminated):  0.26824619162829
 
    III. Programmation
    ------------------
-3,500,000 Fibonacci numbers calculation (vector calc)(sec):  0.357666666666667
-Creation of a 3000x3000 Hilbert matrix (matrix calc) (sec):  0.278333333333334
-Grand common divisors of 400,000 pairs (recursion)__ (sec):  0.933666666666667
-Creation of a 500x500 Toeplitz matrix (loops)_______ (sec):  0.480000000000002
-Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.618000000000002
+3,500,000 Fibonacci numbers calculation (vector calc)(sec):  0.275
+Creation of a 3000x3000 Hilbert matrix (matrix calc) (sec):  0.226666666666668
+Grand common divisors of 400,000 pairs (recursion)__ (sec):  0.728666666666668
+Creation of a 500x500 Toeplitz matrix (loops)_______ (sec):  0.277333333333331
+Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.332000000000001
                       --------------------------------------------
-                Trimmed geom. mean (2 extremes eliminated):  0.473408509296706
+                Trimmed geom. mean (2 extremes eliminated):  0.293646130974387
 
 
-Total time for all 15 tests_________________________ (sec):  7.81133333333333
-Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.472869054369258
+Total time for all 15 tests_________________________ (sec):  5.41333333333334
+Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.310139771237484
                       --- End of test ---
 
-89.84 user
-4.00 system
-0:48.90 elapsed
-191% CPU
+66.99   user
+2.53    system
+0:35.68 elapsed
+194%    CPU
 ```
 
-最後只需要用到7.8秒就可以完成了，可是complitation過程是滿麻煩的，雖然參考了4個網站，可是有些東西長的都不一樣，所以還是弄了很久才成功compile成功，如果沒有特別要求速度下，其實直接用openblas就可以省下很多麻煩。另外，若使用Rcpp的話，速度也會大幅提升(因為用intel C++ compiler)。
+最後只需要用到5.41秒就可以完成了，可是complitation過程是滿麻煩的，雖然參考了多個網站，可是參數的設定都不太一樣，linux又有權限的限制，而且就算編譯成功，Rcpp這個套件不見得能夠成功，因此花了很久才終於編譯成功，並且能夠直接開啟，只是要利用到c, cpp or fortran時還是需要source compilervars.sh才能夠運行，而且我安裝了三四十個套件都沒有問題了。最後，如果沒有特別要求速度下，其實直接用openblas就可以省下很多麻煩。另外，我做了一個小小的測試於Rcpp上，速度有不少的提昇(因為用intel C++ compiler，大概增加5~10倍)，測試結果就不放上來了。以上資訊供大家參考，轉載請註明來源，謝謝。
 
 最後附上測試環境:
 
