@@ -262,4 +262,17 @@ i7-3770K@4.3GHz
 
 use VMware workstation 10: ubuntu 14.04 with 2 porccesor (4 cores)
 
+5.18補充：為了每次運行不需要source兩個environment的shell script，修改運行的命令搞即可，以下列命令用sublime text開啟R的命令搞(subl可以替換成gedit or other editors)
+
+
+```
+sudo subl /usr/local/bin/R
+```
+
+在最上面加入這兩行即可：
+
+```
+. /opt/intel/composer_xe_2013_sp1.3.174/bin/compilervars.sh intel64
+. /opt/intel/composer_xe_2013_sp1.3.174/mkl/bin/mklvars.sh intel64
+```
 
