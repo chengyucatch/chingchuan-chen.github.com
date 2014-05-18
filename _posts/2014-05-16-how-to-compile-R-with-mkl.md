@@ -194,8 +194,8 @@ export IFC_LIBS=$ICC_path/lib/intel64
 export LDFLAGS="-L$ICC_LIBS -L$IFC_LIBS -L$MKL_path/lib/intel64 -L/usr/lib -openmp"
 MKL="-lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread  -ldl -lm"
 export SHLIB_CXXLD=icpc
-export SHLIB_LDFLAGS="-fPIC"
-export SHLIB_CXXLDFLAGS="-fPIC"
+export SHLIB_LDFLAGS="-shared -fPIC"
+export SHLIB_CXXLDFLAGS="-shared -fPIC"
 
 ./configure --with-blas="-L$MKL_path/lib/intel64 ${MKL}" --with-lapack --enable-R-shlib --enable-BLAS-shlib
 make
