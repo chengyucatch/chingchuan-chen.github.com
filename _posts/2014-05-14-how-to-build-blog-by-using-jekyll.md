@@ -19,7 +19,7 @@ published: true
 
 <!-- more -->
 
-## 安裝步驟如下：
+## 安裝步驟如下:
 
 A. 下載我壓縮的工具包：[Dropbox](https://www.dropbox.com/s/pphmfw6gfk8p9ma/blogger_toolbox.rar)
 解壓縮之後，裡面包含六個檔案：
@@ -42,11 +42,11 @@ A. 下載我壓縮的工具包：[Dropbox](https://www.dropbox.com/s/pphmfw6gfk8
 * 把RedmondPathzip.rar解壓縮，打開Redmond Path.exe，在任意視窗中下方加入; C:\Python27; C:\Python27\Scripts，(你安裝路徑有更動，請跟著更改)，如下圖下示：
 ![](/images/path_setup.png)
 
-B. 為了工作方便，請先按下windows鍵(在Ctr跟Alt之間)+R，開啟執行視窗，鍵入cmd，打開Windows Command Prompt，為了解釋方便，以後稱這個視窗為cmd。
+B. 為了工作方便，請先按下windows鍵(在Ctr跟Alt之間)+R，開啟執行視窗，鍵入cmd，打開`Windows Command Prompt`，為了解釋方便，以後稱這個視窗為cmd。
 ![](/images/cmd_1.png)
 ![](/images/cmd_2.png)
 
-打開cmd，他的預設目錄是在你的使用者下，請先輸入cd ../..，退到C:\>，如圖：
+打開cmd，他的預設目錄是在你的使用者下，請先輸入`cd ../..`，退到C:\>，如圖：
 ![](/images/cmd_3.png)
 
 鍵入指令`pip install pygments`，會幫你安裝python的pygments的package
@@ -54,11 +54,13 @@ B. 為了工作方便，請先按下windows鍵(在Ctr跟Alt之間)+R，開啟執
 
 然後在cmd中輸入下列指令：
 
-	cd rubydevkit
-	ruby dk.rb init
-	notepad config.yml
+{% highlight bash %}
+cd rubydevkit
+ruby dk.rb init
+notepad config.yml
+{% endhighlight %}
 
-輸入完以上三行指令後，將會用記事本打開一個名為config.yml的檔案，最後一行改成 `- C:\Ruby200-x64`。
+輸入完以上三行指令後，將會用記事本打開一個名為`_config.yml`的檔案，最後一行改成 `- C:\Ruby200-x64`。
 ![](/images/dk_rb_edit.png)
 
 回到cmd，鍵入`ruby dk.rb install`，如果成功會出現下面的訊息：
@@ -70,20 +72,24 @@ B. 為了工作方便，請先按下windows鍵(在Ctr跟Alt之間)+R，開啟執
 
 C. 申請git，並且clone我的庫當作基底。請到 [Github](https://github.com/)申請一個帳號，假設你的使用者名稱(username)為USERNAME，在你的github中建立一個新的repository，repository的名稱請設定為USERNAME.github.com，這樣就完成github初步的設定。接下來，請先建立好你的工作目錄，例如我設定在E:\website中，那我可以利用這個指令`cd /d E:\website`到該目錄下，你可以自行更改工作目錄，假設clone我的庫做為基底，輸入下方指令：
 
-	mkdir USERNAME.github.com
-	git clone https://github.com/ChingChuan-Chen/chingchuan-chen.github.com USERNAME.github.com
+{% highlight bash %}
+mkdir USERNAME.github.com
+git clone https://github.com/ChingChuan-Chen/chingchuan-chen.github.com USERNAME.github.com
+{% endhighlight %}
 
 記得當中的USERNAME要改成你在github的username。例如我的username叫做imstupid，預期output如下圖：
 ![](/images/cmd_3.png)
 
 再來就是init github的本地倉庫，以及設定你的github遠端帳號，指令如下：
 
-	cd USERNAME.github.com
-	git init
-	git remote set-url origin https://github.com/USERNAME/USERNAME.github.com.git
-    git push origin master
+{% highlight bash %}
+cd USERNAME.github.com
+git init
+git remote set-url origin https://github.com/USERNAME/USERNAME.github.com.git
+git push origin master
+{% endhighlight %}
 
-過程中會要求輸入你的github的帳號(username)以及其密碼(password)，之後你就可以在你的github上看到你上傳的檔案了！最後就是一些簡單的修改，例如記事本去修改_config.yml (簡單的指令是notepad _config.yml，或是用記事本把它打開)：
+過程中會要求輸入你的github的帳號(username)以及其密碼(password)，之後你就可以在你的github上看到你上傳的檔案了！最後就是一些簡單的修改，例如記事本去修改`_config.yml` (簡單的指令是`notepad _config.yml`，或是用記事本把它打開)：
 ![](/images/config.png)
 ![](/images/config2.png)
 
@@ -102,23 +108,23 @@ D. 其他部分，最重要的是如何預覽，在cmd中輸入`jekyll serve`會
 
 還有PO文部分，可以先更改_posts下我的文章，它的檔案格式是yyyy-mm-dd-ANameOfPost.md，可以直接利用記事本做編輯，最前面是一些基本設定：
 
-```
-	---
-	layout: post
-	cTitle: 如何利用jekyll建立你的blogger
-	title: "how to build blog by using jekyll"
-	description: ""
-	category: jekyll
-	cssdemo: 2014-spring
-	tags: [markdown, R]
-	published: true
-	---
-	{{% include JB/setup %}}
-	一些文字...
-	123
-	<!-- more -->
-	456
-```
+{% highlight html %}
+---
+layout: post
+cTitle: 如何利用jekyll建立你的blogger
+title: "how to build blog by using jekyll"
+description: ""
+category: jekyll
+cssdemo: 2014-spring
+tags: [markdown, R]
+published: true
+---
+{{% include JB/setup %}}
+一些文字...
+123
+<!-- more -->
+456
+{% endhighlight %}
 
 兩個---中是關於你post的設定，layout是設定我現在的格式是什麼，在_posts裡面就理所當然是設定post，cTitle是設定你文章的標題(這是顯示的標題)，title是標題(提供給程式控制)，decription是關於你這篇文章的敘述，category是你文章的分類，cssdemo是檔案的格式，這部分我還不熟，請先跟我設定相同，或是你自行摸索，tags是標籤，方便你自己以及其他人找尋相關文章，最後，published是設定是否要公開於網站上，你如果還沒寫好的文章就可以先改成false，那你確定要公開就改成true，include部分是必須要引入的設定，最好不要省略，more那列是在首頁顯示部分到此，例如上面的例子，就是首頁只會顯示123，而456要等你點開文章才會看到。剩下還要更改的部分是index.html以及一些小地方，如果需要幫助，再到左下角點選我的名字就可以連到我的facebook與我聯絡。最後，溫馨提醒：文章的編寫可以對照我的post跟我的blogger顯示文章去推敲寫法，總之，從模仿開始，我也才剛學會架設blogger一周而已。
 

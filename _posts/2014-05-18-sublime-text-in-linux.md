@@ -24,7 +24,7 @@ linux上，中文輸入法一直是難題，應用程式沒辦法支援中文輸
 1. 把下列的程式碼存為sublime_imfix.c:
 
 
-{% highlight C %}
+{% highlight c %}
 /*
 sublime-imfix.c
 Use LD_PRELOAD to interpose some function to fix sublime input method support for linux.

@@ -270,6 +270,10 @@ u {
   text-decoration: underline;
 }
 
+code, pre {
+    font-family: "Inconsolata", monospace;
+}
+
 p code {
   padding: 0px 3px 0 3px;
   color: #dd1144;
