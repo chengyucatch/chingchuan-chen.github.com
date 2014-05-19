@@ -197,7 +197,7 @@ export SHLIB_CXXLD=icpc
 export SHLIB_LDFLAGS="-shared -fPIC"
 export SHLIB_CXXLDFLAGS="-shared -fPIC"
 
-./configure --with-blas="-L$MKL_path/lib/intel64 ${MKL}" --with-lapack --enable-R-shlib --enable-BLAS-shlib --with-X --enable-memory-profiling
+./configure --with-blas="-L$MKL_path/lib/intel64 ${MKL}" --with-lapack --enable-R-shlib --enable-BLAS-shlib --with-x --enable-memory-profiling
 make
 make install
 {% endhighlight %}
