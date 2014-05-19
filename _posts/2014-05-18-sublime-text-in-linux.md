@@ -24,7 +24,7 @@ linux上，中文輸入法一直是難題，應用程式沒辦法支援中文輸
 1. 把下列的程式碼存為sublime_imfix.c:
 
 
-```
+{% highlight C %}
 /*
 sublime-imfix.c
 Use LD_PRELOAD to interpose some function to fix sublime input method support for linux.
@@ -104,65 +104,65 @@ void gtk_im_context_set_client_window (GtkIMContext *context,
   }
   gdk_window_add_filter (window, event_filter, context);
 }
-```
+{% endhighlight %}
 
 2. Ctrl+Alt+T打開你的Terminal視窗到你儲存上面檔案的地方，鍵入：
 
-```
+{% highlight bash %}
 sudo apt-get install build-essential libgtk2.0-dev
 gcc -shared -o libsublime-imfix.so sublime-imfix.c `pkg-config --libs --cflags gtk+-2.0` -fPIC
 mv libsublime-imfix.so /opt/sublime_text/
-```
+{% endhighlight %}
 
 這樣就完成編譯，並且將檔案放置到安裝目錄了。
 
 3. 修改啟動部份
 
-```
+{% highlight bash %}
 sudo subl /usr/share/applications/sublime_text.desktop
-```
+{% endhighlight %}
 
 在每一個`Exec=`後面都加上下面的指令：
 
-```
+{% highlight bash %}
 env LD_PRELOAD=/opt/sublime_text/libsublime-imfix.so
-```
+{% endhighlight %}
 
 然後輸入
 
-```
+{% highlight bash %}
 sudo subl /usr/bin/subl
-```
+{% endhighlight %}
 
 更動內容為
 
-```
+{% highlight bash %}
 #!/bin/sh
 export LD_PRELOAD=/opt/sublime_text/libsublime-imfix.so
 exec /opt/sublime_text/sublime_text "$@"
-```
+{% endhighlight %}
 
 4. 如果想要把sublime text更動為預設編輯器，先使用下列指令確定是否有安裝成功：
 
-```
+{% highlight bash %}
 ls /usr/share/applications/sublime_text.desktop
-```
+{% endhighlight %}
 
 接著打開linux的default列表：
 
-```
+{% highlight bash %}
 sudo subl /usr/share/applications/defaults.list
-```
+{% endhighlight %}
 
 按下Ctrl+H replace gedit with sublime_text。接著打開user的設定列表：
 
-```
+{% highlight bash %}
 subl ~/.local/share/applications/mimeapps.list
-```
+{% endhighlight %}
 
 修改或添加下列下列文字：
 
-```
+{% highlight bash %}
 [Added Associations]
 text/plain=ubuntu-software-center.desktop;shotwell.desktop;sublime_text.desktop;
 text/x-chdr=shotwell-viewer.desktop;
@@ -171,4 +171,5 @@ text/x-chdr=shotwell-viewer.desktop;
 text/plain=sublime_text.desktop
 text/x-c++src=sublime_text.desktop
 text/x-chdr=sublime_text.desktop
-```
+{% endhighlight %}
+
