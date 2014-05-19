@@ -14,7 +14,7 @@ published: true
 
 1. [Do I need to generate a css file ...](http://stackoverflow.com/questions/9652490/do-i-need-to-generate-a-css-file-from-pygments-for-my-jekyll-blog-to-enable-col)
 
-2.[Add code highlight with Pygments](https://github.com/pudgecon/blog-repository/blob/master/_posts/2012-09-03-add-code-highlight-with-pygments.md)
+2. [Add code highlight with Pygments](https://github.com/pudgecon/blog-repository/blob/master/_posts/2012-09-03-add-code-highlight-with-pygments.md)
 
 <!-- more -->
 
