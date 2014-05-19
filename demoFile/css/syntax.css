@@ -5,7 +5,7 @@ font-family: "Inconsolata", monospace;
 
 .highlight .hll { background-color: #ffffcc }
 .highlight  { /*background: #272822;*/ color: #f8f8f2;
-  font: normal normal normal 115%/normal 'Inconsolata', monospace !important;
+  font: normal normal normal 105%/normal 'Inconsolata','Monaco', 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono' monospace !important;
   overflow: auto;
  }
 .highlight .c { color: #75715e } /* Comment */
