@@ -14,7 +14,7 @@ published: true
 
 <!-- more -->
 
-1. automatically load some shell scripts
+i. automatically load some shell scripts
 In my system ubuntu 14.04, I can find the '.bashrc' file in my home directory.
 Since I want ubuntu load intel complier and mkl parameter automatically, I add the two lines in the end of that file:
 
@@ -25,10 +25,10 @@ source /opt/intel/composer_xe_2013_sp1.3.174/bin/compilervars.sh intel64
 
 Then I success!!
 
-2. cannot install ubuntu or Mint
+ii. cannot install ubuntu or Mint
 With the options - acpi=off nolapic noapic, I finally install ubuntu successfully.
 
-3. cannot boot without nolapic, however, it only recognize one cpu with nolapic
+iii. cannot boot without nolapic, however, it only recognize one cpu with nolapic
 I solved this problem by [Dual core recognized as single core because of nolapic?](http://ubuntuforums.org/showthread.php?t=1084622).
 I edited the grub file with following commands:
 
