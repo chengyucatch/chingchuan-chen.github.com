@@ -4,7 +4,7 @@ cTitle: Syntax highlight in Jekyll
 title: "Syntax highlight in Jekyll"
 category: sublime_text
 tagline:
-tags: [sublime_text]
+tags: [jekyll]
 cssdemo: 2014-spring
 published: true
 ---
