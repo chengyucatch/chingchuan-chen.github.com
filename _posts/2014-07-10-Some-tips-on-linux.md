@@ -33,7 +33,7 @@ I edited the grub file with following commands:
 sudo bash
 gedit /etc/default/grub
 {% endhighlight %}
-And replace 'nolapic' with 'pci=assign-busses apicmaintimer idle=poll reboot=cold,hard', the grub file would be contain this two lines:
+And replace `nolapic` with `pci=assign-busses apicmaintimer idle=poll reboot=cold,hard`, the grub file would be contain this two lines:
 {% highlight bash %}
 GRUB_CMDLINE_LINUX_DEFAULT="quiet splash acpi_osi=linux"
 GRUB_CMDLINE_LINUX="noapic pci=assign-busses apicmaintimer idle=poll reboot=cold,hard"
