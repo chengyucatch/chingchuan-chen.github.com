@@ -50,4 +50,22 @@ Then use following command to update grub. And the problem is fixed.
 sudo update-grub
 {% endhighlight %}
 
+iv. to get the permission of ntfs disks, you can edit the fstab in /etc as following:
+
+{% highlight bash %}
+sudo gedit /etc/fstab
+{% endhighlight %}
+
+And you can find the uuid by using the command `ls -l /dev/disk/by-uuid`. To add the disk and set the permission in the file fstab like this:
+
+{% highlight bash %}
+UUID=1c712d26-7f9d-4efc-b796-65bee366c8aa / ext4    noatime,nodiratime,discard,errors=remount-ro 0       1
+UUID=9298D0AB98D08EDB /media/Windows ntfs defaults,uid=1000,gid=1000,umask=002     0      0
+UUID=08C2997EC29970A4 /media/Download ntfs defaults,uid=1000,gid=1000,umask=002      0      0
+UUID=01CD524F3352C990 /media/Files ntfs defaults,uid=1000,gid=1000,umask=002      0      0
+{% endhighlight %}
+
+Then you can access your ntfs disk and set an alias for each disk.
+
+
 (To be continued.)
