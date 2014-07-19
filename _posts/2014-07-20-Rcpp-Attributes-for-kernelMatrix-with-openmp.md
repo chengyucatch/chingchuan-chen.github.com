@@ -67,7 +67,8 @@ all.equal(kernel_X@.Data, kernel_X_cpp)
 library(rbenchmark)
 benchmark(cpp = kernelMatrix_cpp(X, center, sigma),
   kernlab = kernelMatrix(rbfdot(sigma=1/(2*sigma^2)), X, center),
-  columns=c("test", "replications","elapsed", "relative"), replications=10, order="relative")
+  columns=c("test", "replications","elapsed", "relative"),
+  replications=10, order="relative")
 #      test replications elapsed relative
 # 1     cpp           10   0.131    1.000
 # 2 kernlab           10   0.199    1.519
@@ -126,7 +127,8 @@ library(rbenchmark)
 benchmark(cpp = kernelMatrix_cpp(X, center, sigma),
           cpp2 = kernelMatrix_cpp2(X, center, sigma),
           kernlab = kernelMatrix(rbfdot(sigma=1/(2*sigma^2)), X, center),
-          columns=c("test", "replications","elapsed", "relative"), replications=10, order="relative")
+          columns=c("test", "replications","elapsed", "relative"),
+          replications=10, order="relative")
 #      test replications elapsed relative
 # 2    cpp2           10  13.810    1.000
 # 3 kernlab           10  24.978    1.809
@@ -141,7 +143,8 @@ sigma = 3
 benchmark(cpp = kernelMatrix_cpp(X, center, sigma),
           cpp2 = kernelMatrix_cpp2(X, center, sigma),
           kernlab = kernelMatrix(rbfdot(sigma=1/(2*sigma^2)), X, center),
-          columns=c("test", "replications","elapsed", "relative"), replications=10, order="relative")
+          columns=c("test", "replications","elapsed", "relative"),
+          replications=10, order="relative")
 #      test replications elapsed relative
 # 2    cpp2           10   0.059    1.000
 # 1     cpp           10   0.179    3.034
