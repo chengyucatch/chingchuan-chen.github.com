@@ -11,6 +11,8 @@ published: true
 
 Recently, I went to the 23th STSC, I got some information about the new API of Rcpp, Rcpp attributes. I had tried some examples and it worked well. Here I demonstrate some examples.
 
+<!-- more -->
+
 {% include JB/setup %}
 
 First example: call the pnorm function in Rcpp:
