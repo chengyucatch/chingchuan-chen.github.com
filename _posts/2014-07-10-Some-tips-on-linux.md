@@ -10,7 +10,7 @@ published: true
 ---
 {% include JB/setup %}
 
-這篇用來紀錄一堆不知道如何分類的小tips...
+This post is used to record some tips I can't categorize in ubuntu.
 
 <!-- more -->
 
