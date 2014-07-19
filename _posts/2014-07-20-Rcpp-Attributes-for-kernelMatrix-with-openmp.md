@@ -5,7 +5,7 @@ title: "Rcpp Attributes for kernelMatrix with openmp"
 category: R
 tagline:
 tags: [R]
-cssdemo: 2014-spring
+cssdemo: 2013-winter
 published: true
 ---
 {% include JB/setup %}
