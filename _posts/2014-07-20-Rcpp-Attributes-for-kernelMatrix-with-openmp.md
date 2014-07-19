@@ -46,7 +46,8 @@ NumericMatrix kernelMatrix_cpp(NumericMatrix Xr, NumericMatrix Centerr, double s
     #pragma omp for nowait
     for (col_index = 0; col_index < b; col_index++)
     {
-      KerX(row_index, col_index) = exp(sum(square(X.row(row_index) - Center.row(col_index))) / (-2.0 * sigma * sigma));
+      KerX(row_index, col_index) = exp(sum(square(X.row(row_index)
+        - Center.row(col_index))) / (-2.0 * sigma * sigma));
     }
   }
     return wrap(KerX);
@@ -64,7 +65,9 @@ all.equal(kernel_X@.Data, kernel_X_cpp)
 # TRUE
 
 library(rbenchmark)
-benchmark(cpp=kernelMatrix_cpp(X, center, sigma), kernlab=kernelMatrix(rbfdot(sigma=1/(2*sigma^2)), X, center), columns=c("test", "replications","elapsed", "relative"), replications=10, order="relative")
+benchmark(cpp = kernelMatrix_cpp(X, center, sigma),
+  kernlab = kernelMatrix(rbfdot(sigma=1/(2*sigma^2)), X, center),
+  columns=c("test", "replications","elapsed", "relative"), replications=10, order="relative")
 #      test replications elapsed relative
 # 1     cpp           10   0.131    1.000
 # 2 kernlab           10   0.199    1.519
@@ -91,7 +94,9 @@ using namespace arma;
 // [[Rcpp::export]]
 NumericMatrix kernelMatrix_cpp2(NumericMatrix Xr, NumericMatrix Centerr, double sigma) {
   uword n = Xr.nrow(), b = Centerr.nrow(), row_index, col_index;
-  mat X(Xr.begin(), n, Xr.ncol(), false), Center(Centerr.begin(), b, Centerr.ncol(), false), KerX(X*Center.t());
+  mat X(Xr.begin(), n, Xr.ncol(), false),
+      Center(Centerr.begin(), b, Centerr.ncol(), false),
+      KerX(X*Center.t());
   colvec X_sq = sum(square(X), 1) / 2;
   rowvec Center_sq = (sum(square(Center), 1)).t() / 2;
   KerX.each_row() -= Center_sq;
@@ -118,7 +123,10 @@ all.equal(kernel_X@.Data, kernel_X_cpp)
 # TRUE
 
 library(rbenchmark)
-benchmark(cpp = kernelMatrix_cpp(X, center, sigma), cpp2 = kernelMatrix_cpp2(X, center, sigma), kernlab = kernelMatrix(rbfdot(sigma=1/(2*sigma^2)), X, center), columns=c("test", "replications","elapsed", "relative"), replications=10, order="relative")
+benchmark(cpp = kernelMatrix_cpp(X, center, sigma),
+          cpp2 = kernelMatrix_cpp2(X, center, sigma),
+          kernlab = kernelMatrix(rbfdot(sigma=1/(2*sigma^2)), X, center),
+          columns=c("test", "replications","elapsed", "relative"), replications=10, order="relative")
 #      test replications elapsed relative
 # 2    cpp2           10  13.810    1.000
 # 3 kernlab           10  24.978    1.809
@@ -130,7 +138,10 @@ b = 300
 X = matrix(rnorm(N*p), ncol = p)
 center = X[sample(1:N, b),]
 sigma = 3
-benchmark(cpp = kernelMatrix_cpp(X, center, sigma), cpp2 = kernelMatrix_cpp2(X, center, sigma), kernlab = kernelMatrix(rbfdot(sigma=1/(2*sigma^2)), X, center), columns=c("test", "replications","elapsed", "relative"), replications=10, order="relative")
+benchmark(cpp = kernelMatrix_cpp(X, center, sigma),
+          cpp2 = kernelMatrix_cpp2(X, center, sigma),
+          kernlab = kernelMatrix(rbfdot(sigma=1/(2*sigma^2)), X, center),
+          columns=c("test", "replications","elapsed", "relative"), replications=10, order="relative")
 #      test replications elapsed relative
 # 2    cpp2           10   0.059    1.000
 # 1     cpp           10   0.179    3.034
