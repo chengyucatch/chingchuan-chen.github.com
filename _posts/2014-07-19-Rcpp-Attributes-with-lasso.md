@@ -13,8 +13,7 @@ published: true
 I try to write a lasso algorithm by Rcpp attributes.
 
 Reference:
-Friedman, J., Hastie, T. and Tibshirani, R. (2008) Regularization Paths for Generalized Linear Models via Coordinate Descent,
-http://www.stanford.edu/~hastie/Papers/glmnet.pdf, Journal of Statistical Software, Vol. 33(1), 1-22 Feb 2010, http://www.jstatsoft.org/v33/i01/
+Friedman, J., Hastie, T. and Tibshirani, R. (2008) Regularization Paths for Generalized Linear Models via Coordinate Descent, [http://www.stanford.edu/~hastie/Papers/glmnet.pdf](http://www.stanford.edu/~hastie/Papers/glmnet.pdf), Journal of Statistical Software, Vol. 33(1), 1-22 Feb 2010, [http://www.jstatsoft.org/v33/i01/](http://www.jstatsoft.org/v33/i01/)
 
 <!-- more -->
 
