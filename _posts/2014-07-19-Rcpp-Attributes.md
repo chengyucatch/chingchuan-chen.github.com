@@ -19,22 +19,23 @@ First example: call the pnorm function in Rcpp:
 
 {% highlight R %}
 require(Rcpp)
-sourceCpp(code = '#include <Rcpp.h>
+sourceCpp(code = '
+#include <Rcpp.h>
 using namespace Rcpp;
 
 // [[Rcpp::export]]
 DataFrame mypnorm(NumericVector x){
   int n = x.size();
   NumericVector y1(n), y2(n), y3(n);
-
   for (int i=0; i<n; i++){
     y1[i] = ::Rf_pnorm5(x[i], 0.0, 1.0, 1, 0);
     y2[i] = R::pnorm(x[i], 0.0, 1.0, 1, 0);
   }
   y3 = pnorm(x);
-  return DataFrame::create(Named("R") = y1,
-               Named("Rf_") = y2,
-               Named("sugar") = y3);
+  return DataFrame::create(
+    Named("R") = y1,
+    Named("Rf_") = y2,
+    Named("sugar") = y3);
 }', showOutput = TRUE)
 mypnorm(runif(10, -3, 3))
 {% endhighlight %}
@@ -48,8 +49,8 @@ sourceCpp(code = '
 // [[Rcpp::depends(RcppArmadillo)]]
 #include <RcppArmadillo.h>
 using namespace Rcpp;
-// [[Rcpp::export]]
 
+// [[Rcpp::export]]
 List fastLm_RcppArma(NumericVector yr, NumericMatrix Xr) {
   int n = Xr.nrow(), k = Xr.ncol();
   arma::mat X(Xr.begin(), n, k, false);
@@ -58,8 +59,9 @@ List fastLm_RcppArma(NumericVector yr, NumericMatrix Xr) {
   arma::colvec resid = y - X*coef;
   double sig2 = arma::as_scalar(arma::trans(resid)*resid/(n-k));
   arma::colvec stderrest = arma::sqrt(sig2 * arma::diagvec( arma::inv(arma::trans(X)*X)));
-  return List::create(Named("coefficients") = coef,
-              Named("stderr") = stderrest);
+  return List::create(
+    Named("coefficients") = coef,
+    Named("stderr") = stderrest);
 }')
 
 sourceCpp(code = '
@@ -69,8 +71,8 @@ using namespace Rcpp;
 using Eigen::Map;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
-// [[Rcpp::export]]
 
+// [[Rcpp::export]]
 List fastLm_RcppEigen(NumericVector yr, NumericMatrix Xr) {
   const Map<MatrixXd> X(as<Map<MatrixXd> >(Xr));
   const Map<VectorXd> y(as<Map<VectorXd> >(yr));
@@ -79,25 +81,26 @@ List fastLm_RcppEigen(NumericVector yr, NumericMatrix Xr) {
   VectorXd resid = y - X*coef;
   double sig2 = resid.squaredNorm() / (n - k);
   VectorXd stderrest = (sig2 * ((X.transpose() * X).inverse()).diagonal()).array().sqrt();
-  return List::create(Named("coefficients") = coef,
-            Named("stderr") = stderrest);
+  return List::create(
+    Named("coefficients") = coef,
+    Named("stderr") = stderrest);
 }')
 N = 10000
 p = 100
 X = matrix(rnorm(N*p), ncol = p)
 y = X %*% 10**(sample(seq(-5, 1, length = N+p), p)) + rnorm(100)
 
-t_arma = Sys.time()
-temp_arma = fastLm_RcppArma(y, X)
-t_arma = Sys.time() - t_arma
+t_arma     = Sys.time()
+temp_arma  = fastLm_RcppArma(y, X)
+t_arma     = Sys.time() - t_arma
 
-t_eigen = Sys.time()
+t_eigen    = Sys.time()
 temp_eigen = fastLm_RcppEigen(y, X)
-t_eigen = Sys.time() - t_eigen
+t_eigen    = Sys.time() - t_eigen
 
-t_lm = Sys.time()
-temp_lm = lm(y~X - 1)
-t_lm = Sys.time() - t_lm
+t_lm       = Sys.time()
+temp_lm    = lm(y~X - 1)
+t_lm       = Sys.time() - t_lm
 
 c(t_arma, t_eigen, t_lm)
 # [1] 0.02414227 0.02660918 0.27163768
