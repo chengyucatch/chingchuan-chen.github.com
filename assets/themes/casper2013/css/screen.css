@@ -272,6 +272,8 @@ u {
 
 code, pre {
     font-family: "Inconsolata", monospace;
+    overflow-x: auto;
+    overflow: auto;
 }
 
 p code {
