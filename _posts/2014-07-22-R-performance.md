@@ -77,45 +77,6 @@ f_cmp = cmpfun(f)
 
 # Rcpp
 library(Rcpp)
-cppFunction('
-double mm(NumericVector x, NumericVector y) {
-int n = x.size();
-double sum_maxs = 0;
-for(int i = 0; i < n; ++i) {
-  if(x[i] > y[i]) sum_maxs += x[i];
-  else sum_maxs += y[i];
-}
-return sum_maxs / n;
-}
-')
-h = function(){
-  nreps = 1e7
-  x = rnorm(nreps)
-  y = rnorm(nreps)
-  print(mm(x, y))
-}
-
-# Rcpp 2
-cppFunction('
-double mm2(NumericMatrix x) {
-int n = x.nrow();
-double sum_maxs = 0;
-for(int i = 0; i < n; ++i) {
-  if(x[i] > x[i+n])
-    sum_maxs += x[i];
-  else
-    sum_maxs += x[i+n];
-}
-return sum_maxs / n;
-}
-')
-i = function(){
-  nreps = 1e7
-  x = matrix(rnorm(2*nreps),nreps)
-  print(mm2(x))
-}
-
-library(Rcpp)
 ## For windows user
 # library(inline)
 # settings <- getPlugin("Rcpp")
@@ -127,88 +88,109 @@ sourceCpp(code = '
 #include <omp.h>
 using namespace Rcpp;
 // [[Rcpp::export]]
-
-double mm3(NumericVector x, NumericVector y) {
-omp_set_num_threads(omp_get_max_threads());
-int n = x.size();
-double sum_maxs = 0;
-#pragma omp parallel
-{
-  #pragma omp for reduction( +:sum_maxs)
+double mm(NumericVector x, NumericVector y) {
+  int n = x.size();
+  double sum_maxs = 0;
   for(int i = 0; i < n; ++i) {
-    if(x[i] > y[i])
+    if(x[i] > y[i]) sum_maxs += x[i];
+    else sum_maxs += y[i];
+  }
+  return sum_maxs / n;
+}
+// [[Rcpp::export]]
+double mm2(NumericMatrix x) {
+  int n = x.nrow();
+  double sum_maxs = 0;
+  for(int i = 0; i < n; ++i) {
+    if(x[i] > x[i+n])
       sum_maxs += x[i];
     else
-      sum_maxs += y[i];
+      sum_maxs += x[i+n];
   }
+  return sum_maxs / n;
 }
-return sum_maxs / n;
+// [[Rcpp::export]]
+double mm3(NumericVector x, NumericVector y) {
+  omp_set_num_threads(omp_get_max_threads());
+  int n = x.size();
+  double sum_maxs = 0;
+  #pragma omp parallel
+  {
+    #pragma omp for reduction( +:sum_maxs)
+    for(int i = 0; i < n; ++i) {
+      if(x[i] > y[i])
+        sum_maxs += x[i];
+      else
+        sum_maxs += y[i];
+    }
+  }
+  return sum_maxs / n;
+}
+// [[Rcpp::export]]
+double mm4(NumericMatrix x) {
+  omp_set_num_threads(omp_get_max_threads());
+  int n = x.nrow();
+  double sum_maxs = 0;
+  #pragma omp parallel
+  {
+    #pragma omp for reduction( +:sum_maxs)
+    for(int i = 0; i < n; ++i)
+    {
+      if(x[i] > x[i+n])
+        sum_maxs += x[i];
+      else
+        sum_maxs += x[i+n];
+    }
+  }
+  return sum_maxs / n;
+}
+// [[Rcpp::export]]
+double mm5(int n) {
+  omp_set_num_threads(omp_get_max_threads());
+  Rcpp::NumericVector x(n);
+  Rcpp::NumericVector y(n);
+  RNGScope scope;
+  x = rnorm(n, 0.0, 1.0);
+  y = rnorm(n, 0.0, 1.0);
+  double sum_maxs = 0;
+  #pragma omp parallel
+  {
+    #pragma omp for reduction( +:sum_maxs)
+    for(int i = 0; i < n; ++i) {
+      if(x[i] > y[i]) sum_maxs += x[i];
+      else sum_maxs += y[i];
+    }
+  }
+  return sum_maxs / n;
 }')
+h = function(){
+  nreps = 1e7
+  x = rnorm(nreps)
+  y = rnorm(nreps)
+  print(mm(x, y))
+}
+i = function(){
+  nreps = 1e7
+  x = matrix(rnorm(2*nreps),nreps)
+  print(mm2(x))
+}
 j = function(){
   nreps = 1e7
   x = rnorm(nreps)
   y = rnorm(nreps)
   print(mm3(x, y))
 }
-
-sourceCpp(code = '
-#include <Rcpp.h>
-#include <omp.h>
-using namespace Rcpp;
-// [[Rcpp::export]]
-
-double mm4(NumericMatrix x) {
-omp_set_num_threads(omp_get_max_threads());
-int n = x.nrow();
-double sum_maxs = 0;
-#pragma omp parallel
-{
-  #pragma omp for reduction( +:sum_maxs)
-  for(int i = 0; i < n; ++i)
-  {
-    if(x[i] > x[i+n])
-      sum_maxs += x[i];
-    else
-      sum_maxs += x[i+n];
-  }
-}
-return sum_maxs / n;
-}')
 k = function(){
   nreps = 1e7
   x = matrix(rnorm(2*nreps),nreps)
   print(mm4(x))
 }
-
-sourceCpp(code = '
-#include <Rcpp.h>
-#include <omp.h>
-using namespace Rcpp;
-// [[Rcpp::export]]
-
-double mm5(int n) {
-omp_set_num_threads(omp_get_max_threads());
-Rcpp::NumericVector x(n);
-Rcpp::NumericVector y(n);
-RNGScope scope;
-x = rnorm(n, 0.0, 1.0);
-y = rnorm(n, 0.0, 1.0);
-double sum_maxs = 0;
-#pragma omp parallel
-{
-  #pragma omp for reduction( +:sum_maxs)
-  for(int i = 0; i < n; ++i) {
-    if(x[i] > y[i]) sum_maxs += x[i];
-    else sum_maxs += y[i];
-  }
-}
-return sum_maxs / n;
-}')
 l = function(){
   nreps = 1e7
   print(mm5(nreps))
 }
 
+library(RcppArmadillo)
 sourceCpp(code = '
 // [[Rcpp::depends(RcppArmadillo)]]
 #include <RcppArmadillo.h>
@@ -216,35 +198,25 @@ sourceCpp(code = '
 using namespace Rcpp;
 using namespace arma;
 // [[Rcpp::export]]
-
 double mm6(int n) {
-arma_rng::set_seed_random();
-colvec x = randn(n), y = randn(n);
-return as_scalar(mean(arma::max(x,y)));
+  arma_rng::set_seed_random();
+  colvec x = randn(n), y = randn(n);
+  return as_scalar(mean(arma::max(x,y)));
+}
+// [[Rcpp::export]]
+double mm7(int n) {
+  arma_rng::set_seed_random();
+  mat x = randn(n, 2);
+  return as_scalar(mean(arma::max(x,1)));
 }')
 m = function(){
   nreps = 1e7
   print(mm6(nreps))
 }
-
-sourceCpp(code = '
-// [[Rcpp::depends(RcppArmadillo)]]
-#include <RcppArmadillo.h>
-#include <Rcpp.h>
-using namespace Rcpp;
-using namespace arma;
-// [[Rcpp::export]]
-
-double mm7(int n) {
-arma_rng::set_seed_random();
-mat x = randn(n, 2);
-return as_scalar(mean(arma::max(x,1)));
-}')
 n = function(){
   nreps = 1e7
   print(mm7(nreps))
 }
-
 library(rbenchmark)
 benchmark(a(),b(),d(),e(),f(),g(),h(),i(),j(),k(),l(),m(),n(), a_cmp(),b_cmp(),d_cmp(),e_cmp(),f_cmp(), replications = 10, columns=c('test', 'replications', 'elapsed','relative', 'user.self'), order='relative')
 
