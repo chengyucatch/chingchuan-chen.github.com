@@ -305,5 +305,5 @@ benchmark(m(),n(),o(), replications = 10, columns=c('test', 'replications', 'ela
 # 2  n()           10   7.247    1.035     7.124
 {% endhighlight %}
 
-The results show that calculation in row and calculation in column is big difference.
+The results show that calculation in row and calculation in column is big difference. My environment is ubuntu 14.04, R 3.1.1 compiled by intel c++, fortran compiler with MKL. My CPU is 3770K@4.3GHz.
 
