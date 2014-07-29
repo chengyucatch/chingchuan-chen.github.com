@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: R data.table: collating data
-title: "R data.table: collating data"
+cTitle: R data.table - collating data
+title: "R data.table - collating data"
 category: R
 tagline:
 tags: [R, data.table]

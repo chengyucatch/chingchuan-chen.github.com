@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: R data.table: melt and cast
-title: "R data.table: melt and cast"
+cTitle: R data.table - melt and cast
+title: "R data.table - melt and cast"
 category: R
 tagline:
 tags: [R, data.table]

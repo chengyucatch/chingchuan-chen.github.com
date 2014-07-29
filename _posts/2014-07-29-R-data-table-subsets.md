@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: R data.table: subsets
-title: "R data.table: subsets"
+cTitle: R data.table - subsets
+title: "R data.table - subsets"
 category: R
 tagline:
 tags: [R, data.table]

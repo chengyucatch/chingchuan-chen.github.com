@@ -1,10 +1,10 @@
 ---
 layout: post
-cTitle: R data.table: sum by groups
-title: "R data.table: sum by groups"
+cTitle: R data.table - sum by groups
+title: "R data.table - sum by groups"
 category: R
 tagline:
-tags: [R]
+tags: [R, data.table]
 cssdemo: 2014-spring
 published: true
 ---
