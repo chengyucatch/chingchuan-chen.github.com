@@ -81,7 +81,7 @@ benchmark(CC1 = SparseDenseMatrixMulti(A, B),
 # 3  CC3           20   5.922    1.005
 # 2  CC2           20   5.933    1.007
 # 1  CC1           20   6.820    1.158
-{% endhighlight }
+{% endhighlight %}
 
 The above result show that if you use the interface of `RcppArmadillo` or `Rcpp`, then you need suffer from delay of memory copy.
 
