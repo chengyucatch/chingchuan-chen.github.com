@@ -4,7 +4,7 @@ cTitle: R data.table: sum by groups
 title: "R data.table: sum by groups"
 category: R
 tagline:
-tags: [R, datatable]
+tags: [R]
 cssdemo: 2014-spring
 published: true
 ---
