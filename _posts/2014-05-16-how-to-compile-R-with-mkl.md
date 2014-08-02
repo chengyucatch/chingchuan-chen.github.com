@@ -127,7 +127,7 @@ Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.589878991592286
 
 {% highlight bash %}
 sudo add-apt-repository ppa:webupd8team/java && sudo apt-get update && sudo apt-get install oracle-java8-installer && sudo apt-get install oracle-java8-set-default
-apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-latex-base texlive-latex-extra texlive-fonts-extra xorg-dev tcl8.6-dev tk8.6-dev libtiff5 libtiff5-dev libjpeg-dev libpng12-dev libcairo2-dev R-base R-base-dev
+apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-latex-base texlive-latex-extra texlive-fonts-extra xorg-dev tcl8.6-dev tk8.6-dev libtiff5 libtiff5-dev libjpeg-dev libpng12-dev libcairo2-dev libglu1-mesa-dev libgsl0-dev R-base R-base-dev
 {% endhighlight %}
 
 有一個工具要另外安裝，方式如下：
@@ -191,13 +191,22 @@ export FC=ifort
 export FCFLAGS="-g -O3 -openmp -xHost -ipo"
 export ICC_LIBS=$ICC_path/lib/intel64
 export IFC_LIBS=$ICC_path/lib/intel64
-export LDFLAGS="-L$ICC_LIBS -L$IFC_LIBS -L$MKL_path/lib/intel64 -L/usr/lib -openmp"
-MKL="-lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread -ldl -lm"
+export LDFLAGS="-L$ICC_LIBS -L$IFC_LIBS -L$MKL_path/lib/intel64 -L/usr/lib"
 export SHLIB_CXXLD=icpc
 export SHLIB_LDFLAGS="-shared -fPIC"
 export SHLIB_CXXLDFLAGS="-shared -fPIC"
+MKL="-lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread -ldl -lm"
+export BLAS_LIBS="$MKL"
+export LAPACK_LIBS="$MKL"
 
-./configure --with-blas="-L$MKL_path/lib/intel64 ${MKL}" --with-lapack="-L$MKL_path/lib/intel64 ${MKL}" --enable-R-shlib --enable-BLAS-shlib --with-x --enable-memory-profiling --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh --enable-byte-compiled-packages
+./configure --with-blas --with-lapack --enable-R-shlib --enable-BLAS-shlib --with-x --enable-memory-profiling --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh --enable-byte-compiled-packages
+{% endhighlight %}
+
+configure應該要看到下圖的output：
+![](/images/configure_r.png)
+
+確定無誤之後，再用下面指令進行compile以及安裝：
+{% highlight bash %}
 make && make install
 {% endhighlight %}
 
