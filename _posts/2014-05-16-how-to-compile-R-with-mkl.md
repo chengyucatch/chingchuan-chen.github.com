@@ -126,9 +126,8 @@ Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.589878991592286
 1. 取得R與其開發包，並安裝需要的套件，在terminal use following commands:
 
 {% highlight bash %}
-sudo add-apt-repository ppa:webupd8team/java & sudo apt-get update
-sudo apt-get install oracle-java8-installer & sudo apt-get install oracle-java8-set-default R-base R-base-dev
-apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-latex-base texlive-latex-extra texlive-fonts-extra xorg-dev tcl8.6-dev tk8.6-dev libtiff5 libtiff5-dev libjpeg-dev libpng12-dev libcairo2-dev
+sudo add-apt-repository ppa:webupd8team/java && sudo apt-get update && sudo apt-get install oracle-java8-installer && sudo apt-get install oracle-java8-set-default
+apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-latex-base texlive-latex-extra texlive-fonts-extra xorg-dev tcl8.6-dev tk8.6-dev libtiff5 libtiff5-dev libjpeg-dev libpng12-dev libcairo2-dev R-base R-base-dev
 {% endhighlight %}
 
 有一個工具要另外安裝，方式如下：
@@ -199,8 +198,7 @@ export SHLIB_LDFLAGS="-shared -fPIC"
 export SHLIB_CXXLDFLAGS="-shared -fPIC"
 
 ./configure --with-blas="-L$MKL_path/lib/intel64 ${MKL}" --with-lapack="-L$MKL_path/lib/intel64 ${MKL}" --enable-R-shlib --enable-BLAS-shlib --with-x --enable-memory-profiling --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh --enable-byte-compiled-packages
-make
-make install
+make && make install
 {% endhighlight %}
 
 然後他就會幫你把R安裝於usr/local/lib/R中，你之前如果有安裝過R，就記得把/usr/lib/R的目錄刪掉。
