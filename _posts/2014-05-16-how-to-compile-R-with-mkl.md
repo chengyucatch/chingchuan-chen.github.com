@@ -126,8 +126,9 @@ Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.589878991592286
 1. 取得R與其開發包，並安裝需要的套件，在terminal use following commands:
 
 {% highlight bash %}
-sudo apt-get install R-base R-base-dev
-apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-latex-base texlive-latex-extra texlive-fonts-extra openjdk-7-jdk xorg-dev
+sudo add-apt-repository ppa:webupd8team/java & sudo apt-get update
+sudo apt-get install oracle-java8-installer & sudo apt-get install oracle-java8-set-default R-base R-base-dev
+apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-latex-base texlive-latex-extra texlive-fonts-extra xorg-dev tcl8.6-dev tk8.6-dev libtiff5 libtiff5-dev libjpeg-dev libpng12-dev libcairo2-dev
 {% endhighlight %}
 
 有一個工具要另外安裝，方式如下：
@@ -159,8 +160,8 @@ _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");
 2. 取得R source code:
 
 {% highlight bash %}
-wget http://cran.csie.ntu.edu.tw/src/base/R-3/R-3.1.0.tar.gz
-tar -xvzf R-3.1.0.tar.gz
+wget http://cran.csie.ntu.edu.tw/src/base/R-3/R-3.1.1.tar.gz
+tar -xvzf R-3.1.1.tar.gz
 {% endhighlight %}
 
 3. 取得Intel C++ compiler and Intel MKL，你可以取得non-commercial license for this two software in intel website. 安裝前記得先取得需要的套件：
@@ -192,12 +193,12 @@ export FCFLAGS="-g -O3 -openmp -xHost -ipo"
 export ICC_LIBS=$ICC_path/lib/intel64
 export IFC_LIBS=$ICC_path/lib/intel64
 export LDFLAGS="-L$ICC_LIBS -L$IFC_LIBS -L$MKL_path/lib/intel64 -L/usr/lib -openmp"
-MKL="-lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread  -ldl -lm"
+MKL="-lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread -ldl -lm"
 export SHLIB_CXXLD=icpc
 export SHLIB_LDFLAGS="-shared -fPIC"
 export SHLIB_CXXLDFLAGS="-shared -fPIC"
 
-./configure --with-blas="-L$MKL_path/lib/intel64 ${MKL}" --with-lapack --enable-R-shlib --enable-BLAS-shlib --with-x --enable-memory-profiling
+./configure --with-blas="-L$MKL_path/lib/intel64 ${MKL}" --with-lapack="-L$MKL_path/lib/intel64 ${MKL}" --enable-R-shlib --enable-BLAS-shlib --with-x --enable-memory-profiling --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh --enable-byte-compiled-packages
 make
 make install
 {% endhighlight %}
