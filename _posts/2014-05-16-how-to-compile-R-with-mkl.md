@@ -180,18 +180,19 @@ source /opt/intel/composer_xe_2013_sp1.3.174/bin/compilervars.sh intel64
 MKL_path=/opt/intel/composer_xe_2013_sp1.3.174/mkl
 ICC_path=/opt/intel/composer_xe_2013_sp1.3.174/compiler
 export LD="xild"
+export AR="xiar"
 export CC="icc"
 export CXX="icpc"
-export AR="xiar"
-export CFLAGS="-std=gnu99 -O3 -openmp -xHost -ipo"
-export CXXFLAGS="-O3 -openmp -xHost -ipo"
+export CFLAGS="-wd188 -ip -std=gnu99 -g -O3 -openmp -xHost -ipo -fp-model precise -fp-model source"
+export CXXFLAGS="-g -O3 -openmp -xHost -ipo -fp-model precise -fp-model source"
 export F77=ifort
-export FFLAGS="-O3 -openmp -xHost -ipo"
+export FFLAGS="-g -O3 -openmp -xHost -ipo -fp-model source"
 export FC=ifort
-export FCFLAGS="-g -O3 -openmp -xHost -ipo"
+export FCFLAGS="-g -O3 -openmp -xHost -ipo -fp-model precise -fp-model source"
+export CPPFLAGS="-no-gcc"
 export ICC_LIBS=$ICC_path/lib/intel64
 export IFC_LIBS=$ICC_path/lib/intel64
-export LDFLAGS="-L$ICC_LIBS -L$IFC_LIBS -L$MKL_path/lib/intel64 -L/usr/lib -openmp"
+export LDFLAGS="-L$ICC_LIBS -L$IFC_LIBS -L$MKL_path/lib/intel64 -L/usr/lib -L/usr/local/lib -openmp"
 export SHLIB_CXXLD=icpc
 export SHLIB_LDFLAGS="-shared -fPIC"
 export SHLIB_CXXLDFLAGS="-shared -fPIC"
@@ -199,7 +200,7 @@ MKL="-L$MKL_path/lib/intel64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lio
 export JAVA_HOME=/usr/lib/jvm/java-8-oracle/jre
 export R_JAVA_LD_LIBRARY_PATH=${JAVA_HOME}/lib/amd64/server
 
-./configure --enable-R-shlib --with-blas="$MKL" --with-lapack="$MKL" --with-x --enable-memory-profiling --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh
+./configure --with-blas="$MKL" --with-lapack --with-x --enable-memory-profiling --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh
 make && make install
 {% endhighlight %}
 
