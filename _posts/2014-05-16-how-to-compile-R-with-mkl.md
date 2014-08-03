@@ -188,8 +188,7 @@ export CXXFLAGS="-g -O3 -openmp -xHost -ipo -fp-model precise -fp-model source"
 export F77=ifort
 export FFLAGS="-g -O3 -openmp -xHost -ipo -fp-model source"
 export FC=ifort
-export FCFLAGS="-g -O3 -openmp -xHost -ipo -fp-model precise -fp-model source"
-export CPPFLAGS="-no-gcc"
+export FCFLAGS="-g -O3 -openmp -xHost -fp-model source"
 export ICC_LIBS=$ICC_path/lib/intel64
 export IFC_LIBS=$ICC_path/lib/intel64
 export LDFLAGS="-L$ICC_LIBS -L$IFC_LIBS -L$MKL_path/lib/intel64 -L/usr/lib -L/usr/local/lib -openmp"
@@ -197,10 +196,8 @@ export SHLIB_CXXLD=icpc
 export SHLIB_LDFLAGS="-shared -fPIC"
 export SHLIB_CXXLDFLAGS="-shared -fPIC"
 MKL="-L$MKL_path/lib/intel64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread -ldl -lm"
-export JAVA_HOME=/usr/lib/jvm/java-8-oracle/jre
-export R_JAVA_LD_LIBRARY_PATH=${JAVA_HOME}/lib/amd64/server
 
-./configure --with-blas="$MKL" --with-lapack --with-x --enable-memory-profiling --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh
+./configure --with-blas="$MKL" --with-lapack --with-x --enable-memory-profiling --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh R_BROWSER="firefox" --enable-R-shlib
 make && make install
 {% endhighlight %}
 
