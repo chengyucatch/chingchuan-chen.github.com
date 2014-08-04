@@ -183,12 +183,12 @@ export LD="xild"
 export AR="xiar"
 export CC="icc"
 export CXX="icpc"
-export CFLAGS="-wd188 -ip -std=gnu99 -g -O3 -openmp -xHost -ipo -fp-model precise -fp-model source"
-export CXXFLAGS="-g -O3 -openmp -xHost -ipo -fp-model precise -fp-model source"
+export CFLAGS="-wd188 -ip -std=gnu99 -g -O3 -openmp -parallel -xHost -ipo -fp-model precise -fp-model source"
+export CXXFLAGS="-g -O3 -openmp -parallel -xHost -ipo -fp-model precise -fp-model source"
 export F77=ifort
-export FFLAGS="-g -O3 -openmp -xHost -ipo -fp-model source"
+export FFLAGS="-g -O3 -openmp -parallel -xHost -ipo -fp-model source"
 export FC=ifort
-export FCFLAGS="-g -O3 -openmp -xHost -fp-model source"
+export FCFLAGS="-g -O3 -openmp -parallel -xHost -ipo -fp-model source"
 export ICC_LIBS=$ICC_path/lib/intel64
 export IFC_LIBS=$ICC_path/lib/intel64
 export LDFLAGS="-L$ICC_LIBS -L$IFC_LIBS -L$MKL_path/lib/intel64 -L/usr/lib -L/usr/local/lib -openmp"
@@ -197,7 +197,7 @@ export SHLIB_LDFLAGS="-shared -fPIC"
 export SHLIB_CXXLDFLAGS="-shared -fPIC"
 MKL="-L$MKL_path/lib/intel64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread -ldl -lm"
 
-./configure --with-blas="$MKL" --with-lapack --with-x --enable-memory-profiling --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh R_BROWSER="firefox" --enable-R-shlib
+./configure --with-blas="$MKL" --with-lapack --with-x --enable-memory-profiling --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh R_BROWSER="firefox" --enable-R-shlib --enable-BLAS-shlib
 make && make install
 {% endhighlight %}
 
