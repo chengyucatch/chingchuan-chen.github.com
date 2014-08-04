@@ -67,7 +67,7 @@ UUID=01CD524F3352C990 /media/Files ntfs defaults,uid=1000,gid=1000,umask=002    
 
 Then you can access your ntfs disk and set an alias for each disk.
 
-v. use grub comstomer to edit the boot order. Installation:
+v. use grub comstomer to edit the boot order. Installation: 
 
 {% highlight bash %}
 sudo add-apt-repository ppa:danielrichter2007/grub-customizer
@@ -89,5 +89,7 @@ sudo apt-get install ruby ruby-dev git python-pip
 gem install jekyll
 pip install pygments
 {% endhighlight %}
+
+
 
 (To be continued.)
