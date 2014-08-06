@@ -237,21 +237,8 @@ Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.313371634843041
                       --- End of test ---
 {% endhighlight %}
 
-最後只需要用到5.12秒就可以完成了，可是complitation過程是滿麻煩的，雖然參考了多個網站，可是參數的設定都不太一樣，linux又有權限的限制，而且就算編譯成功，Rcpp這個套件不見得能夠成功，因此花了很久才終於編譯成功，並且能夠直接開啟，只是要利用到c, cpp or fortran時還是需要source compilervars.sh才能夠運行，而且我安裝了三四十個套件都沒有問題了。最後，如果沒有特別要求速度下，其實直接用openblas就可以省下很多麻煩。另外，我做了一個小小的測試於Rcpp上，速度有不少的提昇(因為用intel C++ compiler，大概增加5~10倍)，測試結果就不放上來了。以上資訊供大家參考，轉載請註明來源，謝謝。
+最後只需要用到5.4秒就可以完成了，可是complitation過程是滿麻煩的，雖然參考了多個網站，可是參數的設定都不太一樣，linux又有權限的限制，而且就算編譯成功，Rcpp這個套件不見得能夠成功，因此花了很久才終於編譯成功，並且能夠直接開啟，只是要利用到c, cpp or fortran時還是需要source compilervars.sh才能夠運行，而且我安裝了三四十個套件都沒有問題了。最後，如果沒有特別要求速度下，其實直接用openblas就可以省下很多麻煩。另外，我做了一個小小的測試於Rcpp上，速度有不少的提昇(因為用intel C++ compiler，大概增加5~10倍)，測試結果就不放上來了。以上資訊供大家參考，轉載請註明來源，謝謝。
 
 最後附上測試環境: My environment is ubuntu 14.04, R 3.1.1 compiled by Intel c++, fortran compiler with MKL. My CPU is 3770K@4.3GHz.
 
-5.18補充：為了每次運行不需要source兩個environment的shell script，修改運行的命令搞即可，以下列命令用sublime text開啟R的命令搞(subl可以替換成gedit or other editors)
-
-
-{% highlight bash %}
-sudo subl /usr/local/bin/R
-{% endhighlight %}
-
-在最上面加入這兩行即可：
-
-{% highlight bash %}
-. /opt/intel/composer_xe_2013_sp1.3.174/bin/compilervars.sh intel64
-. /opt/intel/composer_xe_2013_sp1.3.174/mkl/bin/mklvars.sh intel64
-{% endhighlight %}
 

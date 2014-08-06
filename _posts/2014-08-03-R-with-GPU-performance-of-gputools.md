@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: R with GPU performance of gputools and OpenCL
-title: "R with GPU performance of gputools and OpenCL"
+cTitle: R with GPU performance of gputools
+title: "R with GPU performance of gputools"
 category: R
 tagline:
 tags: [R]
