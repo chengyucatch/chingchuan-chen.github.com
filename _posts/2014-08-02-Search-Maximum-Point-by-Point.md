@@ -53,7 +53,7 @@ using namespace Rcpp;
 using namespace arma;
 
 // [[Rcpp::export]]
-uword sq_search_f_cpp_i_f(int i, NumericVector int_mr, NumericVector Xr, NumericVector Yr, int mar) {
+uword sq_search_f_cpp_i_f(int i, NumericVector int_mr, NumericVector Xr, NumericVector Yr, double mar) {
   int n = Xr.size();
   colvec X(Xr.begin(), n, false),
          Y(Yr.begin(), n, false),
@@ -67,7 +67,7 @@ uword sq_search_f_cpp_i_f(int i, NumericVector int_mr, NumericVector Xr, Numeric
 }
 
 // [[Rcpp::export]]
-IntegerVector sq_search_cpp_f(NumericVector int_mr, NumericVector Xr, NumericVector Yr, int mar) {
+IntegerVector sq_search_cpp_f(NumericVector int_mr, NumericVector Xr, NumericVector Yr, double mar) {
   int n = Xr.size();
   ucolvec location_v(n);
   for(int i = 0; i < n; i++)
@@ -120,7 +120,7 @@ using namespace Rcpp;
 using namespace arma;
 
 // [[Rcpp::export]]
-uword cr_search_f_cpp_i_f(int i, NumericVector int_mr, NumericVector Xr, NumericVector Yr, int mar) {
+uword cr_search_f_cpp_i_f(int i, NumericVector int_mr, NumericVector Xr, NumericVector Yr, double mar) {
   int max_threads_mkl = mkl_get_max_threads();
   mkl_set_num_threads(max_threads_mkl);
   int n = Xr.size();
@@ -134,7 +134,7 @@ uword cr_search_f_cpp_i_f(int i, NumericVector int_mr, NumericVector Xr, Numeric
 }
 
 // [[Rcpp::export]]
-IntegerVector cr_search_cpp_f(NumericVector int_mr, NumericVector Xr, NumericVector Yr, int mar) {
+IntegerVector cr_search_cpp_f(NumericVector int_mr, NumericVector Xr, NumericVector Yr, double mar) {
   int n = Xr.size();
   ucolvec location_v(n);
   for(int i = 0; i < n; i++)
