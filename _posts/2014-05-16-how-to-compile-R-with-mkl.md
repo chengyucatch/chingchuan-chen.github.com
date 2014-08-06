@@ -27,101 +27,91 @@ PS: 運行測試前，記得打開R安裝SuppDists的套件。
 測試結果如下：
 Default R：
 
-{% highlight html %}
+{% highlight R %}
    R Benchmark 2.5
    ===============
 Number of times each test is run__________________________:  3
 
    I. Matrix calculation
    ---------------------
-Creation, transp., deformation of a 2500x2500 matrix (sec):  1.12266666666667
-2400x2400 normal distributed random matrix ^1000____ (sec):  0.727333333333333
-Sorting of 7,000,000 random values__________________ (sec):  0.72
-2800x2800 cross-product matrix (b = a' * a)_________ (sec):  10.9446666666667
-Linear regr. over a 3000x3000 matrix (c = a \ b')___ (sec):  5.311
+Creation, transp., deformation of a 2500x2500 matrix (sec):  0.901666666666667
+2400x2400 normal distributed random matrix ^1000____ (sec):  0.664333333333334
+Sorting of 7,000,000 random values__________________ (sec):  0.632
+2800x2800 cross-product matrix (b = a' * a)_________ (sec):  8.92166666666667
+Linear regr. over a 3000x3000 matrix (c = a \ b')___ (sec):  4.34133333333333
                       --------------------------------------------
-                 Trimmed geom. mean (2 extremes eliminated):  1.6307480718093
+                 Trimmed geom. mean (2 extremes eliminated):  1.37515524783545
 
    II. Matrix functions
    --------------------
-FFT over 2,400,000 random values____________________ (sec):  0.531000000000006
-Eigenvalues of a 640x640 random matrix______________ (sec):  1.11366666666667
-Determinant of a 2500x2500 random matrix____________ (sec):  5.08300000000001
-Cholesky decomposition of a 3000x3000 matrix________ (sec):  4.58633333333333
-Inverse of a 1600x1600 random matrix________________ (sec):  4.62533333333334
+FFT over 2,400,000 random values____________________ (sec):  0.273000000000001
+Eigenvalues of a 640x640 random matrix______________ (sec):  0.960999999999999
+Determinant of a 2500x2500 random matrix____________ (sec):  4.576
+Cholesky decomposition of a 3000x3000 matrix________ (sec):  3.62266666666667
+Inverse of a 1600x1600 random matrix________________ (sec):  3.28933333333333
                       --------------------------------------------
-                Trimmed geom. mean (2 extremes eliminated):  2.86937927906332
+                Trimmed geom. mean (2 extremes eliminated):  2.25399639062039
 
    III. Programmation
    ------------------
-3,500,000 Fibonacci numbers calculation (vector calc)(sec):  0.76133333333334
-Creation of a 3000x3000 Hilbert matrix (matrix calc) (sec):  0.39433333333334
-Grand common divisors of 400,000 pairs (recursion)__ (sec):  1.04766666666668
-Creation of a 500x500 Toeplitz matrix (loops)_______ (sec):  0.976666666666659
-Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.663000000000011
+3,500,000 Fibonacci numbers calculation (vector calc)(sec):  0.666000000000006
+Creation of a 3000x3000 Hilbert matrix (matrix calc) (sec):  0.194666666666668
+Grand common divisors of 400,000 pairs (recursion)__ (sec):  0.805666666666667
+Creation of a 500x500 Toeplitz matrix (loops)_______ (sec):  0.74599999999999
+Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.473000000000013
                       --------------------------------------------
-                Trimmed geom. mean (2 extremes eliminated):  0.789971784140643
+                Trimmed geom. mean (2 extremes eliminated):  0.617103579859946
 
 
-Total time for all 15 tests_________________________ (sec):  38.6080000000001
-Overall mean (sum of I, II and III trimmed means/3)_ (sec):  1.5461874255574
+Total time for all 15 tests_________________________ (sec):  31.0683333333333
+Overall mean (sum of I, II and III trimmed means/3)_ (sec):  1.24133119896421
                       --- End of test ---
-
-180.72 user
-2.77 system
-3:05.43 elapsed
-98% CPU
 {% endhighlight %}
 
 R with Openblas:
 
-{% highlight html %}
+{% highlight R %}
    R Benchmark 2.5
    ===============
 Number of times each test is run__________________________:  3
 
    I. Matrix calculation
    ---------------------
-Creation, transp., deformation of a 2500x2500 matrix (sec):  1.10366666666667
-2400x2400 normal distributed random matrix ^1000____ (sec):  0.740333333333333
-Sorting of 7,000,000 random values__________________ (sec):  0.732999999999999
-2800x2800 cross-product matrix (b = a' * a)_________ (sec):  0.538333333333333
-Linear regr. over a 3000x3000 matrix (c = a \ b')___ (sec):  0.452666666666667
+Creation, transp., deformation of a 2500x2500 matrix (sec):  0.898666666666667
+2400x2400 normal distributed random matrix ^1000____ (sec):  0.664666666666667
+Sorting of 7,000,000 random values__________________ (sec):  0.637
+2800x2800 cross-product matrix (b = a' * a)_________ (sec):  0.233666666666668
+Linear regr. over a 3000x3000 matrix (c = a \ b')___ (sec):  0.155333333333334
                       --------------------------------------------
-                 Trimmed geom. mean (2 extremes eliminated):  0.663530438270739
+                 Trimmed geom. mean (2 extremes eliminated):  0.462501733597377
 
    II. Matrix functions
    --------------------
-FFT over 2,400,000 random values____________________ (sec):  0.564333333333335
-Eigenvalues of a 640x640 random matrix______________ (sec):  1.53666666666667
-Determinant of a 2500x2500 random matrix____________ (sec):  0.382666666666665
-Cholesky decomposition of a 3000x3000 matrix________ (sec):  0.316666666666665
-Inverse of a 1600x1600 random matrix________________ (sec):  0.406333333333334
+FFT over 2,400,000 random values____________________ (sec):  0.274000000000001
+Eigenvalues of a 640x640 random matrix______________ (sec):  1.132
+Determinant of a 2500x2500 random matrix____________ (sec):  0.201333333333335
+Cholesky decomposition of a 3000x3000 matrix________ (sec):  0.168333333333332
+Inverse of a 1600x1600 random matrix________________ (sec):  0.186
                       --------------------------------------------
-                Trimmed geom. mean (2 extremes eliminated):  0.444371566596793
+                Trimmed geom. mean (2 extremes eliminated):  0.217300001997772
 
    III. Programmation
    ------------------
-3,500,000 Fibonacci numbers calculation (vector calc)(sec):  0.747666666666665
-Creation of a 3000x3000 Hilbert matrix (matrix calc) (sec):  0.350999999999999
-Grand common divisors of 400,000 pairs (recursion)__ (sec):  0.987666666666665
-Creation of a 500x500 Toeplitz matrix (loops)_______ (sec):  0.902333333333334
-Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.5
+3,500,000 Fibonacci numbers calculation (vector calc)(sec):  0.665666666666664
+Creation of a 3000x3000 Hilbert matrix (matrix calc) (sec):  0.19433333333333
+Grand common divisors of 400,000 pairs (recursion)__ (sec):  0.895333333333331
+Creation of a 500x500 Toeplitz matrix (loops)_______ (sec):  0.764000000000003
+Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.423999999999999
                       --------------------------------------------
-                Trimmed geom. mean (2 extremes eliminated):  0.696116094179688
+                Trimmed geom. mean (2 extremes eliminated):  0.599660360864793
 
 
-Total time for all 15 tests_________________________ (sec):  10.2633333333333
-Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.589878991592286
+Total time for all 15 tests_________________________ (sec):  7.49433333333333
+Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.39206626824379
                       --- End of test ---
-
-81.28 user
-21.99 system
-0:59.59 elapsed
-173% CPU
 {% endhighlight %}
 
-可以看到total time已經從38秒到10秒左右，改善幅度已經不少，接著來compile R:
+可以看到total time已經從31秒到7.5秒左右，改善幅度已經不少，接著來compile R:
 
 1. 取得R與其開發包，並安裝需要的套件，在terminal use following commands:
 
@@ -198,68 +188,58 @@ export SHLIB_CXXLDFLAGS="-shared -fPIC"
 MKL="-L$MKL_path/lib/intel64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread -ldl -lm"
 
 ./configure --with-blas="$MKL" --with-lapack --with-x --enable-memory-profiling --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh R_BROWSER="firefox" --enable-R-shlib --enable-BLAS-shlib
-make && make install
+make && make check
+make install
 {% endhighlight %}
 
 然後他就會幫你把R安裝於usr/local/lib/R中，你之前如果有安裝過R，就記得把/usr/lib/R的目錄刪掉。
 
 5. 測試結果
 
-{% highlight html %}
-    R Benchmark 2.5
+{% highlight R %}
+   R Benchmark 2.5
    ===============
 Number of times each test is run__________________________:  3
 
    I. Matrix calculation
    ---------------------
-Creation, transp., deformation of a 2500x2500 matrix (sec):  0.755
-2400x2400 normal distributed random matrix ^1000____ (sec):  0.258666666666667
-Sorting of 7,000,000 random values__________________ (sec):  0.562999999999999
-2800x2800 cross-product matrix (b = a' * a)_________ (sec):  0.303333333333334
-Linear regr. over a 3000x3000 matrix (c = a \ b')___ (sec):  0.174666666666666
+Creation, transp., deformation of a 2500x2500 matrix (sec):  0.841333333333333
+2400x2400 normal distributed random matrix ^1000____ (sec):  0.370666666666667
+Sorting of 7,000,000 random values__________________ (sec):  0.641666666666666
+2800x2800 cross-product matrix (b = a' * a)_________ (sec):  0.295666666666666
+Linear regr. over a 3000x3000 matrix (c = a \ b')___ (sec):  0.173333333333333
                       --------------------------------------------
-                 Trimmed geom. mean (2 extremes eliminated):  0.353500202023859
+                 Trimmed geom. mean (2 extremes eliminated):  0.412760812738327
 
    II. Matrix functions
    --------------------
-FFT over 2,400,000 random values____________________ (sec):  0.375666666666666
-Eigenvalues of a 640x640 random matrix______________ (sec):  0.329666666666667
-Determinant of a 2500x2500 random matrix____________ (sec):  0.172333333333332
-Cholesky decomposition of a 3000x3000 matrix________ (sec):  0.221333333333334
-Inverse of a 1600x1600 random matrix________________ (sec):  0.183333333333334
+FFT over 2,400,000 random values____________________ (sec):  0.256333333333335
+Eigenvalues of a 640x640 random matrix______________ (sec):  0.311000000000001
+Determinant of a 2500x2500 random matrix____________ (sec):  0.175666666666667
+Cholesky decomposition of a 3000x3000 matrix________ (sec):  0.190666666666668
+Inverse of a 1600x1600 random matrix________________ (sec):  0.153333333333334
                       --------------------------------------------
-                Trimmed geom. mean (2 extremes eliminated):  0.2373856335244
+                Trimmed geom. mean (2 extremes eliminated):  0.204765321007157
 
    III. Programmation
    ------------------
-3,500,000 Fibonacci numbers calculation (vector calc)(sec):  0.292999999999999
-Creation of a 3000x3000 Hilbert matrix (matrix calc) (sec):  0.223333333333333
-Grand common divisors of 400,000 pairs (recursion)__ (sec):  0.706333333333332
-Creation of a 500x500 Toeplitz matrix (loops)_______ (sec):  0.272333333333333
-Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.286999999999999
+3,500,000 Fibonacci numbers calculation (vector calc)(sec):  0.343666666666666
+Creation of a 3000x3000 Hilbert matrix (matrix calc) (sec):  0.136333333333333
+Grand common divisors of 400,000 pairs (recursion)__ (sec):  0.769000000000001
+Creation of a 500x500 Toeplitz matrix (loops)_______ (sec):  0.424333333333334
+Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.330999999999996
                       --------------------------------------------
-                Trimmed geom. mean (2 extremes eliminated):  0.283977178344242
+                Trimmed geom. mean (2 extremes eliminated):  0.364102938914316
 
 
-Total time for all 15 tests_________________________ (sec):  5.119
-Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.287768009441094
+Total time for all 15 tests_________________________ (sec):  5.414
+Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.313371634843041
                       --- End of test ---
-
-64.04 user
-2.27 system
-0:33.33 elapsed
-198% CPU
 {% endhighlight %}
 
 最後只需要用到5.12秒就可以完成了，可是complitation過程是滿麻煩的，雖然參考了多個網站，可是參數的設定都不太一樣，linux又有權限的限制，而且就算編譯成功，Rcpp這個套件不見得能夠成功，因此花了很久才終於編譯成功，並且能夠直接開啟，只是要利用到c, cpp or fortran時還是需要source compilervars.sh才能夠運行，而且我安裝了三四十個套件都沒有問題了。最後，如果沒有特別要求速度下，其實直接用openblas就可以省下很多麻煩。另外，我做了一個小小的測試於Rcpp上，速度有不少的提昇(因為用intel C++ compiler，大概增加5~10倍)，測試結果就不放上來了。以上資訊供大家參考，轉載請註明來源，謝謝。
 
-最後附上測試環境:
-
-{% highlight bash %}
-windows 7 64 bits
-i7-3770K@4.3GHz
-use VMware workstation 10: ubuntu 14.04 with 2 porccesor (4 cores)
-{% endhighlight %}
+最後附上測試環境: My environment is ubuntu 14.04, R 3.1.1 compiled by Intel c++, fortran compiler with MKL. My CPU is 3770K@4.3GHz.
 
 5.18補充：為了每次運行不需要source兩個environment的shell script，修改運行的命令搞即可，以下列命令用sublime text開啟R的命令搞(subl可以替換成gedit or other editors)
 
