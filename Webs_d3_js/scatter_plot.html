@@ -43,38 +43,37 @@
     <script>
       var body_tag = d3.select("body");
       var dataset, varNames, xValue, yValue;
+      var w = 500, h = 500, padding = 30;
 
       d3.select("#datasets").on("change", function() {
-        datasetName = this.value;
-        update(datasetName);
+        alert("Now the dataset is changing to " + this.value + ".");
+        update(this.value);
       });
-      // update("iris");
+      update("iris");
+
       d3.select("#xAxisVar").on("change", function() {
-        xValue = this.value;
+        xValue = dataset[this.value];
         updateGraph(xValue, yValue);
       });
       d3.select("#yAxisVar").on("change", function() {
-        yValue = this.value;
+        yValue = dataset[this.value];
         updateGraph(xValue, yValue);
       });
+
       function update(datasetName) {
         dataPath = "/datasets/" + datasetName + ".json";
-        d3.json(dataPath, function(json) {
-            dataset = json;
+        d3.json(dataPath, function(error, json) {
+          if (error) return console.warn(error);
+          dataset = json;
+          varNames = Object.keys(dataset);
+          if (datasetName == "iris")
+            varNames.pop();
+          updateXAsixMenu(varNames);
+          updateYAsixMenu(varNames);
+          xValue = dataset[varNames[0]];
+          yValue = dataset[varNames[0]];
+          updateGraph(xValue, yValue);
         });
-        if (datasetName == "iris")
-          varNames = ["Sepal_Length", "Sepal_Width", "Petal_Length", "Petal_Width"];
-        else if (datasetName == "salinity")
-          varNames = ["sal", "lag", "trend", "dis"];
-        else if (datasetName == "cars")
-          varNames = ["speed", "dist"];
-        updateXAsixMenu(varNames);
-        updateYAsixMenu(varNames);
-        alert(dataset);
-        alert(varNames);
-        xValue = dataset[varNames[0]];
-        yValue = dataset[varNames[0]];
-        updateGraph(xValue, yValue);
       }
       function updateXAsixMenu(varNames) {
         var menu = d3.select("#xAxisVar");
@@ -95,8 +94,43 @@
           .text(function(d){return d})
       }
       function updateGraph(x, y) {
-        body_tag.append("p").text(x[0] + "," + y[0]);
+        d3.select("body").selectAll("svg").remove();
+        var scatterPlot = d3.select("body").append("svg")
+          .attr("width", w).attr("height", h);
+        var xScale = d3.scale.linear()
+          .domain([0, d3.max(x, function(d) {return d;})])
+          .range([padding, w-padding*2]);
+        var xAxis = d3.svg.axis().scale(xScale)
+          .orient("bottom");
+        var yScale = d3.scale.linear()
+          .domain([0, d3.max(y, function(d) {return d;})])
+          .range([h-padding, padding]);
+        var yAxis = d3.svg.axis().scale(yScale)
+          .orient("left");
+        scatterPlot.selectAll("circle")
+          .data(x).enter().append("circle")
+           .attr("cx", function(d) {
+             return xScale(d);
+           }).attr("r", 3);
+        scatterPlot.selectAll("circle")
+          .attr("cy", function(d, i) {
+            return yScale(y[i]);
+          });
+        scatterPlot.append("g").attr("class", "axis")
+           .attr("transform", "translate(0," + (h - padding) + ")")
+           .call(xAxis);
+        scatterPlot.append("g").attr("class", "axis")
+           .attr("transform", "translate(" + padding + ",0)")
+           .call(yAxis);
       }
+      if(!Object.keys) Object.keys = function(o){
+         if (o !== Object(o))
+            throw new TypeError('Object.keys called on non-object');
+         var ret=[],p;
+         for(p in o) if(Object.prototype.hasOwnProperty.call(o,p)) ret.push(p);
+         return ret;
+      }
+
       /*var salinity;
       d3.json("ScatterPlot/datasets/salinity.json", function(error, json) {
         if (error) return console.warn(error);
