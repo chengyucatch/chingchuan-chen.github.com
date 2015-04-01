@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Double Input Test</title>
+    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <style type="text/CSS">
+      label {
+        display: inline-block;
+        width: 240px;
+        text-align: right
+      }
+      .axis path, .axis line {
+          fill: none;
+          stroke: black;
+          shape-rendering: crispEdges;
+      }
+      .axis text {
+          font-family: sans-serif;
+          font-size: 11px;
+      }
+    </style>
+  </head>
+  <body>
+      <form>
+        <label for="datasets">Datasets: </label>
+        <select id="datasets">
+          <option value="iris">iris</option>
+          <option value="salinity">salinity</option>
+          <option value="cars">cars</option>
+        </select>
+      </form>
+      <form>
+        <label for="xAxisVar">Variable of X axis: </label>
+        <select id="xAxisVar">
+        </select>
+      </form>
+      <form>
+        <label for="yAxisVar">Variable of Y axis: </label>
+        <select id="yAxisVar">
+        </select>
+      </form>
+    <script>
+      var body_tag = d3.select("body");
+      var dataset, varNames, xValue, yValue;
+
+      d3.select("#datasets").on("change", function() {
+        datasetName = this.value;
+        update(datasetName);
+      });
+      // update("iris");
+      d3.select("#xAxisVar").on("change", function() {
+        xValue = this.value;
+        updateGraph(xValue, yValue);
+      });
+      d3.select("#yAxisVar").on("change", function() {
+        yValue = this.value;
+        updateGraph(xValue, yValue);
+      });
+      function update(datasetName) {
+        dataPath = "/datasets/" + datasetName + ".json";
+        d3.json(dataPath, function(json) {
+            dataset = json;
+        });
+        if (datasetName == "iris")
+          varNames = ["Sepal_Length", "Sepal_Width", "Petal_Length", "Petal_Width"];
+        else if (datasetName == "salinity")
+          varNames = ["sal", "lag", "trend", "dis"];
+        else if (datasetName == "cars")
+          varNames = ["speed", "dist"];
+        updateXAsixMenu(varNames);
+        updateYAsixMenu(varNames);
+        alert(dataset);
+        alert(varNames);
+        xValue = dataset[varNames[0]];
+        yValue = dataset[varNames[0]];
+        updateGraph(xValue, yValue);
+      }
+      function updateXAsixMenu(varNames) {
+        var menu = d3.select("#xAxisVar");
+        menu.selectAll("option").remove();
+        menu.selectAll("option")
+          .data(varNames).enter()
+          .append("option")
+          .attr("value", function(d){return d})
+          .text(function(d){return d})
+      }
+      function updateYAsixMenu(varNames) {
+        var menu = d3.select("#yAxisVar");
+        menu.selectAll("option").remove();
+        menu.selectAll("option")
+          .data(varNames).enter()
+          .append("option")
+          .attr("value", function(d){return d})
+          .text(function(d){return d})
+      }
+      function updateGraph(x, y) {
+        body_tag.append("p").text(x[0] + "," + y[0]);
+      }
+      /*var salinity;
+      d3.json("ScatterPlot/datasets/salinity.json", function(error, json) {
+        if (error) return console.warn(error);
+        salinity = json;
+        visualizeit();
+      });
+      var cars;
+      d3.json("ScatterPlot/datasets/cars.json", function(error, json) {
+        if (error) return console.warn(error);
+        cars = json;
+        visualizeit();.Length
+      });*/
+
+
+      /* var dataset;
+
+
+function updateDatasets(DatasetName) {
+  holder.selectAll("rect")
+    .attr("x", 300-(nWidth/2))
+    .attr("width", nWidth);
+}
+
+      var xAxisSelect = d3.select("body").append("p").append("form");
+      xAxisSelect.append("label").attr("for", "xAxisVar")
+        .text("X axis: ");
+      var xAxisSelector = xAxisSelect.append("select")
+        .attr("id", "xAxisVar");
+      xAxisSelector.append("option").attr("value", "123")
+        .text("123");
+      xAxisSelector.append("option").attr("value", "321")
+                   .text("321");*/
+/*
+    var width = 600;
+    var height = 300;
+
+    var holder = d3.select("body")
+          .append("svg")
+          .attr("width", width)
+          .attr("height", height);
+
+    // draw a rectangle
+    holder.append("rect")
+        .attr("x", 300)
+        .attr("y", 150)
+        .style("fill", "none")
+        .style("stroke", "blue")
+        .attr("height", 150)
+        .attr("width", 200);
+
+    // read a change in the height input
+    d3.select("#nHeight").on("input", function() {
+      updateHeight(+this.value);
+    });
+
+    // read a change in the width input
+    d3.select("#nWidth").on("input", function() {
+      updateWidth(+this.value);
+    });
+
+    // update the values
+    updateHeight(150);
+    updateWidth(100);
+
+    // Update the height attributes
+    function updateHeight(nHeight) {
+
+      // adjust the text on the range slider
+      d3.select("#nHeight-value").text(nHeight);
+      d3.select("#nHeight").property("value", nHeight);
+
+      // update the rectangle height
+      holder.selectAll("rect")
+        .attr("y", 150-(nHeight/2))
+        .attr("height", nHeight);
+    }
+
+    // Update the width attributes
+    function updateWidth(nWidth) {
+
+      // adjust the text on the range slider
+      d3.select("#nWidth-value").text(nWidth);
+      d3.select("#nWidth").property("value", nWidth);
+
+      // update the rectangle width
+      holder.selectAll("rect")
+        .attr("x", 300-(nWidth/2))
+        .attr("width", nWidth);
+    }
+*/
+    </script>
+
+  </body>
+</html>
