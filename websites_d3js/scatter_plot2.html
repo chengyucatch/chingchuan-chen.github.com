@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Test 2 for d3.js</title>
+    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"
+       charset="utf-8"></script>
+    <link href="css/default.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/fonts.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/svg.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+      <h2>The Scatter Plot for Datasets</h2>
+      <form>
+        <label for="datasets">Datasets: </label>
+        <select id="datasets">
+          <option value="iris">iris</option>
+          <option value="salinity">salinity</option>
+          <option value="cars">cars</option>
+        </select>
+      </form>
+      <form>
+        <label for="xAxisVar">Variable of X axis: </label>
+        <select id="xAxisVar">
+        </select>
+      </form>
+      <form>
+        <label for="yAxisVar">Variable of Y axis: </label>
+        <select id="yAxisVar">
+        </select>
+      </form>
+      <form>
+        <label for="cateAxisVar">Categorical Variable: </label>
+        <select id="cateAxisVar">
+        </select>
+      </form>
+    <script>
+      var dataset, cateDataName, varNames, xyDataName, cate;
+      var scatterPlot, xScale, yScale, xAxis, yAxis;
+      var padding = 40, legendspace = 100, w = 600 + padding + legendspace, h = 600;
+      var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip").style("opacity", 0);
+      d3.select("#datasets").on("change", function() {
+        // alert("Now the dataset is changing to " + this.value + ".");
+        update(this.value);
+      });
+      update("iris");
+
+      d3.select("#xAxisVar").on("change", function() {
+        xyDataName[0] = this.value;
+        updateScale();
+        updateGraph();
+      });
+      d3.select("#yAxisVar").on("change", function() {
+        xyDataName[1] = this.value;
+        updateScale();
+        updateGraph();
+      });
+      d3.select("#cateAxisVar").on("change", function() {
+        cate = this.value;
+        updateCate();
+      });
+      function update(datasetName) {
+        dataPath = "/websites_d3js/datasets/" + datasetName + ".json";
+        d3.json(dataPath, function(error, json) {
+          if (error) return console.warn(error);
+          dataset = json;
+          varNames = Object.keys(dataset);
+          xyDataName = [varNames[0], varNames[0]];
+          cateDataName = [];
+          for(i = 0; i < varNames.length; i++)
+          {
+            var type_var = typeof(dataset[varNames[i]][0]);
+            if (type_var == "string" || type_var == "boolean")
+            {
+              cateDataName.push(varNames[i]);
+            }
+            else if(type_var == "number" && isInteger(dataset[varNames[i]][0]) &&
+              isInteger(dataset[varNames[i]][1]) && isInteger(dataset[varNames[i]][2]))
+            {
+              cateDataName.push(varNames[i]);
+            }
+          }
+          cate = "None";
+          updateMenus();
+          d3.select("body").selectAll("svg").remove();
+          scatterPlot = d3.select("body").append("svg")
+            .attr("width", w).attr("height", h)
+            .attr("viewBox", "0 0 " + (w - padding*2) + " " + h);
+          scatterPlot.append("rect")
+              .attr("x", padding)
+              .attr("y", padding)
+              .attr("class", "grid-background")
+              .attr("width", w - padding*3 - legendspace)
+              .attr("height", h - padding*2);
+          updateScale();
+          scatterPlot.append("text")
+              .attr("class", "ylab")
+              .attr("text-anchor", "middle")
+              .attr("transform", "translate("+ (padding/4) +","+(h/2)+")rotate(-90)")
+              .text(xyDataName[0]);
+          scatterPlot.append("text")
+              .attr("class", "xlab")
+              .attr("text-anchor", "middle")
+              .attr("transform", "translate("+ ((w-legendspace)/2) +","+(h-(padding/4))+")")
+              .text(xyDataName[1]);
+          updateGraph();
+        });
+      }
+      function updateMenus() {
+        var axisId = ["#xAxisVar", "#yAxisVar"], menu, index, cateMenu;
+        for (i = 0; i < axisId.length; i++)
+        {
+          menu = d3.select(axisId[i]);
+          menu.selectAll("option").remove();
+          menu.selectAll("option")
+            .data(varNames).enter()
+            .append("option")
+            .attr("value", function(d){return d})
+            .text(function(d){return d});
+        }
+        cateMenu = d3.select("#cateAxisVar");
+        cateMenu.selectAll("option").remove();
+        cateMenu.append("option").attr("value", "None").text("None");
+        if (cateDataName != null && cateDataName.length >= 1)
+        {
+          for (i = 0; i < cateDataName.length; i++)
+            cateMenu.append("option").attr("value", cateDataName[i])
+              .text(cateDataName[i]);
+        }
+      }
+      function updateScale(){
+        if (isMember(xyDataName[0], cateDataName))
+        {
+          xScale = d3.scale.ordinal()
+                     .domain(dataset[xyDataName[0]])
+                     .rangeRoundPoints([padding, w - padding*2  - legendspace], 0.5);
+          xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+        }
+        else
+        {
+          var xMax = d3.max(dataset[xyDataName[0]], function(d) {return d;});
+          var xMin = d3.min(dataset[xyDataName[0]], function(d) {return d;});
+          var outPadding = (xMax - xMin) * 0.05;
+          xScale = d3.scale.linear()
+            .domain([xMin - outPadding, xMax + outPadding])
+            .range([padding, w-padding*2  - legendspace]);
+          xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+        }
+        if (isMember(xyDataName[1], cateDataName))
+        {
+          yScale = d3.scale.ordinal()
+                     .domain(dataset[xyDataName[1]])
+                     .rangeRoundPoints([padding, w - padding*2  - legendspace], 0.5);
+          yAxis = d3.svg.axis().scale(yScale).orient("left");
+        }
+        else
+        {
+          var yMax = d3.max(dataset[xyDataName[1]], function(d) {return d;});
+          var yMin = d3.min(dataset[xyDataName[1]], function(d) {return d;});
+          var outPadding = (yMax - yMin) * 0.05;
+          yScale = d3.scale.linear()
+            .domain([yMin - outPadding, yMax + outPadding])
+            .range([h-padding, padding]);
+          yAxis = d3.svg.axis().scale(yScale).orient("left");
+        }
+      }
+      function updateCate(){
+        scatterPlot.selectAll('.legend').remove();
+        if (cate == "None")
+          scatterPlot.selectAll(".points").attr("stroke", "red");
+        else
+        {
+          var levels;
+          if (typeof(dataset[cate][0]) == "string")
+            levels = d3.scale.ordinal().domain(dataset[cate]).domain().sort();
+          else
+            levels = d3.scale.ordinal().domain(dataset[cate]).domain().sort(compareNumbers);
+          var factor = d3.scale.ordinal().domain(levels).range(d3.range(levels.length));
+          var cateVar = [], colorName = [];
+          for (i = 0; i < levels.length; i++)
+            colorName.push(RainBowColor(i, levels.length));
+          for (i = 0; i < dataset[cate].length; i++)
+            cateVar.push(factor(dataset[cate][i]));
+          scatterPlot.selectAll(".points")
+             .attr("stroke", function(d, i){
+               return colorName[cateVar[i]];
+             });
+          var legendCircleRadius = w / 150;
+          var legendSpacing = 15;
+          var legend = scatterPlot.selectAll('.legend')
+                .data(colorName).enter().append('g')
+                .attr('class', 'legend')
+                .attr('transform', function(d, i) {
+                  var height = legendCircleRadius + legendSpacing;
+                  var offset =  height * colorName.length / 2;
+                  var horz = w - legendspace - padding - legendCircleRadius;
+                  var vert = h/2 + i * height - offset;
+                  return 'translate(' + horz + ',' + vert + ')';
+                });
+          legend.append('circle')
+            .attr("cy", 0)
+            .attr("cx", 0)
+            .attr("r", w / 150)
+            .attr('width', legendCircleRadius)
+            .attr('height', legendCircleRadius)
+            .style('fill', "transparent")
+            .style('stroke', function(d, i){
+              return colorName[i];
+            })
+            .attr("stroke-width", 3)
+            .attr("opacity", 0.6);
+          legend.append('text')
+            .attr('x', legendCircleRadius*2)
+            .attr('y', legendCircleRadius)
+            .text(function(d, i) { return levels[i]; });
+        }
+      }
+      function updateGraph() {
+        scatterPlot.selectAll(".axis").remove();
+        scatterPlot.selectAll(".grid").remove();
+        if (isMember(xyDataName[0], cateDataName))
+        {
+          scatterPlot.selectAll(".xlab").text(xyDataName[0]);
+          scatterPlot.append("g").attr("class", "axis")
+            .attr("transform", "translate(0," + (h - padding) + ")").call(xAxis);;
+          scatterPlot.append("g")
+              .attr("class", "grid")
+              .attr("transform", "translate(0," + (h - padding) + ")")
+              .call(d3.svg.axis().scale(xScale).ticks(20).tickSize(-h+padding*2));
+        }
+        else
+        {
+          scatterPlot.selectAll(".xlab").text(xyDataName[0]);
+          scatterPlot.append("g").attr("class", "axis")
+            .attr("transform", "translate(0," + (h - padding) + ")")
+            .call(xAxis.ticks(10));
+          scatterPlot.append("g")
+              .attr("class", "grid")
+              .attr("transform", "translate(0," + (h - padding) + ")")
+              .call(d3.svg.axis().scale(xScale).ticks(20).tickSize(-h+padding*2))
+              .selectAll(".tick")
+              .data(xScale.ticks(10), function(d) { return d; })
+              .exit()
+              .classed("minor", true);
+         }
+        if (isMember(xyDataName[1], cateDataName))
+        {
+          scatterPlot.selectAll(".ylab").text(xyDataName[1]);
+          scatterPlot.append("g").attr("class", "axis")
+             .attr("transform", "translate(" + padding + ",0)").call(yAxis);
+          scatterPlot.append("g")
+              .attr("class", "grid")
+              .attr("transform", "translate(" + padding + ",0)rotate(90)")
+              .call(d3.svg.axis().scale(yScale).ticks(20).tickSize(-w+legendspace+padding*3));
+        }
+        else
+        {
+          scatterPlot.selectAll(".ylab").text(xyDataName[1]);
+          scatterPlot.append("g").attr("class", "axis")
+             .attr("transform", "translate(" + padding + ",0)")
+             .call(yAxis.ticks(10));
+          scatterPlot.append("g")
+              .attr("class", "grid")
+              .attr("transform", "translate(" + padding + ",0)rotate(90)")
+              .call(d3.svg.axis().scale(yScale).ticks(20).tickSize(-w+legendspace+padding*3))
+              .selectAll(".tick")
+              .data(yScale.ticks(10), function(d) { return d; })
+              .exit()
+              .classed("minor", true);
+         }
+         scatterPlot.selectAll(".points").remove();
+        scatterPlot.selectAll("circle")
+          .data(dataset[xyDataName[0]])
+          .enter().append("circle")
+          .attr("cx", function(d) {
+            return xScale(d);
+          })
+          .attr("class", "points")
+          .attr("r", w / 150)
+          .attr("fill", "transparent")
+          .attr("stroke", "red")
+          .attr("stroke-width", 3)
+          .attr("opacity", 0.6)
+          .on("mouseover", function(d, i) {
+             tooltip.transition().duration(200)
+               .style("opacity", .9);
+             if (cate == "None")
+             {
+               tooltip.html("(" + dataset[xyDataName[0]][i] + ", " + dataset[xyDataName[1]][i] + ")")
+                 .style("left", (d3.event.pageX + 1) + "px")
+                 .style("top", (d3.event.pageY - 31) + "px");
+             }
+             else
+             {
+               tooltip.html(dataset[cate][i] + "<br/> (" +
+                 dataset[xyDataName[0]][i] + ", " + dataset[xyDataName[1]][i] + ")")
+                 .style("left", (d3.event.pageX + 1) + "px")
+                 .style("top", (d3.event.pageY - 51) + "px");
+             }
+          })
+          .on("mouseout", function(d) {
+             tooltip.transition().duration(500).style("opacity", 0);
+          });;
+        scatterPlot.selectAll(".points")
+          .attr("cy", function(d, i) {
+            return yScale(dataset[xyDataName[1]][i]);
+          });
+      }
+      function isInteger(x) {
+          return parseInt(x, 10) === x;
+      }
+      function compareNumbers(a, b) {
+        return a - b;
+      }
+      function RainBowColor(length, maxLength)
+      {
+          var i = (length * 255 / maxLength);
+          var r = Math.round(Math.sin(0.024 * i + 0) * 127 + 128);
+          var g = Math.round(Math.sin(0.024 * i + 2) * 127 + 128);
+          var b = Math.round(Math.sin(0.024 * i + 4) * 127 + 128);
+          return 'rgb(' + r + ',' + g + ',' + b + ')';
+      }
+      function isMember(x, y) {
+          y.sort();
+          for (i=0; i < y.length; i++)
+            if (x == y[i])
+                return true;
+          return false;
+      }
+      if(!Object.keys) Object.keys = function(o){
+         if (o !== Object(o))
+            throw new TypeError('Object.keys called on non-object');
+         var ret=[],p;
+         for(p in o) if(Object.prototype.hasOwnProperty.call(o,p)) ret.push(p);
+         return ret;
+      }
+    </script>
+  </body>
+</html>
