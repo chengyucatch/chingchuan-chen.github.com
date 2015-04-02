@@ -15,8 +15,12 @@
         <label for="datasets">Datasets: </label>
         <select id="datasets">
           <option value="iris">iris</option>
+          <option value="kyphosis">kyphosis</option>
+          <option value="mpg">mpg</option>
           <option value="salinity">salinity</option>
-          <option value="cars">cars</option>
+          <option value="solder">solder</option>
+          <option value="stagec">stagec</option>
+          <option value="tips">tips</option>
         </select>
       </form>
       <form>
@@ -270,42 +274,42 @@
               .classed("minor", true);
          }
          scatterPlot.selectAll(".points").remove();
-        scatterPlot.selectAll("circle")
-          .data(dataset[xyDataName[0]])
-          .enter().append("circle")
-          .attr("cx", function(d) {
-            return xScale(d);
-          })
-          .attr("class", "points")
-          .attr("r", w / 150)
-          .attr("fill", "transparent")
-          .attr("stroke", "red")
-          .attr("stroke-width", 3)
-          .attr("opacity", 0.6)
-          .on("mouseover", function(d, i) {
-             tooltip.transition().duration(200)
-               .style("opacity", .9);
-             if (cate == "None")
-             {
-               tooltip.html("(" + dataset[xyDataName[0]][i] + ", " + dataset[xyDataName[1]][i] + ")")
-                 .style("left", (d3.event.pageX + 1) + "px")
-                 .style("top", (d3.event.pageY - 31) + "px");
-             }
-             else
-             {
-               tooltip.html(dataset[cate][i] + "<br/> (" +
-                 dataset[xyDataName[0]][i] + ", " + dataset[xyDataName[1]][i] + ")")
-                 .style("left", (d3.event.pageX + 1) + "px")
-                 .style("top", (d3.event.pageY - 51) + "px");
-             }
-          })
-          .on("mouseout", function(d) {
-             tooltip.transition().duration(500).style("opacity", 0);
-          });;
-        scatterPlot.selectAll(".points")
-          .attr("cy", function(d, i) {
-            return yScale(dataset[xyDataName[1]][i]);
-          });
+         scatterPlot.selectAll("circle")
+           .data(dataset[xyDataName[0]])
+           .enter().append("circle")
+           .attr("cx", function(d) {
+             return xScale(d);
+           })
+           .attr("class", "points")
+           .attr("r", w / 150)
+           .attr("fill", "transparent")
+           .attr("stroke", "red")
+           .attr("stroke-width", 3)
+           .attr("opacity", 0.6)
+           .on("mouseover", function(d, i) {
+              tooltip.transition().duration(200)
+                .style("opacity", .9);
+              if (cate == "None")
+              {
+                tooltip.html("(" + dataset[xyDataName[0]][i] + ", " + dataset[xyDataName[1]][i] + ") ")
+                  .style("left", (d3.event.pageX + 1) + "px")
+                  .style("top", (d3.event.pageY - 31) + "px");
+              }
+              else
+              {
+                tooltip.html(dataset[cate][i] + "<br/> (" +
+                  dataset[xyDataName[0]][i] + ", " + dataset[xyDataName[1]][i] + ")")
+                  .style("left", (d3.event.pageX + 1) + "px")
+                  .style("top", (d3.event.pageY - 51) + "px");
+              }
+           })
+           .on("mouseout", function(d) {
+              tooltip.transition().duration(500).style("opacity", 0);
+           });;
+         scatterPlot.selectAll(".points")
+           .attr("cy", function(d, i) {
+             return yScale(dataset[xyDataName[1]][i]);
+           });
       }
       function isInteger(x) {
           return parseInt(x, 10) === x;
