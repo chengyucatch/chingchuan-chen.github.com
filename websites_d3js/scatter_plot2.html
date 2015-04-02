@@ -134,7 +134,7 @@
         }
       }
       function updateScale(){
-        if (isMember(xyDataName[0], cateDataName))
+        if (isMember(xyDataName[0], cateDataName) && typeof(dataset[xyDataName[0]][0]) == "string")
         {
           xScale = d3.scale.ordinal()
                      .domain(dataset[xyDataName[0]])
@@ -151,7 +151,7 @@
             .range([padding, w-padding*2  - legendspace]);
           xAxis = d3.svg.axis().scale(xScale).orient("bottom");
         }
-        if (isMember(xyDataName[1], cateDataName))
+        if (isMember(xyDataName[1], cateDataName) && typeof(dataset[xyDataName[1]][0]) == "string")
         {
           yScale = d3.scale.ordinal()
                      .domain(dataset[xyDataName[1]])
@@ -223,7 +223,7 @@
       function updateGraph() {
         scatterPlot.selectAll(".axis").remove();
         scatterPlot.selectAll(".grid").remove();
-        if (isMember(xyDataName[0], cateDataName))
+        if (isMember(xyDataName[0], cateDataName) && typeof(dataset[xyDataName[0]][0]) == "string")
         {
           scatterPlot.selectAll(".xlab").text(xyDataName[0]);
           scatterPlot.append("g").attr("class", "axis")
@@ -248,7 +248,7 @@
               .exit()
               .classed("minor", true);
          }
-        if (isMember(xyDataName[1], cateDataName))
+        if (isMember(xyDataName[1], cateDataName) && typeof(dataset[xyDataName[1]][0]) == "string")
         {
           scatterPlot.selectAll(".ylab").text(xyDataName[1]);
           scatterPlot.append("g").attr("class", "axis")
