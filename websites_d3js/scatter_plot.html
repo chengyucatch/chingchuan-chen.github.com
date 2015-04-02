@@ -5,9 +5,22 @@
   <title>Test for d3.js</title>
     <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"
        charset="utf-8"></script>
-    <link href="css/default.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="css/fonts.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="css/svg.css" rel="stylesheet" type="text/css" />
+    <style type="text/CSS">
+      label {
+        display: inline-block;
+        width: 240px;
+        text-align: right
+      }
+      .axis path, .axis line {
+          fill: none;
+          stroke: black;
+          shape-rendering: crispEdges;
+      }
+      .axis text {
+          font-family: sans-serif;
+          font-size: 11px;
+      }
+    </style>
   </head>
   <body>
       <form>
