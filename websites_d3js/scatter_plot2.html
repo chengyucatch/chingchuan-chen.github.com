@@ -52,17 +52,15 @@
 
       d3.select("#xAxisVar").on("change", function() {
         xyDataName[0] = this.value;
-        updateScale();
         updateGraph();
       });
       d3.select("#yAxisVar").on("change", function() {
         xyDataName[1] = this.value;
-        updateScale();
         updateGraph();
       });
       d3.select("#cateAxisVar").on("change", function() {
         cate = this.value;
-        updateCate();
+        updateGraph();
       });
       function update(datasetName) {
         dataPath = "/websites_d3js/datasets/" + datasetName + ".json";
@@ -221,6 +219,7 @@
         }
       }
       function updateGraph() {
+        updateScale();
         scatterPlot.selectAll(".axis").remove();
         scatterPlot.selectAll(".grid").remove();
         if (isMember(xyDataName[0], cateDataName) && typeof(dataset[xyDataName[0]][0]) == "string")
@@ -274,7 +273,7 @@
               .classed("minor", true);
          }
          scatterPlot.selectAll(".points").remove();
-         scatterPlot.selectAll("circle")
+         scatterPlot.selectAll(".points")
            .data(dataset[xyDataName[0]])
            .enter().append("circle")
            .attr("cx", function(d) {
@@ -310,7 +309,7 @@
            .attr("cy", function(d, i) {
              return yScale(dataset[xyDataName[1]][i]);
            });
-        updateCate()
+        updateCate();
       }
       function isInteger(x) {
           return parseInt(x, 10) === x;
