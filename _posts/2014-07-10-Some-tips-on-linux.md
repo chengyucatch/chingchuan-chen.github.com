@@ -15,8 +15,8 @@ This post is used to record some tips I can't categorize in ubuntu.
 <!-- more -->
 
 i. automatically load some shell scripts
-In my system ubuntu 14.04, I can find the '.bashrc' file in my home directory.
-Since I want ubuntu load intel complier and mkl parameter automatically, I add the two lines in the end of that file:
+In my system ubuntu 14.04, I can find the file `.bashrc` in my home directory.
+Since I want ubuntu to load intel complier and mkl parameter automatically, all I need to do is to add the two lines in the end of that file: (mint 17: `gedit /etc/bash.bashrc`)
 
 {% highlight bash %}
 source /opt/intel/composer_xe_2013_sp1.3.174/mkl/bin/mklvars.sh intel64
@@ -80,7 +80,7 @@ vi. Install font `Inconsolata`[Download Here](http://www.levien.com/type/myfonts
 vii. Install the chinese input `fcitx` and language `Chinese Traditional`.
 
 {% highlight bash %}
-sudo apt-get install fcitx fcitx-chewing fcitx-config-gtk fcitx-frontend-all fcitx-module-cloudpinyin fcitx-ui-classic fcitx-qt5
+sudo apt-get install fcitx fcitx-chewing fcitx-config-gtk fcitx-frontend-all fcitx-module-cloudpinyin fcitx-ui-classic fcitx-frontend-qt4 fcitx-frontend-qt5 fcitx-frontend-gtk2 fcitx-frontend-gtk3
 {% endhighlight %}
 
 viii. Install ruby, jekyll and git.
