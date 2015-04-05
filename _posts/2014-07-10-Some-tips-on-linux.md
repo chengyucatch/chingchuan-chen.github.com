@@ -80,12 +80,12 @@ vi. Install font `Inconsolata`[Download Here](http://www.levien.com/type/myfonts
 vii. Install the chinese input `fcitx` and language `Chinese Traditional`.
 
 {% highlight bash %}
-sudo apt-get install fcitx fcitx-chewing
+sudo apt-get install fcitx fcitx-chewing fcitx-config-gtk fcitx-frontend-all fcitx-module-cloudpinyin fcitx-ui-classic fcitx-qt5
 {% endhighlight %}
 
 viii. Install ruby, jekyll and git.
 {% highlight bash %}
-sudo apt-get install ruby ruby-dev git python-pip
+sudo apt-get install ruby ruby-dev git python-pip python3-pip
 gem install jekyll
 pip install pygments
 {% endhighlight %}
