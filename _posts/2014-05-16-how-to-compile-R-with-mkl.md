@@ -117,7 +117,7 @@ Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.39206626824379
 
 {% highlight bash %}
 sudo add-apt-repository ppa:webupd8team/java && sudo apt-get update && sudo apt-get install oracle-java8-installer && sudo apt-get install oracle-java8-set-default
-apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-latex-base texlive-latex-extra texlive-fonts-extra xorg-dev tcl8.6-dev tk8.6-dev libtiff5 libtiff5-dev libjpeg-dev libpng12-dev libcairo2-dev libglu1-mesa-dev libgsl0-dev libicu-dev R-base R-base-dev
+apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-latex-base texlive-latex-extra texlive-fonts-extra xorg-dev tcl8.6-dev tk8.6-dev libtiff5 libtiff5-dev libjpeg-dev libpng12-dev libcairo2-dev libglu1-mesa-dev libgsl0-dev libicu-dev R-base R-base-dev libnlopt-dev
 {% endhighlight %}
 
 有一個工具要另外安裝，方式如下：
@@ -149,8 +149,8 @@ _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");
 2. 取得R source code:
 
 {% highlight bash %}
-wget http://cran.csie.ntu.edu.tw/src/base/R-3/R-3.1.1.tar.gz
-tar -xvzf R-3.1.1.tar.gz
+wget http://cran.csie.ntu.edu.tw/src/base/R-3/R-3.1.3.tar.gz
+tar -xvzf R-3.1.3.tar.gz
 {% endhighlight %}
 
 3. 取得Intel C++ compiler and Intel MKL，你可以取得non-commercial license for this two software in intel website. 安裝前記得先取得需要的套件：
@@ -190,6 +190,8 @@ MKL="-L$MKL_path/lib/intel64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lio
 ./configure --with-blas="$MKL" --with-lapack --with-x --enable-memory-profiling --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh R_BROWSER="firefox" --enable-R-shlib --enable-BLAS-shlib
 make && make check
 make install
+exit
+sudo chown -R yourUserName /usr/local/lib/R
 {% endhighlight %}
 
 然後他就會幫你把R安裝於usr/local/lib/R中，你之前如果有安裝過R，就記得把/usr/lib/R的目錄刪掉。
@@ -239,6 +241,22 @@ Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.313371634843041
 
 最後只需要用到5.4秒就可以完成了，可是complitation過程是滿麻煩的，雖然參考了多個網站，可是參數的設定都不太一樣，linux又有權限的限制，而且就算編譯成功，Rcpp這個套件不見得能夠成功，因此花了很久才終於編譯成功，並且能夠直接開啟，只是要利用到c, cpp or fortran時還是需要source compilervars.sh才能夠運行，而且我安裝了三四十個套件都沒有問題了。最後，如果沒有特別要求速度下，其實直接用openblas就可以省下很多麻煩。另外，我做了一個小小的測試於Rcpp上，速度有不少的提昇(因為用intel C++ compiler，大概增加5~10倍)，測試結果就不放上來了。以上資訊供大家參考，轉載請註明來源，謝謝。
 
-最後附上測試環境: My environment is ubuntu 14.04, R 3.1.1 compiled by Intel c++, fortran compiler with MKL. My CPU is 3770K@4.3GHz.
+最後附上測試環境: My environment is ubuntu 14.04, R 3.1.3 compiled by Intel c++, fortran compiler with MKL. My CPU is 3770K@4.3GHz.
 
+To use the html help page with `sudo gedit ~/.Rprofile` and add following to file:
 
+{% highlight R %}
+options("help_type"="html")
+options("browser"="chromium-browser")
+{% endhighlight %}{% endhighlight %}
+
+If you want to change the default language of R, you can do that:
+{% highlight bash %}
+cp /usr/local/lib/R/etc/Renviron
+subl ~/.Renviron
+{% endhighlight %}{% endhighlight %}
+
+Add following line into the file:
+{% highlight bash %}
+LANGUAGE="en"
+{% endhighlight %}{% endhighlight %}
