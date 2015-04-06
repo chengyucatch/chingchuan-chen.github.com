@@ -248,15 +248,16 @@ To use the html help page with `sudo gedit ~/.Rprofile` and add following to fil
 {% highlight R %}
 options("help_type"="html")
 options("browser"="chromium-browser")
-{% endhighlight %}{% endhighlight %}
+{% endhighlight %}
 
 If you want to change the default language of R, you can do that:
 {% highlight bash %}
 cp /usr/local/lib/R/etc/Renviron
 subl ~/.Renviron
-{% endhighlight %}{% endhighlight %}
+{% endhighlight %}
 
 Add following line into the file:
 {% highlight bash %}
 LANGUAGE="en"
-{% endhighlight %}{% endhighlight %}
+R_LIBS="/usr/local/lib/R/library" ### setting for the installation path of packages
+{% endhighlight %}
