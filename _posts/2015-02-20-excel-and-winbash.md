@@ -34,7 +34,7 @@ EXCEL指令：
 母檔：YYYMMDD***.xls
 複製成 1040201***.xls 到 1040228***.xls
 
-{% highlight winbash %}
+{% highlight bash %}
 @Echo Off
 set "year=1990"
 set "month=01"
