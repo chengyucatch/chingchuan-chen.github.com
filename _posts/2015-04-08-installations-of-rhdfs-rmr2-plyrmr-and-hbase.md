@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: installations of rhdfs, rmr2, plyrmr and rhbase
-title: "installations of rhdfs, rmr2, plyrmr and rhbase"
+cTitle: Installations of rhdfs, rmr2, plyrmr and rhbase
+title: "Installations of rhdfs, rmr2, plyrmr and rhbase"
 category: R
 tagline:
 tags: [R, hadoop]

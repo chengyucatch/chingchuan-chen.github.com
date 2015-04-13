@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: processing string in R (Rcpp and rJava)
-title: "processing string in R (Rcpp and rJava)"
+cTitle: Processing string in R (Rcpp and rJava)
+title: "rocessing string in R (Rcpp and rJava)"
 category: R
 tagline:
 tags: [R, regexp]

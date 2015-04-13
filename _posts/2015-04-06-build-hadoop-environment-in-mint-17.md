@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: build hadoop environment in mint 17
-title:  "build hadoop environment in mint 17"
+cTitle: Build hadoop environment in mint 17
+title:  "Build hadoop environment in mint 17"
 category: hadoop
 tagline:
 tags: [hadoop]

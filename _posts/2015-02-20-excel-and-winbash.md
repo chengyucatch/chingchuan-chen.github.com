@@ -1,7 +1,7 @@
 ---
 layout: post
 cTitle: 利用winbash快速複製excel檔案(逐月)，並在excel依檔名變更日期
-title: "excel and winbash"
+title: "Excel and winbash"
 category: excel
 tagline:
 tags: [excel, winbash]

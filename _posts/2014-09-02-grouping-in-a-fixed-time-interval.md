@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: grouping in a fixed time interval
-title: "grouping in a fixed time interval"
+cTitle: Grouping in a fixed time interval
+title: "Grouping in a fixed time interval"
 category: R
 tagline:
 tags: [R]

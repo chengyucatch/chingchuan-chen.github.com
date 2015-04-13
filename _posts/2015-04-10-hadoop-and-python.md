@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: hadoop and python
-title: "hadoop and python"
+cTitle: Hadoop and python
+title: "Hadoop and python"
 category: python
 tagline:
 tags: [python]

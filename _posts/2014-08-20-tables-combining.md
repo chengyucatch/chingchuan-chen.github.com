@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: tables combining
-title: "tables combining"
+cTitle: Tables combining
+title: "Tables combining"
 category: R
 tagline:
 tags: [R]

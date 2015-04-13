@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: regular expression in R
-title: "regular expression in R"
+cTitle: Regular expression in R
+title: "Regular expression in R"
 category: R
 tagline:
 tags: [R, regexp]

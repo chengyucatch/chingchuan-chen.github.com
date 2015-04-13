@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: parsing html page with javascript
-title: "parsing html page with javascript"
+cTitle: Parsing html page with javascript
+title: "Parsing html page with javascript"
 category: R
 tagline:
 tags: [R, html]
