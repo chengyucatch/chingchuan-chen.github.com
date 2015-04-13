@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: installations of spyder2 and spyder3
-title: "installations of spyder2 and spyder3"
+cTitle: hadoop and python
+title: "hadoop and python"
 category: python
 tagline:
 tags: [python]
