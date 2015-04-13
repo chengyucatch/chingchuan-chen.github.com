@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: 如何compile R with Intel C++ compiler and　Intel MKL
-title: "how to compile R with mkl"
+cTitle: How to compile R with Intel C++ compiler and　Intel MKL
+title: "how to compile R with Intel C++ compiler and　Intel MKL"
 category: R
 tagline:
 tags: [R, MKL]
@@ -10,7 +10,7 @@ published: true
 ---
 {% include JB/setup %}
 
-以下文章參考下列四個網址：
+I refer the following articles to compile R with intel compiler and mkl:
 
 1. [Using Intel MKL with R](https://software.intel.com/en-us/articles/using-intel-mkl-with-r)
 2. [Build R-3.0.1 with Intel C++ Compiler and Intel MKL on Linux](https://software.intel.com/en-us/articles/build-r-301-with-intel-c-compiler-and-intel-mkl-on-linux)
@@ -20,14 +20,13 @@ published: true
 
 <!-- more -->
 
-開始之前，先用Default R and R with Openblas來測試看看，I use testing script found in [Simon Urbanek’s](http://r.research.att.com/benchmarks/)，Openblas部份參考這個網站[For faster R use OpenBLAS instead: better than ATLAS, trivial to switch to on Ubuntu](http://www.stat.cmu.edu/~nmv/2013/07/09/for-faster-r-use-openblas-instead-better-than-atlas-trivial-to-switch-to-on-ubuntu/)。
+At first, we test the default BLAS in R and the power of OpenBLAS. I use testing script found in [Simon Urbanek’s](http://r.research.att.com/benchmarks/) which the setup of OpenBLAS refer this website, [For faster R use OpenBLAS instead: better than ATLAS, trivial to switch to on Ubuntu](http://www.stat.cmu.edu/~nmv/2013/07/09/for-faster-r-use-openblas-instead-better-than-atlas-trivial-to-switch-to-on-ubuntu/). Before running the script, you should install the SuppDists package.
 
-PS: 運行測試前，記得打開R安裝SuppDists的套件。
-
-測試結果如下：
-Default R：
+The test results are presented as following:
 
 {% highlight R %}
+Default R:
+
    R Benchmark 2.5
    ===============
 Number of times each test is run__________________________:  3
@@ -66,11 +65,10 @@ Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.473000000000013
 Total time for all 15 tests_________________________ (sec):  31.0683333333333
 Overall mean (sum of I, II and III trimmed means/3)_ (sec):  1.24133119896421
                       --- End of test ---
-{% endhighlight %}
 
-R with Openblas:
 
-{% highlight R %}
+R with OpenBLAS:
+
    R Benchmark 2.5
    ===============
 Number of times each test is run__________________________:  3
@@ -111,17 +109,18 @@ Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.39206626824379
                       --- End of test ---
 {% endhighlight %}
 
-可以看到total time已經從31秒到7.5秒左右，改善幅度已經不少，接著來compile R:
+We can find that the total time is decreasing from 31 seconds to 7.5 seconds, there is a big improvement. Now we try to build R with Intel C++ compiler and Intel MKL to see the power of intel MKL.
 
-1. 取得R與其開發包，並安裝需要的套件，在terminal use following commands:
+1. We need to install R and the related development packages. Use the commands in the terminal:
 
 {% highlight bash %}
 sudo add-apt-repository ppa:webupd8team/java && sudo apt-get update && sudo apt-get install oracle-java8-installer && sudo apt-get install oracle-java8-set-default
-apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-latex-base xorg-dev tcl8.6-dev tk8.6-dev libtiff5 libtiff5-dev libjpeg-dev libpng12-dev libcairo2-dev libglu1-mesa-dev libgsl0-dev libicu-dev R-base R-base-dev libnlopt-dev libstdc++6
-sudo apt-get install texlive-latex-extra texlive-fonts-extra
+apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-latex-base xorg-dev tcl8.6-dev tk8.6-dev libtiff5 libtiff5-dev libjpeg-dev libpng12-dev libcairo2-dev libglu1-mesa-dev libgsl0-dev libicu-dev R-base R-base-dev libnlopt-dev libstdc++6 build-essential
+# these two are optional and it is not needed.
+# sudo apt-get install texlive-latex-extra texlive-fonts-extra
 {% endhighlight %}
 
-有一個工具要另外安裝，方式如下：
+There is a tool which we need to install from source. To get the source code by `wget` and build it from source by following commands.
 
 {% highlight bash %}
 wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz
@@ -130,39 +129,32 @@ cd libiconv-1.14 && ./configure --prefix=/usr/local/libiconv
 make && sudo make install
 {% endhighlight %}
 
-但是我在make過程中有出錯，我google之後找到的解法是修改libiconv-1.14/srclib/stdio.in.h的698列:
-原本的script:
+However, there is an error during building, I have found the solution in google. We change the 698th line in the file libiconv-1.14/srclib/stdio.in.h.
 
 {% highlight c %}
+# original script:
 _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");
-{% endhighlight %}
 
-修改後的scipt:
-
-{% highlight c %}
+# changed script:
 #if defined(__GLIBC__) && !defined(__UCLIBC__) && !__GLIBC_PREREQ(2, 16)
  _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");
 #endif
 {% endhighlight %}
 
-之後再重新make就成功了。
+Then I successively install libiconv.
 
-2. 取得R source code:
+2. Download the source code of R:
+
+The latest version of R is 3.1.3.
 
 {% highlight bash %}
-wget http://cran.csie.ntu.edu.tw/src/base/R-3/R-3.1.3.tar.gz
+wget http://cran.rstudio.com/src/base/R-3/R-3.1.3.tar.gz
 tar -xvzf R-3.1.3.tar.gz
 {% endhighlight %}
 
-3. 取得Intel C++ compiler and Intel MKL，你可以取得non-commercial license for this two software in intel website. 安裝前記得先取得需要的套件：
+Now get the environment ready and move on to build R with Intel C++ compiler and Intel MKL. Note that ubuntu 14.04 does not support 32bits compiler, you should cancel the installation of IA32 compiler when you install intel c++ compiler.
 
-{% highlight bash %}
-sudo apt-get install build-essential libstdc++6
-{% endhighlight %}
-
-另外，ubuntu 14.04不支援32 bits的compiler，安裝時記得取消掉IA32的安裝。
-
-4. compilitation:
+3. compilitation:
 
 {% highlight bash %}
 sudo -s
@@ -191,16 +183,18 @@ MKL="-L$MKL_path/lib/intel64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lio
 make && make check
 make install
 exit
+# remove the R installed previously
 sudo rm /usr/lib/libR.so
 sudo rm -r /usr/lib/R
 sudo rm -r /usr/bin/R
 sudo rm -r /usr/bin/Rscript
-sudo chown -R celest /usr/local/lib/R
+# optional to change the right to write the directory of R
+# sudo chown -R celest /usr/local/lib/R
 {% endhighlight %}
 
-然後他就會幫你把R安裝於usr/local/lib/R中，你之前如果有安裝過R，就記得把/usr/lib/R的目錄刪掉。
+The new installation of R will be in the `usr/local/lib/R`.
 
-5. 測試結果
+4. test for Intel C++ compiler and Intel MKL
 
 {% highlight R %}
    R Benchmark 2.5
@@ -243,11 +237,10 @@ Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.313371634843041
                       --- End of test ---
 {% endhighlight %}
 
-最後只需要用到5.4秒就可以完成了，可是complitation過程是滿麻煩的，雖然參考了多個網站，可是參數的設定都不太一樣，linux又有權限的限制，而且就算編譯成功，Rcpp這個套件不見得能夠成功，因此花了很久才終於編譯成功，並且能夠直接開啟，只是要利用到c, cpp or fortran時還是需要source compilervars.sh才能夠運行，而且我安裝了三四十個套件都沒有問題了。最後，如果沒有特別要求速度下，其實直接用openblas就可以省下很多麻煩。另外，我做了一個小小的測試於Rcpp上，速度有不少的提昇(因為用intel C++ compiler，大概增加5~10倍)，測試結果就不放上來了。以上資訊供大家參考，轉載請註明來源，謝謝。
+We only need 5.4 seconds to complete the test. It is faster than R with OpenBLAS. But it have taken a lot of time to compile and solve the problem of rights of user in the linux. It maybe is not worth to build with Intel MKL. I suggest that you can use RRO or R with OpenBLAS to save your time. Note that I have tested the performance of Rcpp between g++ and Intel C++ compiler, Intel C++ compiler is faster 5 to 10 times than g++. My environment is ubuntu 14.04, R 3.1.3 compiled by Intel c++, fortran compiler with MKL. My CPU is 3770K@4.3GHz.
 
-最後附上測試環境: My environment is ubuntu 14.04, R 3.1.3 compiled by Intel c++, fortran compiler with MKL. My CPU is 3770K@4.3GHz.
-
-To use the html help page with `sudo subl ~/.Rprofile` and add following to file:
+5. Other settings about R:
+To set that R use the html help page as default with `sudo subl ~/.Rprofile` and add following line to file:
 
 {% highlight R %}
 options("help_type"="html")
@@ -256,9 +249,6 @@ options("help_type"="html")
 If you want to change the default language of R, you can do that:
 {% highlight bash %}
 subl ~/.Renviron
-{% endhighlight %}
-
-Add following line into the file:
-{% highlight bash %}
-LANGUAGE="en"
+# Add following line into the file:
+# LANGUAGE="en"
 {% endhighlight %}
