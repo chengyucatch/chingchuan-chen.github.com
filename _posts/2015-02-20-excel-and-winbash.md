@@ -22,7 +22,7 @@ published: true
 1. EXCEL可以根據呼叫該檔檔名，根據該檔檔名去變動日期
 EX: 1040216日報表.xls 裡面日期會顯示 104年02月16日
 EXCEL指令：
-{% highlight excel %}
+{% highlight javascript %}
 =CONCATENATE( LEFT(MID(CELL("filename"), SEARCH("[",CELL("filename"))+1,
    SEARCH("]",CELL("filename")) - SEARCH("[",CELL("filename"))-1), 3), "年",
   RIGHT(LEFT(MID(CELL("filename"), SEARCH("[",CELL("filename")) + 1,
