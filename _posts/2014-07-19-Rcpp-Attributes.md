@@ -9,13 +9,13 @@ cssdemo: 2014-spring
 published: true
 ---
 
-Recently, I went to the 23th STSC, I got some information about the new API of Rcpp, Rcpp attributes. I had tried some examples and it worked well. Here I demonstrate some examples.
+Recently, I went to the 23th STSC, I got some information about the new API of `Rcpp`, `Rcpp attributes`. I had tried some examples and it worked well. Here I demonstrate some examples.
 
 <!-- more -->
 
 {% include JB/setup %}
 
-First example: call the pnorm function in Rcpp:
+First example: call the `pnorm` function in Rcpp:
 
 {% highlight R %}
 require(Rcpp)
@@ -36,7 +36,7 @@ DataFrame mypnorm(NumericVector x){
     Named("R") = y1,
     Named("Rf_") = y2,
     Named("sugar") = y3);
-}', showOutput = TRUE)
+}')
 mypnorm(runif(10, -3, 3))
 {% endhighlight %}
 
@@ -45,6 +45,9 @@ Rcpp attributes allows user to write Rcpp in a simple way. User does not need to
 Next two example is about the two extension packages of Rcpp, RcppArmadillo and RcppEigen. The two packages provide Rcpp to link the C++ linear algebra libraries, armadillo and Eigen.
 
 {% highlight R %}
+library(Rcpp)
+library(RcppArmadillo)
+library(RcppEigen)
 sourceCpp(code = '
 // [[Rcpp::depends(RcppArmadillo)]]
 #include <RcppArmadillo.h>
@@ -65,7 +68,7 @@ List fastLm_RcppArma(NumericVector yr, NumericMatrix Xr) {
 }')
 
 sourceCpp(code = '
-    // [[Rcpp::depends(RcppEigen)]]
+// [[Rcpp::depends(RcppEigen)]]
 #include <RcppEigen.h>
 using namespace Rcpp;
 using Eigen::Map;
@@ -85,27 +88,22 @@ List fastLm_RcppEigen(NumericVector yr, NumericMatrix Xr) {
     Named("coefficients") = coef,
     Named("stderr") = stderrest);
 }')
-N = 10000
-p = 100
+N = 20000
+p = 1000
 X = matrix(rnorm(N*p), ncol = p)
-y = X %*% 10**(sample(seq(-5, 1, length = N+p), p)) + rnorm(100)
+y = X %*% 10**(sample(seq(-5, 3, length = N+p), p)) + rnorm(N)
 
-t_arma     = Sys.time()
-temp_arma  = fastLm_RcppArma(y, X)
-t_arma     = Sys.time() - t_arma
-
-t_eigen    = Sys.time()
-temp_eigen = fastLm_RcppEigen(y, X)
-t_eigen    = Sys.time() - t_eigen
-
-t_lm       = Sys.time()
-temp_lm    = lm(y~X - 1)
-t_lm       = Sys.time() - t_lm
-
-c(t_arma, t_eigen, t_lm)
-# [1] 0.02414227 0.02660918 0.27163768
+system.time(fastLm_RcppArma(y, X))
+#   user  system elapsed
+#   5.49    0.06    1.46
+system.time(fastLm_RcppEigen(y, X))
+#   user  system elapsed
+#   9.32    0.06    8.96
+system.time(lm(y~X - 1))
+#   user  system elapsed
+# 145.13   14.76   91.84
 {% endhighlight %}
 
-The cpp functions are faster 10 times than R function, lm. My environment is ubuntu 14.04, R 3.1.1 compiled by intel c++, fortran compiler with MKL. My CPU is 3770K@4.3GHz. I think that Rcpp attributes is the package worthiest to learn if you want to use R to do statistical computing or machine learning.
+The cpp functions are faster 63 times than R function `lm`. My environment is ubuntu 14.04, R 3.1.1 compiled by intel c++, fortran compiler with MKL. My CPU is 3770K@4.3GHz. I think that Rcpp is the package which is the worthiest to learn if you want to use R to do statistical computing or machine learning. Rcpp attributes had changed the way to source C++ code in R, it let `Rcpp` is more convenient and more powerful.
 
 
