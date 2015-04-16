@@ -341,12 +341,7 @@ mydata = replicate(3, rnorm(N)) %>% tbl_dt() %>%
   setnames(paste0("x", 1:3)) %>% mutate(y = x1+2*x2+3*x3+rnorm(N,0,5)) %>%
   as.data.frame()
 hdfs.init()
-dataname = "mydata"
-datafile = hdfs.file(dataname, "w")
-hdfs.write(mydata, datafile)
-hdfs.close(datafile)
-hdfs.ls("/user/celest/")
-as.data.frame(input(mydata), x1_x2 = x1*x2))
+as.data.frame(input(mydata), x1_x2 = x1*x2)
 bind.cols(input(mydata), x1_x2 = x1*x2)
 output(bind.cols(input(mydata),x1_x2 = x1*x2), "/user/celest/mydata2")
 
