@@ -115,7 +115,7 @@ We can find that the total time is decreasing from 31 seconds to 7.5 seconds, th
 
 {% highlight bash %}
 sudo add-apt-repository ppa:webupd8team/java && sudo apt-get update && sudo apt-get install oracle-java8-installer && sudo apt-get install oracle-java8-set-default
-apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-latex-base xorg-dev tcl8.6-dev tk8.6-dev libtiff5 libtiff5-dev libjpeg-dev libpng12-dev libcairo2-dev libglu1-mesa-dev libgsl0-dev libicu-dev R-base R-base-dev libnlopt-dev libstdc++6 build-essential
+apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-latex-base xorg-dev tcl8.6-dev tk8.6-dev libtiff5 libtiff5-dev libjpeg-dev libpng12-dev libcairo2-dev libglu1-mesa-dev libgsl0-dev libicu-dev R-base R-base-dev libnlopt-dev libstdc++6 build-essential libxml2-dev
 # these two are optional and it is not needed.
 # sudo apt-get install texlive-latex-extra texlive-fonts-extra
 {% endhighlight %}
@@ -145,11 +145,11 @@ Then I successively install libiconv.
 
 2. Download the source code of R:
 
-The latest version of R is 3.1.3.
+The latest version of R is 3.2.0.
 
 {% highlight bash %}
-wget http://cran.rstudio.com/src/base/R-3/R-3.1.3.tar.gz
-tar -xvzf R-3.1.3.tar.gz
+wget http://cran.rstudio.com/src/base/R-3/R-3.2.0.tar.gz
+tar -xvzf R-3.2.0.tar.gz
 {% endhighlight %}
 
 Now get the environment ready and move on to build R with Intel C++ compiler and Intel MKL. Note that ubuntu 14.04 does not support 32bits compiler, you should cancel the installation of IA32 compiler when you install intel c++ compiler.
@@ -158,10 +158,10 @@ Now get the environment ready and move on to build R with Intel C++ compiler and
 
 {% highlight bash %}
 sudo -s
-source /opt/intel/composer_xe_2013_sp1.3.174/mkl/bin/mklvars.sh intel64
-source /opt/intel/composer_xe_2013_sp1.3.174/bin/compilervars.sh intel64
-MKL_path=/opt/intel/composer_xe_2013_sp1.3.174/mkl
-ICC_path=/opt/intel/composer_xe_2013_sp1.3.174/compiler
+source /opt/intel/composer_xe_2015.1.133/mkl/bin/mklvars.sh intel64
+source /opt/intel/composer_xe_2015.1.133/bin/compilervars.sh intel64
+MKL_path=/opt/intel/composer_xe_2015.1.133/mkl
+ICC_path=/opt/intel/composer_xe_2015.1.133/compiler
 export LD="xild"
 export AR="xiar"
 export CC="icc"
@@ -237,7 +237,7 @@ Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.313371634843041
                       --- End of test ---
 {% endhighlight %}
 
-We only need 5.4 seconds to complete the test. It is faster than R with OpenBLAS. But it have taken a lot of time to compile and solve the problem of rights of user in the linux. It maybe is not worth to build with Intel MKL. I suggest that you can use RRO or R with OpenBLAS to save your time. Note that I have tested the performance of Rcpp between g++ and Intel C++ compiler, Intel C++ compiler is faster 5 to 10 times than g++. My environment is ubuntu 14.04, R 3.1.3 compiled by Intel c++, fortran compiler with MKL. My CPU is 3770K@4.3GHz.
+We only need 5.4 seconds to complete the test. It is faster than R with OpenBLAS. But it have taken a lot of time to compile and solve the problem of rights of user in the linux. It maybe is not worth to build with Intel MKL. I suggest that you can use RRO or R with OpenBLAS to save your time. Note that I have tested the performance of Rcpp between g++ and Intel C++ compiler, Intel C++ compiler is faster 5 to 10 times than g++. My environment is ubuntu 14.04, R 3.2.0 compiled by Intel c++, fortran compiler with MKL. My CPU is 3770K@4.3GHz.
 
 5. Other settings about R:
 To set that R use the html help page as default with `sudo subl ~/.Rprofile` and add following line to file:

@@ -124,8 +124,10 @@ sudo subl /etc/bash.bashrc
 subl /usr/local/hadoop/etc/hadoop/hadoop-env.sh
 # # for compiled R by mkl
 # source /opt/intel/composer_xe_2013_sp1.3.174/mkl/bin/mklvars.sh intel64
+# source /opt/intel/composer_xe_2015.1.133/mkl/bin/mklvars.sh intel64
 # # for compiled R by icc
 # source /opt/intel/composer_xe_2013_sp1.3.174/bin/compilervars.sh intel64
+# source /opt/intel/composer_xe_2015.1.133/bin/compilervars.sh intel64
 # # for hive
 # export R_HOME=/usr/lib/R
 
@@ -138,7 +140,7 @@ hive --service hiveserver
 
 Install the dependent R packages:
 {% highlight R %}
-install.packages(c("rJava", "Rcpp", "rjson", "RJSONIO", "bit64", "reshape2", "data.table", "plyr", "dplyr", "digest", "functional", "stringr", "caTools", "lazyeval", "Hmisc", "testthat", "devtools", "iterators", "itertools"))
+install.packages(c("rJava", "Rcpp", "rjson", "RJSONIO", "bit64", "reshape2", "data.table", "plyr", "dplyr", "digest", "functional", "stringr", "caTools", "lazyeval", "Hmisc", "testthat", "devtools", "iterators", "itertools", "pryr"))
 library(devtools)
 install_github("RevolutionAnalytics/quickcheck@3.2.0", subdir = "pkg")
 install_github("RevolutionAnalytics/memoise")
@@ -165,8 +167,12 @@ install rhbase, I encounter a problem. The command `pkg-config --cflags thrift` 
 
 {% highlight bash %}
 cd ~/Downloads
-git clone https://github.com/RevolutionAnalytics/rmr2/pkg`
+git clone https://github.com/RevolutionAnalytics/rmr2.git
+mv rmr2/pkg pkg
+rm -r rmr2
+mv pkg rmr2
 subl rmr2/R/streaming.R
+R CMD INSTALL rmr2
 {% endhighlight %}
 
 The lines shown in following:
@@ -179,11 +185,30 @@ paste.options(
 {% endhighlight %}
 can be modified to following:
 {% highlight R %}
+## for intel parallel studio 2013
 paste.options(
   files =
     paste(
       collapse = ",",
-        c(image.files, map.file, reduce.file, combine.file, "/opt/intel/composer_xe_2013_sp1.3.174/compiler/lib/intel64/libiomp5.so", "/usr/lib/jvm/java-8-oracle/jre/lib/amd64/server/libjvm.so")))
+        c(image.files, map.file, reduce.file, combine.file,
+                "/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libiomp5.so",
+                "/usr/lib/jvm/java-8-oracle/jre/lib/amd64/server/libjvm.so"))),
+
+## for intel parallel studio 2015
+paste.options(
+  files =
+    paste(
+      collapse = ",",
+        c(image.files, map.file, reduce.file, combine.file,
+                "/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libiomp5.so",
+                "/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libifport.so.5",
+                "/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libifcoremt.so.5",
+                "/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libimf.so",
+                "/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libsvml.so",
+                "/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libirc.so",
+                "/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libirng.so",
+                "/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libintlc.so.5",
+                "/usr/lib/jvm/java-8-oracle/jre/lib/amd64/server/libjvm.so"))),
 {% endhighlight %}
 
 Test rhadoop series packages:
@@ -324,26 +349,15 @@ output2
 #   [8,]   8  16
 #   ............
 
-
-# rmr.options(backend = "hadoop",
-#   backend.parameters = list(hadoop = list(
-#     D = "mapred.child.java.opts=-Xmx2048m",
-#     D = "mapreduce.map.memory.mb=1536",
-#     D = "mapreduce.reduce.memory.mb=3072",
-#     D = "mapreduce.reduce.java.opts=-Xmx3072m",
-#     D = "mapreduce.map.java.opts=-Xmx2560m")))
-# in the etc/hadoop/hadoop-env.sh
-# export HADOOP_CLIENT_OPTS="-Xmx1024m $HADOOP_CLIENT_OPTS"
-# -D mapred.child.env="LD_LIBRARY_PATH=/path/to/your/libs"
-
 N = 15
-mydata = replicate(3, rnorm(N)) %>% tbl_dt() %>%
+dat = replicate(3, rnorm(N)) %>% tbl_dt() %>%
   setnames(paste0("x", 1:3)) %>% mutate(y = x1+2*x2+3*x3+rnorm(N,0,5)) %>%
   as.data.frame()
 hdfs.init()
+mydata = to.dfs(dat)
 as.data.frame(input(mydata), x1_x2 = x1*x2)
 bind.cols(input(mydata), x1_x2 = x1*x2)
-output(bind.cols(input(mydata),x1_x2 = x1*x2), "/user/celest/mydata2")
+output(bind.cols(input(mydata),x1_x2 = x1*x2), "/tmp/mydata2")
 
 # test the rhbase
 hbase thrift start
