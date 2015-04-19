@@ -4,7 +4,7 @@ cTitle: R Performance for calculating the maximum of two normal random variable
 title: "R Performance for calculating the maximum of two normal random variable"
 category: R
 tagline:
-tags: [R]
+tags: [R, Rcpp]
 cssdemo: 2014-spring
 published: true
 ---

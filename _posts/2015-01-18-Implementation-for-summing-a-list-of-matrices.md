@@ -4,7 +4,7 @@ cTitle: Implementation for summing a list of matrices
 title: "Implementation for summing a list of matrices"
 category: R
 tagline:
-tags: [R]
+tags: [R, Rcpp]
 cssdemo: 2014-spring
 published: true
 ---

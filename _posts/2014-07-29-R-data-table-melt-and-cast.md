@@ -4,7 +4,7 @@ cTitle: R data.table - melt and cast
 title: "R data.table - melt and cast"
 category: R
 tagline:
-tags: [R, data.table]
+tags: [R, data.table, dplyr, reshape]
 cssdemo: 2014-spring
 published: true
 ---

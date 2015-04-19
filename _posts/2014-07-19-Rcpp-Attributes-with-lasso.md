@@ -4,7 +4,7 @@ cTitle: Rcpp Attributes with lasso
 title: "Rcpp Attributes with lasso"
 category: R
 tagline:
-tags: [R]
+tags: [R, Rcpp]
 cssdemo: 2014-spring
 published: true
 ---

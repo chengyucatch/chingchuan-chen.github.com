@@ -4,7 +4,7 @@ cTitle: Rcpp Attributes for kernelMatrix with openmp
 title: "Rcpp Attributes for kernelMatrix with openmp"
 category: R
 tagline:
-tags: [R]
+tags: [R, Rcpp, openmp]
 cssdemo: 2014-spring
 published: true
 ---

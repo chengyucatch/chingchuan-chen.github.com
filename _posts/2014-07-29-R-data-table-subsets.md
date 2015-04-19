@@ -4,7 +4,7 @@ cTitle: R data.table - subsets
 title: "R data.table - subsets"
 category: R
 tagline:
-tags: [R, data.table]
+tags: [R, data.table, dplyr]
 cssdemo: 2014-spring
 published: true
 ---

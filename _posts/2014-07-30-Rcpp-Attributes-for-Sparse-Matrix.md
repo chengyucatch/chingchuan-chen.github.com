@@ -4,7 +4,7 @@ cTitle: Rcpp Attributes for Sparse Matrix
 title: "Rcpp Attributes for Sparse Matrix"
 category: R
 tagline:
-tags: [R]
+tags: [R, Rcpp, Matrix]
 cssdemo: 2014-spring
 published: true
 ---

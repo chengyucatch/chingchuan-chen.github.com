@@ -4,7 +4,7 @@ cTitle: R data.table - collating data
 title: "R data.table - collating data"
 category: R
 tagline:
-tags: [R, data.table]
+tags: [R, data.table, dplyr]
 cssdemo: 2014-spring
 published: true
 ---
