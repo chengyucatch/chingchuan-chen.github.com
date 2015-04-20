@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: Implementation for summing a list of matrices: part 2
-title: "Implementation for summing a list of matrices: part 2"
+cTitle: Implementation for summing a list of matrices -- part 2
+title: "Implementation for summing a list of matrices -- part 2"
 category: R
 tagline:
 tags: [R, Rcpp]
