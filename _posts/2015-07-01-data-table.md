@@ -10,7 +10,7 @@ published: true
 ---
 {% include JB/setup %}
 
-
+這是我自己在PTT PO的文，詳細介紹data.table，以下是正文~~
 
 data.table包含的東西很多
 
