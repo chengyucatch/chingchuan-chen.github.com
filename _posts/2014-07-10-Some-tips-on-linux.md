@@ -85,9 +85,12 @@ sudo apt-get install fcitx fcitx-chewing fcitx-config-gtk fcitx-frontend-all fci
 
 viii. Install ruby, jekyll and git.
 {% highlight bash %}
-sudo apt-get install ruby ruby-dev git python-pip python3-pip
-gem install jekyll
-pip install pygments
+sudo apt-get install software-properties-common
+sudo apt-add-repository ppa:brightbox/ruby-ng
+sudo apt-get update
+sudo apt-get install ruby2.2 ruby2.2-dev git python-pip python3-pip
+sudo gem install jekyll
+sudo pip install pygments
 {% endhighlight %}
 
 (To be continued.)
