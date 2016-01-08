@@ -19,8 +19,8 @@ In my system ubuntu 14.04, I can find the file `.bashrc` in my home directory.
 Since I want ubuntu to load intel complier and mkl parameter automatically, all I need to do is to add the two lines in the end of that file: (mint 17: `gedit /etc/bash.bashrc`)
 
 {% highlight bash %}
-source /opt/intel/composer_xe_2013_sp1.3.174/mkl/bin/mklvars.sh intel64
-source /opt/intel/composer_xe_2013_sp1.3.174/bin/compilervars.sh intel64
+source /opt/intel/composer_xe_2015/mkl/bin/mklvars.sh intel64
+source /opt/intel/composer_xe_2015/bin/compilervars.sh intel64
 {% endhighlight %}
 
 Then I success!!

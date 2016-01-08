@@ -20,9 +20,26 @@ published: true
 
 <!-- more -->
 
-開始之前，先用Default R and R with Openblas來測試看看，I use testing script found in [Simon Urbanek’s](http://r.research.att.com/benchmarks/)，Openblas部份參考這個網站[For faster R use OpenBLAS instead: better than ATLAS, trivial to switch to on Ubuntu](http://www.stat.cmu.edu/~nmv/2013/07/09/for-faster-r-use-openblas-instead-better-than-atlas-trivial-to-switch-to-on-ubuntu/)。
+開始之前，先用Default R and R with Openblas來測試看看，I use testing script found in [Simon Urbanek’s](http://r.research.att.com/benchmarks/)，Openblas部份參考這個網站[For faster R use OpenBLAS instead: better than ATLAS, trivial to switch to on Ubuntu](http://www.r-bloggers.com/for-faster-r-use-openblas-instead-better-than-atlas-trivial-to-switch-to-on-ubuntu/)。
 
-PS: 運行測試前，記得打開R安裝SuppDists的套件。
+{% highlight bash %}
+# to install package in /usr/lib/R/library
+sudo chmod -R 774 /usr/lib/R
+sudo chown -R celest.celest /usr/lib/R
+sudo chmod -R 774 /usr/local/lib/R
+sudo chown -R celest.celest /usr/local/lib/R
+# install required package
+R -e "install.packages('SuppDists', repos = 'http://cran.rstudio.com/')"
+# run benchmark
+R -e "source('http://r.research.att.com/benchmarks/R-benchmark-25.R')"
+# install OpenBLAS
+sudo apt-get install libopenblas-base libatlas3gf-base
+# check the BLAS is replaced with OpenBLAS
+sudo update-alternatives --config libblas.so.3
+sudo update-alternatives --config liblapack.so.3
+# run benchmark again
+R -e "source('http://r.research.att.com/benchmarks/R-benchmark-25.R')"
+{% endhighlight %}
 
 測試結果如下：
 Default R：
@@ -34,37 +51,37 @@ Number of times each test is run__________________________:  3
 
    I. Matrix calculation
    ---------------------
-Creation, transp., deformation of a 2500x2500 matrix (sec):  0.901666666666667
-2400x2400 normal distributed random matrix ^1000____ (sec):  0.664333333333334
-Sorting of 7,000,000 random values__________________ (sec):  0.632
-2800x2800 cross-product matrix (b = a' * a)_________ (sec):  8.92166666666667
-Linear regr. over a 3000x3000 matrix (c = a \ b')___ (sec):  4.34133333333333
+Creation, transp., deformation of a 2500x2500 matrix (sec):  0.812333333333334 
+2400x2400 normal distributed random matrix ^1000____ (sec):  0.474666666666667 
+Sorting of 7,000,000 random values__________________ (sec):  0.563333333333333 
+2800x2800 cross-product matrix (b = a' * a)_________ (sec):  8.99466666666667 
+Linear regr. over a 3000x3000 matrix (c = a \ b')___ (sec):  4.42166666666667 
                       --------------------------------------------
-                 Trimmed geom. mean (2 extremes eliminated):  1.37515524783545
+                 Trimmed geom. mean (2 extremes eliminated):  1.26481956425649 
 
    II. Matrix functions
    --------------------
-FFT over 2,400,000 random values____________________ (sec):  0.273000000000001
-Eigenvalues of a 640x640 random matrix______________ (sec):  0.960999999999999
-Determinant of a 2500x2500 random matrix____________ (sec):  4.576
-Cholesky decomposition of a 3000x3000 matrix________ (sec):  3.62266666666667
-Inverse of a 1600x1600 random matrix________________ (sec):  3.28933333333333
+FFT over 2,400,000 random values____________________ (sec):  0.396000000000001 
+Eigenvalues of a 640x640 random matrix______________ (sec):  0.718000000000001 
+Determinant of a 2500x2500 random matrix____________ (sec):  3.03633333333334 
+Cholesky decomposition of a 3000x3000 matrix________ (sec):  3.42433333333333 
+Inverse of a 1600x1600 random matrix________________ (sec):  2.56266666666666 
                       --------------------------------------------
-                Trimmed geom. mean (2 extremes eliminated):  2.25399639062039
+                Trimmed geom. mean (2 extremes eliminated):  1.77441555997029 
 
    III. Programmation
    ------------------
-3,500,000 Fibonacci numbers calculation (vector calc)(sec):  0.666000000000006
-Creation of a 3000x3000 Hilbert matrix (matrix calc) (sec):  0.194666666666668
-Grand common divisors of 400,000 pairs (recursion)__ (sec):  0.805666666666667
-Creation of a 500x500 Toeplitz matrix (loops)_______ (sec):  0.74599999999999
-Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.473000000000013
+3,500,000 Fibonacci numbers calculation (vector calc)(sec):  0.543999999999992 
+Creation of a 3000x3000 Hilbert matrix (matrix calc) (sec):  0.294333333333337 
+Grand common divisors of 400,000 pairs (recursion)__ (sec):  0.686666666666658 
+Creation of a 500x500 Toeplitz matrix (loops)_______ (sec):  0.49266666666666 
+Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.378999999999991 
                       --------------------------------------------
-                Trimmed geom. mean (2 extremes eliminated):  0.617103579859946
+                Trimmed geom. mean (2 extremes eliminated):  0.466584631384852 
 
 
-Total time for all 15 tests_________________________ (sec):  31.0683333333333
-Overall mean (sum of I, II and III trimmed means/3)_ (sec):  1.24133119896421
+Total time for all 15 tests_________________________ (sec):  27.8006666666666 
+Overall mean (sum of I, II and III trimmed means/3)_ (sec):  1.01548017027814 
                       --- End of test ---
 {% endhighlight %}
 
@@ -77,47 +94,47 @@ Number of times each test is run__________________________:  3
 
    I. Matrix calculation
    ---------------------
-Creation, transp., deformation of a 2500x2500 matrix (sec):  0.898666666666667
-2400x2400 normal distributed random matrix ^1000____ (sec):  0.664666666666667
-Sorting of 7,000,000 random values__________________ (sec):  0.637
-2800x2800 cross-product matrix (b = a' * a)_________ (sec):  0.233666666666668
-Linear regr. over a 3000x3000 matrix (c = a \ b')___ (sec):  0.155333333333334
+Creation, transp., deformation of a 2500x2500 matrix (sec):  0.755666666666667 
+2400x2400 normal distributed random matrix ^1000____ (sec):  0.473 
+Sorting of 7,000,000 random values__________________ (sec):  0.572 
+2800x2800 cross-product matrix (b = a' * a)_________ (sec):  0.411 
+Linear regr. over a 3000x3000 matrix (c = a \ b')___ (sec):  0.213 
                       --------------------------------------------
-                 Trimmed geom. mean (2 extremes eliminated):  0.462501733597377
+                 Trimmed geom. mean (2 extremes eliminated):  0.480875883392325 
 
    II. Matrix functions
    --------------------
-FFT over 2,400,000 random values____________________ (sec):  0.274000000000001
-Eigenvalues of a 640x640 random matrix______________ (sec):  1.132
-Determinant of a 2500x2500 random matrix____________ (sec):  0.201333333333335
-Cholesky decomposition of a 3000x3000 matrix________ (sec):  0.168333333333332
-Inverse of a 1600x1600 random matrix________________ (sec):  0.186
+FFT over 2,400,000 random values____________________ (sec):  0.372666666666666 
+Eigenvalues of a 640x640 random matrix______________ (sec):  0.895 
+Determinant of a 2500x2500 random matrix____________ (sec):  0.271333333333335 
+Cholesky decomposition of a 3000x3000 matrix________ (sec):  0.243333333333333 
+Inverse of a 1600x1600 random matrix________________ (sec):  0.328000000000001 
                       --------------------------------------------
-                Trimmed geom. mean (2 extremes eliminated):  0.217300001997772
+                Trimmed geom. mean (2 extremes eliminated):  0.321291459145567 
 
    III. Programmation
    ------------------
-3,500,000 Fibonacci numbers calculation (vector calc)(sec):  0.665666666666664
-Creation of a 3000x3000 Hilbert matrix (matrix calc) (sec):  0.19433333333333
-Grand common divisors of 400,000 pairs (recursion)__ (sec):  0.895333333333331
-Creation of a 500x500 Toeplitz matrix (loops)_______ (sec):  0.764000000000003
-Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.423999999999999
+3,500,000 Fibonacci numbers calculation (vector calc)(sec):  0.522333333333335 
+Creation of a 3000x3000 Hilbert matrix (matrix calc) (sec):  0.259666666666668 
+Grand common divisors of 400,000 pairs (recursion)__ (sec):  0.674333333333337 
+Creation of a 500x500 Toeplitz matrix (loops)_______ (sec):  0.499333333333335 
+Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.352999999999994 
                       --------------------------------------------
-                Trimmed geom. mean (2 extremes eliminated):  0.599660360864793
+                Trimmed geom. mean (2 extremes eliminated):  0.451548428599678 
 
 
-Total time for all 15 tests_________________________ (sec):  7.49433333333333
-Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.39206626824379
+Total time for all 15 tests_________________________ (sec):  6.84366666666667 
+Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.411666478563312 
                       --- End of test ---
 {% endhighlight %}
 
-可以看到total time已經從31秒到7.5秒左右，改善幅度已經不少，接著來compile R:
+可以看到total time已經從27.8秒到6.8秒左右，改善幅度已經不少，接著來compile R:
 
 1. 取得R與其開發包，並安裝需要的套件，在terminal use following commands:
 
 {% highlight bash %}
 sudo add-apt-repository ppa:webupd8team/java && sudo apt-get update && sudo apt-get install oracle-java8-installer && sudo apt-get install oracle-java8-set-default
-apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-latex-base xorg-dev tcl8.6-dev tk8.6-dev libtiff5 libtiff5-dev libjpeg-dev libpng12-dev libcairo2-dev libglu1-mesa-dev libgsl0-dev libicu-dev R-base R-base-dev libnlopt-dev libstdc++6
+apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-latex-base xorg-dev tcl8.6-dev tk8.6-dev libtiff5 libtiff5-dev libjpeg-dev libpng12-dev libcairo2-dev libglu1-mesa-dev libgsl0-dev libicu-dev R-base R-base-dev libnlopt-dev libstdc++6 build-essential
 sudo apt-get install texlive-latex-extra texlive-fonts-extra
 {% endhighlight %}
 
@@ -130,7 +147,7 @@ cd libiconv-1.14 && ./configure --prefix=/usr/local/libiconv
 make && sudo make install
 {% endhighlight %}
 
-但是我在make過程中有出錯，我google之後找到的解法是修改libiconv-1.14/srclib/stdio.in.h的698列:
+但是我在make過程中有出錯，我google之後找到的解法是修改`srclib/stdio.in.h`的698列:
 原本的script:
 
 {% highlight c %}
@@ -150,26 +167,20 @@ _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");
 2. 取得R source code:
 
 {% highlight bash %}
-wget http://cran.csie.ntu.edu.tw/src/base/R-3/R-3.1.3.tar.gz
-tar -xvzf R-3.1.3.tar.gz
+wget http://cran.csie.ntu.edu.tw/src/base/R-3/R-3.2.3.tar.gz
+tar -xvzf R-3.2.3.tar.gz
 {% endhighlight %}
 
-3. 取得Intel C++ compiler and Intel MKL，你可以取得non-commercial license for this two software in intel website. 安裝前記得先取得需要的套件：
-
-{% highlight bash %}
-sudo apt-get install build-essential libstdc++6
-{% endhighlight %}
-
-另外，ubuntu 14.04不支援32 bits的compiler，安裝時記得取消掉IA32的安裝。
+3. 取得Intel C++ compiler and Intel MKL，你可以取得non-commercial license for this two software in intel website. 另外，64bit linux system不支援32 bits的compiler，安裝時記得取消掉IA32的安裝。
 
 4. compilitation:
 
 {% highlight bash %}
 sudo -s
-source /opt/intel/composer_xe_2013_sp1.3.174/mkl/bin/mklvars.sh intel64
-source /opt/intel/composer_xe_2013_sp1.3.174/bin/compilervars.sh intel64
-MKL_path=/opt/intel/composer_xe_2013_sp1.3.174/mkl
-ICC_path=/opt/intel/composer_xe_2013_sp1.3.174/compiler
+source /opt/intel/composer_xe_2015/mkl/bin intel64
+source /opt/intel/composer_xe_2015/bin/compilervars.sh intel64
+MKL_path=/opt/intel/composer_xe_2015/mkl
+ICC_path=/opt/intel/composer_xe_2015/compiler
 export LD="xild"
 export AR="xiar"
 export CC="icc"
@@ -188,17 +199,57 @@ export SHLIB_LDFLAGS="-shared -fPIC"
 export SHLIB_CXXLDFLAGS="-shared -fPIC"
 MKL="-L$MKL_path/lib/intel64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread -ldl -lm"
 ./configure --with-blas="$MKL" --with-lapack --with-x --enable-memory-profiling --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh R_BROWSER="firefox" --enable-R-shlib --enable-BLAS-shlib --enable-prebuilt-html
-make && make check
-make install
-exit
-sudo rm /usr/lib/libR.so
-sudo rm -r /usr/lib/R
-sudo rm -r /usr/bin/R
-sudo rm -r /usr/bin/Rscript
-sudo chown -R celest /usr/local/lib/R
 {% endhighlight %}
 
-然後他就會幫你把R安裝於usr/local/lib/R中，你之前如果有安裝過R，就記得把/usr/lib/R的目錄刪掉。
+如果順利會出現下方的畫面：
+{% highlight bash %}
+R is now configured for x86_64-pc-linux-gnu
+
+  Source directory:          .
+  Installation directory:    /usr/local
+
+  C compiler:                icc  -wd188 -ip -std=gnu99 -g -O3 -openmp -parallel -xHost -ipo -fp-model precise -fp-model source
+  Fortran 77 compiler:       ifort  -g -O3 -openmp -parallel -xHost -ipo -fp-model source
+
+  C++ compiler:              icpc  -g -O3 -openmp -parallel -xHost -ipo -fp-model precise -fp-model source
+  C++ 11 compiler:           icpc  -std=c++11 -g -O3 -openmp -parallel -xHost -ipo -fp-model precise -fp-model source
+  Fortran 90/95 compiler:    ifort -g -O3 -openmp -parallel -xHost -ipo -fp-model source
+  Obj-C compiler:       
+
+  Interfaces supported:      X11, tcltk
+  External libraries:        readline, BLAS(MKL), zlib, bzlib, lzma, PCRE
+  Additional capabilities:   PNG, JPEG, TIFF, NLS, cairo, ICU
+  Options enabled:           shared R library, shared BLAS, R profiling, memory profiling, static HTML
+
+  Capabilities skipped:      
+  Options not enabled:       
+
+  Recommended packages:      yes
+{% endhighlight %}
+
+出現上方畫面就可以開始make跟install了：
+
+{% highlight bash %}
+make && make check
+# removing R before installation
+rm /usr/lib/libR.so
+rm -r /usr/lib/R
+rm -r /usr/bin/Rscript
+rm -r /usr/local/lib/R
+make install
+chown -R celest.celest /usr/local/lib/R
+chmod -R 775 /usr/local/lib/R
+# to add mkl and intel c compiler into path
+echo 'source /opt/intel/composer_xe_2015/mkl/bin/mklvars.sh intel64' >> /etc/bash.bashrc
+echo 'source /opt/intel/composer_xe_2015/bin/compilervars.sh intel64' >> /etc/bash.bashrc
+exit
+# install required package
+R -e "install.packages('SuppDists', repos = 'http://cran.rstudio.com/')"
+# run benchmark
+R -e "source('http://r.research.att.com/benchmarks/R-benchmark-25.R')"
+{% endhighlight %}
+
+然後他就會幫你把R安裝於`usr/local/lib/R`中。
 
 5. 測試結果
 
@@ -209,43 +260,43 @@ Number of times each test is run__________________________:  3
 
    I. Matrix calculation
    ---------------------
-Creation, transp., deformation of a 2500x2500 matrix (sec):  0.841333333333333
-2400x2400 normal distributed random matrix ^1000____ (sec):  0.370666666666667
-Sorting of 7,000,000 random values__________________ (sec):  0.641666666666666
-2800x2800 cross-product matrix (b = a' * a)_________ (sec):  0.295666666666666
-Linear regr. over a 3000x3000 matrix (c = a \ b')___ (sec):  0.173333333333333
+Creation, transp., deformation of a 2500x2500 matrix (sec):  0.683 
+2400x2400 normal distributed random matrix ^1000____ (sec):  0.259666666666667 
+Sorting of 7,000,000 random values__________________ (sec):  0.560333333333333 
+2800x2800 cross-product matrix (b = a' * a)_________ (sec):  0.44 
+Linear regr. over a 3000x3000 matrix (c = a \ b')___ (sec):  0.193666666666666 
                       --------------------------------------------
-                 Trimmed geom. mean (2 extremes eliminated):  0.412760812738327
+                 Trimmed geom. mean (2 extremes eliminated):  0.400041560496478 
 
    II. Matrix functions
    --------------------
-FFT over 2,400,000 random values____________________ (sec):  0.256333333333335
-Eigenvalues of a 640x640 random matrix______________ (sec):  0.311000000000001
-Determinant of a 2500x2500 random matrix____________ (sec):  0.175666666666667
-Cholesky decomposition of a 3000x3000 matrix________ (sec):  0.190666666666668
-Inverse of a 1600x1600 random matrix________________ (sec):  0.153333333333334
+FFT over 2,400,000 random values____________________ (sec):  0.393666666666667 
+Eigenvalues of a 640x640 random matrix______________ (sec):  0.326999999999999 
+Determinant of a 2500x2500 random matrix____________ (sec):  0.215666666666666 
+Cholesky decomposition of a 3000x3000 matrix________ (sec):  0.183999999999999 
+Inverse of a 1600x1600 random matrix________________ (sec):  0.182333333333332 
                       --------------------------------------------
-                Trimmed geom. mean (2 extremes eliminated):  0.204765321007157
+                Trimmed geom. mean (2 extremes eliminated):  0.234990082575285 
 
    III. Programmation
    ------------------
-3,500,000 Fibonacci numbers calculation (vector calc)(sec):  0.343666666666666
-Creation of a 3000x3000 Hilbert matrix (matrix calc) (sec):  0.136333333333333
-Grand common divisors of 400,000 pairs (recursion)__ (sec):  0.769000000000001
-Creation of a 500x500 Toeplitz matrix (loops)_______ (sec):  0.424333333333334
-Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.330999999999996
+3,500,000 Fibonacci numbers calculation (vector calc)(sec):  0.274333333333333 
+Creation of a 3000x3000 Hilbert matrix (matrix calc) (sec):  0.221333333333333 
+Grand common divisors of 400,000 pairs (recursion)__ (sec):  0.275666666666667 
+Creation of a 500x500 Toeplitz matrix (loops)_______ (sec):  0.255 
+Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.338999999999999 
                       --------------------------------------------
-                Trimmed geom. mean (2 extremes eliminated):  0.364102938914316
+                Trimmed geom. mean (2 extremes eliminated):  0.268164327390206 
 
 
-Total time for all 15 tests_________________________ (sec):  5.414
-Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.313371634843041
+Total time for all 15 tests_________________________ (sec):  4.80466666666666 
+Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.293214347493761 
                       --- End of test ---
 {% endhighlight %}
 
-最後只需要用到5.4秒就可以完成了，可是complitation過程是滿麻煩的，雖然參考了多個網站，可是參數的設定都不太一樣，linux又有權限的限制，而且就算編譯成功，Rcpp這個套件不見得能夠成功，因此花了很久才終於編譯成功，並且能夠直接開啟，只是要利用到c, cpp or fortran時還是需要source compilervars.sh才能夠運行，而且我安裝了三四十個套件都沒有問題了。最後，如果沒有特別要求速度下，其實直接用openblas就可以省下很多麻煩。另外，我做了一個小小的測試於Rcpp上，速度有不少的提昇(因為用intel C++ compiler，大概增加5~10倍)，測試結果就不放上來了。以上資訊供大家參考，轉載請註明來源，謝謝。
+最後只需要用到4.8秒就可以完成了，可是complitation過程是滿麻煩的，雖然參考了多個網站，可是參數的設定都不太一樣，linux又有權限的限制，而且就算編譯成功，Rcpp這個套件不見得能夠成功，因此花了很久才終於編譯成功，並且能夠直接開啟，只是要利用到c, cpp or fortran時還是需要source compilervars.sh才能夠運行，而且我安裝了三四十個套件都沒有問題了。最後，如果沒有特別要求速度下，其實直接用OpenBLAS就可以省下很多麻煩。另外，我做了一個小小的測試於Rcpp上，速度有不少的提昇(因為用intel C++ compiler，大概增加5~10倍)，測試結果就不放上來了。以上資訊供大家參考，轉載請註明來源，謝謝。
 
-最後附上測試環境: My environment is ubuntu 14.04, R 3.1.3 compiled by Intel c++, fortran compiler with MKL. My CPU is 3770K@4.3GHz.
+最後附上測試環境: My environment is mint 17.3, R 3.2.3 compiled by Intel c++, fortran compiler with MKL. My CPU is 3770K@4.4GHz.
 
 To use the html help page with `sudo subl ~/.Rprofile` and add following to file:
 
