@@ -111,7 +111,7 @@ void gtk_im_context_set_client_window (GtkIMContext *context,
 {% highlight bash %}
 sudo apt-get install build-essential libgtk2.0-dev
 gcc -shared -o libsublime-imfix.so sublime-imfix.c `pkg-config --libs --cflags gtk+-2.0` -fPIC
-mv libsublime-imfix.so /opt/sublime_text/
+sudo mv libsublime-imfix.so /opt/sublime_text/
 {% endhighlight %}
 
 這樣就完成編譯，並且將檔案放置到安裝目錄了。
@@ -119,7 +119,7 @@ mv libsublime-imfix.so /opt/sublime_text/
 3. 修改啟動部份
 
 {% highlight bash %}
-sudo subl /usr/share/applications/sublime_text.desktop
+sudo subl /usr/share/applications/sublime-text.desktop
 {% endhighlight %}
 
 在每一個`Exec=`後面都加上下面的指令：
@@ -145,7 +145,7 @@ exec /opt/sublime_text/sublime_text "$@"
 4. 如果想要把sublime text更動為預設編輯器，先使用下列指令確定是否有安裝成功：
 
 {% highlight bash %}
-ls /usr/share/applications/sublime_text.desktop
+ls /usr/share/applications/sublime-text.desktop
 {% endhighlight %}
 
 接著打開linux的default列表：
@@ -154,7 +154,7 @@ ls /usr/share/applications/sublime_text.desktop
 sudo subl /usr/share/applications/defaults.list
 {% endhighlight %}
 
-按下Ctrl+H replace gedit with sublime_text。接著打開user的設定列表：
+按下Ctrl+H replace gedit with sublime-text。接著打開user的設定列表：
 
 {% highlight bash %}
 subl ~/.local/share/applications/mimeapps.list
@@ -164,12 +164,12 @@ subl ~/.local/share/applications/mimeapps.list
 
 {% highlight bash %}
 [Added Associations]
-text/plain=ubuntu-software-center.desktop;shotwell.desktop;sublime_text.desktop;
+text/plain=ubuntu-software-center.desktop;shotwell.desktop;sublime-text.desktop;
 text/x-chdr=shotwell-viewer.desktop;
 
 [Default Applications]
-text/plain=sublime_text.desktop
-text/x-c++src=sublime_text.desktop
-text/x-chdr=sublime_text.desktop
+text/plain=sublime-text.desktop
+text/x-c++src=sublime-text.desktop
+text/x-chdr=sublime-text.desktop
 {% endhighlight %}
 
