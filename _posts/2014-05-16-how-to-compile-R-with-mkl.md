@@ -316,3 +316,9 @@ Add following line into the file:
 {% highlight bash %}
 LANGUAGE="en"
 {% endhighlight %}
+
+如果要讓Rstudio Server裡面成功啟動並且可以使用`icpc`，請在`/usr/lib/rstudio-server/R/ServerOptions.R`裡面加入下方：
+
+{% highlight R %}
+Sys.setenv(PATH = "/opt/intel/composer_xe_2015.1.133/bin/intel64:/opt/intel/composer_xe_2015.1.133/debugger/gdb/intel64_mic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:$PATH")
+{% endhighlight %}
