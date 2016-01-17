@@ -203,6 +203,7 @@ MKL="-L$MKL_path/lib/intel64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lio
 {% endhighlight %}
 
 如果順利會出現下方的畫面：
+
 {% highlight bash %}
 R is now configured for x86_64-pc-linux-gnu
 
