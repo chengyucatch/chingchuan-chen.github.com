@@ -134,7 +134,7 @@ Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.411666478563312
 
 {% highlight bash %}
 sudo add-apt-repository ppa:webupd8team/java && sudo apt-get update && sudo apt-get install oracle-java8-installer && sudo apt-get install oracle-java8-set-default
-apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive-binaries texlive-latex-base xorg-dev tcl8.6-dev tk8.6-dev libtiff5 libtiff5-dev libjpeg-dev libpng12-dev libcairo2-dev libglu1-mesa-dev libgsl0-dev libicu-dev R-base R-base-dev libnlopt-dev libstdc++6 build-essential libcurl4-openssl-dev texlive-fonts-extra libxml2-dev aptitude
+apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive texlive-binaries texlive-latex-base xorg-dev tcl8.6-dev tk8.6-dev libtiff5 libtiff5-dev libjpeg-dev libpng12-dev libcairo2-dev libglu1-mesa-dev libgsl0-dev libicu-dev R-base R-base-dev libnlopt-dev libstdc++6 build-essential libcurl4-openssl-dev texlive-fonts-extra libxml2-dev aptitude
 # sudo apt-get install texlive-latex-extra 
 {% endhighlight %}
 
@@ -199,6 +199,7 @@ export SHLIB_LDFLAGS="-shared -fPIC"
 export SHLIB_CXXLDFLAGS="-shared -fPIC"
 MKL="-L$MKL_path/lib/intel64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread -ldl -lm"
 ./configure --with-blas="$MKL" --with-lapack --with-x --enable-memory-profiling --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh --enable-R-shlib --enable-BLAS-shlib --enable-prebuilt-html
+# to use Rsutdio-server, please use option --prefix=/usr
 {% endhighlight %}
 
 如果順利會出現下方的畫面：
@@ -236,6 +237,7 @@ rm /usr/lib/libR.so
 rm -r /usr/lib/R
 rm -r /usr/bin/Rscript
 rm -r /usr/local/lib/R
+make docs
 make install
 chown -R celest.celest /usr/local/lib/R
 chmod -R 775 /usr/local/lib/R
