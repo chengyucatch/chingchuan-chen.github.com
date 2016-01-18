@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: RcppParallel and RRO about Intel MKL multithread
-title: RcppParallel and RRO about Intel MKL multithread
+cTitle: "RcppParallel and RRO: about Intel MKL multithread"
+title: "RcppParallel and RRO: about Intel MKL multithread"
 category: R
 tagline:
 tags: [R]
