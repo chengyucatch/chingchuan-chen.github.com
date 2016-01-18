@@ -98,14 +98,14 @@ JB :
   comments :
     provider : disqus
     disqus :
-      short_name : ashare
+      short_name : celestial0230
     livefyre :
-      site_id : 123
+      site_id : 1
     intensedebate :
       account : 123abc
     facebook :
-      appid : 123
-      num_posts: 5
+      appid : 1
+      num_posts: 1
       width: 580
       colorscheme: light
 
@@ -116,7 +116,7 @@ JB :
   analytics :
     provider : google
     google :
-        tracking_id : 'UA-43235390-2'
+        tracking_id : 'UA-72564040-1'
     getclicky :
       site_id :
     mixpanel :
