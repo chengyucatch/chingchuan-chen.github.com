@@ -133,3 +133,14 @@ published: true
 兩個---中是關於你post的設定，layout是設定我現在的格式是什麼，在_posts裡面就理所當然是設定post，cTitle是設定你文章的標題(這是顯示的標題)，title是標題(提供給程式控制)，decription是關於你這篇文章的敘述，category是你文章的分類，cssdemo是檔案的格式，這部分我還不熟，請先跟我設定相同，或是你自行摸索，tags是標籤，方便你自己以及其他人找尋相關文章，最後，published是設定是否要公開於網站上，你如果還沒寫好的文章就可以先改成false，那你確定要公開就改成true，include部分是必須要引入的設定，最好不要省略，more那列是在首頁顯示部分到此，例如上面的例子，就是首頁只會顯示123，而456要等你點開文章才會看到。剩下還要更改的部分是index.html以及一些小地方，如果需要幫助，再到左下角點選我的名字就可以連到我的facebook與我聯絡。最後，溫馨提醒：文章的編寫可以對照我的post跟我的blogger顯示文章去推敲寫法，總之，從模仿開始，我也才剛學會架設blogger一周而已。
 
 Note: github不會即時更新，需要等待幾分鐘才會更新你新的上傳。
+
+2016-01-18增補：
+
+沒空寫新的文章，根據這個部落格風格的原作者表示出了一個github-page的gem，用法參考這篇，[這篇](http://wcc723.github.io/jekyll/2014/09/05/github-page/)。
+
+{% highlight bash %}
+gem install github-pages
+gem install rails
+bundle install
+bundle exec jekyll serve --watch
+{% endhighlight %}
