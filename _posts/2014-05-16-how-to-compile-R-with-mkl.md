@@ -1,6 +1,6 @@
 ---
 layout: post
-cTitle: 如何compile R with Intel C++ compiler and　Intel MKL
+cTitle: 如何compile R with Intel C++ compiler and Intel MKL
 title: "how to compile R with mkl"
 category: R
 tagline:
@@ -16,7 +16,6 @@ published: true
 2. [Build R-3.0.1 with Intel C++ Compiler and Intel MKL on Linux](https://software.intel.com/en-us/articles/build-r-301-with-intel-c-compiler-and-intel-mkl-on-linux)
 3. [Compiling R 3.0.1 with MKL support](http://www.r-bloggers.com/compiling-r-3-0-1-with-mkl-support/)
 4. [R Installation and Administraction](http://cran.r-project.org/doc/manuals/r-devel/R-admin.html)
-5. [Compile R with Intel Compiler](http://www.ansci.wisc.edu/morota/R/intel/intel-compiler.html)
 
 <!-- more -->
 
