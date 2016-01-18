@@ -40,7 +40,7 @@ and is better than using 1 MKL threads. From this test, we think that the perfor
 deeply affected the number of threads Intel MKL used.
 We suggest not to change the number of threads Intel MKL used, just keep it default.
 
-` R
+{% highlight R %}
 library(Rcpp)
 library(RcppArmadillo)
 library(RcppParallel)
@@ -220,4 +220,4 @@ microbenchmark(LOOCV_R(y, X), fastLOOCV_noRP(y, X), fastLOOCV(y, X),
 
 # The information of machine: i7-5820K@4.0GHz with 32GB ram.
 # The information of session: RRO 3.2.3 on windows 7 64bit.
-`
+{% endhighlight %}
