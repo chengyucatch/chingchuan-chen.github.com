@@ -72,6 +72,8 @@ notepad config.yml
 ![](/images/ruby_install_jekyll_1.png)
 ![](/images/ruby_install_jekyll_2.png)
 
+另外，還需要安裝pygments，請鍵入`gem install pygments.rb`。
+
 C. 申請git，並且clone我的庫當作基底。請到 [Github](https://github.com/)申請一個帳號，假設你的使用者名稱(username)為USERNAME，在你的github中建立一個新的repository，repository的名稱請設定為USERNAME.github.com，這樣就完成github初步的設定。接下來，請先建立好你的工作目錄，例如我設定在E:\website中，那我可以利用這個指令`cd /d E:\website`到該目錄下，你可以自行更改工作目錄，假設clone我的庫做為基底，輸入下方指令：
 
 {% highlight bash %}
