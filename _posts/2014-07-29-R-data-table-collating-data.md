@@ -14,7 +14,7 @@ published: true
 
 <!-- more -->
 
-It is an estate data which contains housing price and some variables. I put data in my [dropbox](https://www.dropbox.com/sm/create/data.rar).
+It is an estate data which contains housing price and some variables. I put data in my [Google drive].(https://drive.google.com/open?id=0B1UBN4lCLHrVeWRzQ1FHQUoyem8).
 
 Code:
 

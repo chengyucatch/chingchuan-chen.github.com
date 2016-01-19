@@ -21,7 +21,7 @@ published: true
 
 ## 安裝步驟如下:
 
-A. 下載我壓縮的工具包：[Dropbox](https://www.dropbox.com/s/pphmfw6gfk8p9ma/blogger_toolbox.rar)
+A. 下載我壓縮的工具包：[Google drive].(https://drive.google.com/open?id=0B1UBN4lCLHrVU3JOR0JDQ1J4Zmc)
 解壓縮之後，裡面包含九個檔案：
 
 * rubyinstaller-2.2.1-x64.exe
