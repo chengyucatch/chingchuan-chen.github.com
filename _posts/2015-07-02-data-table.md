@@ -1,6 +1,6 @@
 ---
 layout: post
-cTitle: introduce to data.table
+cTitle: introduction to data.table
 title: data-table
 category: R
 tagline:
