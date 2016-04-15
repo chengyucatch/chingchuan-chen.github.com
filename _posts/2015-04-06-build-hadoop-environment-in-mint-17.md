@@ -43,9 +43,9 @@ exit
 3. download hadoop
 
 {% highlight bash %}
-wget http://apache.stu.edu.tw/hadoop/common/stable2/hadoop-2.6.0.tar.gz
-tar zxvf hadoop-2.6.0.tar.gz
-sudo mv hadoop-2.6.0 /usr/local/hadoop
+wget http://apache.stu.edu.tw/hadoop/common/stable2/hadoop-2.7.2.tar.gz
+tar zxvf hadoop-2.7.2.tar.gz
+sudo mv hadoop-2.7.2 /usr/local/hadoop
 cd /usr/local
 sudo chown -R celest hadoop
 {% endhighlight %}
@@ -128,6 +128,7 @@ subl /usr/local/hadoop/etc/hadoop/core-site.xml
 cp etc/hadoop/mapred-site.xml.template etc/hadoop/mapred-site.xml
 subl /usr/local/hadoop/etc/hadoop/mapred-site.xml
 subl /usr/local/hadoop/etc/hadoop/hdfs-site.xml
+subl /usr/local/hadoop/etc/hadoop/yarn-site.xml
 {% endhighlight %}
 
 i. /usr/local/hadoop/etc/hadoop/hadoop-env.sh
@@ -230,10 +231,13 @@ slave01
 {% endhighlight %}
 
 6. Starting hadoop
-Let the setting of environment work by `source ~/.bashrc` (mint: `source /etc/bash.bashrc`).
-Start to format hadoop space by `hdfs namenode -format`
 
 {% highlight bash %}
+# import environment variable
+# ubuntu: source ~/.bashrc
+source /etc/bash.bashrc
+# format hadoop space
+hdfs namenode -format
 # start the hadoop
 start-dfs.sh && start-yarn.sh
 # or start-all.sh
@@ -272,7 +276,7 @@ hdfs dfsadmin -report
 
 Run a example in the folder
 {% highlight bash %}
-hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.0.jar pi 10 100
+hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.2.jar pi 10 100
 {% endhighlight %}
 
 The last two line will show the following informations:
@@ -294,7 +298,7 @@ hdfs dfs -copyFromLocal testData/ /user/celest/
 # check that the file is in the hadoop server
 hdfs dfs -ls /user/celest/testData/
 # run wordcount on hadoop
-hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.0.jar wordcount /user/celest/testData /user/celest/testData-output
+hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.2.jar wordcount /user/celest/testData /user/celest/testData-output
 # check the whether it successes
 hdfs dfs -ls /user/celest/testData-output/
 # view the result
@@ -347,12 +351,12 @@ source /etc/bash.bashrc
 
 # get the source code of hadoop
 cd ..
-wget http://apache.stu.edu.tw/hadoop/common/stable2/hadoop-2.6.0-src.tar.gz
-tar zxvf hadoop-2.6.0-src.tar.gz
-cd hadoop-2.6.0-src
+wget http://apache.stu.edu.tw/hadoop/common/stable2/hadoop-2.7.2-src.tar.gz
+tar zxvf hadoop-2.7.2-src.tar.gz
+cd hadoop-2.7.2-src
 mvn clean package -Pdist -Dtar -Dmaven.javadoc.skip=true -DskipTests -fail-at-end -Pnative
-sudo cp -r hadoop-2.6.0-src/hadoop-dist/target/hadoop-2.6.0 /usr/local/hadoop
-sudo mv /usr/local/hadoop-2.6.0 /usr/local/hadoop
+sudo cp -r hadoop-2.7.2-src/hadoop-dist/target/hadoop-2.7.2 /usr/local/hadoop
+sudo mv /usr/local/hadoop-2.7.2 /usr/local/hadoop
 sudo chown -R celest hadoop
 {% endhighlight %}
 
