@@ -30,6 +30,7 @@ sudo apt-get purge openjdk-\*
 {% endhighlight %}
 
 2. install ssh
+
 {% highlight bash %}
 sudo apt-get install ssh rsync openssh-server
 ssh-keygen -t rsa -P "" # generate SSH key
@@ -51,6 +52,7 @@ sudo chown -R celest hadoop
 {% endhighlight %}
 
 4. setting environment for java and hadoop
+
 {% highlight bash %}
 sudo subl /etc/bash.bashrc
 # add following 9 lines into file
@@ -132,9 +134,13 @@ subl /usr/local/hadoop/etc/hadoop/yarn-site.xml
 {% endhighlight %}
 
 i. /usr/local/hadoop/etc/hadoop/hadoop-env.sh
+
 ii. /usr/local/hadoop/etc/hadoop/core-site.xml
+
 iii. /usr/local/hadoop/etc/hadoop/mapred-site.xml
+
 iv. /usr/local/hadoop/etc/hadoop/hdfs-site.xml
+
 v. /usr/local/hadoop/etc/hadoop/slaves # only need for multi-node hadoop
 
 a. hadoop-env.sh
@@ -222,7 +228,8 @@ e. yarn-site.xml
 </configuration>
 {% endhighlight %}
 
-f. slaves
+f. slaves (for multi-node.)
+
 put names of your machines in the `hadoop/etc/hadoop/slaves`. Command: `subl etc/hadoop/slaves`. The file looks like:
 
 {% highlight bash %}
