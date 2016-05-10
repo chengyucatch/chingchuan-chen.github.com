@@ -8,6 +8,7 @@ tags: [linux]
 cssdemo: 2014-spring
 published: true
 ---
+<!-- more -->
 
 {% highlight bash %}
 sudo add-apt-repository ppa:webupd8team/sublime-text-3
