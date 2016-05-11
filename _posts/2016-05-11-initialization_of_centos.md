@@ -206,3 +206,24 @@ Automatically enabling your network connection at startup on CentOS 7:
 # In my case, it is ifcfg-eno1. It may be different for other machine.
 sudo sed -i -e 's@^ONBOOT=no@ONBOOT=yes@' /etc/sysconfig/network-scripts/ifcfg-eno1
 {% endhighlight %}
+
+
+Installation of xrdp on CentOS 7 / RHEL 7:
+{% highlight bash %}
+sudo subl /etc/yum.repos.d/xrdp.repo
+## add following lines into file
+# [xrdp]
+# name=xrdp
+# baseurl=http://li.nux.ro/download/nux/dextop/el7/x86_64/
+# enabled=1
+# gpgcheck=0
+sudo yum install -y xrdp tigervnc-server
+
+sudo chkconfig xrdp on
+
+## open the firewall for xrdp
+firewall-cmd --zone=public --add-port=3389/tcp --permanent
+firewall-cmd --reload
+{% endhighlight %}
+
+
