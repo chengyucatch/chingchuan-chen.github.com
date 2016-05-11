@@ -100,6 +100,8 @@ sudo chkconfig --add rstudio-server
 ## open the firewall for rstudio-server
 sudo firewall-cmd --zone=public --add-port=8787/tcp --permanent
 sudo firewall-cmd --reload
+
+## To browse localhost:8787 for using the rstudio-server
 {% endhighlight %}
 
 The installation of shiny server is recorded:
