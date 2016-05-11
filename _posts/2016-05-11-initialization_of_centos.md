@@ -148,3 +148,9 @@ sudo subl /etc/yum.conf
 ## start mongod when booting
 sudo chkconfig mongod on
 {% endhighlight %}
+
+Automatically enabling your network connection at startup on CentOS 7:
+{% highlight bash %}
+# In my case, it is ifcfg-eno1. It may be different for other machine.
+sudo sed -i -e 's@^ONBOOT=no@ONBOOT=yes@' /etc/sysconfig/network-scripts/ifcfg-eno1
+{% endhighlight %}
