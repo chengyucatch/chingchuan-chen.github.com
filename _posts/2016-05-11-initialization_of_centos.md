@@ -147,9 +147,58 @@ sudo subl /etc/yum.conf
 
 ## start mongod when booting
 sudo chkconfig mongod on
+
+## increase the soft limit of number of process for mongod
+sudo subl /etc/security/limits.conf
+## add following line into file (third line must be added, other lines are optional.)
+# mongod soft nofile 64000
+# mongod hard nofile 64000
+# mongod soft nproc 32000
+# mongod hard nproc 32000
+
+## to disable transparent huge pages
+# https://docs.mongodb.com/manual/tutorial/transparent-huge-pages/
+sudo subl /etc/init.d/disable-transparent-hugepages
+## add following line into file
+# #!/bin/sh
+# ### BEGIN INIT INFO
+# # Provides:          disable-transparent-hugepages
+# # Required-Start:    $local_fs
+# # Required-Stop:
+# # X-Start-Before:    mongod mongodb-mms-automation-agent
+# # Default-Start:     2 3 4 5
+# # Default-Stop:      0 1 6
+# # Short-Description: Disable Linux transparent huge pages
+# # Description:       Disable Linux transparent huge pages, to improve
+# #                    database performance.
+# ### END INIT INFO
+#
+# case $1 in
+#   start)
+#     if [ -d /sys/kernel/mm/transparent_hugepage ]; then
+#       thp_path=/sys/kernel/mm/transparent_hugepage
+#     elif [ -d /sys/kernel/mm/redhat_transparent_hugepage ]; then
+#       thp_path=/sys/kernel/mm/redhat_transparent_hugepage
+#     else
+#       return 0
+#     fi
+#
+#     echo 'never' > ${thp_path}/enabled
+#     echo 'never' > ${thp_path}/defrag
+#
+#     unset thp_path
+#     ;;
+# esac
+## make it executable
+sudo chmod 755 /etc/init.d/disable-transparent-hugepages
+## run it on boot
+sudo chkconfig --add disable-transparent-hugepages
+
 ## Give a permissive policy on your /mongo/ directory that permits access to daemons (like the mongod service.).
 # http://stackoverflow.com/questions/30182016/unable-to-start-mongodb-3-0-2-service-on-centos-7
-sudo setenforce 0
+# https://www.centos.org/docs/5/html/5.1/Deployment_Guide/sec-sel-enable-disable.html
+sudo subl /etc/sysconfig/selinux
+# set SELINUX=disabled
 {% endhighlight %}
 
 Automatically enabling your network connection at startup on CentOS 7:
