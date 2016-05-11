@@ -147,6 +147,9 @@ sudo subl /etc/yum.conf
 
 ## start mongod when booting
 sudo chkconfig mongod on
+## Give a permissive policy on your /mongo/ directory that permits access to daemons (like the mongod service.).
+# http://stackoverflow.com/questions/30182016/unable-to-start-mongodb-3-0-2-service-on-centos-7
+sudo setenforce 0
 {% endhighlight %}
 
 Automatically enabling your network connection at startup on CentOS 7:
