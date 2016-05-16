@@ -250,4 +250,10 @@ sudo systemctl enable xrdp.service
 Mount another network disk:
 {% highlight bash %}
 sudo mount -t cifs -o username="xxxxxxx",password="yyyyyyy" //ip-address/folder /mnt/folder
+
+# to mount on boot
+subl /etc/fstab
+## add following lines into file
+# //ip-address/folder /mnt/folder username=xxxxxxx,password=yyyyyyy,uid=1000,gid=1000,sec=ntlm,iocharset=utf8 0 0
+sudo mount -a
 {% endhighlight %}
