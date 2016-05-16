@@ -93,7 +93,7 @@ wget https://download2.rstudio.org/rstudio-server-rhel-0.99.896-x86_64.rpm
 sudo yum install --nogpgcheck rstudio-server-rhel-0.99.896-x86_64.rpm
 ## start the rstudio-server
 sudo rstudio-server start
-## start rstudio-server when booting
+## start rstudio-server on boot
 sudo cp /usr/lib/rstudio-server/extras/init.d/redhat/rstudio-server /etc/init.d/
 sudo chmod 755 /etc/init.d/rstudio-server
 sudo chkconfig --add rstudio-server
@@ -111,7 +111,7 @@ wget https://download3.rstudio.org/centos5.9/x86_64/shiny-server-1.4.2.786-rh5-x
 sudo yum install --nogpgcheck shiny-server-1.4.2.786-rh5-x86_64.rpm
 ## start the shiny-server
 sudo systemctl start shiny-server
-## start shiny-server when booting
+## start shiny-server on boot
 sudo cp /opt/shiny-server/config/init.d/redhat/shiny-server /etc/init.d/
 sudo chmod 755 /etc/init.d/shiny-server
 sudo chkconfig --add shiny-server
@@ -145,7 +145,7 @@ sudo subl /etc/yum.conf
 ## add following line into file
 # exclude=mongodb-org,mongodb-org-server,mongodb-org-shell,mongodb-org-mongos,mongodb-org-tools
 
-## start mongod when booting
+## start mongod on boot
 sudo chkconfig mongod on
 
 ## increase the soft limit of number of process for mongod
@@ -207,8 +207,25 @@ Automatically enabling your network connection at startup on CentOS 7:
 sudo sed -i -e 's@^ONBOOT=no@ONBOOT=yes@' /etc/sysconfig/network-scripts/ifcfg-eno1
 {% endhighlight %}
 
+Installation of ftp server on CentOS 7:
+{% highlight bash %}
+sudo yum install -y vsftpd
 
-Installation of xrdp on CentOS 7 / RHEL 7:
+# edit the environment of vsftpd
+sudo subl /etc/vsftpd/vsftpd.conf
+# stop the anonymous logging
+sudo sed -i -e 's@^anonymous_enable=YES@anonymous_enable=NO@' /etc/vsftpd/vsftpd.conf
+
+# start the service and start on boot
+sudo service vsftpd start
+chkconfig vsftpd on
+
+## open the firewall for xrdp
+sudo firewall-cmd --zone=public --add-port=21/tcp --permanent
+sudo firewall-cmd --reload
+{% endhighlight %}
+
+Installation of xrdp on CentOS 7 / RHEL 7 (remote desktop from windows):
 {% highlight bash %}
 sudo subl /etc/yum.repos.d/xrdp.repo
 ## add following lines into file
@@ -219,11 +236,18 @@ sudo subl /etc/yum.repos.d/xrdp.repo
 # gpgcheck=0
 sudo yum install -y xrdp tigervnc-server
 
-sudo chkconfig xrdp on
-
 ## open the firewall for xrdp
-firewall-cmd --zone=public --add-port=3389/tcp --permanent
-firewall-cmd --reload
+sudo firewall-cmd --zone=public --add-port=3389/tcp --permanent
+sudo firewall-cmd --reload
+# start service
+sudo systemctl start xrdp.service
+# enable service on boot
+sudo systemctl enable xrdp.service
+
+## Attention: the bpp color must be set to be 24bit. (in windows.)
 {% endhighlight %}
 
-
+Mount another network disk:
+{% highlight bash %}
+sudo mount -t cifs -o username="xxxxxxx",password="yyyyyyy" //ip-address/folder /mnt/folder
+{% endhighlight %}
