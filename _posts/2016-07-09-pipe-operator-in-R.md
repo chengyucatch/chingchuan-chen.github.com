@@ -68,23 +68,23 @@ published: true
 例如：
 
 
-```r
+{% highlight R %}
 a_list <- list(1:6, 3:5, 4:7)
 sort_uni_a <- sort(unique(unlist(a_list)))
-```
+{% endhighlight %}
 
 第二行這樣連在一起非常的難讀，但是改成下面這樣，又有效能問題(暫存變數)：
 
 
-```r
+{% highlight R %}
 unlist_list <- unlist(a_list)
 sort_uni_a <- sort(unique(unlist_list))
-```
+{% endhighlight %}
 
 或是改成這樣，卻沒覺得可讀性上升多少：
 
 
-```r
+{% highlight R %}
 sort_uni_a <- sort(
   unique(
     unlist(
@@ -92,14 +92,14 @@ sort_uni_a <- sort(
     )
   )
 )
-```
+{% endhighlight %}
 
 但是用`%>%`改寫就可以兼顧可讀性跟效能問題：
 
 
-```r
+{% highlight R %}
 sort_uni_a <- a_list %>% unlist %>% unique %>% sort
-```
+{% endhighlight %}
 
 這樣就可以很容易知道他把`a_list`先拉成一個向量(`unlist`)，然後取唯一(`unique`)
 
@@ -114,14 +114,14 @@ sort_uni_a <- a_list %>% unlist %>% unique %>% sort
 舉一個簡單的例子，來說明`%>%`的用法
 
 
-```r
+{% highlight R %}
 a <- 1
 f <- function(a) a + 1
 f(a)
 a %>% f
 a %>% f()
 a %>% f(.)
-```
+{% endhighlight %}
 
 跑上面的程式可以發現，最後四個output都一樣
 
@@ -148,7 +148,7 @@ a %>% f(.)
 針對這個，我給一段簡單的程式碼來示範：
 
 
-```r
+{% highlight R %}
 a_list <- list(1:5, 3:7, 6:10)
 a_list %>% do.call(rbind, .)
 a_list %>% Reduce(cbind, .)
@@ -160,7 +160,7 @@ f <- function(x, a, b) a*x^2 + b
 1:5 %>% f(., 2, 5) # 同 1:5 %>% f(2, 5)
 1:5 %>% f(2, ., 5)
 1:5 %>% f(2, 5, .)
-```
+{% endhighlight %}
 
 但是，這點被Kun Ren攻擊，這裡有一些模稜兩可的問題，後面在提。
 
@@ -171,16 +171,16 @@ f <- function(x, a, b) a*x^2 + b
 這樣說有點難懂，舉個例子
 
 
-```r
+{% highlight R %}
 1:2 %>% {
   list(
     cbind(9:10, .),
     3:4 %>% cbind(9:10, .)
   )
 }
-```
+{% endhighlight %}
 
-```
+{% highlight R %}
 ## [[1]]
 ##         .
 ## [1,]  9 1
@@ -190,7 +190,7 @@ f <- function(x, a, b) a*x^2 + b
 ##         .
 ## [1,]  9 3
 ## [2,] 10 4
-```
+{% endhighlight %}
 
 可以看到第一個可以很直覺的解讀，`9:10`是跟傳入的`1:2`做行合併
 
@@ -204,13 +204,13 @@ f <- function(x, a, b) a*x^2 + b
 
 
 
-```r
+{% highlight R %}
 f <- function(x, y, z = "nothing") {
   cat("x =", x, "\n")
   cat("y =", y, "\n")
   cat("z =", z, "\n")
 }
-```
+{% endhighlight %}
 
 `1:10 %>% f(mean(.), median(.))`到底是
 
@@ -242,13 +242,13 @@ f <- function(x, y, z = "nothing") {
 先看簡單的例子 (`add`是`magrittr`提供用在`%>%`上的`+` (這部分請看最後面的補充))
 
 
-```r
+{% highlight R %}
 a <- 1
 a %>% add(1)  # 同 a %>% '+'(1) or a %>% '+'(., 1)
 a # 1
 a %<>% add(1)
 a  # 2
-```
+{% endhighlight %}
 
 這個例子可以看的出來`%<>%`除了傳入變數之外，也會改變傳入變數的值
 
@@ -259,13 +259,13 @@ a  # 2
 只需要在第一個傳導變數的operator做改變即可，舉例來說：
 
 
-```r
+{% highlight R %}
 dat <- data.frame(a = 1:3, b = 8:10)
 dat <- dat %>% rbind(dat)
 dat2 <- data.frame(a = 1:3, b = 8:10)
 dat2 %<>% rbind(dat2)
 all.eqaul(dat, dat2) # TRUE
-```
+{% endhighlight %}
 
 至於`%T>%`，他只傳遞變數，不回傳值，通常用來傳遞到不回傳值的`function`上
 
@@ -276,13 +276,13 @@ all.eqaul(dat, dat2) # TRUE
 並且同時做後面function的動作，舉例來說：
 
 
-```r
+{% highlight R %}
 dat <- data.frame(a = rep(1:3,2), b = rnorm(6))
 dat2 <- dat %>% {tapply(.$b, .$a, sum)} %>%
 { 
   data.frame(a = names(.) %>% as.integer, b = .)
 } %T>% plot(.$a, .$b)
-```
+{% endhighlight %}
 
 這裡`dat2`就是一個新的`data.frame`，同時，我們也把`a, b`的scatter plot畫出來
 
@@ -305,14 +305,14 @@ dat2 <- dat %>% {tapply(.$b, .$a, sum)} %>%
 再給一個例子說明`%$%`就好
 
 
-```r
+{% highlight R %}
 a <- 3
 b <- -2
 x <- rnorm(100)
 y <- a + b * x + rnorm(100)
 fit <- lm(y ~ x)
 sigma_hat <- fit %$% {crossprod(residuals) / df.residual}
-```
+{% endhighlight %}
 
 ### magrittr一些補充
 
@@ -325,20 +325,20 @@ sigma_hat <- fit %$% {crossprod(residuals) / df.residual}
 這個可以讓你寫pipe chain的時候更加順手，像是
 
 
-```r
+{% highlight R %}
 vals <- 1:3 %>% data.frame(a = ., b = .^2) %>% 
   set_rownames(LETTERS[1:3]) %>%
   lm(b ~ a, data = .) %>% predict
-```
+{% endhighlight %}
 
 不然你可能會這樣寫
 
 
-```r
+{% highlight R %}
 dat <- 1:3 %>% data.frame(a = ., b = .^2)
 rownames(dat) <- LETTERS[1:3]
 vals = dat %>% lm(b ~ a, data = .) %>% predict
-```
+{% endhighlight %}
 
 你可能只是要`vals`這個變數，你卻還要多創一個`dat`這個暫存變數，而中斷chain
 
@@ -406,12 +406,12 @@ vals = dat %>% lm(b ~ a, data = .) %>% predict
 例如：
 
 
-```r
+{% highlight R %}
 a_list <- list(1:5, 3:7, 6:10)
 sort_uni_a <- a_list %>>% unlist %>>% 
   (~ cat("what is it? show me:\n", .)) %>>%
   unique %>>% sort
-```
+{% endhighlight %}
 
 這樣一來就可以在pipe的過程中把途中的變數show出來
 
@@ -422,29 +422,29 @@ sort_uni_a <- a_list %>>% unlist %>>%
 以往的寫法會像是：
 
 
-```r
+{% highlight R %}
 a_list <- list(1:5, 3:7, 6:10)
 a_list_to_vec <- a_list %>>% unlist
 mean_list_a <- mean(a_list_to_vec)
 sort_uni_demean_a <- a_list_to_vec - mean_list_a
-```
+{% endhighlight %}
 
 這樣寫就需要兩個暫存變數，`a_list_to_vec`跟`mean_list_a`，而且不能一路pipe
 
 那改用side effect之後，就可以寫成這樣：
 
 
-```r
+{% highlight R %}
 a_list <- list(1:5, 3:7, 6:10)
 sort_uni_demean_a <- a_list %>>% unlist %>>% 
   (~ mean_list_a <- mean(.)) %>>%
   unique %>>% sort %>>% `-`(mean_list_a)
-```
+{% endhighlight %}
 
 至於`%>%`跟`%>>%`的效能比較可以看下面這段程式(例子取自前面提及的Kun Ren部落格文章)：
 
 
-```r
+{% highlight R %}
 library(magrittr)
 library(pipeR)
 library(microbenchmark)
@@ -461,14 +461,14 @@ microbenchmark(magrittr = {
       "=="("rstats")
   })
 }, times = 20L)
-```
+{% endhighlight %}
 
-```
+{% highlight R %}
 ## Unit: milliseconds
 ##      expr       min        lq     mean    median        uq       max neval
 ##  magrittr 1171.9026 1185.1872 1205.280 1206.4914 1224.1046 1254.3936    20
 ##     pipeR  367.8502  376.4954  390.729  387.3396  406.0361  438.7156    20
-```
+{% endhighlight %}
 
 可以看出效能改進相當顯著，大概快了3倍，隨著loop次數增加
 
