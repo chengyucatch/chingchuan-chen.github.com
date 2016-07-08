@@ -24,23 +24,20 @@ published: true
 A. 下載我壓縮的工具包：[Google drive](https://drive.google.com/open?id=0B1UBN4lCLHrVU3JOR0JDQ1J4Zmc)
 解壓縮之後，裡面包含九個檔案：
 
-* rubyinstaller-2.2.1-x64.exe
+* rubyinstaller-2.3.0-x64.exe
 * DevKit-mingw64-64-4.7.2-20130224-1432-sfx.exe
-* python-2.7.9.amd64.msi
-* get-pip.py
-* setuptools-15.0-py2.py3-none-any.whl
-* Pygments-2.0.2-py2-none-any.whl
+* Anaconda2-4.1.0-Windows-x86_64.exe
 * install.bat
 * Git-1.9.5-preview20150319.exe
 * RedmondPathzip.rar
 
-這九個檔案分別為ruby安裝檔、ruby環境的檔案、python安裝檔案、python-pip安裝檔案、setuptool安裝檔案、Pygments安裝檔案、安裝python套件的bat檔、Git安裝檔案以及path修改的軟體，請依下面指示安裝。
+這六個檔案分別為ruby安裝檔、ruby開發環境的檔案、python安裝檔案、python安裝bat檔、Git安裝檔案以及path修改的軟體，請依下面指示安裝。
 
-* ruby預設安裝到C:\Ruby22-x64。
+* ruby預設安裝到C:\Ruby23-x64。
 * 點擊兩下DevKit-mingw64-64-4.7.2-20130224-1432-sfx.exe，進行解壓縮，為了方便說明，以及環境設定，請解壓縮到C:\rubydevkit
-* 解壓縮RedmondPathzip.rar，打開資料夾中的Redmond Path.exe，在任意視窗中下方加入; C:\Python34; C:\Python34\Scripts;C:\Ruby22-x64，(你安裝路徑有更動，請跟著更改)，如下圖下示：
+* 解壓縮RedmondPathzip.rar，打開資料夾中的Redmond Path.exe，在任意視窗中下方加入; C:\Ruby23-x64，(你安裝路徑有更動，請跟著更改)，如下圖下示：
 ![](/images/path_setup.png)
-* 安裝python，預設安裝到C:\Python27，然後點擊兩下install.bat，便完成python安裝。
+* 點擊Anaconda2-4.1.0-Windows-x86_64.exe，安裝python，預設安裝到C:\Anaconda2，然後點擊兩下install.bat，會詢問你是否安裝，按下y，便完成python安裝。
 * 點擊Git-1.9.5-preview20150319.exe安裝Git，中間要注意，勾選Use Git from the Windows Command Prompt
 ![](/images/git_install.PNG)
 
@@ -51,9 +48,6 @@ B. 為了工作方便，請先按下windows鍵(在Ctr跟Alt之間)+R，開啟執
 打開cmd，他的預設目錄是在你的使用者下，請先輸入`cd ../..`，退到C:\>，如圖：
 ![](/images/cmd_3.png)
 
-鍵入指令`pip install pygments`，會幫你安裝python的pygments的package
-![](/images/python_install_pygments.PNG)
-
 然後在cmd中輸入下列指令：
 
 {% highlight bash %}
@@ -62,7 +56,7 @@ ruby dk.rb init
 notepad config.yml
 {% endhighlight %}
 
-輸入完以上三行指令後，將會用記事本打開一個名為`_config.yml`的檔案，最後一行改成 ` - C:\Ruby22-x64`。
+輸入完以上三行指令後，將會用記事本打開一個名為`_config.yml`的檔案，最後一行改成 ` - C:\Ruby23-x64`。
 ![](/images/dk_rb_edit.png)
 
 回到cmd，鍵入`ruby dk.rb install`，如果成功會出現下面的訊息：
@@ -141,6 +135,7 @@ Note: github不會即時更新，需要等待幾分鐘才會更新你新的上�
 {% highlight bash %}
 gem install github-pages
 gem install rails
+cd USERNAME.github.com
 bundle install
 bundle exec jekyll serve --watch
 {% endhighlight %}

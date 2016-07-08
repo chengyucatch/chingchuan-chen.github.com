@@ -464,10 +464,10 @@ microbenchmark(magrittr = {
 {% endhighlight %}
 
 {% highlight R %}
-## Unit: milliseconds
-##      expr       min        lq     mean    median        uq       max neval
-##  magrittr 1171.9026 1185.1872 1205.280 1206.4914 1224.1046 1254.3936    20
-##     pipeR  367.8502  376.4954  390.729  387.3396  406.0361  438.7156    20
+# Unit: milliseconds
+#      expr       min        lq     mean    median        uq       max neval
+#  magrittr 1171.9026 1185.1872 1205.280 1206.4914 1224.1046 1254.3936    20
+#     pipeR  367.8502  376.4954  390.729  387.3396  406.0361  438.7156    20
 {% endhighlight %}
 
 可以看出效能改進相當顯著，大概快了3倍，隨著loop次數增加
