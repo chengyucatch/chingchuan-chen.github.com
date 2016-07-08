@@ -8,6 +8,7 @@ tags: [linux]
 cssdemo: 2014-spring
 published: true
 ---
+{% include JB/setup %}
 <!-- more -->
 
 {% highlight bash %}
