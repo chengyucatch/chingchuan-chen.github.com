@@ -59,7 +59,7 @@ published: true
 
 而`%>%`可以把LHS(注：left hand side of operator)當作RHS(注：right hand side of operator)的函數的第一個input
 
-因此，透過 a %>% f 或是 a %>% f() 都等同於 f(a)
+因此，透過`a %>% f`或是`a %>% f()`都等同於`f(a)`
 
 同理，如果現在還有一個函數`g`，有兩個input，`x`跟`y`，則`g(x,y)`可以寫做`x %>% g(y)`
 
