@@ -172,15 +172,15 @@ f <- function(x, a, b) a * x^2 + b
 ```
 
 ```
-[[1]]
-        .
-[1,]  9 1
-[2,] 10 2
-
-[[2]]
-        .
-[1,]  9 3
-[2,] 10 4
+## [[1]]
+##         .
+## [1,]  9 1
+## [2,] 10 2
+## 
+## [[2]]
+##         .
+## [1,]  9 3
+## [2,] 10 4
 ```
 
 可以看到第一個可以很直覺的解讀，`9:10`是跟傳入的`1:2`做行合併
@@ -320,8 +320,7 @@ sigma_hat <- fit %$% {
 
 
 ```r
-vals <- 1:3 %>% data.frame(a = ., b = .^2) %>% set_rownames(LETTERS[1:3]) %>% 
-    lm(b ~ a, data = .) %>% predict
+vals <- 1:3 %>% data.frame(a = ., b = .^2) %>% set_rownames(LETTERS[1:3]) %>% lm(b ~ a, data = .) %>% predict
 ```
 
 不然你可能會這樣寫
@@ -401,8 +400,7 @@ vals = dat %>% lm(b ~ a, data = .) %>% predict
 
 ```r
 a_list <- list(1:5, 3:7, 6:10)
-sort_uni_a <- a_list %>>% unlist %>>% (~cat("what is it? show me:\n", .)) %>>% 
-    unique %>>% sort
+sort_uni_a <- a_list %>>% unlist %>>% (~cat("what is it? show me:\n", .)) %>>% unique %>>% sort
 ```
 
 這樣一來就可以在pipe的過程中把途中的變數show出來
@@ -428,8 +426,7 @@ sort_uni_demean_a <- a_list_to_vec - mean_list_a
 
 ```r
 a_list <- list(1:5, 3:7, 6:10)
-sort_uni_demean_a <- a_list %>>% unlist %>>% (~mean_list_a <- mean(.)) %>>% 
-    unique %>>% sort %>>% -mean_list_a
+sort_uni_demean_a <- a_list %>>% unlist %>>% (~mean_list_a <- mean(.)) %>>% unique %>>% sort %>>% -mean_list_a
 ```
 
 至於`%>%`跟`%>>%`的效能比較可以看下面這段程式(例子取自前面提及的Kun Ren部落格文章)：
@@ -452,13 +449,10 @@ microbenchmark(magrittr = {
 ```
 
 ```
-Unit: milliseconds
-     expr       min        lq      mean    median        uq       max
- magrittr 1195.3153 1218.8616 1253.2375 1239.6662 1293.2430 1341.1596
-    pipeR  379.2165  388.9425  394.5961  397.2178  399.2212  407.2551
- neval
-    20
-    20
+## Unit: milliseconds
+##      expr       min       lq      mean   median        uq       max neval
+##  magrittr 1215.1390 1253.883 1282.4720 1279.271 1304.1553 1400.9079    20
+##     pipeR  377.7212  386.284  395.8731  393.892  406.5949  418.6119    20
 ```
 
 可以看出效能改進相當顯著，大概快了3倍，隨著loop次數增加
