@@ -481,7 +481,7 @@ hbase(main):001:0>
 
       測試建表、塞資料、擷取資料跟刪除表(#後面是會出現的訊息)：
 
-{% endhighlight %}
+{% highlight bash %}
 # 建表
 create 'testData','cf'  
 # 0 row(s) in 1.3420 seconds
