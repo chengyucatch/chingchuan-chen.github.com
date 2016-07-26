@@ -21,10 +21,10 @@ published: true
 <!-- more -->
 
 0. 準備工作
-  a. 安裝好VMware，然後新增一台VM (網路連接方式使用bridged即可)，引進centos 7.2安裝映像檔
-  b. 選擇最小安裝，並新增使用者: tester
-  c. 安裝完後要先configure：
-    i. 給予使用者sudoer權限
+..a. 安裝好VMware，然後新增一台VM (網路連接方式使用bridged即可)，引進centos 7.2安裝映像檔
+..b. 選擇最小安裝，並新增使用者: tester
+..c. 安裝完後要先configure：
+....i. 給予使用者sudoer權限
 ``` bash
 su # 切換到root
 visudo # 打開設定檔
