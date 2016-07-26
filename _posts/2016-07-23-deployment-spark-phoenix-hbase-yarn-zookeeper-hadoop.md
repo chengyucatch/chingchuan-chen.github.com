@@ -240,7 +240,7 @@ source /etc/bashrc
     <value>yarn</value>
   </property>
 </configuration>
-{% highlight  %}
+{% endhighlight  %}
 
     1. hdfs-site.xml
     用`vi $HADOOP_CONF_DIR/hdfs-site.xml`編輯，改成下面這樣：
@@ -268,7 +268,7 @@ source /etc/bashrc
     <value>file:///usr/local/hadoop/tmp/name/chkpt</value>
   </property>
 </configuration>
-{% highlight  %}
+{% endhighlight  %}
 
     建立node需要的資料夾：
         
@@ -276,7 +276,7 @@ source /etc/bashrc
 mkdir -p $HADOOP_HOME/tmp
 mkdir -p $HADOOP_HOME/tmp/data
 mkdir -p $HADOOP_HOME/tmp/name
-{% highlight  %}
+{% endhighlight  %}
 
     1. yarn-site.xml
     用`vi $HADOOP_CONF_DIR/yarn-site.xml`編輯，改成下面這樣：
