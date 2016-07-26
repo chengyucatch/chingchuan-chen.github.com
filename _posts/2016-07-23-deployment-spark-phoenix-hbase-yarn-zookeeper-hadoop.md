@@ -21,6 +21,7 @@ published: true
 <!-- more -->
 
 1. 準備工作
+
     i. 安裝好VMware，然後新增一台VM (網路連接方式使用bridged即可)，引進centos 7.2安裝映像檔
     
     ii. 選擇最小安裝，並新增使用者: tester
