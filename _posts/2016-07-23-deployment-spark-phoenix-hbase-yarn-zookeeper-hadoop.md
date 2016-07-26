@@ -35,7 +35,21 @@ visudo # 打開設定檔
 
         1. 網路設定
         
-        先查看自己電腦的網段是哪一個(使用撥接就無法，要透過IP分享器)，在cmd上找ipconfig就可以找到，像是我的電腦是192.168.0.111，預設閘道192.168.0.1，沒有設定DNS，接著用`ip a`看VM網路卡的裝置名稱，我的VM網路卡名稱是eno16777736，然後就使用`sudo ifup eno16777736`去啟用網路，然後使用`sudo vi /etc/sysconfig/network-scripts/ifcfg-eno16777736`去修改網路設定，改成下方這樣：
+        先查看自己電腦的網段是哪一個(使用撥接就無法，要透過IP分享器)
+        
+        在cmd上找ipconfig就可以找到，像是我的電腦是192.168.0.111
+        
+        預設閘道192.168.0.1，沒有設定DNS
+        
+        接著用`ip a`看VM網路卡的裝置名稱
+        
+        我的VM網路卡名稱是eno16777736
+        
+        然後就使用`sudo ifup eno16777736`去啟用網路
+        
+        接著使用`sudo vi /etc/sysconfig/network-scripts/ifcfg-eno16777736`去修改網路設定
+        
+        改成下方這樣：
       
 ``` bash
 TYPE=Ethernet
@@ -59,7 +73,13 @@ IPV6_PEERROUTES=yes
 IPV6_PRIVACY=no
 ```
 
-    然後使用`sudo service network restart`重啟網路服務，這樣網路設定就完成了。測試方式為：`ping 192.168.0.1`(DNS)跟`ping www.google.com`就可以知道網路有沒有設定成功了。
+    之後使用`sudo service network restart`重啟網路服務
+    
+    這樣網路設定就完成了。測試方式為：`ping 192.168.0.1`(DNS)跟
+    
+    `ping www.google.com`就可以知道網路有沒有設定成功了。
+    
+    
     1. 安裝ssh跟設定ssh資料夾權限
     
 ``` bash
