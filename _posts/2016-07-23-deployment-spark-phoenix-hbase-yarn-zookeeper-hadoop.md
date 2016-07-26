@@ -21,18 +21,18 @@ published: true
 <!-- more -->
 
 1. 準備工作
-  1. 安裝好VMware，然後新增一台VM (網路連接方式使用bridged即可)，引進centos 7.2安裝映像檔
-  1. 選擇最小安裝，並新增使用者: tester
-  1. 安裝完後要先configure：
-    1. 給予使用者sudoer權限
+    1. 安裝好VMware，然後新增一台VM (網路連接方式使用bridged即可)，引進centos 7.2安裝映像檔
+    1. 選擇最小安裝，並新增使用者: tester
+    1. 安裝完後要先configure：
+      1. 給予使用者sudoer權限
 ``` bash
 su # 切換到root
 visudo # 打開設定檔
 # 打/root\tALL找到這行 `root ALL=(ALL) ALL`
 # 在下面新增 tester ALL=(ALL) ALL
 ```
-    1. 網路設定
-    先查看自己電腦的網段是哪一個(使用撥接就無法，要透過IP分享器)，在cmd上找ipconfig就可以找到，像是我的電腦是192.168.0.111，預設閘道192.168.0.1，沒有設定DNS，接著用`ip a`看VM網路卡的裝置名稱，我的VM網路卡名稱是eno16777736，然後就使用`sudo ifup eno16777736`去啟用網路，然後使用`sudo vi /etc/sysconfig/network-scripts/ifcfg-eno16777736`去修改網路設定，改成下方這樣：
+      1. 網路設定
+      先查看自己電腦的網段是哪一個(使用撥接就無法，要透過IP分享器)，在cmd上找ipconfig就可以找到，像是我的電腦是192.168.0.111，預設閘道192.168.0.1，沒有設定DNS，接著用`ip a`看VM網路卡的裝置名稱，我的VM網路卡名稱是eno16777736，然後就使用`sudo ifup eno16777736`去啟用網路，然後使用`sudo vi /etc/sysconfig/network-scripts/ifcfg-eno16777736`去修改網路設定，改成下方這樣：
 ``` bash
 TYPE=Ethernet
 BOOTPROTO=none
@@ -55,7 +55,7 @@ IPV6_PEERROUTES=yes
 IPV6_PRIVACY=no
 ```
     然後使用`sudo service network restart`重啟網路服務，這樣網路設定就完成了。測試方式為：`ping 192.168.0.1`(DNS)跟`ping www.google.com`就可以知道網路有沒有設定成功了。
-  1. 安裝ssh跟設定ssh資料夾權限
+    1. 安裝ssh跟設定ssh資料夾權限
 ``` bash
 # 安裝SSH
 sudo yum -y install rsync openssh-server-*
@@ -72,7 +72,7 @@ sudo chmod 600 /home/tester/.ssh/id_rsa
 sudo service sshd restart
 ```
   
-  1. 編輯/etc/hosts
+    1. 編輯/etc/hosts
 ``` bash 
 sudo tee -a /etc/hosts << "EOF"
 192.168.0.161 sparkServer0
@@ -82,20 +82,20 @@ sudo tee -a /etc/hosts << "EOF"
 EOF
 ```  
   
-  1. 編輯/etc/hostname
+    1. 編輯/etc/hostname
 ``` bash 
 sudo vi /etc/hostname
 # 對應的電腦修改成對應的名稱
 ```
 
-  1. 斷掉防火牆
+    1. 斷掉防火牆
 ``` bash 
 systemctl stop firewalld
 systemctl disable firewalld  
 ```
 
 1. 開始部署
-  1. 關掉ip v6
+   1. 關掉ip v6
 ``` bash
 sudo tee -a /etc/sysctl.conf << "EOF"
 net.ipv6.conf.all.disable_ipv6 = 1
@@ -103,7 +103,8 @@ net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
 EOF
 ```
-  1. 下載檔案並移到適當位置
+    1. 下載檔案並移到適當位置
+    
 ``` bash
 # 下載並安裝java
 curl -v -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u92-b14/jdk-8u92-linux-x64.rpm -o jdk-8u92-linux-x64.rpm
@@ -138,8 +139,9 @@ tar -zxvf spark-1.6.2-bin-hadoop2.6.tgz
 sudo mv spark-1.6.2-bin-hadoop2.6 /usr/local/spark
 sudo chown -R tester /usr/local/spark
 ```
-  
-  1. 環境變數設置
+   
+    1. 環境變數設置
+    
 ``` bash
 sudo tee -a /etc/bashrc << "EOF"
 # JAVA
@@ -178,7 +180,7 @@ EOF
 source /etc/bashrc
 ```
   
-  1. 配置Hadoop
+1. 配置Hadoop
   
     1. core-site.xml
     用`vi $HADOOP_CONF_DIR/core-site.xml`編輯，改成下面這樣：
@@ -196,8 +198,8 @@ source /etc/bashrc
 </configuration>
 ```  
   
-    1. mapred-site.xml
-    先用`cp $HADOOP_CONF_DIR/mapred-site.xml.template $HADOOP_CONF_DIR/mapred-site.xml`，然後用`vi $HADOOP_CONF_DIR/mapred-site.xml`編輯，改成下面這樣：
+        1. mapred-site.xml
+        先用`cp $HADOOP_CONF_DIR/mapred-site.xml.template $HADOOP_CONF_DIR/mapred-site.xml`，然後用`vi $HADOOP_CONF_DIR/mapred-site.xml`編輯，改成下面這樣：
     
 ``` xml
 <configuration>
@@ -208,8 +210,8 @@ source /etc/bashrc
 </configuration>
 ``` 
 
-    1. hdfs-site.xml
-    用`vi $HADOOP_CONF_DIR/hdfs-site.xml`編輯，改成下面這樣：
+        1. hdfs-site.xml
+        用`vi $HADOOP_CONF_DIR/hdfs-site.xml`編輯，改成下面這樣：
 ``` xml
 <configuration>
   <property>
@@ -234,15 +236,15 @@ source /etc/bashrc
   </property>
 </configuration>
 ``` 
-    建立node需要的資料夾：
+        建立node需要的資料夾：
 ``` bash
 mkdir -p $HADOOP_HOME/tmp
 mkdir -p $HADOOP_HOME/tmp/data
 mkdir -p $HADOOP_HOME/tmp/name
 ``` 
 
-    1. yarn-site.xml
-    用`vi $HADOOP_CONF_DIR/yarn-site.xml`編輯，改成下面這樣：
+        1. yarn-site.xml
+        用`vi $HADOOP_CONF_DIR/yarn-site.xml`編輯，改成下面這樣：
     
 ``` xml
 <configuration>
@@ -261,7 +263,7 @@ mkdir -p $HADOOP_HOME/tmp/name
 </configuration>
 ```
 
-    1. 配置slaves
+        1. 配置slaves
 ``` bash
 # 傳入slaves的電腦名稱
 sudo tee $HADOOP_CONF_DIR/slaves << "EOF"
@@ -271,16 +273,16 @@ sparkServer3
 EOF
 ```
 
-  1. 配置Zookeeper
-  先用`cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg`，然後用`vi $ZOOKEEPER_HOME/conf/zoo.cfg`編輯，改成下面這樣：
+      1. 配置Zookeeper
+      先用`cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg`，然後用`vi $ZOOKEEPER_HOME/conf/zoo.cfg`編輯，改成下面這樣：
 
 ``` bash
 dataDir=/usr/local/zookeeper/data
 server.1=sparkServer0:2888:3888
 ```
   
-  1. 配置HBase
-  用`vi $HBASE_HOME/conf/hbase-site.xml`編輯，改成下面這樣：
+      1. 配置HBase
+      用`vi $HBASE_HOME/conf/hbase-site.xml`編輯，改成下面這樣：
 ``` xml
 <configuration>
   <property>
@@ -314,9 +316,9 @@ server.1=sparkServer0:2888:3888
 </configuration>
 ```
 
-  接著，用`cp $HADOOP_CONF_DIR/slaves $HBASE_HOME/conf/regionservers`複製hadoop的slaves
+      接著，用`cp $HADOOP_CONF_DIR/slaves $HBASE_HOME/conf/regionservers`複製hadoop的slaves
   
-  1. 配置phoenix
+      1. 配置phoenix
 ``` bash
 # 縮短名稱
 mv phoenix-4.7.0-HBase-1.1-bin phoenix-4.7.0
@@ -337,7 +339,7 @@ cp phoenix-4.7.0/LICENSE $PHOENIX_HOME/LICENSE
 chmod +x $PHOENIX_HOME/bin/*.py
 ```
 
-  並且在用`vi $PHOENIX_HOME/bin/hbase-site.xml`加入下面的設定
+      並且在用`vi $PHOENIX_HOME/bin/hbase-site.xml`加入下面的設定
 ``` xml
 <property>
 <name>fs.hdfs.impl</name>
@@ -345,7 +347,7 @@ chmod +x $PHOENIX_HOME/bin/*.py
 </property>
 ```
   
-  1. 配置scala and spark
+      1. 配置scala and spark
 ``` bash 
 # 複製hadoop的slaves
 cp $HADOOP_CONF_DIR/slaves $SPARK_HOME/conf/slaves
@@ -405,8 +407,8 @@ hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.4.j
 # Estimated value of Pi is 3.14800000000000000000
 ```
   
-  1. zookeeper
-  鍵入`zkCli.sh 127.0.0.1:2181`會出現下面的訊息：
+      1. zookeeper
+      鍵入`zkCli.sh 127.0.0.1:2181`會出現下面的訊息：
   
 ``` bash
 WATCHER::
@@ -415,10 +417,10 @@ WatchedEvent state:SyncConnected type:None path:null
 [zk: 127.0.0.1:2181(CONNECTED) 0]
 ```
 
-  這時候試著輸入看看`create /test01 abcd`，然後輸入`ls /`看看是否會出現`[test01, zookeeper]`，如果是，zookeeper就是設定成功，如果中間有出現任何錯誤，則否，最後用`delete /test01`做刪除即可，然後用`quit`離開。
+      這時候試著輸入看看`create /test01 abcd`，然後輸入`ls /`看看是否會出現`[test01, zookeeper]`，如果是，zookeeper就是設定成功，如果中間有出現任何錯誤，則否，最後用`delete /test01`做刪除即可，然後用`quit`離開。
 
-  1. HBase
-  鍵入`hbase shell`會出現下面的訊息：
+      1. HBase
+      鍵入`hbase shell`會出現下面的訊息：
 ``` bash
 SLF4J: Class path contains multiple SLF4J bindings.
 SLF4J: Found binding in [jar:file:/usr/local/hbase/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
@@ -432,7 +434,7 @@ Version 1.1.5, r239b80456118175b340b2e562a5568b5c744252e, Sun May  8 20:29:26 PD
 hbase(main):001:0>
 ```
 
-  測試建表、塞資料、擷取資料跟刪除表(#後面是會出現的訊息)：
+      測試建表、塞資料、擷取資料跟刪除表(#後面是會出現的訊息)：
 
 ```
 # 建表
@@ -484,8 +486,8 @@ list
 # 
 # => []
 ```
-
-  最後可以用`exit`離開hbase shell。
+  
+      最後可以用`exit`離開hbase shell。
 
   1. phoenix
 ``` bash 
@@ -584,7 +586,7 @@ sqlline.py sparkServer0:2181
 ## 9 rows selected (0.03 seconds)
 ```
 
-  離開請按`CTRL+Z`或是用`!quit`，輸入`exit()`是沒用的。接下來，我們試試看在`hbase`裡面看不看的到我們剛剛插入的表，打`hbase shell`進入，然後開始測試：
+      離開請按`CTRL+Z`或是用`!quit`，輸入`exit()`是沒用的。接下來，我們試試看在`hbase`裡面看不看的到我們剛剛插入的表，打`hbase shell`進入，然後開始測試：
   
 ``` bash 
 # scan看看就可以發現表已經存進來了
@@ -611,7 +613,7 @@ sqlline.py sparkServer0:2181
 ## 9 row(s) in 0.1840 seconds
 ```
    
-   最後是進去`sqlline.py`去刪掉剛剛建立的表：
+      最後是進去`sqlline.py`去刪掉剛剛建立的表：
 ``` bash 
 sqlline.py sparkServer0:2181
 # 0: jdbc:phoenix:sparkServer0:2181> DROP TABLE STOCK_SYMBOL;
@@ -629,8 +631,8 @@ sqlline.py sparkServer0:2181
 ## +------------+--------------+-------------+---------------+----------+------------+----------------------------+----------+
 ```
 
-  1. spark 
-  利用spark提供的例子去測試看看 (記得要先開啟hadoop)
+      1. spark 
+      利用spark提供的例子去測試看看 (記得要先開啟hadoop)
 ``` bash 
 spark-submit --class org.apache.spark.examples.SparkPi \
   --deploy-mode cluster  \
@@ -642,34 +644,34 @@ spark-submit --class org.apache.spark.examples.SparkPi \
    /usr/local/spark/lib/spark-examples-1.6.2-hadoop2.6.0.jar
 ```
 
-最後就可以看到任務成功，如圖所示：
+    最後就可以看到任務成功，如圖所示：
 ![](/images/sparkSucceeded_1.PNG)
 
-用上面的連結就可以看到任務的成功情況：
+    用上面的連結就可以看到任務的成功情況：
 ![](/images/sparkSucceeded_2.PNG)
 
 5. Reference
 
-1. vm:
-  a. https://dotblogs.com.tw/jhsiao/2013/09/26/120726
-  b. https://read01.com/DQO2jg.html
-  c. https://read01.com/KEQ6GP.html
+  1. vm:
+    a. https://dotblogs.com.tw/jhsiao/2013/09/26/120726
+    b. https://read01.com/DQO2jg.html
+    c. https://read01.com/KEQ6GP.html
 
-2. centos:
-a. https://www.howtoforge.com/creating_a_local_yum_repository_centos
-b.  http://www.serverlab.ca/tutorials/linux/network-services/creating-a-yum-repository-server-for-red-hat-and-centos/
-c. http://ask.xmodulo.com/change-network-interface-name-centos7.html
-d. http://yenpai.idis.com.tw/archives/240-%E6%95%99%E5%AD%B8-centos-6-3-%E5%AE%89%E8%A3%9D-2%E7%B6%B2%E8%B7%AF%E8%A8%AD%E5%AE%9A%E7%AF%87?doing_wp_cron=1468854397.3452270030975341796875
+  2. centos:
+    a. https://www.howtoforge.com/creating_a_local_yum_repository_centos
+    b.  http://www.serverlab.ca/tutorials/linux/network-services/creating-a-yum-repository-server-for-red-hat-and-centos/
+    c. http://ask.xmodulo.com/change-network-interface-name-centos7.html
+    d. http://yenpai.idis.com.tw/archives/240-%E6%95%99%E5%AD%B8-centos-6-3-%E5%AE%89%E8%A3%9D-2%E7%B6%B2%E8%B7%AF%E8%A8%AD%E5%AE%9A%E7%AF%87?doing_wp_cron=1468854397.3452270030975341796875
 
-3. hadoop, hbase, zookeeper:
-a. http://tsai-cookie.blogspot.tw/2015/09/hadoop-hbase-hive.html
-b. http://lyhpcha.pixnet.net/blog/post/60903916-hadoop%E3%80%81zookeeper%E3%80%81hbase%E5%AE%89%E8%A3%9D%E9%85%8D%E7%BD%AE%E8%AA%AA%E6%98%8E
-c. http://blog.csdn.net/smile0198/article/details/17660205
+  3. hadoop, hbase, zookeeper:
+    a. http://tsai-cookie.blogspot.tw/2015/09/hadoop-hbase-hive.html
+    b. http://lyhpcha.pixnet.net/blog/post/60903916-hadoop%E3%80%81zookeeper%E3%80%81hbase%E5%AE%89%E8%A3%9D%E9%85%8D%E7%BD%AE%E8%AA%AA%E6%98%8E
+    c. http://blog.csdn.net/smile0198/article/details/17660205
 
-4. phoenix:
-a. http://www.aboutyun.com/thread-12403-1-1.html
-b. http://www.zhangshuai.top/2015/09/01/phoenix%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/
-c. http://toutiao.com/i6222878197948613122/
-d. https://phoenix.apache.org/faq.html
-e. http://ju.outofmemory.cn/entry/237491
+  4. phoenix:
+    a. http://www.aboutyun.com/thread-12403-1-1.html
+    b. http://www.zhangshuai.top/2015/09/01/phoenix%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/
+    c. http://toutiao.com/i6222878197948613122/
+    d. https://phoenix.apache.org/faq.html
+    e. http://ju.outofmemory.cn/entry/237491
 
