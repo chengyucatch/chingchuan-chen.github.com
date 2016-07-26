@@ -24,17 +24,18 @@ published: true
     1. 安裝好VMware，然後新增一台VM (網路連接方式使用bridged即可)，引進centos 7.2安裝映像檔
     1. 選擇最小安裝，並新增使用者: tester
     1. 安裝完後要先configure：
-      1. 給予使用者sudoer權限
+        1. 給予使用者sudoer權限
       
 ``` bash
 su # 切換到root
 visudo # 打開設定檔
-# 打/root\tALL找到這行`root ALL=(ALL) ALL`
+# 打/root\tALL找到這行 root ALL=(ALL) ALL
 # 在下面新增 tester ALL=(ALL) ALL
 ```
 
-      1. 網路設定
-      先查看自己電腦的網段是哪一個(使用撥接就無法，要透過IP分享器)，在cmd上找ipconfig就可以找到，像是我的電腦是192.168.0.111，預設閘道192.168.0.1，沒有設定DNS，接著用`ip a`看VM網路卡的裝置名稱，我的VM網路卡名稱是eno16777736，然後就使用`sudo ifup eno16777736`去啟用網路，然後使用`sudo vi /etc/sysconfig/network-scripts/ifcfg-eno16777736`去修改網路設定，改成下方這樣：
+        1. 網路設定
+        
+        先查看自己電腦的網段是哪一個(使用撥接就無法，要透過IP分享器)，在cmd上找ipconfig就可以找到，像是我的電腦是192.168.0.111，預設閘道192.168.0.1，沒有設定DNS，接著用`ip a`看VM網路卡的裝置名稱，我的VM網路卡名稱是eno16777736，然後就使用`sudo ifup eno16777736`去啟用網路，然後使用`sudo vi /etc/sysconfig/network-scripts/ifcfg-eno16777736`去修改網路設定，改成下方這樣：
       
 ``` bash
 TYPE=Ethernet
