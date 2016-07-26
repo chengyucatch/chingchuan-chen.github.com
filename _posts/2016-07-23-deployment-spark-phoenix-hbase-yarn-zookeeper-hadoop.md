@@ -241,8 +241,8 @@ source /etc/bashrc
 </configuration>
 ``` 
 
-        1. hdfs-site.xml
-        用`vi $HADOOP_CONF_DIR/hdfs-site.xml`編輯，改成下面這樣：
+    1. hdfs-site.xml
+    用`vi $HADOOP_CONF_DIR/hdfs-site.xml`編輯，改成下面這樣：
         
 ``` xml
 <configuration>
@@ -269,7 +269,7 @@ source /etc/bashrc
 </configuration>
 ``` 
 
-        建立node需要的資料夾：
+    建立node需要的資料夾：
         
 ``` bash
 mkdir -p $HADOOP_HOME/tmp
@@ -277,8 +277,8 @@ mkdir -p $HADOOP_HOME/tmp/data
 mkdir -p $HADOOP_HOME/tmp/name
 ``` 
 
-        1. yarn-site.xml
-        用`vi $HADOOP_CONF_DIR/yarn-site.xml`編輯，改成下面這樣：
+    1. yarn-site.xml
+    用`vi $HADOOP_CONF_DIR/yarn-site.xml`編輯，改成下面這樣：
     
 ``` xml
 <configuration>
@@ -297,7 +297,7 @@ mkdir -p $HADOOP_HOME/tmp/name
 </configuration>
 ```
 
-        1. 配置slaves
+    1. 配置slaves
         
 ``` bash
 # 傳入slaves的電腦名稱
@@ -308,16 +308,16 @@ sparkServer3
 EOF
 ```
 
-      1. 配置Zookeeper
-      先用`cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg`，然後用`vi $ZOOKEEPER_HOME/conf/zoo.cfg`編輯，改成下面這樣：
+  1. 配置Zookeeper
+  先用`cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg`，然後用`vi $ZOOKEEPER_HOME/conf/zoo.cfg`編輯，改成下面這樣：
 
 ``` bash
 dataDir=/usr/local/zookeeper/data
 server.1=sparkServer0:2888:3888
 ```
-  
-      1. 配置HBase
-      用`vi $HBASE_HOME/conf/hbase-site.xml`編輯，改成下面這樣：
+
+  1. 配置HBase
+  用`vi $HBASE_HOME/conf/hbase-site.xml`編輯，改成下面這樣：
       
 ``` xml
 <configuration>
@@ -352,9 +352,11 @@ server.1=sparkServer0:2888:3888
 </configuration>
 ```
 
-      接著，用`cp $HADOOP_CONF_DIR/slaves $HBASE_HOME/conf/regionservers`複製hadoop的slaves
+    接著，用`cp $HADOOP_CONF_DIR/slaves $HBASE_HOME/conf/regionservers`
   
-      1. 配置phoenix
+    複製hadoop的slaves
+  
+    1. 配置phoenix
       
 ``` bash
 # 縮短名稱
@@ -376,7 +378,7 @@ cp phoenix-4.7.0/LICENSE $PHOENIX_HOME/LICENSE
 chmod +x $PHOENIX_HOME/bin/*.py
 ```
 
-      並且在用`vi $PHOENIX_HOME/bin/hbase-site.xml`加入下面的設定
+    並且在用`vi $PHOENIX_HOME/bin/hbase-site.xml`加入下面的設定
       
 ``` xml
 <property>
@@ -385,7 +387,7 @@ chmod +x $PHOENIX_HOME/bin/*.py
 </property>
 ```
   
-      1. 配置scala and spark
+    1. 配置scala and spark
       
 ``` bash 
 # 複製hadoop的slaves
