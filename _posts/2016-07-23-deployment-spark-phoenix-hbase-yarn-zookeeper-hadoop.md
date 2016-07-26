@@ -21,10 +21,10 @@ published: true
 <!-- more -->
 
 1. 準備工作
-    1. 安裝好VMware，然後新增一台VM (網路連接方式使用bridged即可)，引進centos 7.2安裝映像檔
-    1. 選擇最小安裝，並新增使用者: tester
-    1. 安裝完後要先configure：
-        1. 給予使用者sudoer權限
+    i. 安裝好VMware，然後新增一台VM (網路連接方式使用bridged即可)，引進centos 7.2安裝映像檔
+    ii. 選擇最小安裝，並新增使用者: tester
+    iii. 安裝完後要先configure：
+a. 給予使用者sudoer權限
       
 {% highlight bash %}
 su # 切換到root
@@ -33,7 +33,7 @@ visudo # 打開設定檔
 # 在下面新增 tester ALL=(ALL) ALL
 {% endhighlight %}
 
-        1. 網路設定
+b. 網路設定
         
 先查看自己電腦的網段是哪一個(使用撥接就無法，要透過IP分享器)
 
@@ -73,14 +73,14 @@ IPV6_PEERROUTES=yes
 IPV6_PRIVACY=no
 {% endhighlight %}
 
-    之後使用`sudo service network restart`重啟網路服務
+之後使用`sudo service network restart`重啟網路服務
+
+這樣網路設定就完成了。測試方式為：`ping 192.168.0.1`(DNS)跟
+
+`ping www.google.com`就可以知道網路有沒有設定成功了。
     
-    這樣網路設定就完成了。測試方式為：`ping 192.168.0.1`(DNS)跟
     
-    `ping www.google.com`就可以知道網路有沒有設定成功了。
-    
-    
-    1. 安裝ssh跟設定ssh資料夾權限
+c. 安裝ssh跟設定ssh資料夾權限
     
 {% highlight bash %}
 # 安裝SSH
@@ -98,7 +98,7 @@ sudo chmod 600 /home/tester/.ssh/id_rsa
 sudo service sshd restart
 {% endhighlight %}
   
-    1. 編輯/etc/hosts
+d. 編輯/etc/hosts
 
 {% highlight bash %}
 sudo tee -a /etc/hosts << "EOF"
@@ -109,22 +109,22 @@ sudo tee -a /etc/hosts << "EOF"
 EOF
 {% endhighlight %}
 
-    1. 編輯/etc/hostname
+e. 編輯/etc/hostname
     
 {% highlight bash %}
 sudo vi /etc/hostname
 # 對應的電腦修改成對應的名稱
 {% endhighlight %}
 
-    1. 斷掉防火牆
+f. 斷掉防火牆
     
 {% highlight bash %}
 systemctl stop firewalld
 systemctl disable firewalld  
 {% endhighlight %}
 
-1. 開始部署
-   1. 關掉ip v6
+2. 開始部署
+i. 關掉ip v6
    
 {% highlight bash %}
 sudo tee -a /etc/sysctl.conf << "EOF"
@@ -134,7 +134,7 @@ net.ipv6.conf.lo.disable_ipv6 = 1
 EOF
 {% endhighlight %}
 
-    1. 下載檔案並移到適當位置
+ii. 下載檔案並移到適當位置
     
 {% highlight bash %}
 # 下載並安裝java
@@ -171,7 +171,7 @@ sudo mv spark-1.6.2-bin-hadoop2.6 /usr/local/spark
 sudo chown -R tester /usr/local/spark
 {% endhighlight %}
    
-    1. 環境變數設置
+iii. 環境變數設置
     
 {% highlight bash %}
 sudo tee -a /etc/bashrc << "EOF"
@@ -211,9 +211,9 @@ EOF
 source /etc/bashrc
 {% endhighlight %}
   
-1. 配置Hadoop
+iv. 配置Hadoop
   
-    1. core-site.xml
+a. core-site.xml
 用`vi $HADOOP_CONF_DIR/core-site.xml`編輯，改成下面這樣：
   
 {% highlight xml %}
@@ -240,7 +240,7 @@ source /etc/bashrc
 </configuration>
 {% endhighlight  %}
 
-    1. hdfs-site.xml
+b. hdfs-site.xml
 用`vi $HADOOP_CONF_DIR/hdfs-site.xml`編輯，改成下面這樣：
         
 {% highlight xml %}
@@ -296,7 +296,7 @@ mkdir -p $HADOOP_HOME/tmp/name
 </configuration>
 {% endhighlight %}
 
-    1. 配置slaves
+c. 配置slaves
         
 {% highlight bash %}
 # 傳入slaves的電腦名稱
@@ -307,7 +307,7 @@ sparkServer3
 EOF
 {% endhighlight %}
 
-    1. 配置Zookeeper
+ii. 配置Zookeeper
 先用`cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg`，然後用`vi $ZOOKEEPER_HOME/conf/zoo.cfg`編輯，改成下面這樣：
 
 {% highlight bash %}
@@ -315,7 +315,7 @@ dataDir=/usr/local/zookeeper/data
 server.1=sparkServer0:2888:3888
 {% endhighlight %}
 
-    1. 配置HBase
+iii. 配置HBase
 用`vi $HBASE_HOME/conf/hbase-site.xml`編輯，改成下面這樣：
       
 {% highlight xml %}
@@ -355,7 +355,7 @@ server.1=sparkServer0:2888:3888
 
 複製hadoop的slaves
   
-    1. 配置phoenix
+iv. 配置phoenix
       
 {% highlight bash %}
 # 縮短名稱
@@ -386,7 +386,7 @@ chmod +x $PHOENIX_HOME/bin/*.py
 </property>
 {% endhighlight %}
   
-    1. 配置scala and spark
+v. 配置scala and spark
       
 {% highlight bash %}
 # 複製hadoop的slaves
@@ -404,7 +404,7 @@ SPARK_DRIVER_MEMORY=2G
 EOF
 {% endhighlight %}
   
-1. slaves的部署
+vi. slaves的部署
 因為是VM，所以剩下的就是把映像檔clone到各個，然後針對需要個別配置的地方做配置：
 
 {% highlight bash %}
@@ -424,7 +424,7 @@ done
 EOF
 {% endhighlight %}
 
-1. 啟動hadoop server / zookeeper server / hbase server / 
+4. 啟動hadoop server / zookeeper server / hbase server / 
 
 {% highlight bash %}
 # 執行hadoop的namenode format
@@ -439,8 +439,8 @@ start-hbase.sh
 
 to sparkServer0:9000 failed on connection exception: java.net.ConnectException: Connection refused; For more details see:  http://wiki.apache.org/hadoop/ConnectionRefused
 
-1. 測試
-  1. Hadoop MapReduce例子 - pi estimation
+5. 測試
+i. Hadoop MapReduce例子 - pi estimation
   
 {% highlight bash %}
 hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.4.jar pi 10 1000
@@ -448,9 +448,9 @@ hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.4.j
 # Job Finished in 2.413 seconds
 # Estimated value of Pi is 3.14800000000000000000
 {% endhighlight %}
-  
-      1. zookeeper
-      鍵入`zkCli.sh 127.0.0.1:2181`會出現下面的訊息：
+
+ii. zookeeper
+鍵入`zkCli.sh 127.0.0.1:2181`會出現下面的訊息：
   
 {% highlight bash %}
 WATCHER::
@@ -459,10 +459,10 @@ WatchedEvent state:SyncConnected type:None path:null
 [zk: 127.0.0.1:2181(CONNECTED) 0]
 {% endhighlight %}
 
-      這時候試著輸入看看`create /test01 abcd`，然後輸入`ls /`看看是否會出現`[test01, zookeeper]`，如果是，zookeeper就是設定成功，如果中間有出現任何錯誤，則否，最後用`delete /test01`做刪除即可，然後用`quit`離開。
+這時候試著輸入看看`create /test01 abcd`，然後輸入`ls /`看看是否會出現`[test01, zookeeper]`，如果是，zookeeper就是設定成功，如果中間有出現任何錯誤，則否，最後用`delete /test01`做刪除即可，然後用`quit`離開。
 
-      1. HBase
-      鍵入`hbase shell`會出現下面的訊息：
+iii. HBase
+鍵入`hbase shell`會出現下面的訊息：
       
 {% highlight bash %}
 SLF4J: Class path contains multiple SLF4J bindings.
@@ -532,7 +532,7 @@ list
 
 最後可以用`exit`離開hbase shell。
 
-  1. phoenix
+iv. phoenix
   
 {% highlight bash %}
 # 創表SQL
@@ -676,7 +676,7 @@ sqlline.py sparkServer0:2181
 ## +------------+--------------+-------------+---------------+----------+------------+----------------------------+----------+
 {% endhighlight %}
 
-    1. spark 
+v. spark 
 利用spark提供的例子去測試看看 (記得要先開啟hadoop)
       
 {% highlight bash %}
@@ -696,28 +696,28 @@ spark-submit --class org.apache.spark.examples.SparkPi \
 用上面的連結就可以看到任務的成功情況：
 ![](/images/sparkSucceeded_2.PNG)
 
-1. Reference
+5. Reference
 
-  1. vm:
-    1. https://dotblogs.com.tw/jhsiao/2013/09/26/120726
-    1. https://read01.com/DQO2jg.html
-    1. https://read01.com/KEQ6GP.html
+    1. vm:
+        1. https://dotblogs.com.tw/jhsiao/2013/09/26/120726
+        1. https://read01.com/DQO2jg.html
+        1. https://read01.com/KEQ6GP.html
 
-  2. centos:
-    1. https://www.howtoforge.com/creating_a_local_yum_repository_centos
-    1.  http://www.serverlab.ca/tutorials/linux/network-services/creating-a-yum-repository-server-for-red-hat-and-centos/
-    1. http://ask.xmodulo.com/change-network-interface-name-centos7.html
-    1. http://yenpai.idis.com.tw/archives/240-%E6%95%99%E5%AD%B8-centos-6-3-%E5%AE%89%E8%A3%9D-2%E7%B6%B2%E8%B7%AF%E8%A8%AD%E5%AE%9A%E7%AF%87?doing_wp_cron=1468854397.3452270030975341796875
+    2. centos:
+        1. https://www.howtoforge.com/creating_a_local_yum_repository_centos
+        1.  http://www.serverlab.ca/tutorials/linux/network-services/creating-a-yum-repository-server-for-red-hat-and-centos/
+        1. http://ask.xmodulo.com/change-network-interface-name-centos7.html
+        1. http://yenpai.idis.com.tw/archives/240-%E6%95%99%E5%AD%B8-centos-6-3-%E5%AE%89%E8%A3%9D-2%E7%B6%B2%E8%B7%AF%E8%A8%AD%E5%AE%9A%E7%AF%87?doing_wp_cron=1468854397.3452270030975341796875
 
-  3. hadoop, hbase, zookeeper:
-    1. http://tsai-cookie.blogspot.tw/2015/09/hadoop-hbase-hive.html
-    1. http://lyhpcha.pixnet.net/blog/post/60903916-hadoop%E3%80%81zookeeper%E3%80%81hbase%E5%AE%89%E8%A3%9D%E9%85%8D%E7%BD%AE%E8%AA%AA%E6%98%8E
-    1. http://blog.csdn.net/smile0198/article/details/17660205
+    3. hadoop, hbase, zookeeper:
+        1. http://tsai-cookie.blogspot.tw/2015/09/hadoop-hbase-hive.html
+        1. http://lyhpcha.pixnet.net/blog/post/60903916-hadoop%E3%80%81zookeeper%E3%80%81hbase%E5%AE%89%E8%A3%9D%E9%85%8D%E7%BD%AE%E8%AA%AA%E6%98%8E
+        1. http://blog.csdn.net/smile0198/article/details/17660205
 
-  4. phoenix:
-    1. http://www.aboutyun.com/thread-12403-1-1.html
-    1. http://www.zhangshuai.top/2015/09/01/phoenix%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/
-    1. http://toutiao.com/i6222878197948613122/
-    1. https://phoenix.apache.org/faq.html
-    1. http://ju.outofmemory.cn/entry/237491
+    4. phoenix:
+        1. http://www.aboutyun.com/thread-12403-1-1.html
+        1. http://www.zhangshuai.top/2015/09/01/phoenix%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/
+        1. http://toutiao.com/i6222878197948613122/
+        1. https://phoenix.apache.org/faq.html
+        1. http://ju.outofmemory.cn/entry/237491
 
