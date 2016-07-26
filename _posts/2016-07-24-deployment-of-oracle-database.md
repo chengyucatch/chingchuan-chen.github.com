@@ -22,6 +22,14 @@ published: true
     
 這部分照著前一篇spark的布置即可
 
+其中hosts改成這樣：
+
+``` bash
+sudo tee -a /etc/hosts << "EOF"
+192.168.0.120 oracleServer
+EOF
+```
+
 2. 安裝java
 
 ``` bash
@@ -30,7 +38,7 @@ curl -v -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" http://do
 sudo yum install -y jdk-8u101-linux-x64.rpm
 # setup environment
 sudo tee -a /etc/bashrc << "EOF"
-export JAVA_HOME=/usr/java/jdk1.8.0_92/
+export JAVA_HOME=/usr/java/jdk1.8.0_101
 EOF
 source /etc/bashrc
 ```
@@ -42,6 +50,8 @@ a. set up hostname
 用`sudo vi /etc/hostname`修改hostname
 
 我這裡使用oracleTest.test.com
+
+或是直接`sudo bash -c 'echo oracleTest.test.com > /etc/hostname'`
 
 b. 創建Oracle database的group, user
 
@@ -92,7 +102,7 @@ e. 修改hosts
     
 ``` bash
 sudo tee -a /etc/hosts << "EOF"
-192.168.0.160 oracleTest oracleTest.test.com localhost localhost.localdomain
+192.168.0.120 oracleTest oracleTest.test.com localhost localhost.localdomain
 EOF
 ```
 

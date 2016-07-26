@@ -142,8 +142,8 @@ ii. 下載檔案並移到適當位置
     
 {% highlight bash %}
 # 下載並安裝java
-curl -v -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u92-b14/jdk-8u92-linux-x64.rpm -o jdk-8u92-linux-x64.rpm
-sudo yum install -y jdk-8u92-linux-x64.rpm
+curl -v -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-x64.rpm -o jdk-8u101-linux-x64.rpm
+sudo yum install -y jdk-8u101-linux-x64.rpm
 # 下載並部署Hadoop
 curl -v -j -k -L http://apache.stu.edu.tw/hadoop/common/hadoop-2.6.4/hadoop-2.6.4.tar.gz -o hadoop-2.6.4.tar.gz
 tar -zxvf hadoop-2.6.4.tar.gz
@@ -180,7 +180,7 @@ iii. 環境變數設置
 {% highlight bash %}
 sudo tee -a /etc/bashrc << "EOF"
 # JAVA
-export JAVA_HOME=/usr/java/jdk1.8.0_92/
+export JAVA_HOME=/usr/java/jdk1.8.0_101
 # HADOOP
 export HADOOP_HOME=/usr/local/hadoop
 export HADOOP_COMMON_HOME=$HADOOP_HOME
