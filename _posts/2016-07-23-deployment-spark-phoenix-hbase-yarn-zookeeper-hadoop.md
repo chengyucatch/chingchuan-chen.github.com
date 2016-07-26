@@ -22,8 +22,11 @@ published: true
 
 1. 準備工作
     i. 安裝好VMware，然後新增一台VM (網路連接方式使用bridged即可)，引進centos 7.2安裝映像檔
+    
     ii. 選擇最小安裝，並新增使用者: tester
+    
     iii. 安裝完後要先configure：
+    
 a. 給予使用者sudoer權限
       
 {% highlight bash %}
@@ -405,7 +408,8 @@ EOF
 {% endhighlight %}
   
 vi. slaves的部署
-因為是VM，所以剩下的就是把映像檔clone到各個，然後針對需要個別配置的地方做配置：
+
+因為是VM，所以剩下的就是把映像檔clone複製成各個nodes，然後針對需要個別配置的地方做配置：
 
 {% highlight bash %}
 # 改hostname
@@ -436,8 +440,6 @@ zkServer.sh start
 # 啟動hbase server
 start-hbase.sh
 {% endhighlight %}
-
-to sparkServer0:9000 failed on connection exception: java.net.ConnectException: Connection refused; For more details see:  http://wiki.apache.org/hadoop/ConnectionRefused
 
 5. 測試
 i. Hadoop MapReduce例子 - pi estimation
