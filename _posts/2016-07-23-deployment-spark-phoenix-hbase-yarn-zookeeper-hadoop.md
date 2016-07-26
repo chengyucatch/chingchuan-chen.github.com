@@ -101,26 +101,26 @@ sudo service sshd restart
 {% endhighlight %}
   
     1. 編輯/etc/hosts
-    
-``` bash 
+
+{% highlight bash %}
 sudo tee -a /etc/hosts << "EOF"
 192.168.0.161 sparkServer0
 192.168.0.162 sparkServer1
 192.168.0.163 sparkServer2
 192.168.0.164 sparkServer3
 EOF
-```  
-  
+{% endhighlight %}
+
     1. 編輯/etc/hostname
     
-``` bash 
+{% highlight bash %}
 sudo vi /etc/hostname
 # 對應的電腦修改成對應的名稱
 {% endhighlight %}
 
     1. 斷掉防火牆
     
-``` bash 
+{% highlight bash %}
 systemctl stop firewalld
 systemctl disable firewalld  
 {% endhighlight %}
@@ -229,8 +229,7 @@ source /etc/bashrc
     <value>/usr/local/hadoop/tmp</value>
   </property>
 </configuration>
-```  
-  
+{% endhighlight %}
         1. mapred-site.xml
         先用`cp $HADOOP_CONF_DIR/mapred-site.xml.template $HADOOP_CONF_DIR/mapred-site.xml`，然後用`vi $HADOOP_CONF_DIR/mapred-site.xml`編輯，改成下面這樣：
     
@@ -391,7 +390,7 @@ chmod +x $PHOENIX_HOME/bin/*.py
   
     1. 配置scala and spark
       
-``` bash 
+{% highlight bash %}
 # 複製hadoop的slaves
 cp $HADOOP_CONF_DIR/slaves $SPARK_HOME/conf/slaves
 
@@ -410,7 +409,7 @@ EOF
 1. slaves的部署
 因為是VM，所以剩下的就是把映像檔clone到各個，然後針對需要個別配置的地方做配置：
 
-``` bash 
+{% highlight bash %}
 # 改hostname
 sudo vi /etc/hostname
 # 改網路設定
@@ -537,7 +536,7 @@ list
 
   1. phoenix
   
-``` bash 
+{% highlight bash %}
 # 創表SQL
 cat $PHOENIX_HOME/examples/STOCK_SYMBOL.sql
 # -- creates stock table with single row
@@ -634,7 +633,7 @@ sqlline.py sparkServer0:2181
 {% endhighlight %}
       離開請按`CTRL+Z`或是用`!quit`，輸入`exit()`是沒用的。接下來，我們試試看在`hbase`裡面看不看的到我們剛剛插入的表，打`hbase shell`進入，然後開始測試：
   
-``` bash 
+{% highlight bash %}
 # scan看看就可以發現表已經存進來了
 # hbase(main):001:0> scan 'STOCK_SYMBOL'
 ## ROW                             COLUMN+CELL
@@ -661,7 +660,7 @@ sqlline.py sparkServer0:2181
    
       最後是進去`sqlline.py`去刪掉剛剛建立的表：
       
-``` bash 
+{% highlight bash %}
 sqlline.py sparkServer0:2181
 # 0: jdbc:phoenix:sparkServer0:2181> DROP TABLE STOCK_SYMBOL;
 ## No rows affected (3.556 seconds)
@@ -681,7 +680,7 @@ sqlline.py sparkServer0:2181
       1. spark 
       利用spark提供的例子去測試看看 (記得要先開啟hadoop)
       
-``` bash 
+{% highlight bash %}
 spark-submit --class org.apache.spark.examples.SparkPi \
   --deploy-mode cluster  \
   --master yarn  \
