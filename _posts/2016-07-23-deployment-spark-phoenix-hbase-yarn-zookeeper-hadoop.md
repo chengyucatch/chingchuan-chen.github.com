@@ -214,7 +214,7 @@ source /etc/bashrc
 1. 配置Hadoop
   
     1. core-site.xml
-    用`vi $HADOOP_CONF_DIR/core-site.xml`編輯，改成下面這樣：
+用`vi $HADOOP_CONF_DIR/core-site.xml`編輯，改成下面這樣：
   
 {% highlight xml %}
 <configuration>
@@ -241,7 +241,7 @@ source /etc/bashrc
 {% endhighlight  %}
 
     1. hdfs-site.xml
-    用`vi $HADOOP_CONF_DIR/hdfs-site.xml`編輯，改成下面這樣：
+用`vi $HADOOP_CONF_DIR/hdfs-site.xml`編輯，改成下面這樣：
         
 {% highlight xml %}
 <configuration>
@@ -268,7 +268,7 @@ source /etc/bashrc
 </configuration>
 {% endhighlight  %}
 
-    建立node需要的資料夾：
+建立node需要的資料夾：
         
 {% highlight bash %}
 mkdir -p $HADOOP_HOME/tmp
@@ -307,16 +307,16 @@ sparkServer3
 EOF
 {% endhighlight %}
 
-  1. 配置Zookeeper
-  先用`cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg`，然後用`vi $ZOOKEEPER_HOME/conf/zoo.cfg`編輯，改成下面這樣：
+    1. 配置Zookeeper
+先用`cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg`，然後用`vi $ZOOKEEPER_HOME/conf/zoo.cfg`編輯，改成下面這樣：
 
 {% highlight bash %}
 dataDir=/usr/local/zookeeper/data
 server.1=sparkServer0:2888:3888
 {% endhighlight %}
 
-  1. 配置HBase
-  用`vi $HBASE_HOME/conf/hbase-site.xml`編輯，改成下面這樣：
+    1. 配置HBase
+用`vi $HBASE_HOME/conf/hbase-site.xml`編輯，改成下面這樣：
       
 {% highlight xml %}
 <configuration>
@@ -351,9 +351,9 @@ server.1=sparkServer0:2888:3888
 </configuration>
 {% endhighlight %}
 
-    接著，用`cp $HADOOP_CONF_DIR/slaves $HBASE_HOME/conf/regionservers`
-  
-    複製hadoop的slaves
+接著，用`cp $HADOOP_CONF_DIR/slaves $HBASE_HOME/conf/regionservers`
+
+複製hadoop的slaves
   
     1. 配置phoenix
       
@@ -377,7 +377,7 @@ cp phoenix-4.7.0/LICENSE $PHOENIX_HOME/LICENSE
 chmod +x $PHOENIX_HOME/bin/*.py
 {% endhighlight %}
 
-    並且在用`vi $PHOENIX_HOME/bin/hbase-site.xml`加入下面的設定
+並且在用`vi $PHOENIX_HOME/bin/hbase-site.xml`加入下面的設定
       
 {% highlight xml %}
 <property>
@@ -477,7 +477,7 @@ Version 1.1.5, r239b80456118175b340b2e562a5568b5c744252e, Sun May  8 20:29:26 PD
 hbase(main):001:0>
 {% endhighlight %}
 
-      測試建表、塞資料、擷取資料跟刪除表(#後面是會出現的訊息)：
+測試建表、塞資料、擷取資料跟刪除表(#後面是會出現的訊息)：
 
 {% highlight bash %}
 # 建表
@@ -529,8 +529,8 @@ list
 # 
 # => []
 {% endhighlight %}
-  
-      最後可以用`exit`離開hbase shell。
+
+最後可以用`exit`離開hbase shell。
 
   1. phoenix
   
@@ -629,7 +629,8 @@ sqlline.py sparkServer0:2181
 ## +---------+-----------------------+
 ## 9 rows selected (0.03 seconds)
 {% endhighlight %}
-      離開請按`CTRL+Z`或是用`!quit`，輸入`exit()`是沒用的。接下來，我們試試看在`hbase`裡面看不看的到我們剛剛插入的表，打`hbase shell`進入，然後開始測試：
+
+離開請按`CTRL+Z`或是用`!quit`，輸入`exit()`是沒用的。接下來，我們試試看在`hbase`裡面看不看的到我們剛剛插入的表，打`hbase shell`進入，然後開始測試：
   
 {% highlight bash %}
 # scan看看就可以發現表已經存進來了
@@ -656,7 +657,7 @@ sqlline.py sparkServer0:2181
 ## 9 row(s) in 0.1840 seconds
 {% endhighlight %}
    
-      最後是進去`sqlline.py`去刪掉剛剛建立的表：
+最後是進去`sqlline.py`去刪掉剛剛建立的表：
       
 {% highlight bash %}
 sqlline.py sparkServer0:2181
@@ -675,8 +676,8 @@ sqlline.py sparkServer0:2181
 ## +------------+--------------+-------------+---------------+----------+------------+----------------------------+----------+
 {% endhighlight %}
 
-      1. spark 
-      利用spark提供的例子去測試看看 (記得要先開啟hadoop)
+    1. spark 
+利用spark提供的例子去測試看看 (記得要先開啟hadoop)
       
 {% highlight bash %}
 spark-submit --class org.apache.spark.examples.SparkPi \
@@ -689,10 +690,10 @@ spark-submit --class org.apache.spark.examples.SparkPi \
    /usr/local/spark/lib/spark-examples-1.6.2-hadoop2.6.0.jar
 {% endhighlight %}
 
-    最後就可以看到任務成功，如圖所示：
+最後就可以看到任務成功，如圖所示：
 ![](/images/sparkSucceeded_1.PNG)
 
-    用上面的連結就可以看到任務的成功情況：
+用上面的連結就可以看到任務的成功情況：
 ![](/images/sparkSucceeded_2.PNG)
 
 1. Reference
