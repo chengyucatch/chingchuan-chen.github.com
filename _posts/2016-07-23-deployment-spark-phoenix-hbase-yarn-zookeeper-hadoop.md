@@ -20,18 +20,18 @@ published: true
 
 <!-- more -->
 
-0. 準備工作
-..a. 安裝好VMware，然後新增一台VM (網路連接方式使用bridged即可)，引進centos 7.2安裝映像檔
-..b. 選擇最小安裝，並新增使用者: tester
-..c. 安裝完後要先configure：
-....i. 給予使用者sudoer權限
+1. 準備工作
+  1. 安裝好VMware，然後新增一台VM (網路連接方式使用bridged即可)，引進centos 7.2安裝映像檔
+  1. 選擇最小安裝，並新增使用者: tester
+  1. 安裝完後要先configure：
+    1. 給予使用者sudoer權限
 ``` bash
 su # 切換到root
 visudo # 打開設定檔
 # 打/root\tALL找到這行 `root ALL=(ALL) ALL`
 # 在下面新增 tester ALL=(ALL) ALL
 ```
-    ii. 網路設定
+    1. 網路設定
     先查看自己電腦的網段是哪一個(使用撥接就無法，要透過IP分享器)，在cmd上找ipconfig就可以找到，像是我的電腦是192.168.0.111，預設閘道192.168.0.1，沒有設定DNS，接著用`ip a`看VM網路卡的裝置名稱，我的VM網路卡名稱是eno16777736，然後就使用`sudo ifup eno16777736`去啟用網路，然後使用`sudo vi /etc/sysconfig/network-scripts/ifcfg-eno16777736`去修改網路設定，改成下方這樣：
 ``` bash
 TYPE=Ethernet
@@ -55,7 +55,7 @@ IPV6_PEERROUTES=yes
 IPV6_PRIVACY=no
 ```
     然後使用`sudo service network restart`重啟網路服務，這樣網路設定就完成了。測試方式為：`ping 192.168.0.1`(DNS)跟`ping www.google.com`就可以知道網路有沒有設定成功了。
-  d. 安裝ssh跟設定ssh資料夾權限
+  1. 安裝ssh跟設定ssh資料夾權限
 ``` bash
 # 安裝SSH
 sudo yum -y install rsync openssh-server-*
@@ -72,7 +72,7 @@ sudo chmod 600 /home/tester/.ssh/id_rsa
 sudo service sshd restart
 ```
   
-  e. 編輯/etc/hosts
+  1. 編輯/etc/hosts
 ``` bash 
 sudo tee -a /etc/hosts << "EOF"
 192.168.0.161 sparkServer0
@@ -82,20 +82,20 @@ sudo tee -a /etc/hosts << "EOF"
 EOF
 ```  
   
-  f. 編輯/etc/hostname
+  1. 編輯/etc/hostname
 ``` bash 
 sudo vi /etc/hostname
 # 對應的電腦修改成對應的名稱
 ```
 
-  g. 斷掉防火牆
+  1. 斷掉防火牆
 ``` bash 
 systemctl stop firewalld
 systemctl disable firewalld  
 ```
 
 1. 開始部署
-  a. 關掉ip v6
+  1. 關掉ip v6
 ``` bash
 sudo tee -a /etc/sysctl.conf << "EOF"
 net.ipv6.conf.all.disable_ipv6 = 1
@@ -103,7 +103,7 @@ net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
 EOF
 ```
-  b. 下載檔案並移到適當位置
+  1. 下載檔案並移到適當位置
 ``` bash
 # 下載並安裝java
 curl -v -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u92-b14/jdk-8u92-linux-x64.rpm -o jdk-8u92-linux-x64.rpm
@@ -139,7 +139,7 @@ sudo mv spark-1.6.2-bin-hadoop2.6 /usr/local/spark
 sudo chown -R tester /usr/local/spark
 ```
   
-  c. 環境變數設置
+  1. 環境變數設置
 ``` bash
 sudo tee -a /etc/bashrc << "EOF"
 # JAVA
@@ -178,9 +178,9 @@ EOF
 source /etc/bashrc
 ```
   
-  d. 配置Hadoop
+  1. 配置Hadoop
   
-    i. core-site.xml
+    1. core-site.xml
     用`vi $HADOOP_CONF_DIR/core-site.xml`編輯，改成下面這樣：
   
 ``` xml
@@ -196,7 +196,7 @@ source /etc/bashrc
 </configuration>
 ```  
   
-    ii. mapred-site.xml
+    1. mapred-site.xml
     先用`cp $HADOOP_CONF_DIR/mapred-site.xml.template $HADOOP_CONF_DIR/mapred-site.xml`，然後用`vi $HADOOP_CONF_DIR/mapred-site.xml`編輯，改成下面這樣：
     
 ``` xml
@@ -208,7 +208,7 @@ source /etc/bashrc
 </configuration>
 ``` 
 
-    iii. hdfs-site.xml
+    1. hdfs-site.xml
     用`vi $HADOOP_CONF_DIR/hdfs-site.xml`編輯，改成下面這樣：
 ``` xml
 <configuration>
@@ -241,7 +241,7 @@ mkdir -p $HADOOP_HOME/tmp/data
 mkdir -p $HADOOP_HOME/tmp/name
 ``` 
 
-    iv. yarn-site.xml
+    1. yarn-site.xml
     用`vi $HADOOP_CONF_DIR/yarn-site.xml`編輯，改成下面這樣：
     
 ``` xml
@@ -261,7 +261,7 @@ mkdir -p $HADOOP_HOME/tmp/name
 </configuration>
 ```
 
-    v. 配置slaves
+    1. 配置slaves
 ``` bash
 # 傳入slaves的電腦名稱
 sudo tee $HADOOP_CONF_DIR/slaves << "EOF"
@@ -271,7 +271,7 @@ sparkServer3
 EOF
 ```
 
-  e. 配置Zookeeper
+  1. 配置Zookeeper
   先用`cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg`，然後用`vi $ZOOKEEPER_HOME/conf/zoo.cfg`編輯，改成下面這樣：
 
 ``` bash
@@ -279,7 +279,7 @@ dataDir=/usr/local/zookeeper/data
 server.1=sparkServer0:2888:3888
 ```
   
-  f. 配置HBase
+  1. 配置HBase
   用`vi $HBASE_HOME/conf/hbase-site.xml`編輯，改成下面這樣：
 ``` xml
 <configuration>
@@ -316,7 +316,7 @@ server.1=sparkServer0:2888:3888
 
   接著，用`cp $HADOOP_CONF_DIR/slaves $HBASE_HOME/conf/regionservers`複製hadoop的slaves
   
-  g. 配置phoenix
+  1. 配置phoenix
 ``` bash
 # 縮短名稱
 mv phoenix-4.7.0-HBase-1.1-bin phoenix-4.7.0
@@ -345,7 +345,7 @@ chmod +x $PHOENIX_HOME/bin/*.py
 </property>
 ```
   
-  h. 配置scala and spark
+  1. 配置scala and spark
 ``` bash 
 # 複製hadoop的slaves
 cp $HADOOP_CONF_DIR/slaves $SPARK_HOME/conf/slaves
@@ -362,7 +362,7 @@ SPARK_DRIVER_MEMORY=2G
 EOF
 ```
   
-2. slaves的部署
+1. slaves的部署
 因為是VM，所以剩下的就是把映像檔clone到各個，然後針對需要個別配置的地方做配置：
 
 ``` bash 
@@ -382,7 +382,7 @@ done
 EOF
 ```
 
-3. 啟動hadoop server / zookeeper server / hbase server / 
+1. 啟動hadoop server / zookeeper server / hbase server / 
 ``` bash
 # 執行hadoop的namenode format
 hdfs namenode -format 
@@ -396,8 +396,8 @@ start-hbase.sh
 
 to sparkServer0:9000 failed on connection exception: java.net.ConnectException: Connection refused; For more details see:  http://wiki.apache.org/hadoop/ConnectionRefused
 
-4. 測試
-  a. Hadoop MapReduce例子 - pi estimation
+1. 測試
+  1. Hadoop MapReduce例子 - pi estimation
 ``` bash
 hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.4.jar pi 10 1000
 # output會像下面這樣
@@ -405,7 +405,7 @@ hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.4.j
 # Estimated value of Pi is 3.14800000000000000000
 ```
   
-  b. zookeeper
+  1. zookeeper
   鍵入`zkCli.sh 127.0.0.1:2181`會出現下面的訊息：
   
 ``` bash
@@ -417,7 +417,7 @@ WatchedEvent state:SyncConnected type:None path:null
 
   這時候試著輸入看看`create /test01 abcd`，然後輸入`ls /`看看是否會出現`[test01, zookeeper]`，如果是，zookeeper就是設定成功，如果中間有出現任何錯誤，則否，最後用`delete /test01`做刪除即可，然後用`quit`離開。
 
-  c. HBase
+  1. HBase
   鍵入`hbase shell`會出現下面的訊息：
 ``` bash
 SLF4J: Class path contains multiple SLF4J bindings.
@@ -487,7 +487,7 @@ list
 
   最後可以用`exit`離開hbase shell。
 
-  d. phoenix
+  1. phoenix
 ``` bash 
 # 創表SQL
 cat $PHOENIX_HOME/examples/STOCK_SYMBOL.sql
@@ -629,7 +629,7 @@ sqlline.py sparkServer0:2181
 ## +------------+--------------+-------------+---------------+----------+------------+----------------------------+----------+
 ```
 
-  e. spark 
+  1. spark 
   利用spark提供的例子去測試看看 (記得要先開啟hadoop)
 ``` bash 
 spark-submit --class org.apache.spark.examples.SparkPi \
