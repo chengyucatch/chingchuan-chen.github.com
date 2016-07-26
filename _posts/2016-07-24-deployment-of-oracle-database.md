@@ -158,7 +158,8 @@ j. 利用Xming安裝 (putty in windows，如果其他系統要再用別的方式
 k. 設定防火牆
     
 ``` bash 
-sudo firewall-cmd --zone=public --add-port=1521/tcp --add-port=5500/tcp --add-port=5520/tcp --add-port=3938/tcp \ 
+sudo firewall-cmd --zone=public --add-port=1521/tcp \
+--add-port=5500/tcp --add-port=5520/tcp --add-port=3938/tcp \
 --permanent
 sudo firewall-cmd --reload
 # 確定有開啟port
