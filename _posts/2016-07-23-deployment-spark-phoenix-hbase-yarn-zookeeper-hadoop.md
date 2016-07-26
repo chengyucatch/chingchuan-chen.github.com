@@ -18,6 +18,7 @@ published: true
 
 再把那一台的映像檔做clone，變成slaves
 
+<!-- more -->
 
 0. 準備工作
   a. 安裝好VMware，然後新增一台VM (網路連接方式使用bridged即可)，引進centos 7.2安裝映像檔
