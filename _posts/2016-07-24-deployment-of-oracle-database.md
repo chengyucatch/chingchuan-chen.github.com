@@ -129,8 +129,8 @@ g. 下載安裝檔案
 h. 解壓縮檔案
     
 ``` bash 
-sudo unzip linux.x64_11gR2_database_1of2.zip -d /stage/
-sudo unzip linux.x64_11gR2_database_2of2.zip -d /stage/
+sudo unzip linuxamd64_12102_database_1of2.zip -d /stage/
+sudo unzip linuxamd64_12102_database_2of2.zip -d /stage/
 ```
 
 i. 建立需要的資料夾
@@ -152,7 +152,7 @@ j. 利用Xming安裝 (putty in windows，如果其他系統要再用別的方式
     1. 安裝Xming
     1. Putty設定中的Connection/SSH/X11的分頁裡面，啟用X11，並設定X display location為localhost:0
     1. 登入伺服器，使用者用oracle
-    1. 使用`/stage/database/runInstaller`
+    1. 使用`/stage/database/runInstaller` (出現要設定DISPLAY問題可以先打`xhost +`，然後在執行一次)
     1. 細部的安裝設定可以參考 https://wiki.centos.org/zh-tw/HowTos/Oracle12onCentos7
         
 k. 設定防火牆
@@ -170,22 +170,102 @@ sudo firewall-cmd --list-ports
 l. 設定環境變數
     
 ``` bash
-tee -a ~/.bash_profile << "EOF"
-export TMPDIR=$TMP
-export ORACLE_BASE=/u01/app/oracle
+tee -a /etc/bashrc << "EOF"
 export ORACLE_HOME=$ORACLE_BASE/product/12.1.0/dbhome_1
-export ORACLE_HOSTNAME=oracleTest.test.com
-export ORACLE_SID=orcl
-export PATH=$PATH:$ORACLE_HOME/bin
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ORACLE_HOME/lib
-export CLASSPATH=$CLASSPATH:$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib
 EOF
-source ~/.bash_profile
+source /etc/bashrc
 ```
 
 k. 設定自動啟動
     
 用`sudo vi /etc/oratab`去修改restart flag: `ORA11G:/u01/app/oracle/product/12.1.0/dbhome_1:Y`
+
+然後用`sudo vi /etc/init.d/dbora`建立一個檔案，其內容如下：
+
+``` bash
+#!/bin/bash
+
+# oracle: Start/Stop Oracle Database 11g R2/12c
+#
+# chkconfig: 345 90 10
+# description: The Oracle Database Server is an RDBMS created by Oracle Corporation
+#
+# processname: oracle
+
+. /etc/rc.d/init.d/functions
+
+LOCKFILE=/var/lock/subsys/oracle
+ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1/
+ORACLE_USER=oracle
+
+case "$1" in
+'start')
+   if [ -f $LOCKFILE ]; then
+      echo $0 already running.
+      exit 1
+   fi
+   echo -n $"Starting Oracle Database:"
+   su - $ORACLE_USER -c "$ORACLE_HOME/bin/dbstart $ORACLE_HOME"
+   touch $LOCKFILE
+   ;;
+'stop')
+   if [ ! -f $LOCKFILE ]; then
+      echo $0 already stopping.
+      exit 1
+   fi
+   echo -n $"Stopping Oracle Database:"
+   su - $ORACLE_USER -c "$ORACLE_HOME/bin/dbshut $ORACLE_HOME"
+   rm -f $LOCKFILE
+   ;;
+'restart')
+   $0 stop
+   $0 start
+   ;;
+'status')
+   if [ -f $LOCKFILE ]; then
+      echo $0 started.
+      else
+      echo $0 stopped.
+   fi
+   ;;
+*)
+   echo "Usage: $0 [start|stop|status]"
+   exit 1
+esac
+
+exit 0
+```
+
+接著執行下面的指令：
+``` bash
+cd /etc/init.d
+sudo chgrp dba dbora
+sudo chmod 750 dbora
+sudo chkconfig --add dbora
+```
+
+然後重開機，Oracle db就會自動啟動了
+
+補充：自動開機，我還遇到一個問題是，用dbstart，他會找不到$ORACLE_HOME_LISTNER
+
+請用`vi $ORACLE_HOME/bin/dbstart`跟`vi $ORACLE_HOME/bin/dbshut`中的一行文字改掉：
+```
+# 原本的內容如下：
+
+# First argument is used to bring up Oracle Net Listener
+ORACLE_HOME_LISTNER=$ORACLE_HOME
+if [ ! $ORACLE_HOME_LISTNER ] ; then
+  echo "ORACLE_HOME_LISTNER is not SET, unable to auto-start Oracle Net Listener"
+  echo "Usage: $0 ORACLE_HOME"
+else
+  LOG=$ORACLE_HOME_LISTNER/listener.log
+
+  # Set the ORACLE_HOME for the Oracle Net Listener, it gets reset to
+  # a different ORACLE_HOME for each entry in the oratab.
+  ORACLE_HOME=$ORACLE_HOME_LISTNER ; export ORACLE_HOME
+  ...
+```
+只要把`ORACLE_HOME_LISTNER=$1`改成`ORACLE_HOME_LISTNER=$ORACLE_HOME`即可
 
 l. 確定database狀態
     
@@ -199,3 +279,7 @@ l. 確定database狀態
     1. http://www.linuxidc.com/Linux/2016-04/130559.htm
     1. http://superuser.com/questions/576006/linker-error-while-installing-oracle-11g-on-fedora-18
     1. https://dotblogs.com.tw/jamesfu/2016/02/02/oracle12c_install
+    1. https://wiki.centos.org/zh-tw/HowTos/Oracle12onCentos7
+    1. http://stackoverflow.com/questions/8937933/installing-oracle-11g-r2-in-ubuntu-10-04 (Err: must be configured to display at least 256 colors)
+    1. https://dotblogs.com.tw/jamesfu/2016/02/02/oracle12c_install
+    1. http://www.cnblogs.com/interboy/archive/2008/07/24/1250077.html
