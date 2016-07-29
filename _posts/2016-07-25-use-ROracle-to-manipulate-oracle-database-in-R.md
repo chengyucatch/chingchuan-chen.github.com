@@ -16,7 +16,7 @@ published: true
 
 在windows下，安裝ROracle，也測試看看在centos下安裝看看
 
-(ubuntu部分前面另有文章，就不在贅述)
+(ubuntu, mint部分前面有文章介紹怎麼裝R，就不在贅述，至於裝ROracle就跟centos大同小異了)
 
 <!-- more -->
 
