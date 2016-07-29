@@ -379,4 +379,35 @@ dbSendQuery(con, "select * from all_users") %>>%
 dbDisconnect(con)
 ```
 
+6. 小抱怨
 
+ROracle寫入表格的時候，會自動加上double quote框住表格
+
+因為這一個自動功能，讓我debug，de了一天晚上
+
+最後是去下載Oracle PL/SQL Developer用介面的自動提示才發現這件事情...
+
+然後才回去看dbWriteTable下面的解釋
+
+> Table, schema, and column names are case sensitive, e.g., table names ABC and abc are not the same. All database schema object names should not include double quotes as they are enclosed in double quotes when the corresponding SQL statement is generated.
+
+只是最神奇的事情是
+
+``` R
+dbWriteTable(con, "airlines", as.data.frame(airlines), row.names = FALSE)
+```
+
+寫入表格之後，query的表格名字要加quote，像這樣：
+
+``` R
+dbSendQuery(con, "select * from \"airlines\"") %>>% fetch(n = -1) %>>% data.table
+```
+我查表是否存在不用quote
+
+```
+dbExistsTable(con, "airlines")
+```
+
+害我一直想說為啥我找不到我的表
+
+最後只能去安裝Oracle SQL Developer查看真正的表格名稱
