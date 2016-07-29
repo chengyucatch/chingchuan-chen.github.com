@@ -161,18 +161,18 @@ install.packages(c("data.table", "pipeR", "dplyr", "GGally", "ggplot2", "nycflig
 
 按右鍵編輯貼上下方內容後執行就可以成功安裝ROracle了
 
-PS: 這裡我還沒有測試過，因為避免牽扯到windwos的環境變數就省掉
-
-如果有人測試過不行，我在提供增加的環境變數
-    
-我是直接安裝Rtools手動設定環境變數... 比較不適合一般初學者
-
 ``` batch
 SET OCI_LIB64=C:\instantclient_12_1
 SET OCI_INC=C:\instantclient_12_1\sdk\include
 SET PATH=%PATH%;C:\instantclient_12_1
 R CMD INSTALL --build ROracle_1.2-2.tar.gz
 ```
+
+PS: 這裡我還沒有測試過，因為避免牽扯到windwos的環境變數就省掉
+
+如果有人測試過不行，我在提供增加的環境變數
+    
+我是直接安裝Rtools手動設定環境變數... 比較不適合一般初學者
 
 4. 創造適當的使用者
 
