@@ -4,7 +4,7 @@ cTitle: "deployment of Oracle database"
 title: "deployment of Oracle database"
 category: oracle
 tagline:
-tags: [oracle]
+tags: [Oracle]
 cssdemo: 2014-spring
 published: true
 ---
@@ -269,8 +269,37 @@ else
 
 l. 確定database狀態
     
-確定dbconsole：`emctl status dbconsole`
-確定LISTENER：`lsnrctl status LISTENER`
+確定LISTENER：`$ORACLE_HOME/bin/lsnrctl status LISTENER`
+
+確定db是否有正常啟動服務：` ps -ef | grep ora`
+
+也可以透過`$ORACLE_HOME/bin/sqlplus system/password@oracleServer:1521/orcl`來連線
+
+(password請記得換成你在安裝時設定的密碼)
+
+去試試看是否有正常啟動，並且也可以寫SQL試試看
+
+正常啟動的文字顯示如下：
+
+``` bash 
+SQL*Plus: Release 12.1.0.2.0 Production on Fri Jul 29 21:27:14 2016
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+Last Successful login time: Fri Jul 29 2016 21:20:01 +08:00
+
+Connected to:
+Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Partitioning, OLAP, Advanced Analytics and Real Application Testing options
+
+SQL> 
+```
+
+連上後可以測試看看`select OWNER,TABLE_NAME from all_tables;`就會跑出所有表格的名字跟主人名字
+
+另外補充一個工具，Oracle PL/SQL Developer，可以從[這裡](http://www.oracle.com/technetwork/developer-tools/sql-developer/downloads/index.html)下載到
+
+是一個簡單、方便操作的GUI去查詢SQL，比起直接使用sqlplus良善許多
 
 4. Reference
 
