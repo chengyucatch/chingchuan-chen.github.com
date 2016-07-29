@@ -163,9 +163,9 @@ install.packages(c("data.table", "pipeR", "dplyr", "GGally", "ggplot2", "nycflig
 
 PS: 這裡我還沒有測試過，因為避免牽扯到windwos的環境變數就省掉
 
-    如果有人測試過不行，我在提供增加的環境變數
+如果有人測試過不行，我在提供增加的環境變數
     
-    我是直接安裝Rtools手動設定環境變數... 比較不適合一般初學者
+我是直接安裝Rtools手動設定環境變數... 比較不適合一般初學者
 
 ``` batch
 SET OCI_LIB64=C:\instantclient_12_1
