@@ -305,7 +305,7 @@ connectString <- paste(
 
 # 先用system權限登入查看user
 con <- dbConnect(dbDriver("Oracle"), username = "system", 
-                 password = "password", dbname = connectString)
+                 password = "qscf12356", dbname = connectString)
 # query all_users
 userList <- dbSendQuery(con, "select * from ALL_USERS") %>>% 
   fetch(n = -1) %>>% data.table
@@ -339,22 +339,8 @@ proc.time() - st
 # 移除所有表格
 rm(list = tblListDT$TableName)
 
-# remove all tables (用最高權限刪除)
-st <- proc.time()
 con <- dbConnect(dbDriver("Oracle"), username = "system", 
-                 password = "password", dbname = connectString)
-mapply(function(schemaName, tblNameUpload){
-  sn <- paste0("C##", schemaName) %>>% toupper
-  if (dbExistsTable(con, tblNameUpload, schema = sn))
-    dbRemoveTable(con, tblNameUpload, schema = sn)
-}, tblListDT$savingSchema, tblListDT$savingTblName) %>>% invisible
-dbDisconnect(con)
-proc.time() - st
-# user  system elapsed 
-# 0.02    0.00    0.35 
-
-con <- dbConnect(dbDriver("Oracle"), username = "system", 
-                 password = "password", dbname = connectString)
+                 password = "qscf12356", dbname = connectString)
 # list schema
 dbListTables(con) 
 # find the table in current schema (parameter, schema = NULL)
@@ -364,7 +350,11 @@ dbExistsTable(con, "airlines", schema = 'C##NYCFLIGHTS13')
 # remove table
 dbRemoveTable(con, "airlines")
 # query data, fetch all data and convert to data.table (這是查詢全部的tablespaces)
-dbSendQuery(con, "select * from \"airlines\"") %>>% 
+dbSendQuery(con, "select * from C##NYCFLIGHTS13.\"airlines\"") %>>% 
+  fetch(n = -1) %>>% data.table
+# query rowid and name from airlines data, 
+# fetch all data and convert to data.table (這是查詢全部的tablespaces)
+dbSendQuery(con, "select rowid,t.\"name\" from C##NYCFLIGHTS13.\"airlines\" t") %>>% 
   fetch(n = -1) %>>% data.table
 # query data, fetch all data and convert to data.table (這是查詢全部的tablespaces)
 dbSendQuery(con, "select * from dba_tablespaces") %>>% 
@@ -377,6 +367,20 @@ dbSendQuery(con, "select * from all_users") %>>%
   fetch(n = -1) %>>% data.table
 # 從DB斷線
 dbDisconnect(con)
+
+# remove all tables (用最高權限刪除)
+st <- proc.time()
+con <- dbConnect(dbDriver("Oracle"), username = "system", 
+                 password = "qscf12356", dbname = connectString)
+mapply(function(schemaName, tblNameUpload){
+  sn <- paste0("C##", schemaName) %>>% toupper
+  if (dbExistsTable(con, tblNameUpload, schema = sn))
+    dbRemoveTable(con, tblNameUpload, schema = sn)
+}, tblListDT$savingSchema, tblListDT$savingTblName) %>>% invisible
+dbDisconnect(con)
+proc.time() - st
+# user  system elapsed 
+# 0.02    0.00    0.35 
 ```
 
 6. 小抱怨
@@ -411,3 +415,7 @@ dbExistsTable(con, "airlines")
 害我一直想說為啥我找不到我的表
 
 最後只能去安裝Oracle SQL Developer查看真正的表格名稱
+
+7/31補充：
+
+更扯的事情是column name都有包quote，select時候，都要多打""去框住column name

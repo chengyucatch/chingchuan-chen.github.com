@@ -155,9 +155,9 @@ tar -zxvf zookeeper-3.4.8.tar.gz
 sudo mv zookeeper-3.4.8 /usr/local/zookeeper
 sudo chown -R tester /usr/local/zookeeper
 # 下載並部署HBase
-curl -v -j -k -L http://apache.stu.edu.tw/hbase/1.1.5/hbase-1.1.5-bin.tar.gz -o hbase-1.1.5-bin.tar.gz
-tar -zxvf hbase-1.1.5-bin.tar.gz
-sudo mv hbase-1.1.5 /usr/local/hbase
+curl -v -j -k -L http://apache.stu.edu.tw/hbase/0.98.20/hbase-0.98.20-hadoop2-bin.tar.gz -o hbase-0.98.20-hadoop2-bin.tar.gz
+tar -zxvf hbase-0.98.20-hadoop2-bin.tar.gz
+sudo mv hbase-0.98.20-hadoop2 /usr/local/hbase
 sudo chown -R tester /usr/local/hbase
 # 下載並部署phoenix
 curl -v -j -k -L  http://apache.stu.edu.tw/phoenix/phoenix-4.7.0-HBase-1.1/bin/phoenix-4.7.0-HBase-1.1-bin.tar.gz -o phoenix-4.7.0-HBase-1.1-bin.tar.gz
@@ -355,9 +355,7 @@ iii. 配置HBase
 </configuration>
 {% endhighlight %}
 
-接著，用`cp $HADOOP_CONF_DIR/slaves $HBASE_HOME/conf/regionservers`
-
-複製hadoop的slaves
+接著，用`cp $HADOOP_CONF_DIR/slaves $HBASE_HOME/conf/regionservers`複製hadoop的slaves
   
 iv. 配置phoenix
       
