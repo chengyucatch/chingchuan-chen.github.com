@@ -2,7 +2,7 @@
 layout: post
 cTitle: "在R用ROracle去操作Oracle資料庫"
 title: "use ROracle to manipulate Oracle database in R"
-category: R
+category: Oracle
 tagline:
 tags: [R, Oracle]
 cssdemo: 2014-spring
