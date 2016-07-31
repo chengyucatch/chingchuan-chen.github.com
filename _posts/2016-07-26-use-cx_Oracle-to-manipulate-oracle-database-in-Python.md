@@ -23,11 +23,7 @@ published: true
 
 1. 準備工作
 
-基本上同Hadoop那篇，這裡就不贅述
-
-我這裡是直接裝在Hadoop的master (sparkServer0)上
-
-centos部分： (windows請往下轉)
+基本上同R那篇，這裡不贅述
 
 2. 安裝cx_Oracle
 
