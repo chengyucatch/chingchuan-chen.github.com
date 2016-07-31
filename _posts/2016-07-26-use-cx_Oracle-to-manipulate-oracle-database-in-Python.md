@@ -225,11 +225,6 @@ if __name__ == "__main__":
     # activate cursor
     oracleCursor = oracleConn.cursor()
     
-    oracleCursor.execute('''SELECT t.TABLE_NAME FROM all_tables t 
-                            WHERE t.OWNER NOT IN ('SYSTEM', 'SYS', 'MDSYS', 'LBACSYS', 'CTXSYS', 
-                              'WMSYS', 'XDB', 'APPQOSSYS', 'ORDSYS', 'OJVMSYS', 'DVSYS')''')
-    oracleAllTables = [x[0] for x in oracleCursor.fetchall()]
-    
     for row in dataTableList:
         try:
             oracleCursor.execute("DROP TABLE {}".format('C##' + row[2].upper() + '.' + row[3].upper()))
