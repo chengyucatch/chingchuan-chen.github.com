@@ -50,7 +50,11 @@ conda會幫你把Oracle instant client下載好，並放在適當目錄中
 ``` python
 # -*- coding: utf-8 -*-
 
-import StringIO, csv, cx_Oracle, sys, os, re
+import StringIO, csv, cx_Oracle, sys, os
+
+class LengthNotEqualErr(Exception):
+    """Err type for too many arguments."""
+    pass  
 
 #%% functions to read the csv file with auto type convertion
 def getFieldnames(csvFile):
@@ -61,29 +65,35 @@ def getFieldnames(csvFile):
         firstRow = csvfile.readlines(1)
         fieldnames = tuple(firstRow[0].strip('\n').split(","))
     return fieldnames
-
-def readCsvWithTypeConv(csvFile):
+    
+def parseValues(values, dataType = None):
+    from ast import literal_eval
+    import re
+    regxpPattern = re.compile('\d+[^.\d]+')
+    for i, value in enumerate(values):
+        if (dataType is None) or (dataType[i] == 'float' or dataType[i] == 'int'):
+            try:
+                if len(regxpPattern.findall(value)) is 0:
+                    nValue = literal_eval(value)
+                    values[i] = nValue
+            except ValueError:
+                pass
+    return values
+    
+def readCsvWithTypeConv(csvFile, dataType = None):
     """
     Convert csv rows into an array of dictionaries
     All data types are automatically checked and converted
     """
-    from ast import literal_eval
     from itertools import islice
     fieldnames = getFieldnames(csvFile)
+    if dataType is not None:    
+        if len(dataType) is not len(fieldnames):
+            raise LengthNotEqualErr('The length of dataType must be equal to the lenght of fieldnames.')
     cursor = []  # Placeholder for the dictionaries/documents
-    regxpPattern = re.compile('\d+[^.\d]+')    
     with open(csvFile) as csvFile:
         for row in islice(csvFile, 1, None):
-            values = row.strip('\n').split(",")
-            for i, value in enumerate(values):
-                try:
-                    if regxpPattern.findall(value) is []:
-                        nValue = literal_eval(value)
-                        values[i] = nValue
-                    else:
-                        pass
-                except ValueError:
-                    pass
+            values = parseValues(row.strip('\n').split(","), dataType)
             cursor.append(dict(zip(fieldnames, values)))
     return cursor
     
@@ -165,6 +175,23 @@ credit,testData/credit.csv,datasets_2,credit"""
             dataTable = readCsvWithTypeConv(row[1])
             colNames = [name.replace(' ', '_').upper() for name in dataTable[0].keys()]
             colDataType = [type(r).__name__ for r in dataTable[0].values()]
+            newDataType = colDataType
+            convert = False
+            for rowDataTbl in dataTable:
+                otherRowDataType = [type(r).__name__ for r in rowDataTbl.values()]
+                typeNotEqual = [x != y for x,y in zip(colDataType, otherRowDataType)]
+                if any(typeNotEqual):
+                    missConversion = [(i, otherRowDataType[i], colDataType[i]) for\
+                        i, x in enumerate(typeNotEqual) if x]
+                    newDataType = colDataType
+                    for i,x,y in missConversion:
+                        if x == 'str' or y == 'str':
+                            newDataType[i] = 'str'
+                        elif (x == 'float' and y == 'int') or (x == 'float' and y == 'int'):
+                            newDataType[i] = 'float'
+                        convert = True
+            if convert:
+                dataTable = readCsvWithTypeConv(row[1], newDataType)
             oracleType = [pthonOracleTypeMap[dataType] for dataType in colDataType]
     
         orclLogin = oracleSystemLoginInfo.replace('system', 'C##' + row[2].upper())\
@@ -172,7 +199,7 @@ credit,testData/credit.csv,datasets_2,credit"""
         # create connection
         oracleConn = cx_Oracle.connect(orclLogin)
         # activate cursor
-        oracleCursor = oracleConn.cursor()       
+        oracleCursor = oracleConn.cursor()
         
         # create table
         if row[3].upper() not in oracleAllTables:
