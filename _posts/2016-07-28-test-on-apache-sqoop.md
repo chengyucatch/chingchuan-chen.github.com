@@ -184,3 +184,9 @@ sqoop import -D mapred.child.java.opts="\-Djava.security.egd=file:/dev/../dev/ur
 
 然後我就放棄再嘗試了，我中間還有把HBase從1.1.0降板到0.98，但是還是沒用，特此紀錄。
 
+5. Reference
+
+1. http://www.cnblogs.com/byrhuangqiang/p/3922594.html
+1. https://www.zybuluo.com/aitanjupt/note/209968
+1. http://blog.csdn.net/u010330043/article/details/51441135
+1. http://www.cnblogs.com/smartloli/p/4202710.html

@@ -50,7 +50,7 @@ conda會幫你把Oracle instant client下載好，並放在適當目錄中
 ``` python
 # -*- coding: utf-8 -*-
 
-import StringIO, csv, cx_Oracle, sys, os
+import StringIO, csv, cx_Oracle, sys, os, datetime, time
 
 class LengthNotEqualErr(Exception):
     """Err type for too many arguments."""
@@ -70,6 +70,7 @@ def parseValues(values, dataType = None):
     from ast import literal_eval
     import re
     regxpPattern = re.compile('\d+[^.\d]+')
+    
     for i, value in enumerate(values):
         if (dataType is None) or (dataType[i] == 'float' or dataType[i] == 'int'):
             try:
@@ -78,41 +79,44 @@ def parseValues(values, dataType = None):
                     values[i] = nValue
             except ValueError:
                 pass
+            except SyntaxError:
+                pass
     return values
     
-def readCsvWithTypeConv(csvFile, dataType = None):
+def readCsvWithTypeConv(csvFileName, dataType = None):
     """
     Convert csv rows into an array of dictionaries
     All data types are automatically checked and converted
     """
     from itertools import islice
-    fieldnames = getFieldnames(csvFile)
+    fieldnames = getFieldnames(csvFileName)
+    dataTypeMap = None
     if dataType is not None:    
+        dataTypeMap = [dataType[x] for x in list(fieldnames)]        
         if len(dataType) is not len(fieldnames):
             raise LengthNotEqualErr('The length of dataType must be equal to the lenght of fieldnames.')
     cursor = []  # Placeholder for the dictionaries/documents
-    with open(csvFile) as csvFile:
+    with open(csvFileName) as csvFile:
         for row in islice(csvFile, 1, None):
-            values = parseValues(row.strip('\n').split(","), dataType)
+            values = parseValues(row.strip('\n').split(","), dataTypeMap)
             cursor.append(dict(zip(fieldnames, values)))
     return cursor
     
 #%% main function    
-if __name__ == "__main__":
-    # set working directory
-    
+if __name__ == "__main__":   
     # information for connecting to oracle 
     oracleSystemLoginInfo = u'system/qscf12356@192.168.0.120:1521/orcl'
     # create a dict to map the data type of python to the one in Oracle DB
-    pthonOracleTypeMap = dict([["str", "VARCHAR(255)"], ["int", "NUMBER"], ["float", "FLOAT"]])
-    
+    pythonOracleTypeMap = dict([["str", "VARCHAR(255)"], ["int", "NUMBER"], \
+        ["float", "FLOAT"]])
     
     # Read list of data table
     tableList = """dataName,path,uploadShema,uploadTblName
 iris,testData/iris.csv,datasets_1,iris
 forestfires,testData/forestfires.csv,datasets_1,forestfires
 car,testData/car.csv,datasets_1,car
-credit,testData/credit.csv,datasets_2,credit"""
+credit,testData/credit.csv,datasets_2,credit
+adult,testData/adult.csv,datasets_2,adult"""
     
     fid = StringIO.StringIO(tableList)
     reader = csv.reader(fid, delimiter=',')
@@ -141,8 +145,8 @@ credit,testData/credit.csv,datasets_2,credit"""
     # if the schema is not existent, then print out the SQL to create
     if any(nonexistOrcl):
         print 'Please create users first with following SQL:'
-        for x in uniqueUserNames:
-            if nonexistOrcl:
+        for i,x in enumerate(uniqueUserNames):
+            if nonexistOrcl[i]:
                 print '''
                 CREATE TABLESPACE userNameVar
                   DATAFILE 'userNameVar.dat'
@@ -162,7 +166,7 @@ credit,testData/credit.csv,datasets_2,credit"""
                       CREATE TABLE,
                       CREATE VIEW,
                       CREATE PROCEDURE
-                TO C##userNameVar;'''.replace('userNameVar', x)
+                TO C##userNameVar;'''.replace('userNameVar', x.replace('C##', ''))
             sys.exit(0)
     
     # clost the connection to Oracle
@@ -170,12 +174,14 @@ credit,testData/credit.csv,datasets_2,credit"""
     oracleConn.close()
     
     for row in dataTableList:
+        print "Now uplaod {} data to Oracle DB...".format(row[0])        
+        
         if os.path.isfile(row[1]):
             # read the data
             dataTable = readCsvWithTypeConv(row[1])
-            colNames = [name.replace(' ', '_').upper() for name in dataTable[0].keys()]
+            colNames = [name.replace(' ', '_').replace('-', '_').upper() for name in dataTable[0].keys()]
             colDataType = [type(r).__name__ for r in dataTable[0].values()]
-            newDataType = colDataType
+            newDataType = [type(r).__name__ for r in dataTable[0].values()]
             convert = False
             for rowDataTbl in dataTable:
                 otherRowDataType = [type(r).__name__ for r in rowDataTbl.values()]
@@ -183,17 +189,18 @@ credit,testData/credit.csv,datasets_2,credit"""
                 if any(typeNotEqual):
                     missConversion = [(i, otherRowDataType[i], colDataType[i]) for\
                         i, x in enumerate(typeNotEqual) if x]
-                    newDataType = colDataType
                     for i,x,y in missConversion:
-                        if x == 'str' or y == 'str':
-                            newDataType[i] = 'str'
-                        elif (x == 'float' and y == 'int') or (x == 'float' and y == 'int'):
-                            newDataType[i] = 'float'
-                        convert = True
-            if convert:
-                dataTable = readCsvWithTypeConv(row[1], newDataType)
-            oracleType = [pthonOracleTypeMap[dataType] for dataType in colDataType]
-    
+                        if x != y:
+                            if x == 'str' or y == 'str':
+                                newDataType[i] = 'str'
+                            elif (x == 'float' and y == 'int') or (x == 'float' and y == 'int'):
+                                newDataType[i] = 'float'
+            if any([x != y for x,y in zip(colDataType, newDataType)]):
+                dataTable = readCsvWithTypeConv(row[1], \
+                    dict(zip(dataTable[0].keys(), newDataType)))
+                colDataType = newDataType
+            oracleType = [pythonOracleTypeMap[dataType] for dataType in colDataType]
+
         orclLogin = oracleSystemLoginInfo.replace('system', 'C##' + row[2].upper())\
           .replace('qscf12356', row[2])
         # create connection
@@ -207,10 +214,18 @@ credit,testData/credit.csv,datasets_2,credit"""
                 ','.join([x + ' ' + y for (x,y) in zip(colNames, oracleType)])))
         
         # insert data
+        print 'start upload at %s...' % datetime.datetime.now()
+        st = time.clock()   
+        
         oracleCursor.executemany(
             '''INSERT INTO {}({}) values ({})'''.format(row[3], ','.join(colNames), \
                 ','.join([':{}'.format(i) for i in range(len(colNames))])), \
                 [d.values() for d in dataTable])
+    
+        print 'End upload at %s...' % datetime.datetime.now()
+        print 'The total upload time for %i cells is %s seconds...\n' % \
+            (len(dataTable) * len(dataTable[0]), time.clock() - st)
+            
         # commit change           
         oracleConn.commit()
         

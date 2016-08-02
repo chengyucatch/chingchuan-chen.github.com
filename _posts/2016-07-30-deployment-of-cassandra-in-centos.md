@@ -54,6 +54,11 @@ rpc_address: 192.168.0.161
 
 # fifth place:
 endpoint_snitch: GossipingPropertyFileSnitch
+
+# sixth place:
+
+# seventh place:
+
 ```
 
 一台裝完之後，可以用下面指令做複製的動作，然後修改需要設定的地方(listen_address跟rpc_address)：
