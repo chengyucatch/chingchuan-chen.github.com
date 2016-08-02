@@ -39,7 +39,7 @@ conda會幫你把Oracle instant client下載好，並放在適當目錄中
 
 使用的資料都是來自[UC Irvine Machine Learning Repository](http://archive.ics.uci.edu/ml/)
 
-我分別去抓了iris, forest fires, Car Evaluation跟default of credit card clients這四個資料集
+我分別去抓了iris, forest fires, Car Evaluation, default of credit card clients跟adult這五個資料集
 
 放在下方程式目錄下的testData資料夾中
 
@@ -246,10 +246,11 @@ if __name__ == "__main__":
     
     # Read list of data table
     tableList = """dataName,path,uploadShema,uploadTblName
-    iris,testData/iris.csv,datasets_1,iris
-    forestfires,testData/forestfires.csv,datasets_1,forestfires
-    car,testData/car.csv,datasets_1,car
-    credit,testData/credit.csv,datasets_2,credit"""
+iris,testData/iris.csv,datasets_1,iris
+forestfires,testData/forestfires.csv,datasets_1,forestfires
+car,testData/car.csv,datasets_1,car
+credit,testData/credit.csv,datasets_2,credit
+adult,testData/adult.csv,datasets_2,adult"""
     
     fid = StringIO.StringIO(tableList)
     reader = csv.reader(fid, delimiter=',')
