@@ -178,7 +178,7 @@ PS: 這裡我還沒有測試過，因為避免牽扯到windwos的環境變數就
 
 我想要創造三個使用者，等等利用ROracle上傳到這三個使用者下的schema，SQL內容如下：
 
-``` SQL
+``` sql
 CREATE TABLESPACE nycflights13
   DATAFILE 'nycflights13.dat'
   SIZE 40M REUSE AUTOEXTEND ON;
@@ -419,3 +419,8 @@ dbExistsTable(con, "airlines")
 7/31補充：
 
 更扯的事情是column name都有包quote，select時候，都要多打""去框住column name
+
+8/12更新：
+
+全部使用大寫字元，就不會產生上面的情況
+
