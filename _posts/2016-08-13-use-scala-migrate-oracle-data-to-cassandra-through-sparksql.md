@@ -48,7 +48,7 @@ TO C##testuser;
 
 我們再透過R去塞一個夠大的資料到Oracle上去，其R code如下：
 
-```
+``` R
 library(rpace)  # my package (there is a big data.frame)
 library(fasttime)
 library(ROracle)
@@ -184,7 +184,7 @@ object ora2cass {
 
 然後把ojdbc7.jar放進server，用
 
-```
+``` bash
 cp ~/ojdbc7.jar $SPARK_HOME/extraClass
 cp $SPARK_HOME/conf/spark-defaults.conf.template $SPARK_HOME/conf/spark-defaults.conf
 
