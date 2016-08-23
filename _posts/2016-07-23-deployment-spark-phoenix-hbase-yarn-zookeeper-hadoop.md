@@ -318,7 +318,16 @@ ii. 配置Zookeeper
 {% highlight bash %}
 dataDir=/usr/local/zookeeper/data
 server.1=sparkServer0:2888:3888
+server.1=sparkServer1:2888:3888
+server.1=sparkServer2:2888:3888
+# 接著創立需要的資料夾，並新增檔案
+mkdir $ZOOKEEPER_HOME/data
+tee $ZOOKEEPER_HOME/data/myid << "EOF"
+1
+EOF
 {% endhighlight %}
+
+在sparkServer2跟sparkServer3分別設定為2跟3。
 
 iii. 配置HBase
 用`vi $HBASE_HOME/conf/hbase-site.xml`編輯，改成下面這樣：
@@ -437,6 +446,8 @@ hdfs namenode -format
 start-dfs.sh & start-yarn.sh
 # 啟動zookeeper server
 zkServer.sh start
+ssh tester@cassSpark2 "zkServer.sh start"
+ssh tester@cassSpark3 "zkServer.sh start"
 # 啟動hbase server
 start-hbase.sh
 {% endhighlight %}
@@ -452,16 +463,17 @@ hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.4.j
 {% endhighlight %}
 
 ii. zookeeper
-鍵入`zkCli.sh 127.0.0.1:2181`會出現下面的訊息：
-  
-{% highlight bash %}
-WATCHER::
+再來是測試看看zookeeper是否有部署成功，先輸入`zkCli.sh -server cassSpark1:2181,cassSpark2:2181,cassSpark3:2181`可以登錄到zookeeper的server上，如果是正常運作會看到下面的訊息：
 
-WatchedEvent state:SyncConnected type:None path:null
-[zk: 127.0.0.1:2181(CONNECTED) 0]
+{% highlight bash %}
+[zk: cassSpark1:2181,cassSpark2:2181,cassSpark3:2181(CONNECTED) 0]
 {% endhighlight %}
 
-這時候試著輸入看看`create /test01 abcd`，然後輸入`ls /`看看是否會出現`[test01, zookeeper]`，如果是，zookeeper就是設定成功，如果中間有出現任何錯誤，則否，最後用`delete /test01`做刪除即可，然後用`quit`離開。
+此時試著輸入看看`create /test01 abcd`，然後輸入`ls /`看看是否會出現`[test01, zookeeper]`
+
+如果是，zookeeper就是設定成功，如果中間有出現任何錯誤，則否
+
+最後用`delete /test01`做刪除即可，然後用`quit`離開。
 
 iii. HBase
 鍵入`hbase shell`會出現下面的訊息：
