@@ -217,8 +217,6 @@ sudo service zookeeper start
 v. 配置mesos
 
 {% highlight bash %}
-
-
 # 設定masters
 sudo tee /usr/etc/mesos/masters << "EOF"
 mesos-01 192.168.0.121
@@ -286,6 +284,7 @@ service mesos-slave start
 {% endhighlight %}
 
 mesos-04, mesos-05上：
+
 {% highlight bash %}
 sudo start mesos-slave
 {% endhighlight %}
