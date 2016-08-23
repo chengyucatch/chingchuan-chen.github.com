@@ -123,8 +123,8 @@ sudo vi /etc/hostname
 f. 斷掉防火牆
     
 {% highlight bash %}
-systemctl stop firewalld
-systemctl disable firewalld  
+sudo systemctl stop firewalld
+sudo systemctl disable firewalld  
 {% endhighlight %}
 
 2. 開始部署
@@ -232,7 +232,8 @@ a. core-site.xml
   </property>
 </configuration>
 {% endhighlight %}
-        1. mapred-site.xml
+
+b. mapred-site.xml
         先用`cp $HADOOP_CONF_DIR/mapred-site.xml.template $HADOOP_CONF_DIR/mapred-site.xml`，然後用`vi $HADOOP_CONF_DIR/mapred-site.xml`編輯，改成下面這樣：
     
 {% highlight xml %}
@@ -244,7 +245,7 @@ a. core-site.xml
 </configuration>
 {% endhighlight  %}
 
-b. hdfs-site.xml
+c. hdfs-site.xml
 用`vi $HADOOP_CONF_DIR/hdfs-site.xml`編輯，改成下面這樣：
         
 {% highlight xml %}
@@ -280,8 +281,8 @@ mkdir -p $HADOOP_HOME/tmp/data
 mkdir -p $HADOOP_HOME/tmp/name
 {% endhighlight  %}
 
-    1. yarn-site.xml
-    用`vi $HADOOP_CONF_DIR/yarn-site.xml`編輯，改成下面這樣：
+d. yarn-site.xml
+用`vi $HADOOP_CONF_DIR/yarn-site.xml`編輯，改成下面這樣：
     
 {% highlight xml %}
 <configuration>
@@ -300,11 +301,11 @@ mkdir -p $HADOOP_HOME/tmp/name
 </configuration>
 {% endhighlight %}
 
-c. 配置slaves
+e. 配置slaves
         
 {% highlight bash %}
 # 傳入slaves的電腦名稱
-sudo tee $HADOOP_CONF_DIR/slaves << "EOF"
+tee $HADOOP_CONF_DIR/slaves << "EOF"
 sparkServer1
 sparkServer2
 sparkServer3

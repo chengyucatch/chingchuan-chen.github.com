@@ -71,7 +71,6 @@ source /etc/bashrc
 iii. 配置scala and spark
       
 {% highlight bash %}
-# 複製hadoop的slaves
 tee $SPARK_HOME/conf/slaves << "EOF"
 cassSpark1
 cassSpark2
