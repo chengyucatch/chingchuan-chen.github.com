@@ -352,4 +352,17 @@ exit
 
 再來是測試mesos有沒有辦法成功運行上面的script，使用`spark-shell --master mesos://zk://192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181/mesos`開啟spark-shell確定功能正常
 
-  
+備註：
+
+如果cluster不能對外連線的話，curl可以取得的檔案都先經由能夠連線的電腦取得
+
+至於Mesos的dependencies，先在能夠對外連線的centos電腦上下
+
+`sudo yum install --downloadonly --downloaddir=pkgs mesos-1.0.0-2.0.89.centos701406.x86_64.rpm`
+
+這樣就會把要下載rpm檔案全部都載下來到`pkgs`的資料夾，這些在打包傳到cluster上
+
+然後用`sudo yum install *.rpm`安裝，在安裝Mesos即可
+
+
+
