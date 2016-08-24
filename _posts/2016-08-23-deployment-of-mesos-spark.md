@@ -10,8 +10,6 @@ published: true
 ---
 {% include JB/setup %} 
 
-(undone)
-
 本篇主要在部署spark on mesos的環境
 
 目標是Spark跟Mesos的master配上兩台Mesos standby(同時為Zookeeper)
@@ -51,7 +49,7 @@ sudo mv zookeeper-3.4.8 /usr/local/bigdata/zookeeper
 sudo chown -R tester /usr/local/bigdata/zookeeper
 # 下載並部署mesos
 curl -v -j -k -L http://repos.mesosphere.com/el/7/x86_64/RPMS/mesos-1.0.0-2.0.89.centos701406.x86_64.rpm -o mesos-1.0.0-2.0.89.centos701406.x86_64.rpm
-sudo yum install -y mesos-1.0.0-2.0.89.centos701406.x86_64.rpm
+sudo yum install mesos-1.0.0-2.0.89.centos701406.x86_64.rpm
 # 下載並部署scala
 curl -v -j -k -L http://downloads.lightbend.com/scala/2.11.8/scala-2.11.8.tgz -o scala-2.11.8.tgz
 tar -zxvf scala-2.11.8.tgz
@@ -102,7 +100,7 @@ tee $ZOOKEEPER_HOME/data/myid << "EOF"
 EOF
 {% endhighlight %}
 
-在mesos-02跟mesos-03分別設定為2跟3。
+在cassSpark2跟cassSpark3分別設定為2跟3。
 
 啟動zookeeper: 
 
@@ -124,7 +122,6 @@ ssh tester@cassSpark3 "zkServer.sh start"
 如果是，zookeeper就是設定成功，如果中間有出現任何錯誤，則否
 
 最後用`delete /test01`做刪除即可，然後用`quit`離開。
-
 
 最後是設定開機自動啟動zookeeper server(用`sudo vi /etc/init.d/zookeeper`去create):
 
@@ -216,86 +213,50 @@ sudo service zookeeper start
 
 v. 配置mesos
 
+下面的動作在cassSpark1, cassSpark2, cassSpark3這三台都要配置
+
 {% highlight bash %}
 # 設定masters
 sudo tee /usr/etc/mesos/masters << "EOF"
-mesos-01 192.168.0.121
-mesos-02 192.168.0.122
-mesos-03 192.168.0.123
+cassSpark1 192.168.0.121
 EOF
 
 # 設定slaves
 sudo tee /usr/etc/mesos/slaves << "EOF"
-mesos-04 192.168.0.124
-mesos-05 192.168.0.125
-EOF
-
-# 設定master-env
-sudo cp /usr/etc/mesos/mesos-master-env.sh.template /usr/etc/mesos/mesos-master-env.sh
-sudo tee -a /usr/etc/mesos/mesos-slave-env.sh << "EOF"
-export MESOS_log_dir=/home/*/disk/mesos/master/log
-export MESOS_work_dir=/home/*/disk/mesos/master/work
-export MESOS_ZK=zk://192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181/mesos
-export MESOS_quorum=2
-EOF
-
-# 設定slave-env
-sudo cp /usr/etc/mesos/mesos-slave-env.sh.template /usr/etc/mesos/mesos-slave-env.sh
-sudo tee -a /usr/etc/mesos/mesos-slave-env.sh << "EOF"
-export MESOS_log_dir=/home/zhy/disk/mesos/slave/log
-export MESOS_work_dir=/home/zhy/disk/mesos/slave/work
-export MESOS_isolation=cgroups
+cassSpark2 192.168.0.122
+cassSpark3 192.168.0.123
 EOF
 
 # 修改zookeeper
 sudo tee /etc/mesos/zk << "EOF"
 zk://192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181/mesos
 EOF
+
 # 配置quorum
 sudo tee /etc/mesos-master/quorum << "EOF"
-2
-EOF
-# 修改master ip
-sudo tee /etc/mesos-master/ip 
-192.168.0.121
-EOF
-# 修改master hostname
-sudo tee /etc/mesos-master/hostname << "EOF"
-mesos-01
+1
 EOF
 {% endhighlight %}
 
-mesos-02跟mesos-03分別設定上該台的ip跟hostname
-
-然後slave部分則是在`/etc/mesos-slave/ip`跟`/etc/mesos-slave/hostname`設置該台電腦ip跟hostname
-
-mesos-01, mesos-02, mesos-03上：
+再來就是啟動了
 
 {% highlight bash %}
 # 啟動zookeeper server
 zkServer.sh start
 ssh tester@cassSpark2 "zkServer.sh start"
 ssh tester@cassSpark3 "zkServer.sh start"
-# 讓mesos重讀config
-initctl reload-configuration
 # 啟動mesos
-service mesos-master start
-service mesos-slave start
+sudo service mesos-master start
+# 在cassSpark2,cassSpark3上啟動slave
+sudo service mesos-slave start
 {% endhighlight %}
-
-mesos-04, mesos-05上：
-
-{% highlight bash %}
-sudo start mesos-slave
-{% endhighlight %}
-
 
 iii. 配置scala and spark
       
 {% highlight bash %}
 tee $SPARK_HOME/conf/slaves << "EOF"
-mesos-04
-mesos-05
+cassSpark2
+cassSpark3
 EOF
 
 # 複製檔案
@@ -305,9 +266,8 @@ cp $SPARK_HOME/conf/spark-defaults.conf.template $SPARK_HOME/conf/spark-defaults
 
 # 傳入設定
 tee -a $SPARK_HOME/conf/spark-env.sh << "EOF"
-SPARK_MASTER_IP=mesos-01
+SPARK_MASTER_IP=cassSpark1
 SPARK_LOCAL_DIRS=/usr/local/bigdata/spark
-MESOS_NATIVE_LIBRARY=/usr/local/lib/libmesos.so
 EOF
 
 # install sbt and git 
@@ -341,6 +301,55 @@ EOF
 
 slaves的部署、cassandra的設置跟自動啟動部分就都一樣，此處也跳過，直接進測試
 
-3. 安裝
+先用`spark-shell --master spark://192.168.0.121:7077`開啟spark-shell確定功能正常
+
+``` scala
+// 單純測試spark
+val NUM_SAMPLES = 1000000
+val count = sc.parallelize(1 to NUM_SAMPLES).map{i =>
+  val x = Math.random()
+  val y = Math.random()
+  if (x*x + y*y < 1) 1 else 0
+}.reduce(_ + _)
+println("Pi is roughly " + 4.0 * count / NUM_SAMPLES)
+
+// 測試與cassandra的connector
+// 重啟sc
+sc.stop()
+// imprt需要套件
+import com.datastax.spark.connector._, org.apache.spark.SparkContext, org.apache.spark.SparkContext._, org.apache.spark.SparkConf, com.datastax.spark.connector.cql.CassandraConnector
+// 設定cassandra host
+val conf = new SparkConf(true).set("spark.cassandra.connection.host", "192.168.0.121")
+val sc = new SparkContext(conf)
+
+// 創立keyspace, table，然後塞值
+CassandraConnector(conf).withSessionDo { session =>
+  session.execute("CREATE KEYSPACE IF NOT EXISTS test WITH REPLICATION = {'class': 'SimpleStrategy', 'replication_factor': 2 }")
+  session.execute("DROP TABLE IF EXISTS test.kv")
+  session.execute("CREATE TABLE test.kv (key text PRIMARY KEY, value DOUBLE)")
+  session.execute("INSERT INTO test.kv(key, value) VALUES ('key1', 1.0)")
+  session.execute("INSERT INTO test.kv(key, value) VALUES ('key2', 2.5)")
+}
+
+// 印出cassandra的元素
+val rdd = sc.cassandraTable("test", "kv")
+println(rdd.first)
+// 會出現CassandraRow{key: key1, value: 1.0}
+val collection = sc.parallelize(Seq(("key3", 1.7), ("key4", 3.5)))
+// save new data into cassandra
+collection.saveToCassandra("test", "kv", SomeColumns("key", "value"))
+// 印出塞完的結果
+rdd.collect().foreach(row => println(s"Existing Data: $row"))
+// Existing Data: CassandraRow{key: key3, value: 1.7}
+// Existing Data: CassandraRow{key: key1, value: 1.0}
+// Existing Data: CassandraRow{key: key4, value: 3.5}
+// Existing Data: CassandraRow{key: key2, value: 2.5}
+
+// 停止spark-shell，然後離開
+sc.stop()
+exit
+```
+
+再來是測試mesos有沒有辦法成功運行上面的script，使用`spark-shell --master mesos://zk://192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181/mesos`開啟spark-shell確定功能正常
 
   
