@@ -12,9 +12,7 @@ published: true
 
 上篇部署了Spark on Mesos的環境
 
-而這篇主要是想要使用Spark中的dynamic resource allocation跟external shuffle service
-
-並且使用cluster mode去執行Spark on Mesos
+而這篇主要是想要使用Spark on Mesos的dynamic resource allocation跟external shuffle service
 
 <!-- more -->
 
