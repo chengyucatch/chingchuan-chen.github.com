@@ -151,7 +151,7 @@ val collection = sc.parallelize(Seq(("key5", 38), ("key6", 5)))
 // save new data into cassandra
 collection.saveToCassandra("test", "kv", SomeColumns("key", "value"))
 sc.stop()
-exit
+:quit
 ```
 
 用`cqlsh cassSpark1`登入CQL，去看剛剛塞進去的資料

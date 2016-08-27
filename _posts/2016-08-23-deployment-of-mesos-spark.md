@@ -10,15 +10,13 @@ published: true
 ---
 {% include JB/setup %} 
 
-本篇主要在部署spark on mesos的環境
+本篇主要在部署Spark on Mesos的環境
 
 目標是Spark跟Mesos的master配上兩台Mesos standby(同時為Zookeeper)
 
-以及兩台Mesos slave with Spark的環境 (共五台)
+cassSpark1為Mesos master跟Spark master，cassSpark2以及cassSpark3為mesos standby
 
-mesos-01為Mesos master跟Spark master，mesos-02以及mesos-03為mesos standby
-
-mesos-04以及mesos-05為Mesos slaves跟Spark slaves
+這三台同時也是Mesos slaves跟Spark slaves (實際用途中，會是其他電腦，這裡用VM就都放一起了)
 
 <!-- more -->
 
@@ -37,11 +35,6 @@ sudo chown -R tester /usr/local/bigdata
 # 下載並安裝java
 curl -v -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-x64.rpm -o jdk-8u101-linux-x64.rpm
 sudo yum install -y jdk-8u101-linux-x64.rpm
-# 下載並部署Hadoop
-curl -v -j -k -L http://apache.stu.edu.tw/hadoop/common/hadoop-2.6.4/hadoop-2.6.4.tar.gz -o hadoop-2.6.4.tar.gz
-tar -zxvf hadoop-2.6.4.tar.gz
-sudo mv hadoop-2.6.4 /usr/local/bigdata/hadoop
-sudo chown -R tester /usr/local/bigdata/hadoop
 # 下載並部署zookeeper
 curl -v -j -k -L http://apache.stu.edu.tw/zookeeper/zookeeper-3.4.8/zookeeper-3.4.8.tar.gz -o zookeeper-3.4.8.tar.gz
 tar -zxvf zookeeper-3.4.8.tar.gz
@@ -83,20 +76,22 @@ export PATH=$PATH:$JAVA_HOME:$ZOOKEEPER_HOME/bin:$SPARK_HOME/bin:$CASSANDRA_HOME
 {% endhighlight %}
 
 iv. 配置Zookeeper
-先用`cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg`，然後用`vi $ZOOKEEPER_HOME/conf/zoo.cfg`編輯，改成下面這樣：
 
 {% highlight bash %}
+# 複製zoo.cfg
+cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg
+# 傳入設定
+tee $ZOOKEEPER_HOME/conf/zoo.cfg << "EOF"
 dataDir=/usr/local/bigdata/zookeeper/data
 server.1=cassSpark1:2888:3888
 server.2=cassSpark2:2888:3888
 server.3=cassSpark3:2888:3888
-{% endhighlight %}
+EOF
 
-接著創立需要的資料夾，並新增檔案
-{% highlight bash %}
+# 接著創立需要的資料夾，並新增檔案
 mkdir $ZOOKEEPER_HOME/data
 tee $ZOOKEEPER_HOME/data/myid << "EOF"
-1
+2
 EOF
 {% endhighlight %}
 
@@ -123,9 +118,10 @@ ssh tester@cassSpark3 "zkServer.sh start"
 
 最後用`delete /test01`做刪除即可，然後用`quit`離開。
 
-最後是設定開機自動啟動zookeeper server(用`sudo vi /etc/init.d/zookeeper`去create):
+最後是設定開機自動啟動zookeeper server:
 
 {% highlight bash %}
+sudo tee /etc/init.d/zookeeper << "EOF"
 #!/bin/bash
 #
 # ZooKeeper
@@ -201,32 +197,19 @@ case "$1" in
 esac
 
 exit $RETVAL
-{% endhighlight %}
+EOF
 
-然後使用下面指令讓這個script能夠自動跑：
-
-``` bash 
+# 然後使用下面指令讓這個script能夠自動跑：
 sudo chmod +x /etc/init.d/zookeeper
 sudo chkconfig --add zookeeper
 sudo service zookeeper start
-```
+{% endhighlight %}
 
 v. 配置mesos
 
 下面的動作在cassSpark1, cassSpark2, cassSpark3這三台都要配置
 
 {% highlight bash %}
-# 設定masters
-sudo tee /usr/etc/mesos/masters << "EOF"
-cassSpark1 192.168.0.121
-EOF
-
-# 設定slaves
-sudo tee /usr/etc/mesos/slaves << "EOF"
-cassSpark2 192.168.0.122
-cassSpark3 192.168.0.123
-EOF
-
 # 修改zookeeper
 sudo tee /etc/mesos/zk << "EOF"
 zk://192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181/mesos
@@ -234,31 +217,30 @@ EOF
 
 # 配置quorum
 sudo tee /etc/mesos-master/quorum << "EOF"
-1
+2
 EOF
 {% endhighlight %}
+
+ssh-copy-id -i ~/.ssh/id_rsa.pub cassSpark3
 
 再來就是啟動了
 
 {% highlight bash %}
-# 啟動zookeeper server
-zkServer.sh start
-ssh tester@cassSpark2 "zkServer.sh start"
-ssh tester@cassSpark3 "zkServer.sh start"
-# 啟動mesos
-sudo service mesos-master start
+# 記得先啟動zookeeper server，再啟動mesos
+# master要記得關掉slave (這裡的配置下不用關，指令供人參考用)
+sudo systemctl disable mesos-master
+sudo systemctl stop mesos-master
+sudo service mesos-master restart
 # 在cassSpark2,cassSpark3上啟動slave
-sudo service mesos-slave start
+# slave要記得關掉master (這裡的配置下不用關，指令供人參考用)
+sudo systemctl disable mesos-slave
+sudo systemctl stop mesos-slave
+sudo service mesos-slave restart
 {% endhighlight %}
 
 iii. 配置scala and spark
       
 {% highlight bash %}
-tee $SPARK_HOME/conf/slaves << "EOF"
-cassSpark2
-cassSpark3
-EOF
-
 # 複製檔案
 cp $SPARK_HOME/conf/spark-env.sh.template $SPARK_HOME/conf/spark-env.sh
 cp $SPARK_HOME/conf/log4j.properties.template $SPARK_HOME/conf/log4j.properties
@@ -266,7 +248,6 @@ cp $SPARK_HOME/conf/spark-defaults.conf.template $SPARK_HOME/conf/spark-defaults
 
 # 傳入設定
 tee -a $SPARK_HOME/conf/spark-env.sh << "EOF"
-SPARK_MASTER_IP=cassSpark1
 SPARK_LOCAL_DIRS=/usr/local/bigdata/spark
 EOF
 
@@ -291,17 +272,40 @@ spark.driver.extraLibraryPath /usr/local/bigdata/spark/extraClass
 spark.executor.extraClassPath /usr/local/bigdata/spark/extraClass/spark-cassandra-connector-assembly-2.0.0-M1.jar
 spark.executor.extraLibraryPath /usr/local/bigdata/spark/extraClass
 spark.jars /usr/local/bigdata/spark/extraClass/spark-cassandra-connector-assembly-2.0.0-M1.jar
-spark.scheduler.mode FAIR
-spark.deploy.defaultCores 2
-spark.cores.max 2
-spark.driver.memory 2g
-spark.executor.memory 2g
+spark.cores.max 3
+spark.driver.memory 4g
+spark.executor.memory 4g
 EOF
 {% endhighlight %}
 
-slaves的部署、cassandra的設置跟自動啟動部分就都一樣，此處也跳過，直接進測試
+Spark的master, slave就不用啟動了，直接用Mesos即可
 
-先用`spark-shell --master spark://192.168.0.121:7077`開啟spark-shell確定功能正常
+如果之前用我的方式配置過自動啟動的話，請用下面的指令移除：
+
+``` bash
+# 移除master的服務
+sudo systemctl stop spark-master.service
+sudo rm /etc/systemd/system/multi-user.target.wants/spark-master.service
+# 移除slave的服務
+sudo systemctl stop spark-slave.service
+sudo rm /etc/systemd/system/multi-user.target.wants/spark-slave.service
+# 重新讀取開機的服務
+sudo systemctl daemon-reload
+```
+
+至於cassandra的設置就都一樣，此處就不贅述，直接進測試
+
+執行下面兩行，成功執行就是Mesos有裝成功
+
+``` bash
+MASTER=$(mesos-resolve `cat /etc/mesos/zk`)
+mesos-execute --master=$MASTER --name="cluster-test" --command="sleep 5"
+```
+
+Mesos也可以透過去連接5050 port到目前的master上去，有出現網頁就是正常
+
+
+再來測試Spark，用`spark-shell --master mesos://zk://192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181/mesos`開啟spark-shell確定功能正常
 
 ``` scala
 // 單純測試spark
@@ -347,10 +351,8 @@ rdd.collect().foreach(row => println(s"Existing Data: $row"))
 
 // 停止spark-shell，然後離開
 sc.stop()
-exit
+:quit
 ```
-
-再來是測試mesos有沒有辦法成功運行上面的script，使用`spark-shell --master mesos://zk://192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181/mesos`開啟spark-shell確定功能正常
 
 備註：
 
