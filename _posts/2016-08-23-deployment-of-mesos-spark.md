@@ -136,7 +136,7 @@ source /etc/rc.d/init.d/functions
 source $ZOOKEEPER/bin/zkEnv.sh
 
 RETVAL=0
-PIDFILE=/var/lib/zookeeper/data/zookeeper_server.pid
+PIDFILE=/var/run/zookeeper_server.pid
 desc="ZooKeeper daemon"
 
 start() {
@@ -249,6 +249,7 @@ cp $SPARK_HOME/conf/spark-defaults.conf.template $SPARK_HOME/conf/spark-defaults
 # 傳入設定
 tee -a $SPARK_HOME/conf/spark-env.sh << "EOF"
 SPARK_LOCAL_DIRS=/usr/local/bigdata/spark
+SPARK_SCALA_VERSION=2.11
 EOF
 
 # install sbt and git 

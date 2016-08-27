@@ -86,6 +86,7 @@ cp $SPARK_HOME/conf/spark-defaults.conf.template $SPARK_HOME/conf/spark-defaults
 tee -a $SPARK_HOME/conf/spark-env.sh << "EOF"
 SPARK_MASTER_IP=cassSpark1
 SPARK_LOCAL_DIRS=/usr/local/bigdata/spark
+SPARK_SCALA_VERSION=2.11
 SPARK_DRIVER_MEMORY=3G
 SPARK_WORKER_CORES=2
 SPARK_WORKER_MEMORY=3g
