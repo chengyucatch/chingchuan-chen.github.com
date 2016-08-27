@@ -18,7 +18,7 @@ published: true
 
 Dynamic resource allocation是為了能夠讓Spark能夠更有效的使用系統資源的系統
 
-能夠動態的去增加worker以利application的運行，並能realease不在使用中的executor，
+能夠動態的去增加worker以利application的運行，並能realease不在使用中的executor
 
 而這個功能原本只有在Spark on Yarn的配置上才有，2.0.0的Spark也在Mesos上實現支援了
 
@@ -30,7 +30,8 @@ Dynamic resource allocation是為了能夠讓Spark能夠更有效的使用系統
 
 
 1. 準備工作
-   基本上就是有一組Spark On Mesos的cluster，並有Cassandra
+
+基本上就是有一組Spark On Mesos的cluster，並有Cassandra
 
 2. 開始配置
 
@@ -179,8 +180,14 @@ sudo service spark-shuffle start
 ``` bash
 spark-submit --master mesos://zk://192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181/mesos --class cassSpark test_cassspark_2.11-1.0.jar
 ```
-  
-然後用`mesos-resolve \`cat /etc/mesos/zk\``找出現在的Mesos master (會出現你配置zookeeper的其中一個IP with port 5050)
+
+下方的指令可以用來找出現在的Mesos master
+
+``` bash
+mesos-resolve `cat /etc/mesos/zk`
+```
+
+執行完後會出現你配置zookeeper的其中一個IP with port 5050
 
 例如我的Mesos master ip是192.168.0.121:5050，那麼我連上這個網址就會看到現在任務狀況
 

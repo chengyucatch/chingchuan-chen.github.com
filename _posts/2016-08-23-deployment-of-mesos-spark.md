@@ -21,7 +21,8 @@ cassSpark1為Mesos master跟Spark master，cassSpark2以及cassSpark3為mesos st
 <!-- more -->
 
 1. 準備工作
-  這裡基本上跟[前篇](http://chingchuan-chen.github.io/cassandra/2016/08/05/deployment-of-spark-based-on-cassandra.html)一樣，就不贅述了
+
+這裡基本上跟[前篇](http://chingchuan-chen.github.io/cassandra/2016/08/05/deployment-of-spark-based-on-cassandra.html)一樣，就不贅述了
 
 2. 開始部署
 
