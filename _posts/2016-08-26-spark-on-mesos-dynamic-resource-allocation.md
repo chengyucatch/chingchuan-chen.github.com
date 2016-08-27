@@ -1,6 +1,6 @@
 ---
 layout: post
-cTitle: "Spark on Mesos的其他功能介紹"
+cTitle: "Spark on Mesos: dynamic resource allocation"
 title: "spark on mesos with other functionalities"
 category: Spark
 tagline:
