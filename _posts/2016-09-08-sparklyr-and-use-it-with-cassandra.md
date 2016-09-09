@@ -303,3 +303,15 @@ cass_df_tbl_2_r <- as.data.frame(cass_df_tbl_2) %>>% data.table %>>%
 ```
 
 以上是sparklyr的初探，並嘗試Cassandra的結果
+
+
+一些小心得：
+
+沒有辦法直接udf，無法直接套用R函數是致命傷
+
+幾乎都要去翻spark.sql.functions的document
+
+能用的操作少之又少，又懶得去寫extension
+
+希望這部分能趕快有enhancement，滿期待這個出現[Github issue](https://github.com/rstudio/sparklyr/issues/191)
+
