@@ -10,8 +10,6 @@ published: true
 ---
 {% include JB/setup %} 
 
-(Ongoing)
-
 本篇主要在部署Spark on Mesos的環境
 
 目標是Spark跟Mesos的master配上兩台Mesos standby(同時為Zookeeper)

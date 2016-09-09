@@ -10,6 +10,8 @@ published: true
 ---
 {% include JB/setup %} 
 
+(Ongoing)
+
 用完Cassandra的primary key跟secondary index之後
 
 覺得Cassandra再怎麼宣稱他們的東西多好也沒意義
