@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: "revisit Apache Pheonix based on a Hadoop HA server"
-title: "revisit Apache Pheonix based on a Hadoop HA server"
+cTitle: "重返Phoenix與建立Hadoop/YARN/HBase HA server"
+title: "Revisit Apache Pheonix based on a Hadoop HA server"
 category: Hadoop
 tagline:
 tags: [Spark, Mesos, Hadoop, Pheonix, HBase]
