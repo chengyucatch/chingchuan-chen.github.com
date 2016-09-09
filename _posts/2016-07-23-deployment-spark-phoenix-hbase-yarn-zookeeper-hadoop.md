@@ -234,7 +234,7 @@ a. core-site.xml
 {% endhighlight %}
 
 b. mapred-site.xml
-        先用`cp $HADOOP_CONF_DIR/mapred-site.xml.template $HADOOP_CONF_DIR/mapred-site.xml`，然後用`vi $HADOOP_CONF_DIR/mapred-site.xml`編輯，改成下面這樣：
+先用`cp $HADOOP_CONF_DIR/mapred-site.xml.template $HADOOP_CONF_DIR/mapred-site.xml`，然後用`vi $HADOOP_CONF_DIR/mapred-site.xml`編輯，改成下面這樣：
     
 {% highlight xml %}
 <configuration>

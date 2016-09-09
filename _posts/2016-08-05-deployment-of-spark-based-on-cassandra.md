@@ -245,7 +245,7 @@ vi. 設置Cassandra自動開機啟動
 
 ``` bash 
 #!/bin/bash
-# chkconfig: 2345 99 01
+# chkconfig: - 79 01
 # description: Cassandra
 
 . /etc/rc.d/init.d/functions
@@ -359,7 +359,7 @@ nodetool status
 
 vii. 設置spark自動開機
 
-在spark的master:
+在spark的master (你的User跟Group那裏記得要修改):
 
 ```
 sudo tee -a /etc/systemd/system/multi-user.target.wants/spark-master.service << "EOF"

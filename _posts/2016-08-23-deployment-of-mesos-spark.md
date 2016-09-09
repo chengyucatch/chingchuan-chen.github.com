@@ -92,7 +92,7 @@ EOF
 # 接著創立需要的資料夾，並新增檔案
 mkdir $ZOOKEEPER_HOME/data
 tee $ZOOKEEPER_HOME/data/myid << "EOF"
-2
+1
 EOF
 {% endhighlight %}
 
@@ -127,7 +127,7 @@ sudo tee /etc/init.d/zookeeper << "EOF"
 #
 # ZooKeeper
 # 
-# chkconfig: 2345 89 9 
+# chkconfig: - 80 99
 # description: zookeeper
 
 # ZooKeeper install path (where you extracted the tarball)

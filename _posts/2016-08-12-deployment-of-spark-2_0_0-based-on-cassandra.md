@@ -52,7 +52,7 @@ mv apache-cassandra-2.2.7 /usr/local/bigdata/cassandra
 {% endhighlight %}
    
 ii. 環境變數設置
-    
+
 {% highlight bash %}
 sudo tee -a /etc/bashrc << "EOF"
 # JAVA
