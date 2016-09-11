@@ -93,7 +93,8 @@ sudo yum install -y jdk-8u101-linux-x64.rpm
 # 下載並部署scala
 curl -v -j -k -L http://downloads.lightbend.com/scala/2.10.5/scala-2.10.5.tgz -o scala-2.10.5.tgz
 tar -zxvf scala-2.10.5.tgz
-mv scala-2.10.5 /usr/local/bigdata/scala
+sudo mkdir /usr/local/scala
+sudo mv scala-2.10.5 /usr/local/scala/scala-2.10
 # 下載並部署spark
 curl -v -j -k -L http://d3kbcqa49mib13.cloudfront.net/spark-1.6.1-bin-hadoop2.6.tgz -o spark-1.6.1-bin-hadoop2.6.tgz
 tar -zxvf spark-1.6.1-bin-hadoop2.6.tgz
@@ -115,7 +116,7 @@ sudo tee -a /etc/bashrc << "EOF"
 # JAVA
 export JAVA_HOME=/usr/java/jdk1.8.0_101
 # SCALA
-export SCALA_HOME=/usr/local/bigdata/scala
+export SCALA_HOME=/usr/local/scala/scala-2.10
 # SPARK
 export SPARK_HOME=/usr/local/bigdata/spark
 # CASSANDRA
