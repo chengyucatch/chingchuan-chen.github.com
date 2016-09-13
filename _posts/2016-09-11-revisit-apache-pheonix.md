@@ -235,6 +235,14 @@ tee -a $HADOOP_CONF_DIR/hdfs-site.xml << "EOF"
     <value>hc1</value>     
   </property>
   <property>
+    <name>dfs.namenode.shared.edits.dir</name>    
+    <value>qjournal://192.168.0.121:8485;192.168.0.122:8485;192.168.0.123:8485/hc1</value>
+  </property>
+  <property>
+    <name>dfs.journalnode.edits.dir</name>
+    <value>/home/hadoop/tmp/journal</value>
+  </property>
+  <property>
     <name>dfs.ha.namenodes.hc1</name>
     <value>nn1,nn2</value>
   </property>
@@ -279,6 +287,7 @@ EOF
 
 mkdir -p $HADOOP_HOME/tmp/data
 mkdir -p $HADOOP_HOME/tmp/name
+mkdir -p $HADOOP_HOME/tmp/journal
 mkdir -p $HADOOP_HOME/tmp/name/chkpt
 mkdir -p $HADOOP_HOME/tmp/ha-name-dir-shared
 
@@ -429,6 +438,10 @@ ssh tester@cassSpark3 "zkServer.sh start"
 # 格式化zkfc
 hdfs zkfc -formatZK
 ssh tester@cassSpark2 "hdfs zkfc -formatZK"
+# 開啟journalnode
+hadoop-daemon.sh start journalnode
+ssh tester@cassSpark2 "hadoop-daemon.sh start journalnode"
+ssh tester@cassSpark3 "hadoop-daemon.sh start journalnode"
 # 格式化namenode，並啟動namenode (nn1)
 hadoop namenode -format hc1
 hadoop-daemon.sh start namenode
@@ -443,7 +456,74 @@ ssh tester@cassSpark2 "hadoop-daemon.sh start zkfc"
 hadoop-daemon.sh start datanode
 ssh tester@cassSpark2 "hadoop-daemon.sh start datanode"
 ssh tester@cassSpark3 "hadoop-daemon.sh start datanode"
+# 啟動yarn
+yarn-daemon.sh start resourcemanager
+yarn-daemon.sh start nodemanager
+ssh tester@cassSpark2 "yarn-daemon.sh start resourcemanager"
+ssh tester@cassSpark2 "yarn-daemon.sh start nodemanager"
+ssh tester@cassSpark3 "yarn-daemon.sh start resourcemanager"
+ssh tester@cassSpark3 "yarn-daemon.sh start nodemanager"
+# 啟動HBase
+hbase-daemon.sh start master
+hbase-daemon.sh start regionserver
+ssh tester@cassSpark2 "hbase-daemon.sh start master"
+ssh tester@cassSpark2 "hbase-daemon.sh start regionserver"
+ssh tester@cassSpark3 "hbase-daemon.sh start master"
+ssh tester@cassSpark3 "hbase-daemon.sh start regionserver"
 ```
+
+開啟之後就可以用jps去看各台開啟狀況，如果確定都沒問題之後
+
+接下來就可以往下去設定自動啟動的部分了
+
+
+這裡採用python的supervisord去協助監控service的進程，並做自動啟動的動作
+
+先安裝supervisor:
+
+``` bash
+sudo yum install python-setuptools
+sudo easy_install pip
+sudo pip install supervisor
+# echo default config
+sudo mkdir /etc/supervisor
+sudo bash -c 'echo_supervisord_conf > /etc/supervisor/supervisord.conf'
+```
+
+使用`sudo vi /etc/supervisor/supervisord.conf`編輯，更動下面的設定：
+
+```
+[inet_http_server]         ; inet (TCP) server disabled by default
+port=192.168.0.121:10088   ; (ip_address:port specifier, *:port for all iface)
+username=tester            ; (default is no username (open server))
+password=qscf12356         ; (default is no password (open server))
+
+[supervisorctl]
+serverurl=unix:///tmp/supervisor.sock ; use a unix:// URL  for a unix socket
+serverurl=http://192.168.0.121:10088 ; use an http:// url to specify an inet socket
+username=tester              ; should be same as http_username if set
+password=qscf12356          ; should be same as http_password if set
+
+[supervisord]
+environment=
+  JAVA_HOME=/usr/java/jdk1.8.0_101,
+  SCALA_HOME=/usr/local/scala/scala-2.11,
+  SPARK_HOME=/usr/local/bigdata/spark,
+  ZOOKEEPER_HOME=/usr/local/bigdata/zookeeper,
+  HADOOP_HOME=/usr/local/bigdata/hadoop,
+  HADOOP_COMMON_HOME="$HADOOP_HOME",
+  HADOOP_CONF_DIR="$HADOOP_HOME/etc/hadoop",
+  HADOOP_COMMON_LIB_NATIVE_DIR="$HADOOP_HOME/lib/native",
+  HADOOP_OPTS="$HADOOP_OPTS -Djava.library.path=$HADOOP_HOME/lib/native",
+  HBASE_HOME=/usr/local/bigdata/hbase,
+  HBASE_MANAGES_ZK=false,
+  HBASE_CLASSPATH="$HBASE_CLASSPATH:$HADOOP_CONF_DIR",
+  HBASE_CONF_DIR="$HBASE_HOME/conf",
+  PHOENIX_HOME=/usr/local/bigdata/phoenix,
+  PHOENIX_CLASSPATH="$PHOENIX_HOME/lib",
+  PHOENIX_LIB_DIR="$PHOENIX_HOME/lib"
+```
+
 
 先設定啟動好Zookeeper之後，就可以設定自動啟動Hadoop
 
@@ -933,7 +1013,7 @@ start() {
 
 stop() {
   echo -n $"Stopping $desc (hbase-master): "
-  daemon $HBASE_HOME/bin/hbase-daemon.sh start master
+  daemon $HBASE_HOME/bin/hbase-daemon.sh stop master
   RETVAL=$?
   sleep 5
   echo
@@ -1019,7 +1099,7 @@ start() {
 
 stop() {
   echo -n $"Stopping $desc (hbase-regionserver): "
-  daemon $HBASE_HOME/bin/hbase-daemon.sh start regionserver
+  daemon $HBASE_HOME/bin/hbase-daemon.sh stop regionserver
   RETVAL=$?
   sleep 5
   echo
@@ -1168,15 +1248,21 @@ cassSpark1:50070應該會顯示是active node
 
 cassSpark2:50070則會顯示是standby node
 
-用`jps`找到cassSpark1的namenode的pid，並用`kill -9 $pid`去刪掉
+(根據啟動順序不同，active的node不一定就是cassSpark1)
 
-就可以看到cassSpark2:50070會變成active node，這樣hadoop的HA就完成了
+在active node上，輸入`sudo service hadoop-hdfs-namenode stop`停掉Hadoop namenode試試看
+
+等一下下，就可以看到cassSpark2:50070會變成active node，這樣hadoop的HA就完成了
 
 然後在datanode分頁可以看到啟動的datanode
 
-至於zookeeper, hadoop其他測試就看[這篇](http://chingchuan-chen.github.io/hadoop/2016/07/23/deployment-spark-phoenix-hbase-yarn-zookeeper-hadoop.html)就好
+而YARN就連到8081，HBase則是16010，用一樣方式都可以測試到HA是否有成功
 
-(備註：版本記得改成這裡的2.7.3即可，一定要測試，不然後面出問題很難抓)
+至於zookeeper, hadoop其他測試就看我之前發的那篇文章即可[點這](http://chingchuan-chen.github.io/hadoop/2016/07/23/deployment-spark-phoenix-hbase-yarn-zookeeper-hadoop.html)就好
+
+備註：版本記得改成這裡的2.7.3即可，一定要測試，不然後面出問題很難抓
+
+而且記得要重開，看看是否全部服務都如同預期一樣啟動了
 
 Reference:
 
