@@ -27,7 +27,7 @@ sudo mkdir /etc/supervisor
 sudo bash -c 'echo_supervisord_conf > /etc/supervisor/supervisord.conf'
 ```
 
-使用`sudo vi /etc/supervisor/supervisord.conf`編輯，更動下面的設定：
+使用`sudo vi /etc/supervisor/supervisord.conf`編輯，更動下面的設定(記得針對每一台的IP要做更改)：
 
 ```
 [inet_http_server]         ; inet (TCP) server disabled by default
@@ -143,3 +143,7 @@ sudo systemctl daemon-reload
 sudo systemctl start supervisor.service
 sudo systemctl enable supervisor.service
 ```
+
+最後使用設定的IP跟PORT，連上該網址，像是我的設定是連`http://192.168.0.121:10088`
+
+就可以看到可以手動操作的部分了
