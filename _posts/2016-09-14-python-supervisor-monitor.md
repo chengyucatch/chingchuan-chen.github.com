@@ -24,6 +24,7 @@ sudo easy_install pip
 sudo pip install supervisor
 # echo default config
 sudo mkdir /etc/supervisor
+sudo mkdir /var/log/supervisor
 sudo bash -c 'echo_supervisord_conf > /etc/supervisor/supervisord.conf'
 ```
 
@@ -92,7 +93,7 @@ startsecs=5
 priority=80
 
 [program:spark-mesos-shuffle]
-command=/bin/bash -c "$SPARK_HOME/sbin/start-mesos-shuffle-service.sh"
+command=/bin/bash -c "$SPARK_HOME/bin/spark-submit --class org.apache.spark.deploy.mesos.MesosExternalShuffleService 1"
 stdout_logfile=/var/log/supervisor/spark-mesos-shuffle-stdout.out
 stderr_logfile=/var/log/supervisor/spark-mesos-shuffle-stderr.out
 autostart=true
