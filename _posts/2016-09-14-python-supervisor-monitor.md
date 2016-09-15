@@ -122,7 +122,7 @@ EOF
 再來是配置supervisor的自動啟動服務
 
 ``` bash
-sudo tee -a /etc/systemd/system/multi-user.target.wants/supervisor.service << "EOF"
+sudo tee -a /usr/lib/systemd/system/supervisor.service << "EOF"
 [Unit]
 Description=supervisor
 After=network.target
