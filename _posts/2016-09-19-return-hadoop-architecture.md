@@ -4,9 +4,9 @@ cTitle: "重返Hadoop Architecture (設定HA群集)"
 title: "Return Hadoop Architecture with setting HA cluster"
 category: Hadoop
 tagline:
-tags: [Spark, Mesos, Hadoop, Pheonix, HBase]
+tags: [Spark, Mesos, Hadoop, HBase]
 cssdemo: 2014-spring
-published: false
+published: true
 ---
 {% include JB/setup %} 
 
@@ -18,9 +18,9 @@ published: false
 
 現在連query某段時間的rows都無法做到，我不知道這樣的CQL到底能幹嘛用
 
-看到Pheonix能夠直接提供standalone query server就很想試試看
+所以接下來就Survey SQL on Hadoop的solution
 
-這樣可以連用web service的功都省下來，只是query server的loading就很難講了
+這一篇會forcus在Hadoop的群集建立，SQL on Hadoop將會在下一篇介紹
 
 <!-- more -->
 
@@ -30,8 +30,14 @@ published: false
 
 所以會花很多篇幅在設定跟建立on boot的script
 
-我這一篇斷斷續續寫了兩週，一直提不太起勁一口氣完成他
+我這一篇斷斷續續寫了三週，一直提不太起勁一口氣完成他
 
+
+配置架構：
+
+1. Hadoop的HA只有兩台電腦、YARN也是同理，並且配置hdfs HA的電腦要啟動zkfc的服務
+2. 每一台都要配置Journal node去讓資料同步、並且在Hadoop Master當機時能夠做自動切換
+3. Zookeeper要設定成奇數台
 
 重新佈署：
 
@@ -82,9 +88,6 @@ mv zookeeper-3.4.8 /usr/local/bigdata/zookeeper
 curl -v -j -k -L http://apache.stu.edu.tw/hbase/stable/hbase-1.2.2-bin.tar.gz -o hbase-1.2.2-bin.tar.gz
 tar -zxvf hbase-1.2.2-bin.tar.gz
 mv hbase-1.2.2 /usr/local/bigdata/hbase
-# 下載並部署phoenix
-curl -v -j -k -L  http://apache.stu.edu.tw/phoenix/apache-phoenix-4.8.0-HBase-1.2/bin/apache-phoenix-4.8.0-HBase-1.2-bin.tar.gz -o apache-phoenix-4.8.0-HBase-1.2-bin.tar.gz
-tar -zxvf apache-phoenix-4.8.0-HBase-1.2-bin.tar.gz
 # 下載並部署mesos
 curl -v -j -k -L http://repos.mesosphere.com/el/7/x86_64/RPMS/mesos-1.0.0-2.0.89.centos701406.x86_64.rpm -o mesos-1.0.0-2.0.89.centos701406.x86_64.rpm
 sudo yum install mesos-1.0.0-2.0.89.centos701406.x86_64.rpm
@@ -117,16 +120,12 @@ export HBASE_HOME=/usr/local/bigdata/hbase
 export HBASE_MANAGES_ZK=false
 export HBASE_CLASSPATH=$HBASE_CLASSPATH:$HADOOP_CONF_DIR
 export HBASE_CONF_DIR=$HBASE_HOME/conf
-# PHOENIX
-export PHOENIX_HOME=/usr/local/bigdata/phoenix
-export PHOENIX_CLASSPATH=$PHOENIX_HOME/lib
-export PHOENIX_LIB_DIR=$PHOENIX_HOME/lib
 # SCALA
 export SCALA_HOME=/usr/local/bigdata/scala
 # SPARK
 export SPARK_HOME=/usr/local/bigdata/spark
 # PATH
-export PATH=$PATH:$JAVA_HOME:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$ZOOKEEPER_HOME/bin:$HBASE_HOME/bin:$SCALA_HOME/bin:$SPARK_HOME/bin:$PHOENIX_HOME/bin
+export PATH=$PATH:$JAVA_HOME:$HADOOP_HOME/bin:$ZOOKEEPER_HOME/bin:$HBASE_HOME/bin:$SCALA_HOME/bin:$SPARK_HOME/bin
 EOF
 source /etc/bashrc
 {% endhighlight %}
@@ -170,8 +169,6 @@ sudo tee /etc/mesos-master/quorum << "EOF"
 2
 EOF
 ```
-
-其中，Zookeeper跟Mesos自動啟動請參考[這篇](http://chingchuan-chen.github.io/spark/2016/08/23/deployment-of-mesos-spark.html)
 
 b. Hadoop設定
 
@@ -240,7 +237,7 @@ tee -a $HADOOP_CONF_DIR/hdfs-site.xml << "EOF"
   </property>
   <property>
     <name>dfs.journalnode.edits.dir</name>
-    <value>/home/hadoop/tmp/journal</value>
+    <value>/usr/local/bigdata/hadoop/tmp/journal</value>
   </property>
   <property>
     <name>dfs.ha.namenodes.hc1</name>
@@ -405,29 +402,6 @@ scp -r /usr/local/bigdata/hbase tester@cassSpark2:/usr/local/bigdata
 scp -r /usr/local/bigdata/hbase tester@cassSpark3:/usr/local/bigdata
 ```
 
-d. 配置Pheonix
-
-``` bash
-# 縮短名稱
-mv apache-phoenix-4.8.0-HBase-1.2-bin phoenix-4.8.0
-# 複製lib檔案到HBase/lib下
-sudo cp phoenix-4.8.0/phoenix-4.8.0-HBase-1.2-server.jar $HBASE_HOME/lib
-# 複製hbase設定到phoenix下
-mkdir $PHOENIX_HOME
-mkdir $PHOENIX_HOME/bin
-cp $HBASE_HOME/conf/hbase-site.xml $PHOENIX_HOME/bin
-cp $HBASE_HOME/conf/hbase-env.sh $PHOENIX_HOME/bin
-cp -R phoenix-4.8.0/bin $PHOENIX_HOME
-cp -R phoenix-4.8.0/examples $PHOENIX_HOME
-# 複製lib檔, bin
-mkdir $PHOENIX_HOME/lib
-cp phoenix-4.8.0/*.jar $PHOENIX_HOME/lib
-cp phoenix-4.8.0/LICENSE $PHOENIX_HOME/LICENSE
-chmod +x $PHOENIX_HOME/bin/*.py
-chmod +x $PHOENIX_HOME/bin/*.sh
-rm -r phoenix-4.8.0
-```
-
 4. 啟動
 
 ``` bash
@@ -439,30 +413,29 @@ ssh tester@cassSpark3 "zkServer.sh start"
 hdfs zkfc -formatZK
 ssh tester@cassSpark2 "hdfs zkfc -formatZK"
 # 開啟journalnode
-hadoop-daemon.sh start journalnode
-ssh tester@cassSpark2 "hadoop-daemon.sh start journalnode"
-ssh tester@cassSpark3 "hadoop-daemon.sh start journalnode"
+$HADOOP_HOME/sbin/hadoop-daemon.sh start journalnode
+ssh tester@cassSpark2 "$HADOOP_HOME/sbin/hadoop-daemon.sh start journalnode"
+ssh tester@cassSpark3 "$HADOOP_HOME/sbin/hadoop-daemon.sh start journalnode"
 # 格式化namenode，並啟動namenode (nn1)
 hadoop namenode -format hc1
-hadoop-daemon.sh start namenode
+$HADOOP_HOME/sbin/hadoop-daemon.sh start namenode
 # 備用namenode啟動 (nn2)
 ssh tester@cassSpark2 "hadoop namenode -format hc1"
-ssh tester@cassSpark2 "hdfs namenode –bootstrapStandby"
-ssh tester@cassSpark2 "hadoop-daemon.sh start namenode"
+ssh tester@cassSpark2 "hdfs namenode -bootstrapStandby"
+ssh tester@cassSpark2 "$HADOOP_HOME/sbin/hadoop-daemon.sh start namenode"
 # 啟動zkfc
-hadoop-daemon.sh start zkfc
-ssh tester@cassSpark2 "hadoop-daemon.sh start zkfc"
+$HADOOP_HOME/sbin/hadoop-daemon.sh start zkfc
+ssh tester@cassSpark2 "$HADOOP_HOME/sbin/hadoop-daemon.sh start zkfc"
 # 啟動datanode
-hadoop-daemon.sh start datanode
-ssh tester@cassSpark2 "hadoop-daemon.sh start datanode"
-ssh tester@cassSpark3 "hadoop-daemon.sh start datanode"
+$HADOOP_HOME/sbin/hadoop-daemon.sh start datanode
+ssh tester@cassSpark2 "$HADOOP_HOME/sbin/hadoop-daemon.sh start datanode"
+ssh tester@cassSpark3 "$HADOOP_HOME/sbin/hadoop-daemon.sh start datanode"
 # 啟動yarn
-yarn-daemon.sh start resourcemanager
-yarn-daemon.sh start nodemanager
-ssh tester@cassSpark2 "yarn-daemon.sh start resourcemanager"
-ssh tester@cassSpark2 "yarn-daemon.sh start nodemanager"
-ssh tester@cassSpark3 "yarn-daemon.sh start resourcemanager"
-ssh tester@cassSpark3 "yarn-daemon.sh start nodemanager"
+$HADOOP_HOME/sbin/yarn-daemon.sh start resourcemanager
+$HADOOP_HOME/sbin/yarn-daemon.sh start nodemanager
+ssh tester@cassSpark2 "$HADOOP_HOME/sbin/yarn-daemon.sh start resourcemanager"
+ssh tester@cassSpark2 "$HADOOP_HOME/sbin/yarn-daemon.sh start nodemanager"
+ssh tester@cassSpark3 "$HADOOP_HOME/sbin/yarn-daemon.sh start nodemanager"
 # 啟動HBase
 hbase-daemon.sh start master
 hbase-daemon.sh start regionserver
@@ -474,7 +447,7 @@ ssh tester@cassSpark3 "hbase-daemon.sh start regionserver"
 
 開啟之後就可以用jps去看各台開啟狀況，如果確定都沒問題之後
 
-接下來就可以往下去設定自動啟動的部分了
+接下來就可以往下去設定自動啟動的部分了，也可以先往下跳去測試部分
 
 
 這裡採用python的supervisord去協助監控service的進程，並做自動啟動的動作
@@ -509,736 +482,129 @@ environment=
   JAVA_HOME=/usr/java/jdk1.8.0_101,
   SCALA_HOME=/usr/local/scala/scala-2.11,
   SPARK_HOME=/usr/local/bigdata/spark,
+  CASSANDRA_HOME=/usr/local/bigdata/cassandra,
   ZOOKEEPER_HOME=/usr/local/bigdata/zookeeper,
   HADOOP_HOME=/usr/local/bigdata/hadoop,
-  HADOOP_COMMON_HOME="$HADOOP_HOME",
-  HADOOP_CONF_DIR="$HADOOP_HOME/etc/hadoop",
-  HADOOP_COMMON_LIB_NATIVE_DIR="$HADOOP_HOME/lib/native",
-  HADOOP_OPTS="$HADOOP_OPTS -Djava.library.path=$HADOOP_HOME/lib/native",
+  HADOOP_COMMON_HOME=/usr/local/bigdata/hadoop,
+  HADOOP_CONF_DIR=/usr/local/bigdata/hadoop/etc/hadoop,
+  HADOOP_COMMON_LIB_NATIVE_DIR=/usr/local/bigdata/hadoop/lib/native,
+  HADOOP_OPTS="-Djava.library.path=/usr/local/bigdata/hadoop/lib/native",
   HBASE_HOME=/usr/local/bigdata/hbase,
-  HBASE_MANAGES_ZK=false,
-  HBASE_CLASSPATH="$HBASE_CLASSPATH:$HADOOP_CONF_DIR",
-  HBASE_CONF_DIR="$HBASE_HOME/conf",
-  PHOENIX_HOME=/usr/local/bigdata/phoenix,
-  PHOENIX_CLASSPATH="$PHOENIX_HOME/lib",
-  PHOENIX_LIB_DIR="$PHOENIX_HOME/lib"
+  HBASE_MANAGES_ZK="false",
+  HBASE_CLASSPATH=/usr/local/bigdata/hadoop/etc/hadoop,
+  HBASE_CONF_DIR=/usr/local/bigdata/hbase/conf
 ```
 
-
-先設定啟動好Zookeeper之後，就可以設定自動啟動Hadoop
-
-這裡先記錄一下chkconfig設定，第一個數字不知道什麼意思(全部設定-)
-
-第二個是開啟順序，第三個是關閉順序
+然後用下面的指令在設定後面追加下面的設定
 
 ```
-zookeeper - 80 99
-hadoop-hdfs-namenode - 81 98
-hadoop-hdfs-zkfc - 83 96
-hadoop-hdfs-datanode - 82 97
-hadoop-yarn-resourcemanager - 84 96
-hadoop-yarn-nodemanager - 85 95
-hbase-master - 88 93
-hbase-regionserver - 89 94
+sudo tee -a /etc/supervisor/supervisord.conf << "EOF"
+
+; 全部都要配置的服務
+[program:hadoop-hdfs-journalnode]
+command=/bin/bash -c "$HADOOP_HOME/bin/hdfs journalnode"
+stdout_logfile=/var/log/supervisor/hadoop-hdfs-journalnode-stdout.out
+stderr_logfile=/var/log/supervisor/hadoop-hdfs-journalnode-stderr.out
+autostart=true
+startsecs=5
+priority=60
+
+[program:mesos-slave]
+command=/bin/bash -c "/usr/bin/mesos-init-wrapper slave"
+stdout_logfile=/var/log/supervisor/mesos-slave-stdout.out
+stderr_logfile=/var/log/supervisor/mesos-slave-stderr.out
+autostart=true
+startsecs=5
+priority=80
+
+[program:hadoop-hdfs-datanode]
+command=/bin/bash -c "$HADOOP_HOME/bin/hdfs datanode"
+stdout_logfile=/var/log/supervisor/hadoop-hdfs-datanode-stdout.out
+stderr_logfile=/var/log/supervisor/hadoop-hdfs-datanode-stderr.out
+autostart=true
+startsecs=5
+priority=80
+
+[program:hadoop-yarn-nodemanager]
+command=/bin/bash -c "$HADOOP_HOME/bin/yarn nodemanager"
+stdout_logfile=/var/log/supervisor/hadoop-yarn-nodemanager-stdout.out
+stderr_logfile=/var/log/supervisor/hadoop-yarn-nodemanager-stderr.out
+autostart=true
+startsecs=5
+priority=85
+
+[program:spark-mesos-shuffle]
+command=/bin/bash -c "$SPARK_HOME/bin/spark-submit --class org.apache.spark.deploy.mesos.MesosExternalShuffleService 1"
+stdout_logfile=/var/log/supervisor/spark-mesos-shuffle-stdout.out
+stderr_logfile=/var/log/supervisor/spark-mesos-shuffle-stderr.out
+autostart=true
+startsecs=5
+priority=90
+
+[program:hbase-regionserver]
+command=/bin/bash -c "$HBASE_HOME/bin/hbase regionserver start"
+stdout_logfile=/var/log/supervisor/hbase-regionserver-stdout.out
+stderr_logfile=/var/log/supervisor/hbase-regionserver-stderr.out
+autostart=true
+startsecs=5
+priority=95
+
+
+; 下面只有需要的node才要配置
+; zookeeper只需要配置在三台有zookeeper的電腦上
+; namenode, zkfc跟hadoop-yarn-resourcemanager只需要配置在要hdfs, yarn做HA的那兩台上面
+; mesos-master跟hbase-master只需要配置在有zookeeper的電腦上
+[program:zookeeper]
+command=/bin/bash -c "$ZOOKEEPER_HOME/bin/zkServer.sh start-foreground"
+stdout_logfile=/var/log/supervisor/zookeeper-stdout.out
+stderr_logfile=/var/log/supervisor/zookeeper-stderr.out
+autostart=true
+startsecs=10
+priority=50
+
+[program:mesos-master]
+command=/bin/bash -c "/usr/bin/mesos-init-wrapper master"
+stdout_logfile=/var/log/supervisor/mesos-master-stdout.out
+stderr_logfile=/var/log/supervisor/mesos-master-stderr.out
+autostart=true
+startsecs=5
+priority=60
+
+[program:hadoop-hdfs-namenode]
+command=/bin/bash -c "$HADOOP_HOME/bin/hdfs namenode"
+stdout_logfile=/var/log/supervisor/hadoop-hdfs-namenode-stdout.out
+stderr_logfile=/var/log/supervisor/hadoop-hdfs-namenode-stderr.out
+autostart=true
+startsecs=5
+priority=70
+
+[program:hadoop-hdfs-zkfc]
+command=/bin/bash -c "$HADOOP_HOME/bin/hdfs zkfc"
+stdout_logfile=/var/log/supervisor/hadoop-hdfs-zkfc-stdout.out
+stderr_logfile=/var/log/supervisor/hadoop-hdfs-zkfc-stderr.out
+autostart=true
+startsecs=5
+priority=75
+
+[program:hadoop-yarn-resourcemanager]
+command=/bin/bash -c "$HADOOP_HOME/bin/yarn resourcemanager"
+stdout_logfile=/var/log/supervisor/hadoop-yarn-resourcemanager-stdout.out
+stderr_logfile=/var/log/supervisor/hadoop-yarn-resourcemanager-stderr.out
+autostart=true
+startsecs=5
+priority=80
+
+[program:hbase-master]
+command=/bin/bash -c "$HBASE_HOME/bin/hbase master start"
+stdout_logfile=/var/log/supervisor/hbase-master-stdout.out
+stderr_logfile=/var/log/supervisor/hbase-master-stderr.out
+autostart=true
+startsecs=5
+priority=90
+EOF
+
+sudo systemctl restart supervisor.service
 ```
-
-``` bash
-## 在兩台namenode設定自動啟動namenode
-sudo tee /etc/init.d/hadoop-hdfs-namenode << "EOF"
-#!/bin/bash
-#
-# hadoop-hdfs-namenode
-# 
-# chkconfig: - 81 98
-# description: hadoop-hdfs-namenode
-
-# hadoop install path (where you extracted the tarball)
-export JAVA_HOME=/usr/java/jdk1.8.0_101
-HADOOP_HOME=/usr/local/bigdata/hadoop
-source /etc/rc.d/init.d/functions
-
-RETVAL=0
-PIDFILE=/var/run/hadoop-hdfs-namenode.pid
-desc="hadoop-hdfs-namenode daemon"
-
-start() {
-  echo -n $"Starting $desc (hadoop-hdfs-namenode): "
-  daemon $HADOOP_HOME/sbin/hadoop-daemon.sh start namenode
-  RETVAL=$?
-  echo
-  [ $RETVAL -eq 0 ] && touch /var/lock/subsys/hadoop-hdfs-namenode
-  return $RETVAL
-}
-
-stop() {
-  echo -n $"Stopping $desc (hadoop-hdfs-namenode): "
-  daemon $HADOOP_HOME/sbin/hadoop-daemon.sh stop namenode
-  RETVAL=$?
-  sleep 5
-  echo
-  [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/hadoop-hdfs-namenode $PIDFILE
-}
-
-restart() {
-  stop
-  start
-}
-
-get_pid() {
-  cat "$PIDFILE"
-}
-
-checkstatus(){
-  status -p $PIDFILE ${JAVA_HOME}/bin/java
-  RETVAL=$?
-}
-
-condrestart(){
-  [ -e /var/lock/subsys/hadoop ] && restart || :
-}
-
-case "$1" in
-  start)
-    start
-    ;;
-  stop)
-    stop
-    ;;
-  status)
-    checkstatus
-    ;;
-  restart)
-    restart
-    ;;
-  condrestart)
-    condrestart
-    ;;
-  *)
-    echo $"Usage: $0 {start|stop|status|restart|condrestart}"
-    exit 1
-esac
-
-exit $RETVAL
-EOF
-
-# 然後使用下面指令讓這個script能夠自動跑：
-sudo chmod +x /etc/init.d/hadoop-hdfs-namenode
-sudo chkconfig --add hadoop-hdfs-namenode
-sudo service hadoop-hdfs-namenode start
-
-## 在兩台namenode設定自動啟動zkfc
-sudo tee /etc/init.d/hadoop-hdfs-zkfc << "EOF"
-#!/bin/bash
-#
-# hadoop-hdfs-zkfc
-# 
-# chkconfig: - 83 96
-# description: hadoop-hdfs-zkfc
-
-# hadoop install path (where you extracted the tarball)
-export JAVA_HOME=/usr/java/jdk1.8.0_101
-HADOOP_HOME=/usr/local/bigdata/hadoop
-
-source /etc/rc.d/init.d/functions
-
-RETVAL=0
-PIDFILE=/var/run/hadoop-hdfs-zkfc.pid
-desc="hadoop-hdfs-zkfc daemon"
-
-start() {
-  echo -n $"Starting $desc (hadoop-hdfs-zkfc): "
-  daemon $HADOOP_HOME/sbin/hadoop-daemon.sh start zkfc
-  RETVAL=$?
-  echo
-  [ $RETVAL -eq 0 ] && touch /var/lock/subsys/hadoop-hdfs-zkfc
-  return $RETVAL
-}
-
-stop() {
-  echo -n $"Stopping $desc (hadoop-hdfs-zkfc): "
-  daemon $HADOOP_HOME/sbin/hadoop-daemon.sh stop zkfc
-  RETVAL=$?
-  sleep 5
-  echo
-  [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/hadoop-hdfs-zkfc $PIDFILE
-}
-
-restart() {
-  stop
-  start
-}
-
-get_pid() {
-  cat "$PIDFILE"
-}
-
-checkstatus(){
-  status -p $PIDFILE ${JAVA_HOME}/bin/java
-  RETVAL=$?
-}
-
-condrestart(){
-  [ -e /var/lock/subsys/hadoop ] && restart || :
-}
-
-case "$1" in
-  start)
-    start
-    ;;
-  stop)
-    stop
-    ;;
-  status)
-    checkstatus
-    ;;
-  restart)
-    restart
-    ;;
-  condrestart)
-    condrestart
-    ;;
-  *)
-    echo $"Usage: $0 {start|stop|status|restart|condrestart}"
-    exit 1
-esac
-
-exit $RETVAL
-EOF
-
-# 然後使用下面指令讓這個script能夠自動跑：
-sudo chmod +x /etc/init.d/hadoop-hdfs-zkfc
-sudo chkconfig --add hadoop-hdfs-zkfc
-sudo service hadoop-hdfs-zkfc start
-
-## 在datanode上設定自動啟動datanode
-sudo tee /etc/init.d/hadoop-hdfs-datanode << "EOF"
-#!/bin/bash
-#
-# hadoop-hdfs-datanode
-# 
-# chkconfig: - 82 97
-# description: hadoop-hdfs-datanode
-
-# hadoop install path (where you extracted the tarball)
-export JAVA_HOME=/usr/java/jdk1.8.0_101
-HADOOP_HOME=/usr/local/bigdata/hadoop
-
-source /etc/rc.d/init.d/functions
-
-RETVAL=0
-PIDFILE=/var/run/hadoop-hdfs-datanode.pid
-desc="hadoop-hdfs-datanode daemon"
-
-start() {
-  echo -n $"Starting $desc (hadoop-hdfs-datanode): "
-  daemon $HADOOP_HOME/sbin/hadoop-daemon.sh start datanode
-  RETVAL=$?
-  echo
-  [ $RETVAL -eq 0 ] && touch /var/lock/subsys/hadoop-hdfs-datanode
-  return $RETVAL
-}
-
-stop() {
-  echo -n $"Stopping $desc (hadoop-hdfs-datanode): "
-  daemon $HADOOP_HOME/sbin/hadoop-daemon.sh stop datanode
-  RETVAL=$?
-  sleep 5
-  echo
-  [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/hadoop-hdfs-datanode $PIDFILE
-}
-
-restart() {
-  stop
-  start
-}
-
-get_pid() {
-  cat "$PIDFILE"
-}
-
-checkstatus(){
-  status -p $PIDFILE ${JAVA_HOME}/bin/java
-  RETVAL=$?
-}
-
-condrestart(){
-  [ -e /var/lock/subsys/hadoop ] && restart || :
-}
-
-case "$1" in
-  start)
-    start
-    ;;
-  stop)
-    stop
-    ;;
-  status)
-    checkstatus
-    ;;
-  restart)
-    restart
-    ;;
-  condrestart)
-    condrestart
-    ;;
-  *)
-    echo $"Usage: $0 {start|stop|status|restart|condrestart}"
-    exit 1
-esac
-
-exit $RETVAL
-EOF
-
-# 然後使用下面指令讓這個script能夠自動跑：
-sudo chmod +x /etc/init.d/hadoop-hdfs-datanode
-sudo chkconfig --add hadoop-hdfs-datanode
-sudo service hadoop-hdfs-datanode start
-
-## 在兩台namenode上設定自動啟動yarn resourcemanager
-sudo tee /etc/init.d/hadoop-yarn-resourcemanager << "EOF"
-#!/bin/bash
-#
-# hadoop-yarn-resourcemanager
-# 
-# chkconfig: - 84 96
-# description: hadoop-yarn-resourcemanager
-
-# hadoop install path (where you extracted the tarball)
-export JAVA_HOME=/usr/java/jdk1.8.0_101
-HADOOP_HOME=/usr/local/bigdata/hadoop
-
-source /etc/rc.d/init.d/functions
-
-RETVAL=0
-PIDFILE=/var/run/hadoop-yarn-resourcemanager.pid
-desc="hadoop-yarn-resourcemanager daemon"
-
-start() {
-  echo -n $"Starting $desc (hadoop-yarn-resourcemanager): "
-  daemon $HADOOP_HOME/sbin/yarn-daemon.sh start resourcemanager
-  RETVAL=$?
-  echo
-  [ $RETVAL -eq 0 ] && touch /var/lock/subsys/hadoop-yarn-resourcemanager
-  return $RETVAL
-}
-
-stop() {
-  echo -n $"Stopping $desc (hadoop-yarn-resourcemanager): "
-  daemon $HADOOP_HOME/sbin/yarn-daemon.sh stop resourcemanager
-  RETVAL=$?
-  sleep 5
-  echo
-  [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/hadoop-yarn-resourcemanager $PIDFILE
-}
-
-restart() {
-  stop
-  start
-}
-
-get_pid() {
-  cat "$PIDFILE"
-}
-
-checkstatus(){
-  status -p $PIDFILE ${JAVA_HOME}/bin/java
-  RETVAL=$?
-}
-
-condrestart(){
-  [ -e /var/lock/subsys/hadoop ] && restart || :
-}
-
-case "$1" in
-  start)
-    start
-    ;;
-  stop)
-    stop
-    ;;
-  status)
-    checkstatus
-    ;;
-  restart)
-    restart
-    ;;
-  condrestart)
-    condrestart
-    ;;
-  *)
-    echo $"Usage: $0 {start|stop|status|restart|condrestart}"
-    exit 1
-esac
-
-exit $RETVAL
-EOF
-
-# 然後使用下面指令讓這個script能夠自動跑：
-sudo chmod +x /etc/init.d/hadoop-yarn-resourcemanager
-sudo chkconfig --add hadoop-yarn-resourcemanager
-sudo service hadoop-yarn-resourcemanager start
-
-## 在datanode上設定自動啟動nodemanager
-sudo tee /etc/init.d/hadoop-yarn-nodemanager << "EOF"
-#!/bin/bash
-#
-# hadoop-yarn-nodemanager
-# 
-# chkconfig: - 85 95
-# description: hadoop-yarn-nodemanager
-
-# hadoop install path (where you extracted the tarball)
-export JAVA_HOME=/usr/java/jdk1.8.0_101
-HADOOP_HOME=/usr/local/bigdata/hadoop
-
-source /etc/rc.d/init.d/functions
-
-RETVAL=0
-PIDFILE=/var/run/hadoop-yarn-nodemanager.pid
-desc="hadoop-yarn-nodemanager daemon"
-
-start() {
-  echo -n $"Starting $desc (hadoop-yarn-nodemanager): "
-  daemon $HADOOP_HOME/sbin/yarn-daemon.sh start nodemanager
-  RETVAL=$?
-  echo
-  [ $RETVAL -eq 0 ] && touch /var/lock/subsys/hadoop-yarn-nodemanager
-  return $RETVAL
-}
-
-stop() {
-  echo -n $"Stopping $desc (hadoop-yarn-nodemanager): "
-  daemon $HADOOP_HOME/sbin/yarn-daemon.sh stop nodemanager
-  RETVAL=$?
-  sleep 5
-  echo
-  [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/hadoop-yarn-nodemanager $PIDFILE
-}
-
-restart() {
-  stop
-  start
-}
-
-get_pid() {
-  cat "$PIDFILE"
-}
-
-checkstatus(){
-  status -p $PIDFILE ${JAVA_HOME}/bin/java
-  RETVAL=$?
-}
-
-condrestart(){
-  [ -e /var/lock/subsys/hadoop ] && restart || :
-}
-
-case "$1" in
-  start)
-    start
-    ;;
-  stop)
-    stop
-    ;;
-  status)
-    checkstatus
-    ;;
-  restart)
-    restart
-    ;;
-  condrestart)
-    condrestart
-    ;;
-  *)
-    echo $"Usage: $0 {start|stop|status|restart|condrestart}"
-    exit 1
-esac
-
-exit $RETVAL
-EOF
-
-# 然後使用下面指令讓這個script能夠自動跑：
-sudo chmod +x /etc/init.d/hadoop-yarn-nodemanager
-sudo chkconfig --add hadoop-yarn-nodemanager
-sudo service hadoop-yarn-nodemanager start
-```
-
-用`hbase shell`可以開啟hbase的互動式指令介面，其訊息會是這樣(基本上跟沒有用HA長一樣)：
-
-```
-SLF4J: Class path contains multiple SLF4J bindings.
-SLF4J: Found binding in [jar:file:/usr/local/bigdata/hbase/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-SLF4J: Found binding in [jar:file:/usr/local/bigdata/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.10.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
-SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
-HBase Shell; enter 'help<RETURN>' for list of supported commands.
-Type "exit<RETURN>" to leave the HBase Shell
-Version 1.2.2, r3f671c1ead70d249ea4598f1bbcc5151322b3a13, Fri Jul  1 08:28:55 CDT 2016
-
-hbase(main):001:0>
-```
-
-再來是自動啟動HBase服務：
-
-``` bash
-# 三台都配置hbase-master
-sudo tee /etc/init.d/hbase-master << "EOF"
-#!/bin/bash
-#
-# hbase-master
-# 
-# chkconfig: - 99 80
-# description: hbase-master
-
-# hbase install path (where you extracted the tarball)
-export JAVA_HOME=/usr/java/jdk1.8.0_101
-export HBASE_MANAGES_ZK=false
-export HADOOP_HOME=/usr/local/bigdata/hadoop
-HBASE_HOME=/usr/local/bigdata/hbase
-
-source /etc/rc.d/init.d/functions
-
-RETVAL=0
-PIDFILE=/var/run/hbase-master.pid
-desc="hbase-master daemon"
-
-start() {
-  echo -n $"Starting $desc (hbase-master): "
-  daemon $HBASE_HOME/bin/hbase-daemon.sh start master
-  RETVAL=$?
-  echo
-  [ $RETVAL -eq 0 ] && touch /var/lock/subsys/hbase-master
-  return $RETVAL
-}
-
-stop() {
-  echo -n $"Stopping $desc (hbase-master): "
-  daemon $HBASE_HOME/bin/hbase-daemon.sh stop master
-  RETVAL=$?
-  sleep 5
-  echo
-  [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/hbase-master $PIDFILE
-}
-
-restart() {
-  stop
-  start
-}
-
-get_pid() {
-  cat "$PIDFILE"
-}
-
-checkstatus(){
-  status -p $PIDFILE ${JAVA_HOME}/bin/java
-  RETVAL=$?
-}
-
-condrestart(){
-  [ -e /var/lock/subsys/hadoop ] && restart || :
-}
-
-case "$1" in
-  start)
-    start
-    ;;
-  stop)
-    stop
-    ;;
-  status)
-    checkstatus
-    ;;
-  restart)
-    restart
-    ;;
-  condrestart)
-    condrestart
-    ;;
-  *)
-    echo $"Usage: $0 {start|stop|status|restart|condrestart}"
-    exit 1
-esac
-
-exit $RETVAL
-EOF
-
-# 然後使用下面指令讓這個script能夠自動跑：
-sudo chmod +x /etc/init.d/hbase-master
-sudo chkconfig --add hbase-master
-sudo service hbase-master start
-
-# 三台都配置regionservers
-sudo tee /etc/init.d/hbase-regionserver << "EOF"
-#!/bin/bash
-#
-# hbase-regionserver
-# 
-# chkconfig: - 99 80
-# description: hbase-regionserver
-
-# hbase install path (where you extracted the tarball)
-export JAVA_HOME=/usr/java/jdk1.8.0_101
-export HBASE_MANAGES_ZK=false
-export HADOOP_HOME=/usr/local/bigdata/hadoop
-HBASE_HOME=/usr/local/bigdata/hbase
-
-source /etc/rc.d/init.d/functions
-
-RETVAL=0
-PIDFILE=/var/run/hbase-regionserver.pid
-desc="hbase-regionserver daemon"
-
-start() {
-  echo -n $"Starting $desc (hbase-regionserver): "
-  daemon $HBASE_HOME/bin/hbase-daemon.sh start regionserver
-  RETVAL=$?
-  echo
-  [ $RETVAL -eq 0 ] && touch /var/lock/subsys/hbase-regionserver
-  return $RETVAL
-}
-
-stop() {
-  echo -n $"Stopping $desc (hbase-regionserver): "
-  daemon $HBASE_HOME/bin/hbase-daemon.sh stop regionserver
-  RETVAL=$?
-  sleep 5
-  echo
-  [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/hbase-regionserver $PIDFILE
-}
-
-restart() {
-  stop
-  start
-}
-
-get_pid() {
-  cat "$PIDFILE"
-}
-
-checkstatus(){
-  status -p $PIDFILE ${JAVA_HOME}/bin/java
-  RETVAL=$?
-}
-
-condrestart(){
-  [ -e /var/lock/subsys/hadoop ] && restart || :
-}
-
-case "$1" in
-  start)
-    start
-    ;;
-  stop)
-    stop
-    ;;
-  status)
-    checkstatus
-    ;;
-  restart)
-    restart
-    ;;
-  condrestart)
-    condrestart
-    ;;
-  *)
-    echo $"Usage: $0 {start|stop|status|restart|condrestart}"
-    exit 1
-esac
-
-exit $RETVAL
-EOF
-
-# 然後使用下面指令讓這個script能夠自動跑：
-sudo chmod +x /etc/init.d/hbase-regionserver
-sudo chkconfig --add hbase-regionserver
-sudo service hbase-regionserver start
-``` 
-
-最後是自動啟動Phoenix的queryserver
-
-``` bash
-sudo tee /etc/init.d/phonixqueryserver << "EOF"
-#!/bin/bash
-#
-# phonixqueryserver
-# 
-# chkconfig: 2345 89 9 
-# description: phonixqueryserver
-
-# hbase install path (where you extracted the tarball)
-PHOENIX_HOME=/usr/local/bigdata/phoenix
-
-source /etc/rc.d/init.d/functions
-
-RETVAL=0
-PIDFILE=/var/run/phonixqueryserver.pid
-desc="phonix query server daemon"
-
-start() {
-  echo -n $"Starting $desc (phonixqueryserver): "
-  daemon $PHOENIX_HOME/bin/queryserver.py start
-  RETVAL=$?
-  echo
-  [ $RETVAL -eq 0 ] && touch /var/lock/subsys/phonixqueryserver
-  return $RETVAL
-}
-
-stop() {
-  echo -n $"Stopping $desc (phonixqueryserver): "
-  daemon $PHOENIX_HOME/bin/queryserver.py stop
-  RETVAL=$?
-  sleep 5
-  echo
-  [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/phonixqueryserver $PIDFILE
-}
-
-restart() {
-  stop
-  start
-}
-
-get_pid() {
-  cat "$PIDFILE"
-}
-
-checkstatus(){
-  status -p $PIDFILE ${JAVA_HOME}/bin/java
-  RETVAL=$?
-}
-
-condrestart(){
-  [ -e /var/lock/subsys/hadoop ] && restart || :
-}
-
-case "$1" in
-  start)
-    start
-    ;;
-  stop)
-    stop
-    ;;
-  status)
-    checkstatus
-    ;;
-  restart)
-    restart
-    ;;
-  condrestart)
-    condrestart
-    ;;
-  *)
-    echo $"Usage: $0 {start|stop|status|restart|condrestart}"
-    exit 1
-esac
-
-exit $RETVAL
-EOF
-
-# 然後使用下面指令讓這個script能夠自動跑：
-sudo chmod +x /etc/init.d/phonixqueryserver
-sudo chkconfig --add phonixqueryserver
-sudo service phonixqueryserver start
-``` 
 
 5. 測試
 
