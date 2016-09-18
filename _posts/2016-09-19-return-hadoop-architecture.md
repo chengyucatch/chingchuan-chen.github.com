@@ -131,7 +131,7 @@ export SCALA_HOME=/usr/local/bigdata/scala
 # SPARK
 export SPARK_HOME=/usr/local/bigdata/spark
 # PATH
-export PATH=$PATH:$JAVA_HOME:$HADOOP_HOME/bin:$ZOOKEEPER_HOME/bin:$HBASE_HOME/bin:$SCALA_HOME/bin:$SPARK_HOME/bin
+export PATH=$PATH:$JAVA_HOME:$ZOOKEEPER_HOME/bin:$HADOOP_HOME/bin:$HBASE_HOME/bin:$SCALA_HOME/bin:$SPARK_HOME/bin
 EOF
 source /etc/bashrc
 {% endhighlight %}
