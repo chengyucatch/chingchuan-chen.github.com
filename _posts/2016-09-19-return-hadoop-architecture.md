@@ -12,23 +12,31 @@ published: true
 
 用完Cassandra的primary key跟secondary index之後
 
-覺得Cassandra再怎麼宣稱他們的東西多好也沒意義
+覺得Cassandra適合表格有固定query pattern做使用才方便
 
-現在連query某段時間的rows都無法做到，我不知道這樣的CQL到底能幹嘛用
+primary key中的partition key在query時都要用到
 
-所以接下來就Survey SQL on Hadoop的solution
+clustering key要照順序使用，secondary index不能做複合查詢
 
-這一篇會forcus在Hadoop的群集建立，SQL on Hadoop將會在下一篇介紹
+更不用提ALLOW FILTERING的功能帶來的崩潰效能
+
+我的用途真的很難用Cassandra去滿足，也不願意透過Spark SQL去使用
+
+(畢竟Spark SQL要吃的資源也不少)
+
+因此，我就survey了SQL on Hadoop的solutions..
 
 <!-- more -->
 
-這一篇會非常的長，因為Hadoop之前沒有完全的建好
+而這一篇會先forcus在Hadoop的群集建立
 
-讓他能夠開機自動啟動，並且有HA的能力
+SQL on Hadoop將會在下一篇介紹
 
-所以會花很多篇幅在設定跟建立on boot的script
+這一篇會非常的長，因為Hadoop之前沒有完全的建好 (讓它能夠開機自動啟動，並且有HA的能力)
 
-我這一篇斷斷續續寫了三週，一直提不太起勁一口氣完成他
+這一篇斷斷續續寫了三週，一直提不太起勁一口氣完成他
+
+廢話不多說，下面是本文
 
 
 配置架構：
