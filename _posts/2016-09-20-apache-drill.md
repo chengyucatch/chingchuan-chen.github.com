@@ -187,3 +187,7 @@ jdbc:drill:zk=<zookeeper_quorum>/<drill_directory_in_zookeeper>/<cluster_ID>;sch
 然後就可以連線了！如下圖：
 
 ![](/images/drill_jdbc_3.png)
+
+![](/images/drill_jdbc_4.png)
+
+Note: `test_widecol.json`還沒用到，請期待下一篇使用Spark SQL操作Drill表
