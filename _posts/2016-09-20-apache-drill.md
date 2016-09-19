@@ -188,4 +188,13 @@ jdbc:drill:zk=<zookeeper_quorum>/<drill_directory_in_zookeeper>/<cluster_ID>;sch
 
 ![](/images/drill_jdbc_4.png)
 
+
+再來是Drill的REST接口
+
+這裡分別用linux的curl指令跟R httr套件的POST去做：
+
+![](/images/drill_rest_1.png)
+
+![](/images/drill_rest_2.png)
+
 Note: `test_widecol.json`還沒用到，請期待下一篇使用Spark SQL操作Drill表
