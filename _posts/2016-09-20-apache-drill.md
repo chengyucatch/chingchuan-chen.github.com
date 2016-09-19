@@ -20,8 +20,6 @@ Pivotal HAWQ, IBM BigSQL, Apache Tajo, Apache Kylin等
 
 <!-- more -->
 
-在這麼多選擇中，我選擇用Drill，以下闡述我的原因
-
 Drill是一套SQL on Hadoop的解決方案
 
 一個Schema-free的data model，這意思代表說不在受限於data model限制而無法查詢
