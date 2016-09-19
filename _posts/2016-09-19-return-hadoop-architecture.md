@@ -24,7 +24,7 @@ clustering key要照順序使用，secondary index不能做複合查詢
 
 (畢竟Spark SQL要吃的資源也不少)
 
-因此，我就survey了SQL on Hadoop的solutions..
+因此，我就survey了SQL on Hadoop的solutions...
 
 <!-- more -->
 
@@ -190,16 +190,16 @@ EOF
 sed -i -e 's/<\/configuration>//g' $HADOOP_CONF_DIR/core-site.xml
 tee -a $HADOOP_CONF_DIR/core-site.xml << "EOF"
   <property>
-    <name>fs.default.name</name>
+    <name>fs.defaultFS</name>
     <value>hdfs://hc1</value>
   </property>
   <property>
     <name>hadoop.tmp.dir</name>
     <value>/usr/local/bigdata/hadoop/tmp</value>
   </property>
-   <property>
-  <name>ha.zookeeper.quorum</name>
-  <value>cassSpark1:2181,cassSpark2:2181,cassSpark3:2181</value>
+  <property>
+    <name>ha.zookeeper.quorum</name>
+    <value>192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181</value>
   </property>
 </configuration>
 EOF
@@ -251,19 +251,19 @@ tee -a $HADOOP_CONF_DIR/hdfs-site.xml << "EOF"
   </property>
   <property>
     <name>dfs.namenode.rpc-address.hc1.nn1</name>
-    <value>cassSpark1:9000</value>
+    <value>192.168.0.121:9000</value>
   </property>
   <property>
     <name>dfs.namenode.rpc-address.hc1.nn2</name>
-    <value>cassSpark2:9000</value>
+    <value>192.168.0.122:9000</value>
   </property>
   <property>
     <name>dfs.namenode.http-address.hc1.nn1</name>
-    <value>cassSpark1:50070</value>
+    <value>192.168.0.121:50070</value>
   </property>
   <property>
     <name>dfs.namenode.http-address.hc1.nn2</name>
-    <value>cassSpark2:50070</value>
+    <value>192.168.0.122:50070</value>
   </property>
   <property>
     <name>dfs.namenode.shared.edits.dir</name>    
@@ -275,7 +275,8 @@ tee -a $HADOOP_CONF_DIR/hdfs-site.xml << "EOF"
   </property>
   <property>
     <name>dfs.ha.fencing.methods</name>
-    <value>sshfence</value>
+    <value>sshfence[tester]</value>
+    <-- 如果不能用root權限登入ssh，記得加上能登入ssh的username -->
   </property>
   <property>
     <name>dfs.ha.fencing.ssh.private-key-files</name>
@@ -318,7 +319,7 @@ tee -a $HADOOP_CONF_DIR/yarn-site.xml << "EOF"
   </property>
   <property>
     <name>yarn.resourcemanager.zk-address</name>
-    <value>cassSpark1:2181,cassSpark2:2181,cassSpark3:2181</value>
+    <value>192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181</value>
   </property>
   <property>
     <name>yarn.resourcemanager.cluster-id</name>
@@ -383,7 +384,7 @@ tee -a $HBASE_HOME/conf/hbase-site.xml << "EOF"
   </property>
   <property>
     <name>hbase.zookeeper.quorum</name>
-    <value>cassSpark1,cassSpark2,cassSpark3</value>
+    <value>192.168.0.121,192.168.0.122,192.168.0.123</value>
   </property>
   <property>
     <name>hbase.zookeeper.property.clientPort</name>
@@ -616,19 +617,21 @@ sudo systemctl restart supervisor.service
 
 用網頁連到cassSpark1:50070跟cassSpark2:50070
 
-cassSpark1:50070應該會顯示是active node
+cassSpark1:50070應該會顯示是active node (或是用 `hdfs haadmin -getServiceState nn1`)
 
-cassSpark2:50070則會顯示是standby node
+cassSpark2:50070則會顯示是standby node (或是用 `hdfs haadmin -getServiceState nn2`)
 
 (根據啟動順序不同，active的node不一定就是cassSpark1)
 
 在active node上，輸入`sudo service hadoop-hdfs-namenode stop`停掉Hadoop namenode試試看
 
+(如果安裝了自動啟動，就直接在supervisor的web UI直接操作即可)
+
 等一下下，就可以看到cassSpark2:50070會變成active node，這樣hadoop的HA就完成了
 
-然後在datanode分頁可以看到啟動的datanode
+至於YARN的HA就連到8081去看就好(或是用 `yarn rmadmin -getServiceState rm1`, `yarn rmadmin -getServiceState rm2`)
 
-而YARN就連到8081，HBase則是16010，用一樣方式都可以測試到HA是否有成功
+HBase則是16010，用一樣方式都可以測試到HA是否有成功
 
 至於zookeeper, hadoop其他測試就看我之前發的那篇文章即可[點這](http://chingchuan-chen.github.io/hadoop/2016/07/23/deployment-spark-phoenix-hbase-yarn-zookeeper-hadoop.html)就好
 
