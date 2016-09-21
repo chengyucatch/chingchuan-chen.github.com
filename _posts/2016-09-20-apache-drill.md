@@ -1,6 +1,6 @@
 ---
 layout: post
-cTitle: "Apache Drill (Part 1)"
+cTitle: "Apache Drill"
 title: "Apache Drill"
 category: drill
 tagline:
@@ -33,7 +33,16 @@ Spark SQL, Presto，跟Impala互有上下 ([reference 1](http://allegro.tech/201
 
 不過問題來了，Drill要base什麼去建立？ hdfs? hbase? hive? 還是其他nosql的架構？
 
-這個就depends on每個人的需求了，我原本傾向使用有schema的hbase跟hive，可以直接透過Spark SQL去存讀資料
+這個就depends on每個人的需求了，因為我需要一個Loader去同步在Oracle的資料
+
+而這loader最簡單的方式就是使用Spark SQL去做(因為Drill沒辦法直接讀寫hive, hbase等資料庫)
+
+所以這裡我採用hive當做表格儲存的位置，能讓Spark SQL直接做table的存寫
+
+而且Drill直接搜尋hive的速度相當快，不需要透過hive下的engine(mapredure, tez or spark)去處理
+
+
+我原本傾向使用有schema的hbase跟hive，可以直接透過Spark SQL去存讀資料
 
 但是又想到我需要一個Loader去同步在Oracle的資料，不過Drill無法提供直接使用DataFrame存寫的功能
 
@@ -197,4 +206,45 @@ jdbc:drill:zk=<zookeeper_quorum>/<drill_directory_in_zookeeper>/<cluster_ID>;sch
 
 ![](/images/drill_rest_2.png)
 
-Note: `test_widecol.json`還沒用到，請期待下一篇使用Spark SQL操作Drill表
+``` R
+library(httr)
+
+POST("http://192.168.0.121:8047/query.json", 
+     body = list(queryType = "SQL", 
+     query = "SELECT v1,v2,v3 FROM dfs.`/drill/test_df.json`"),
+     encode = "json")
+```
+
+
+另外，也可以用jdbc去連Oracle，先從Oracle官方網站下載到ojdbc7.jar
+
+將ojdbc7.jar放到`/usr/local/bigdata/drill/lib/3party`裡面，然後重開drill
+
+然後在web UI的Storage增加一個New Storage Plugin，叫做oracle：
+
+``` json
+{
+  type: "jdbc",
+  enabled: true,
+  driver: "oracle.jdbc.OracleDriver",
+  url:"jdbc:oracle:thin:system/qscf12356@192.168.0.120:1521/ORCL"
+}
+```
+
+就可以使用`select * from oracle.<user_name>.<table_name>`去做查詢了
+
+
+最後附上supervisor的config
+
+```
+sudo tee -a /etc/supervisor/supervisord.conf << "EOF"
+[program:drill]
+command=/bin/bash -c "/usr/local/bigdata/drill/bin/drillbit.sh run"
+stdout_logfile=/var/log/supervisor/drill-stdout.out
+stderr_logfile=/var/log/supervisor/drill-stderr.out
+autostart=true
+startsecs=5
+priority=95
+EOF
+sudo systemctl restart supervisor
+```
