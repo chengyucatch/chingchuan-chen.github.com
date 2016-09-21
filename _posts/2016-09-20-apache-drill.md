@@ -218,7 +218,9 @@ POST("http://192.168.0.121:8047/query.json",
 
 另外，也可以用jdbc去連Oracle，先從Oracle官方網站下載到ojdbc7.jar
 
-將ojdbc7.jar放到`/usr/local/bigdata/drill/lib/3party`裡面，然後重開drill
+將ojdbc7.jar放到`/usr/local/bigdata/drill/lib/3party`裡面，然後重開drill (記得是每一台都要放)
+
+(如果有用我之前Spark在Oracle的配置，可以直接下`cp $SPARK_HOME/extraClass/ojdbc7.jar /usr/local/bigdata/drill/jars/3rdparty/`)
 
 然後在web UI的Storage增加一個New Storage Plugin，叫做oracle：
 
@@ -227,7 +229,7 @@ POST("http://192.168.0.121:8047/query.json",
   type: "jdbc",
   enabled: true,
   driver: "oracle.jdbc.OracleDriver",
-  url:"jdbc:oracle:thin:system/qscf12356@192.168.0.120:1521/ORCL"
+  url:"jdbc:oracle:thin:system/qscf12356@192.168.0.120:1521/orcl"
 }
 ```
 
