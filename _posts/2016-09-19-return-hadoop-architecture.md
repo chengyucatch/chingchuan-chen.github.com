@@ -275,7 +275,7 @@ tee -a $HADOOP_CONF_DIR/hdfs-site.xml << "EOF"
   </property>
   <property>
     <name>dfs.ha.fencing.methods</name>
-    <value>sshfence[tester]</value>
+    <value>sshfence(tester)</value>
     <-- 如果不能用root權限登入ssh，記得加上能登入ssh的username -->
   </property>
   <property>
