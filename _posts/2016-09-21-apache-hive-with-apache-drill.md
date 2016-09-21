@@ -22,17 +22,21 @@ published: true
 
 這篇主要介紹怎麼建立Hive，Hive的建立相當麻煩
 
+以前建立過一次，就不想在建立它，只是沒想到還是得用它
+
 Hive有三種建立模式：
 
 1. localhost derby
 2. localhost mysql
 3. remote mysql
 
-PS: mysql也可以用其他資料庫代替，如Oracle, PostgreSQL以及MS SQL Server
+以前是直接走localhost mysql，這次則採用remote mysql的方式建立
 
-那在centos中最簡單取得的就是Mysql，下面採取remote mysql的方式去建立
+這樣的好處是，全部的cluster都共用一個metastore，不需要再各台都建立mysql
 
-這裡使用Oracle的MySQL community server
+mysql也可以用其他資料庫代替，如Oracle, PostgreSQL以及MS SQL Server
+
+不過在centos中最簡單取得的就是Mysql，而我這使用的是Oracle MySQL community server
 
 請到下面網址去下載Red Hat Enterprise Linux 7 / Oracle Linux 7 (x86, 64-bit), RPM Bundle：
 
