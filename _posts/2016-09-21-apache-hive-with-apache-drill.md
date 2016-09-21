@@ -298,3 +298,23 @@ content(post_data, type = "text") %>>% fromJSON %>>% `[[`(2) %>>%
 #  - attr(*, ".internal.selfref")=<externalptr> 
 ```
 
+4. 將mysql納入supervisord
+
+執行下面的指令即可
+
+``` bash
+sudo systemctl stop mysqld
+sudo systemctl disable mysqld
+
+sudo tee -a /etc/supervisor/supervisord.conf << "EOF"
+[program:mysql]
+command=/usr/bin/pidproxy /var/run/mysqld/mysqld.pid /usr/sbin/mysqld
+stdout_logfile=/var/log/supervisor/mysql-stdout.out
+stderr_logfile=/var/log/supervisor/mysql-stderr.out
+autostart=true
+startsecs=5
+priority=80
+user=mysql
+EOF
+sudo systemctl restart supervisor
+```

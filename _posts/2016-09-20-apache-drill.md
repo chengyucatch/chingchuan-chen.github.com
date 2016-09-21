@@ -70,6 +70,18 @@ drill.exec: {
 }
 ```
 
+如果記憶體不多的話建議下面配置：
+
+``` bash
+tee -a /usr/local/bigdata/drill/conf/drill-env.sh << "EOF"
+# 這一行一定要留著
+DRILL_MAX_DIRECT_MEMORY="2G"
+DRILL_MAX_HEAP="1G"
+
+export DRILL_JAVA_OPTS="-Xms1G -Xmx$DRILL_MAX_HEAP -XX:MaxDirectMemorySize=$DRILL_MAX_DIRECT_MEMORY -XX:MaxPermSize=512M -XX:ReservedCodeCacheSize=1G -ea"
+EOF
+```
+
 複製到各台node
 
 ```
