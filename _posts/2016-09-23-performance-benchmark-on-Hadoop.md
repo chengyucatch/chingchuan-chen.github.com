@@ -1,7 +1,7 @@
 ---
 layout: post
 cTitle: "Performnace benchmark on SQL on Hadoop"
-title: "Apache Hive with Apache Drill"
+title: "Performnace benchmark on SQL on Hadoop"
 category: hadoop
 tagline:
 tags: [hadoop,hbase,hive,drill,spark]
@@ -87,6 +87,7 @@ head tw5_df.json
 # {"vdid":"nfbVD-5S-9.063","volume":18,"date_year":2015,"date_month":1,"date_day":1,"time_hour":0,"time_minute":2,
 
 # 放到hdfs上
+hdfs dfs -mkdir /drill
 hdfs dfs -put tw5_df.csv /drill/tw5_df.csv
 hdfs dfs -put tw5_df.csv /drill/tw5_df_hive.csv
 hdfs dfs -put tw5_df_hbase.csv /drill/tw5_df_hbase.csv
@@ -165,7 +166,33 @@ select date_month,date_day,avg(speed),avg(laneoccupy),avg(volume) from vddata gr
 再來是Spark SQL，要用Spark SQL就只能用
 
 ``` SQL
-// to be done
+import org.apache.spark.sql.SparkSession
+import java.util.Calendar._
+import java.sql.Timestamp
+
+val spark = SparkSession.builder().appName("spark on hive")
+  .config("spark.sql.warehouse.dir", "hdfs://hc1/spark")
+  .enableHiveSupport().getOrCreate()
+ 
+val st = getInstance().getTime()
+spark.sql("select count(vdid) from vddata").show()
+println(getInstance().getTime().getTime() - st.getTime())
+# 855 ms
+
+val st = getInstance().getTime()
+spark.sql("select date_month,count(vdid) from vddata group by date_month").show()
+println(getInstance().getTime().getTime() - st.getTime())
+# 1397 ms
+
+val st = getInstance().getTime()
+spark.sql("select date_month,avg(speed),avg(laneoccupy),avg(volume) from vddata group by date_month").show()
+println(getInstance().getTime().getTime() - st.getTime())
+# 1776 ms
+
+val st = getInstance().getTime()
+spark.sql("select date_month,date_day,avg(speed),avg(laneoccupy),avg(volume) from vddata group by date_month,date_day").show()
+println(getInstance().getTime().getTime() - st.getTime())
+# 1485 ms
 ```
 
 最後是Drill：
@@ -182,7 +209,7 @@ select datetime.month,date_day,avg(vd_info.speed),avg(vd_info.laneoccupy),avg(vd
 from hbase.vddata group by datetime.month,datetime.day;
 # datatype error
 
-# on Hive
+# on Hive (with saving format csv)
 select count(vdid) from hive_cassSpark1.vddata;
 # in time
 select date_month,count(vdid) from hive_cassSpark1.vddata group by date_month;
@@ -218,3 +245,13 @@ select date_month,date_day,avg(speed),avg(laneoccupy),avg(volume) from dfs.`/dri
 datatype error是因為裡面有int, double混在同一列，Drill現在還無法有效處理這種問題
 
 因此，透過hive去做storage會是比較好的選擇
+
+
+結論，在這樣的資料量(1M x 11)下，其實用Spark SQL綽綽有餘
+
+因為資料就直接可以cache在記憶體之中，沒有用到什麼運算資源
+
+所以如果分析資料量小的話，建議直接使用Spark SQL就好，減少很多麻煩
+
+至於資料量夠大時，我測試大概10G的資料，Drill就會好相當多，這部分就留給大家自己去玩了
+

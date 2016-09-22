@@ -136,6 +136,7 @@ hive的配置項目：
 # 新增hive所需的目錄
 sudo mkdir /tmp/tester
 sudo mkdir /tmp/tester/hive_resource
+sudo chown -R tester.tester /tmp/tester
 # 初始化hive的schema
 schematool -initSchema -dbType mysql
 # 啟動hive
