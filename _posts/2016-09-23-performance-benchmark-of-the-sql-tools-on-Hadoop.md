@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: "Performnace benchmark on SQL on Hadoop"
-title: "Performnace benchmark on SQL on Hadoop"
+cTitle: "Performnace benchmark of the SQL tools on Hadoop"
+title: "Performnace benchmark on the SQL tools on Hadoop"
 category: hadoop
 tagline:
 tags: [hadoop,hbase,hive,drill,spark]
