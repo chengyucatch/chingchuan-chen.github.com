@@ -230,3 +230,22 @@ id4     d       0.83103357
 id1     b       2.001
 */
 ```
+
+接下來用spark去測試
+
+用`spark-shell mesos://zk://192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181/mesos`開啟
+
+``` scala
+import org.apache.spark.sql.SparkSession
+
+val spark = SparkSession.builder().appName("spark on hive")
+  .config("spark.sql.warehouse.dir", "hdfs://hc1/spark")
+  .enableHiveSupport().getOrCreate()
+
+spark.sql("update test_df2_transaction set v2='c' where v1='id1'").show()
+# org.apache.spark.sql.catalyst.parser.ParseException
+spark.sql("delete from test_df2_transaction where v1='id1'").show()
+# org.apache.spark.sql.catalyst.parser.ParseException  
+```
+
+Spark SQL無法使用update或是delete的動作
