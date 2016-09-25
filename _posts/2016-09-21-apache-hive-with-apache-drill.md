@@ -75,9 +75,9 @@ mysql -u root -p
 sudo systemctl restart mysqld
 
 # 下載hive並部署
-curl -v -j -k -L http://apache.stu.edu.tw/hive/stable-2/apache-hive-2.1.0-bin.tar.gz -o apache-hive-2.1.0-bin.tar.gz
-tar zxvf apache-hive-2.1.0-bin.tar.gz
-mv apache-hive-2.1.0-bin /usr/local/bigdata/hive
+curl -v -j -k -L http://apache.stu.edu.tw/hive/stable/apache-hive-1.2.1-bin.tar.gz -o apache-hive-1.2.1-bin.tar.gz
+tar zxvf apache-hive-1.2.1-bin.tar.gz
+mv apache-hive-1.2.1-bin /usr/local/bigdata/hive
 
 # 增加path
 sudo tee -a /etc/bashrc << "EOF"
