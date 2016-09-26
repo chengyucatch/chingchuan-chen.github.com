@@ -120,6 +120,11 @@ schematool -initSchema -dbType mysql
     <value>true</value>
     <description>Whether bucketing is enforced. If true, while inserting into the table, bucketing is enforced.</description>
   </property>
+ <property>
+    <name>hive.exec.dynamic.partition</name>
+    <value>true</value>
+    <description>Whether or not to allow dynamic partitions in DML/DDL.</description>
+  </property>
   <property>
     <name>hive.exec.dynamic.partition.mode</name>
     <value>nonstrict</value>
@@ -238,9 +243,9 @@ id1     b       2.001
 ``` scala
 import org.apache.spark.sql.SparkSession
 
-val spark = SparkSession.builder().appName("spark on hive")
-  .config("spark.sql.warehouse.dir", "hdfs://hc1/spark")
-  .enableHiveSupport().getOrCreate()
+val spark = SparkSession.builder().appName("spark on hive").
+  config("spark.sql.warehouse.dir", "hdfs://hc1/spark").
+  enableHiveSupport().getOrCreate()
 
 spark.sql("update test_df2_transaction set v2='c' where v1='id1'").show()
 # org.apache.spark.sql.catalyst.parser.ParseException

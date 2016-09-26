@@ -125,7 +125,7 @@ hive的配置項目：
   </property>
   <property>
     <name>hive.downloaded.resources.dir</name>
-    <value>/tmp/tester/hive_resource</value>
+    <value>/tmp/tester/hive_resources</value>
     <description>Temporary local directory for added resources in the remote file system.</description>
   </property>
 ```
