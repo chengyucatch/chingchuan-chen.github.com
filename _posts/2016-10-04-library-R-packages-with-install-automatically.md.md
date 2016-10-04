@@ -13,6 +13,7 @@ published: true
 廢話不多說，直接上code
 
 ``` R
+library(pipeR)
 library_mul <- function(..., lib.loc = NULL, quietly = FALSE, warn.conflicts = TRUE){
   pkgs <- as.list(substitute(list(...))) %>>% sapply(as.character) %>>% setdiff("list")
   if (any(!pkgs %in% installed.packages()))
