@@ -54,9 +54,9 @@ script如下：
 ``` scala
 import org.apache.spark.sql.SparkSession
 
-val spark = SparkSession.builder().appName("spark on hive")
-  .config("spark.sql.warehouse.dir", "hdfs://hc1/spark")
-  .enableHiveSupport().getOrCreate()
+val spark = SparkSession.builder().appName("spark on hive").
+  config("spark.sql.warehouse.dir", "hdfs://hc1/spark").
+  enableHiveSupport().getOrCreate()
 
 // 之前丟上去hive的test_df，沒有資料的話可以往前翻兩篇...
 spark.sql("select count(*) from vddata").show()
