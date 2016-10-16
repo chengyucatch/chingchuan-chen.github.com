@@ -1,7 +1,7 @@
 ---
 layout: post
-cTitle: "建置Mongodb Replica Set"
-title: "Buildup Mongodb Replica Set"
+cTitle: "建置Mongodb Sharding Server"
+title: "Buildup Mongodb Sharding Server"
 category: mongodb
 tagline:
 tags: [mongodb]

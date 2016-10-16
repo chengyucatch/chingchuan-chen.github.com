@@ -2,7 +2,7 @@
 layout: post
 cTitle: "用R做Oracle跟mongodb的loader"
 title: "using R to load data into mongodb from oracle"
-category: mongodb
+category: R
 tagline:
 tags: [R, mongodb, Oracle]
 cssdemo: 2014-spring
