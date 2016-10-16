@@ -291,7 +291,7 @@ txhousing,ggplot2,"541.8 Kb",hadley,txhousing
 tblListDT <- fread(uploadDataList)
 # 讀取資料
 tblListDT %>>% apply(1, function(v){
-  
+  data(v[1], package = v[2])
 }) %>>% invisible 
 
 #連線資訊
