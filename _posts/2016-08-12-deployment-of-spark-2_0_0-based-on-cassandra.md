@@ -4,7 +4,7 @@ cTitle: "基於cassandra的spark 2.0.0環境部署 (scala 2.11)"
 title: "deployment of spark 2.0.0 environment based on cassandra (scala 2.11)"
 category: Cassandra
 tagline:
-tags: [Cassandra, spark]
+tags: [Cassandra, Spark]
 cssdemo: 2014-spring
 published: true
 ---

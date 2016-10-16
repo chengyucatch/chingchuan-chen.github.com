@@ -2,9 +2,9 @@
 layout: post
 cTitle: "Apache Spark on Apache Hive"
 title: "Apache Spark on Apache Hive"
-category: spark
+category: Spark
 tagline:
-tags: [hive,spark]
+tags: [hive,Spark]
 cssdemo: 2014-spring
 published: true
 ---

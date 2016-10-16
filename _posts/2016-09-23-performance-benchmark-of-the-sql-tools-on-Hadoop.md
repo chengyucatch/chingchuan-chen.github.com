@@ -4,7 +4,7 @@ cTitle: "Performnace benchmark of the SQL tools on Hadoop"
 title: "Performnace benchmark on the SQL tools on Hadoop"
 category: hadoop
 tagline:
-tags: [hadoop,hbase,hive,drill,spark]
+tags: [hadoop,hbase,hive,drill,Spark]
 cssdemo: 2014-spring
 published: true
 ---

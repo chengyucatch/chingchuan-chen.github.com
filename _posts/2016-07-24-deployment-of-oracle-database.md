@@ -2,7 +2,7 @@
 layout: post
 cTitle: "deployment of Oracle database"
 title: "deployment of Oracle database"
-category: oracle
+category: Oracle
 tagline:
 tags: [Oracle]
 cssdemo: 2014-spring
