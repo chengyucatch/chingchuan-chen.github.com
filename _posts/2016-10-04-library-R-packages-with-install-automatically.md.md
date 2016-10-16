@@ -2,9 +2,9 @@
 layout: post
 cTitle: "library多個套件，並自動安裝沒安裝的套件"
 title: "library R packages with install automatically"
-category: spark
+category: R
 tagline:
-tags: [hive,spark]
+tags: [R]
 cssdemo: 2014-spring
 published: true
 ---
