@@ -45,7 +45,7 @@ sizePerGroup <- sample(11:2500, ceiling(numRows / mean(1:2500)) * 1.2, TRUE) %>>
 sizePerGroup[length(sizePerGroup)] <- sizePerGroup[length(sizePerGroup)] + numRows - sum(sizePerGroup)
 
 var2 <- sprintf("A%05i", 1:length(sizePerGroup))
-var3 <- sprintf("B%02i", 1:800)
+var3 <- sprintf("B%03i", 1:800)
 dat <- mapply(function(ss, v2value){
   as.data.table(list(t = Sys.time() - sample(diff_seconds_90days, 1, TRUE), 
                      v2 = v2value, v3 = sample(var3, ss, TRUE), v4 = rnorm(ss)))
@@ -84,7 +84,7 @@ gc()
 # 再把這樣的資料傳到mongodb就大功告成了
 #
 # 取得分批的參數
-paras <- list(sprintf("B%02i", 1:800), seq.Date(Sys.Date()-90, Sys.Date(), "days") %>>% 
+paras <- list(sprintf("B%03i", 1:800), seq.Date(Sys.Date()-90, Sys.Date(), "days") %>>% 
                 format("'%Y-%m-%d %H:%M:%S'"))
 parasName <- paste0(":para", 1:length(paras))
 # 分批的size
@@ -108,6 +108,8 @@ loc <- rep(1, length(paras))
 st <- proc.time()
 contUpload <- TRUE
 while(contUpload){
+  message(sprintf("Now loc is %s ...", paste0(loc, collapse = ",")))
+  
   # generate sql to query the subset
   sql_implement <- sql
   for (i in 2:length(paras))
@@ -198,11 +200,20 @@ while(contUpload){
   }
 }
 proc.time() - st
+#   user  system elapsed 
+# 253.87    5.33 2971.89
+## 拆成360份，上傳大概是2.5倍的時間，50分鐘
+
+mongoConn <- mongo("test_big_table", "big_table", "mongodb://drill:drill@192.168.0.128:27017")
+# count data size
+sprintf("%6i", mongoConn$count()) # 305174
+## 最後資料量從5000萬降到剩下30.5萬
 
 # get data and convert to normal table
 outDT <- mongoConn$find(limit = 50) %>>% data.table
-outDT_trans <- outDT[ , .(v5 = unlist(v5), t1 = unlist(t1), t2 = unlist(t2)), by = "v3,v4"] %>>%
-  `[`( , `:=`(t1 = as.POSIXct(t1, origin = "1960-01-01"), t2 = as.POSIXct(t2, origin = "1960-01-01")))
+outDT_trans <- outDT[ , .(v3 = unlist(v3), v4 = unlist(v4)), by = "t,v2"]
+# disconnect to mongo
+remove(mongoConn)
 ```
 
 因為我的mongodb router server跟config server都只有一台
