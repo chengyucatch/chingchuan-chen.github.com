@@ -4,7 +4,7 @@ cTitle: "在Python用cx_Oracle去操作Oracle資料庫"
 title: "use cx_Oracle to manipulate Oracle database in Python"
 category: Oracle
 tagline:
-tags: [Python, Oracle]
+tags: [python, Oracle]
 cssdemo: 2014-spring
 published: true
 ---

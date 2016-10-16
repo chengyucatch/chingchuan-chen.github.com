@@ -2,9 +2,9 @@
 layout: post
 cTitle: "用Python將Oracle DB的資料匯出到Cassandra"
 title: "export oracle data to cassandra using python"
-category: Python
+category: python
 tagline:
-tags: [Python, Oracle, Cassandra]
+tags: [python, Oracle, Cassandra]
 cssdemo: 2014-spring
 published: true
 ---
