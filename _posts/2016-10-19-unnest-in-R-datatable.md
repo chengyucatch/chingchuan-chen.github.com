@@ -47,6 +47,8 @@ unnest(DT, a, c)
 
 但是這時候我們很難的去自動解析這種表格，必須讓使用者自行處理
 
+(PS: 其實這裡可以直接用`unnest_` + 下面的`autoFind`裡面的一部分就可以很輕易做到，下面會實做)
+
 所以如果我們能用簡單的方式去自動辨別需要轉換就更好了
 
 基於此，我就用data.table去開發了這樣想的程式，如下：
@@ -103,3 +105,35 @@ extendTbl(DT, c("b", "d"))
 # 13: 3 4 5 11
 ```
 
+我們可以來比較一下`tidyr`跟`data.table`的速度
+
+會要求速度最主要的原因是因為我遇到的資料都非常大
+
+不用快一點的方法，真的會等很久
+
+``` R
+library(microbenchmark)
+N <- 1e5
+dbColsCnt <- 300
+arrColCnt <- 50
+
+sizePerRow <- sapply(1:N, function(x) sample(2:25, 1))
+arrCols <- replicate(arrColCnt, lapply(sizePerRow, rnorm)) %>>% 
+  data.table %>>% setnames(paste0("V", (dbColsCnt+1):(dbColsCnt+arrColCnt)))
+DT <- data.table(matrix(rnorm(dbColsCnt*N), N), arrCols)
+
+autoFind_unnest <- function(DT){
+  names(DT)[sapply(DT, function(x) any(class(x) %in% "list"))]
+}
+microbenchmark(unnest = unnest_(DT, autoFind_unnest(DT)),
+               datatable = extendTbl(DT), times = 20L)
+autoFind_unnest <- function(DT){
+  names(DT)[sapply(DT, function(x) any(class(x) %in% "list"))]
+}
+microbenchmark(unnest = unnest_(DT, autoFind_unnest(DT)),
+               datatable = extendTbl(DT), times = 20L)
+# Unit: seconds
+#      expr       min       lq     mean   median       uq     max neval
+#    unnest 15.806110 16.29989 16.62312 16.75588 16.88089 17.4564    20
+# datatable  9.362995 10.25902 10.82319 10.45128 10.94098 14.0597    20
+```
