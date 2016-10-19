@@ -16,10 +16,10 @@ published: true
 library(data.table)
 DT <- data.table(a = list(c(1:5), c(2:4), c(1:5)), b = 1:3, 
                  c = list(c(0:4), c(6:8), c(7:11)),  d = 2:4)
-#         a b      c d
-# 1: <list> 1 <list> 2
-# 2: <list> 2 <list> 3
-# 3: <list> 3 <list> 4
+#            a b              c d
+# 1: 1,2,3,4,5 1      0,1,2,3,4 2
+# 2:     2,3,4 2          6,7,8 3
+# 3: 1,2,3,4,5 3  7, 8, 9,10,11 4
 ```
 
 <!-- more -->
