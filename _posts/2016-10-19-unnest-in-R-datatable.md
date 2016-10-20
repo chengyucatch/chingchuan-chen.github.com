@@ -54,23 +54,30 @@ unnest(DT, a, c)
 基於此，我就用data.table去開發了這樣想的程式，如下：
 
 ``` R
-library(data.table)
-library(pipeR)
-autoFind <- function(DT){
-  setdiff(names(DT), names(DT)[sapply(DT, function(x) any(class(x) %in% "list"))])
-}
-extendTbl <- function(DT, groupbyVar = autoFind(DT)){
-  chkExpr <- paste0(groupbyVar, "=NULL", collapse = ",") %>>%
-    (paste0("`:=`(", ., ")"))
-  chkLenAllEqual <- DT[, lapply(.SD, function(x) sapply(x, length)), by = groupbyVar] %>>%
-    `[`(j = eval(parse(text = chkExpr))) %>>% as.matrix %>>%
-    apply(1, diff) %>>% `==`(0) %>>% all
-  if(!chkLenAllEqual)
+extendTbl <- function(DT, unnestCols = NULL){
+  # check the columns to unnest
+  if (is.null(unnestCols)) {
+    unnestCols <- names(DT)[sapply(DT, function(x) any(class(x) %in% "list"))]
+    message("Automatically recognize the nested columns: ", paste0(unnestCols, collapse = ", "))
+  }
+  # check unnestCols is in the DT
+  if (any(!unnestCols %in% names(DT)))
+    stop(sprintf("The columns, %s, does not in the DT.",
+                 paste0(unnestCols[!unnestCols %in% names(DT)], collapse = ", ")))
+  # get the group by variable
+  groupbyVar <- setdiff(names(DT), unnestCols)
+  # generate the expression to remove group by variable
+  chkExpr <- paste0(groupbyVar, "=NULL", collapse = ",") %>>% (paste0("`:=`(", ., ")"))
+  # check the lengths of each cell in list-column are all the same
+  chkLenAllEqual <- DT[ , lapply(.SD, function(x) sapply(x, length)), by = groupbyVar] %>>%
+    `[`(j = eval(parse(text = chkExpr))) %>>% as.matrix %>>% apply(1, diff) %>>% `==`(0) %>>% all
+  if (!chkLenAllEqual)
     stop("The length in each cell is not equal.")
-  
-  expr <- setdiff(names(DT), groupbyVar) %>>%
-    (paste0(., "=unlist(",  ., ")")) %>>% 
+
+  # generate unnest expression
+  expr <- unnestCols %>>% (paste0(., "=unlist(",  ., ")")) %>>%
     paste0(collapse = ",") %>>% (paste0(".(", ., ")"))
+  # return unnested data.table
   return(DT[ , eval(parse(text = expr)), by = groupbyVar])
 }
 extendTbl(DT)
