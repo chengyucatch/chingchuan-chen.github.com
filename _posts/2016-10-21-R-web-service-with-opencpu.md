@@ -44,11 +44,11 @@ library(opencpu) # library之後會出現下面的訊息，http://localhost:8850
 
 我的測試檔案：[GitHub](https://github.com/ChingChuan-Chen/rfda/blob/master/inst/extdata/funcData.json)
 
-原始資料長相：![](/images/opencpu1.png)
+原始資料長相：![](/images/opencpu1.PNG)
 
-opencpu web UI操作POST：![](/images/opencpu3.png)
+opencpu web UI操作POST：![](/images/opencpu3.PNG)
 
-回傳的結果：![](/images/opencpu2.png)
+回傳的結果：![](/images/opencpu2.PNG)
 
 
 但是這樣還不夠完美，所以可以透過回傳的內容有連結資訊
@@ -85,4 +85,4 @@ POST("http://localhost:8850/ocpu/library/test.opencpu/R/convertJSON",
 # 15        1 9.73 -0.3867
 ```
 
-最後放一張完成圖：![](/images/opencpu2.png)
+最後放一張完成圖：![](/images/opencpu2.PNG)

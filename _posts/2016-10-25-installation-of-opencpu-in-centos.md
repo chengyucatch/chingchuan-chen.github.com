@@ -55,5 +55,3 @@ opencpu-server/rpm/buildscript.sh
 sudo iptables -I INPUT -p tcp --dport 80 -j ACCEPT
 sudo service iptables save
 ```
-
-
