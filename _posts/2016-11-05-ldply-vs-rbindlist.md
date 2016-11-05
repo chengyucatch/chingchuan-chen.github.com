@@ -18,13 +18,13 @@ published: true
 
 而且plyr::ddply消耗的記憶體相對起rbindlist高尚不少
 
+<!-- more -->
+
 會發現這些都要感謝rstudio新出的套件`profvis`提供了良好的performance視覺化
 
 `profvis`可以在[github](https://github.com/rstudio/profvis)找到
 
-<!-- more -->
-
-Benchmark的R script:
+下面是Benchmark的R script:
 
 ``` R
 library(plyr)
