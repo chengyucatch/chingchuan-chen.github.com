@@ -24,12 +24,14 @@ github_username:  chingchuan-chen
 markdown: kramdown
 
 kramdown:
+  input: GFM
   auto_ids: true
   footnote_nr: 1
   entity_output: as_char
   toc_levels: 1..6
   enable_coderay: true
   coderay_line_numbers: nil
+  coderay_css: class
     
 JB :
   BASE_PATH : false
