@@ -79,8 +79,8 @@ microbenchmark(rbindlist = getRawCrCov1(dataDT), ldply = getRawCrCov2(dataDT), t
 
 速度整整差了近5倍(3347 / 709 ~= 4.72)
 
-因此，建議以後plyr系列，盡量避開*dply系列的函數
+因此，建議以後plyr系列，盡量避開`*dply`系列的函數
 
-用到plyr:::list_to_dataframe這個函數的效果並不好
+用到`plyr:::list_to_dataframe`這個函數的效能都不好
 
-盡量去使用data.table::rbindlist
+盡量去使用`data.table::rbindlist`
