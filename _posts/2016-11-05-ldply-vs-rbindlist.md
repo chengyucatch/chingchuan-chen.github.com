@@ -12,17 +12,17 @@ published: true
 
 最近遇到在計算functinoal data的cross-covariance surface的時候
 
-發現plyr::ddply裡面的list_to_dataframe有點慢
+發現`plyr::ddply`裡面的`list_to_dataframe`有點慢
 
-反而利用plyr::dlply加上data.table的rbindlist可以快上不少
+反而利用`plyr::dlply`加上`data.table`的`rbindlist`可以快上不少
 
-而且plyr::ddply消耗的記憶體相對起rbindlist高尚不少
-
-<!-- more -->
+而且`plyr::ddply`消耗的記憶體相對起`rbindlist`高上不少
 
 會發現這些都要感謝rstudio新出的套件`profvis`提供了良好的performance視覺化
 
 `profvis`可以在[github](https://github.com/rstudio/profvis)找到
+
+<!-- more -->
 
 下面是Benchmark的R script:
 

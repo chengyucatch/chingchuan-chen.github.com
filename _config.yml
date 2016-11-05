@@ -12,10 +12,9 @@ author :
   name : ChingChuan Chen
   email : zw12356@gmail.com
   github : ChingChuan-Chen
-  twitter : celestialgod
 email: zw12356@gmail
 description: > # this means to ignore newlines until "baseurl:"
-  Talking about R, MatLab, C++ and statiscal learnings.
+  Talking about R, C++ and statiscal learnings.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://chingchuan-chen.github.io" # the base hostname & protocol for your site
 twitter_username: celestialgod
@@ -30,11 +29,10 @@ kramdown:
   entity_output: as_char
   toc_levels: 1..6
   enable_coderay: false
+  highlighter: rouge
 
   coderay:
     coderay_wrap: div
-    coderay_line_numbers: inline
-    coderay_line_numbers_start: 1
     coderay_tab_width: 4
     coderay_bold_every: 10
     coderay_css: style
