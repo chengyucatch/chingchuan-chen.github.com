@@ -104,11 +104,11 @@ g8 <- function(x) {
 }
 microbenchmark(g5(), g6(), g7(), g8(), times = 20L)
 # Unit: seconds
-# expr      min       lq     mean   median       uq      max neval
-# g5() 2.785521 2.802764 2.886548 2.821461 2.992363 3.128828    20
-# g6() 2.598184 2.615412 2.679710 2.645170 2.690820 2.966044    20
-# g7() 2.785521 2.802764 2.886548 2.821461 2.992363 3.128828    20
-# g8() 2.598184 2.615412 2.679710 2.645170 2.690820 2.966044    20
+#  expr      min       lq     mean   median       uq      max neval
+#  g5() 2.811597 2.840651 2.899999 2.860215 2.925780 3.193207    20
+#  g6() 2.627146 2.640597 2.692733 2.680902 2.734413 2.816154    20
+#  g7() 3.949628 3.978429 4.045335 4.029595 4.068357 4.384041    20
+#  g8() 2.866590 2.883808 2.927684 2.909651 2.957875 3.070483    20
 
 sfStop()
 rm(cl)
@@ -131,3 +131,31 @@ rm(cl)
 並在`*ply`的函數後面加上`.parallel = TRUE`就可以直接享受`foreach`幫你自動調整的速度了
 
 不過我手上沒有loading balancing帶來比較差效能的例子，未來遇上再補上
+
+
+額外補充，`foreach`有可能遇到的雷：
+
+如果input的長度是不一定的，有可能是1的話，會帶來一些麻煩
+
+當output是向量的時候，`foreach`的`.combine`使用`cbind`
+
+會導致長度1的時候輸出的不是`matrix`，而是`vector`
+
+在使用`foreach`時，這一點要特別注意
+
+``` R
+# without parallel
+f2 <- function(x) rnorm(5)
+
+o1 <- foreach(i = 1:2, .combine = cbind) %do% f2(i)
+o2 <- sapply(cl, 1:2, f2)
+
+o3 <- foreach(i = 1, .combine = cbind) %do% f2(i)
+o4 <- sapply(cl, 1, f2)
+
+class(o1)  # "matrix"
+class(o2)  # "matrix"
+class(o3)  # "matrix"
+class(o4)  # "numeric"
+```
+
