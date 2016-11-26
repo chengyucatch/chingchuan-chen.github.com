@@ -1,23 +1,13 @@
 ---
 layout: post
-cTitle: Rcpp Attributes
-title: "Rcpp Attributes"
-category: R
-tagline:
-tags: [R, Rcpp]
-cssdemo: 2014-spring
-published: true
+title: Rcpp Attributes
 ---
 
 Recently, I went to the 23th STSC, I got some information about the new API of `Rcpp`, `Rcpp attributes`. I had tried some examples and it worked well. Here I demonstrate some examples.
 
-<!-- more -->
-
-{% include JB/setup %}
-
 First example: call the `pnorm` function in Rcpp:
 
-{% highlight R %}
+```R
 require(Rcpp)
 sourceCpp(code = '
 #include <Rcpp.h>
@@ -38,13 +28,13 @@ DataFrame mypnorm(NumericVector x){
     Named("sugar") = y3);
 }')
 mypnorm(runif(10, -3, 3))
-{% endhighlight %}
+```
 
 Rcpp attributes allows user to write Rcpp in a simple way. User does not need to learn about how to write R extension. Just write a cpp script and add the line `// [[Rcpp::export]]`, then user can use the function in R.
 
 Next two example is about the two extension packages of Rcpp, RcppArmadillo and RcppEigen. The two packages provide Rcpp to link the C++ linear algebra libraries, armadillo and Eigen.
 
-{% highlight R %}
+```R
 library(Rcpp)
 library(RcppArmadillo)
 library(RcppEigen)
@@ -102,7 +92,7 @@ system.time(fastLm_RcppEigen(y, X))
 system.time(lm(y~X - 1))
 #   user  system elapsed
 # 145.13   14.76   91.84
-{% endhighlight %}
+```
 
 The cpp functions are faster 63 times than R function `lm`. My environment is ubuntu 14.04, R 3.1.1 compiled by intel c++, fortran compiler with MKL. My CPU is 3770K@4.3GHz. I think that Rcpp is the package which is the worthiest to learn if you want to use R to do statistical computing or machine learning. Rcpp attributes had changed the way to source C++ code in R, it let `Rcpp` is more convenient and more powerful.
 

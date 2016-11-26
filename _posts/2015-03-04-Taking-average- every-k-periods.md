@@ -1,20 +1,11 @@
 ---
 layout: post
-cTitle: Taking average every k periods
-title: "Taking average every k periods"
-category: R
-tagline:
-tags: [R]
-cssdemo: 2014-spring
-published: true
+title: Taking average every k periods
 ---
-{% include JB/setup %}
 
 We have a repeated-measuring data. We want to take average every 3 periods. Here is code to do it.
 
-<!-- more -->
-
-{% highlight R %}
+```R
 library(plyr)
 library(dplyr)
 library(data.table)
@@ -77,4 +68,4 @@ start_time = Sys.time()
 result = mean_dat_f(dat, 3)
 Sys.time() - start_time
 # Time difference of 1.848106 secs
-{% endhighlight %}
+```

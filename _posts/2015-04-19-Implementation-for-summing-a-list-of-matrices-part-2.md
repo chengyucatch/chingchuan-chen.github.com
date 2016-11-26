@@ -1,20 +1,11 @@
 ---
 layout: post
-cTitle: Implementation for summing a list of matrices -- part 2
-title: "Implementation for summing a list of matrices -- part 2"
-category: R
-tagline:
-tags: [R, Rcpp]
-cssdemo: 2014-spring
-published: true
+title: Implementation for summing a list of matrices -- part 2
 ---
-{% include JB/setup %}
 
 I have showed several implementations for summing a list of matrices in the previous post. I introduce a function to be applied in `do.call` and test performance.
 
-<!-- more -->
-
-{% highlight R %}
+```R
 N = 10
 input = lapply(1:N**2, function(x) matrix(rnorm(N**2), N))
 a = do.call(function(...){
@@ -55,4 +46,4 @@ microbenchmark(a = do.call(function(...){
 #     a 392.7532 409.6669 431.2166 424.3133 443.7561 498.5549    20
 #     b 399.3968 414.4893 446.8753 432.2366 444.0107 685.5244    20
 #     d 379.0724 400.0660 411.3291 408.3251 427.2988 443.7041    20
-{% endhighlight %}
+```

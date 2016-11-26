@@ -1,14 +1,7 @@
 ---
 layout: post
-cTitle: "A comparison for R parallel packages"
 title: "A comparison for R parallel packages"
-category: R
-tagline:
-tags: [R]
-cssdemo: 2014-spring
-published: true
 ---
-{% include JB/setup %} 
 
 有些程式不能全部靠RcppParallel加速
 
@@ -16,11 +9,9 @@ published: true
 
 但是平行套件其實不少，那哪一個又有比較好的performance?
 
-<!-- more -->
-
 下面是Benchmark的R script:
 
-``` R
+```R
 require(doParallel)
 library(foreach)
 require(snowfall)
@@ -143,7 +134,7 @@ rm(cl)
 
 在使用`foreach`時，這一點要特別注意
 
-``` R
+```R
 # without parallel
 f2 <- function(x) rnorm(5)
 

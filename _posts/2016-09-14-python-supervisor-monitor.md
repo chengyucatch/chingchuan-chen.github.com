@@ -1,24 +1,15 @@
 ---
 layout: post
-cTitle: "使用python的套件supervisor監控程式 - 以Cassandra, Spark, Mesos為例"
-title: "Monitoring the programs with python supervisor"
-category: Spark
-tagline:
-tags: [R, Spark]
-cssdemo: 2014-spring
-published: true
+title: "使用python的套件supervisor監控程式 - 以Cassandra, Spark, Mesos為例"
 ---
-{% include JB/setup %} 
 
 Python的supervisor是一套簡單、輕量的監控系統服務之工具
 
 透過簡單的安裝跟些許的設定即可以達到想要的效果
 
-<!-- more -->
-
 先安裝supervisor:
 
-``` bash
+```bash
 sudo yum install python-setuptools
 sudo easy_install pip
 sudo pip install supervisor
@@ -52,7 +43,7 @@ environment=
 
 如果之前有設定過自動啟動，先關掉：
 
-``` bash
+```bash
 sudo systemctl stop mesos-master
 sudo systemctl stop mesos-slave
 sudo systemctl disable mesos-master
@@ -73,7 +64,7 @@ sudo rm /etc/init.d/zookeeper
 
 最後是使用下面的script去配置supervisord：
 
-``` bash
+```bash
 sudo tee -a /etc/supervisor/supervisord.conf << "EOF"
 
 [program:cassandra]
@@ -121,7 +112,7 @@ EOF
 
 再來是配置supervisor的自動啟動服務
 
-``` bash
+```bash
 sudo tee -a /usr/lib/systemd/system/supervisor.service << "EOF"
 [Unit]
 Description=supervisor

@@ -1,24 +1,15 @@
 ---
 layout: post
-cTitle: How to use xelatex in sublime text
-title: "How to use xelatex in sublime text"
-category: TEX
-tagline:
-tags: [TEX, sublime_text]
-cssdemo: 2014-spring
-published: true
+title: How to use xelatex in sublime text
 ---
-{% include JB/setup %}
 
 To setup LatexTools in sublime text.
-
-<!-- more -->
 
 You should install package control before installation of LaTexTools. Please go to the official website of package control and copy the commend of installation. Then open console in sublime text via `` ctrl+` `` and paste the commend copied from website. Now, you can start to install LatexTools in sublime text. Call install commend via `ctrl+shift+p` and key in `install package`. Enter `LaTexTools` to install.
 
 To use LaTexTools, you should have MikTex and SumatraPDF in windows OS or texlive and latexmk in linux. If you use windows, you should guarantee that path consist the path to `xetex.exe` and `SumatraPDF.exe`. Next, configure the settings of LaTexTools found in `Preferences -> Package Settings -> LaTexTools` and migrate settings (Select `Reconfigure LaTexTools and migrate settings`) first. Finally, select `Settings-User` and set the builder_settings as following.
 
-{% highlight bash %}
+```bash
 "builder_settings" : {
   "program": "xelatex",
   // General settings:
@@ -41,6 +32,6 @@ To use LaTexTools, you should have MikTex and SumatraPDF in windows OS or texliv
     // See README or third-party documentation
   }
 }
-{% endhighlight %}
+```
 
 

@@ -1,14 +1,7 @@
 ---
 layout: post
-cTitle: "plyr::ddply vs data.table::rbindlist"
-title: "plyr::ddply vs data.table::rbindlist"
-category: R
-tagline:
-tags: [R]
-cssdemo: 2014-spring
-published: true
+Title: "plyr::ddply vs data.table::rbindlist"
 ---
-{% include JB/setup %} 
 
 最近遇到在計算functinoal data的cross-covariance surface的時候
 
@@ -22,11 +15,9 @@ published: true
 
 其中`profvis`可以在[github](https://github.com/rstudio/profvis)找到
 
-<!-- more -->
-
 下面是Benchmark的R script:
 
-``` R
+```R
 library(plyr)
 library(data.table)
 library(pipeR)

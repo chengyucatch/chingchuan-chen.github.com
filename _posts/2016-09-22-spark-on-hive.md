@@ -1,18 +1,9 @@
 ---
 layout: post
-cTitle: "Apache Spark on Apache Hive"
 title: "Apache Spark on Apache Hive"
-category: Spark
-tagline:
-tags: [hive,Spark]
-cssdemo: 2014-spring
-published: true
 ---
-{% include JB/setup %} 
 
 這篇主要是用Spark去連接現存的Hive
-
-<!-- more -->
 
 可能有人會先好奇說為什麼不用Spark本身的Thrift Server
 
@@ -28,7 +19,7 @@ published: true
 
 配置很簡單，只需要使用下面四個指令，以及修改一下Spark的`spark-default.conf`即可
 
-``` bash
+```bash
 cp $HADOOP_CONF_DIR/core-site.xml $SPARK_HOME/conf/
 cp $HADOOP_CONF_DIR/hdfs-site.xml $SPARK_HOME/conf/
 cp $HIVE_HOME/conf/hive-site.xml $SPARK_HOME/conf/
@@ -37,7 +28,7 @@ cp $HIVE_HOME/lib/mysql-connector-java-5.1.39-bin.jar $SPARK_HOME/extraClass/
 
 `spark-default.conf`增加下面的東西：
 
-``` bash
+```bash
 spark.driver.extraClassPath /usr/local/bigdata/spark/extraClass/mysql-connector-java-5.1.39-bin.jar
 spark.executor.extraClassPath /usr/local/bigdata/spark/extraClass/mysql-connector-java-5.1.39-bin.jar
 ```
@@ -51,7 +42,7 @@ spark.executor.extraClassPath /usr/local/bigdata/spark/extraClass/mysql-connecto
 
 script如下：
 
-``` scala
+```scala
 import org.apache.spark.sql.SparkSession
 
 val spark = SparkSession.builder().appName("spark on hive").

@@ -1,20 +1,11 @@
 ---
 layout: post
-cTitle: The length of runs of equal values in a vector
-title: "The length of runs of equal values in a vector"
-category: R
-tagline:
-tags: [R, Rcpp]
-cssdemo: 2014-spring
-published: true
+title: The length of runs of equal values in a vector
 ---
-{% include JB/setup %}
 
 We usually encounter the problem for counting the length of equal values repeatedly. `rle` is the build-in command in R to solve this problem which is consist of `diff` and `which`. But it is not so fast, I write another version of `rle` in Rcpp.
 
-<!-- more -->
-
-{% highlight R %}
+```R
 library(Rcpp)
 library(RcppArmadillo)
 sourceCpp(code = '
@@ -63,4 +54,4 @@ benchmark(rle(testVector), rle_cpp(testVector),
 #         test replications elapsed relative
 # 2 rle_cpp(x)          100    0.34    1.000
 # 1     rle(x)          100    2.53    7.441
-{% endhighlight %}
+```

@@ -1,20 +1,11 @@
 ---
 layout: post
-cTitle: Computing the transition matrix for multi-state individual
-title: "Computing the transition matrix for multi-state individual"
-category: R
-tagline:
-tags: [R, Rcpp]
-cssdemo: 2014-spring
-published: true
+title: Computing the transition matrix for multi-state individual
 ---
-{% include JB/setup %}
 
 We have a repeated-measuring data. We want to take average every 3 periods. Here is code to do it.
 
-<!-- more -->
-
-{% highlight R %}
+```R
 ## A simple way to compute transition matrix if every individual does not have multiple state.
 library(data.table)
 library(dplyr)
@@ -53,9 +44,9 @@ transitMatrix = dat_count %>% group_by(obs_time, previous_dose) %>%
 proc.time() - st
 #   user  system elapsed
 #   0.72    0.05    0.78
-{% endhighlight %}
+```
 
-{% highlight R %}
+```R
 ## A method to compute transition matrix if every individual does have multiple state.
 library(data.table)
 library(dplyr)
@@ -246,4 +237,4 @@ all.equal(transitMatrix_eachTime, transitMatrix_eachTime5 %>%
 # [4,] 0.1661085 0.1654387 0.1634293 0.1654387 0.1694575 0.1701273
 # [5,] 0.1722746 0.1648721 0.1561238 0.1641992 0.1709287 0.1716016
 # [6,] 0.1675862 0.1620690 0.1648276 0.1655172 0.1765517 0.1634483
-{% endhighlight %}
+```

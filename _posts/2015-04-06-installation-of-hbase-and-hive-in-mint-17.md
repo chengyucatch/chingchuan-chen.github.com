@@ -1,43 +1,34 @@
 ---
 layout: post
-cTitle: Installation of hbase and hive in mint 17
-title: "Installation of hbase and hive in mint 17"
-category: hadoop
-tagline:
-tags: [hadoop]
-cssdemo: 2014-spring
-published: true
+title: Installation of hbase and hive in mint 17
 ---
-{% include JB/setup %}
 
 The second post for series of building hadoop environment in mint 17. HBase support the storage of big table in HDFS. Hive support hadoop to query data with sql commands.
-
-<!-- more -->
 
 Based on hadoop, we install the hbase.
 
 1. Get hbase
 
-{% highlight bash %}
+```bash
 wget http://apache.stu.edu.tw/hbase/stable/hbase-1.0.0-bin.tar.gz
 tar zxvf hbase-1.0.0-bin.tar.gz
 sudo mv hbase-1.0.0 /usr/local/hbase
 cd /usr/local/hbase
-{% endhighlight %}
+```
 
 Put the following into the file by command: `subl conf/hbase-env.sh`.
 
 
-{% highlight bash %}
+```bash
 export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 export HBASE_HOME=/usr/local/hbase
 export HADOOP_INSTALL=/usr/local/hadoop
 export HBASE_CLASSPATH=/usr/local/hbase/conf
 export HBASE_MANAGES_ZK=true
-{% endhighlight %}
+```
 
 Set up the hbase by command: `subl conf/hbase-site.xml`
-{% highlight bash %}
+```bash
 <configuration>
   <property>
     <name>hbase.rootdir</name>
@@ -66,51 +57,51 @@ Set up the hbase by command: `subl conf/hbase-site.xml`
     <value>/usr/local/hadoop/tmp/data</value>
   </property>
 </configuration>
-{% endhighlight %}
+```
 
 Copy the setting of hdfs into hbase folder by command:
 `cp /usr/local/hadoop/etc/hadoop/hdfs-site.xml /usr/local/hbase/conf`
 
 2. start hbase
-{% highlight bash %}
+```bash
 sudo subl /etc/bash.bashrc
 # add following 2 lines into file
 # export HBASE_INSTALL=/usr/local/hbase
 # export PATH=$PATH:$HBASE_INSTALL/bin
 source /etc/bash.bashrc
 # in ubuntu, is >> etc/bash.bashrc
-{% endhighlight %}
+```
 
-{% highlight bash %}
+```bash
 start-dfs.sh && start-yarn.sh # or start-all.sh
 start-hbase.sh
-{% endhighlight %}
+```
 
 3. test hbase
 type `hbase shell` in the terminal, then it will show:
-{% highlight bash %}
+```bash
 HBase Shell; enter 'help<RETURN>' for list of supported commands.
 Type "exit<RETURN>" to leave the HBase Shell
 Version 1.0.0, r6c98bff7b719efdb16f71606f3b7d8229445eb81, Sat Feb 14 19:49:22 PST 2015
 
 hbase(main):001:0>
-{% endhighlight %}
+```
 
 type `list` and it return
-{% highlight bash %}
+```bash
 TABLE
 0 row(s) in 4.4510 seconds
-{% endhighlight %}
+```
 
 The other tests remain in the rhbase. Stop the server:
 
-{% highlight bash %}
+```bash
 stop-hbase.sh
 stop-dfs.sh && stop-yarn.sh # or stop-all.sh
-{% endhighlight %}
+```
 
 ## hive installation
-{% highlight bash %}
+```bash
 wget http://apache.stu.edu.tw/hive/stable/apache-hive-1.1.0-bin.tar.gz
 tar zxvf apache-hive-1.1.0-bin.tar.gz
 sudo mv apache-hive-1.1.0-bin /usr/local/hive
@@ -204,4 +195,4 @@ mysql > use hive
 mysql > show tables;
 mysql > exit
 # There shows that the hive had connected to mysql server.
-{% endhighlight %}
+```

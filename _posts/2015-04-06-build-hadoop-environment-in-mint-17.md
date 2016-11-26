@@ -1,22 +1,13 @@
 ---
 layout: post
-cTitle: Build hadoop environment in mint 17
-title:  "Build hadoop environment in mint 17"
-category: hadoop
-tagline:
-tags: [hadoop]
-cssdemo: 2014-spring
-published: true
+title: Build hadoop environment in mint 17
 ---
-{% include JB/setup %}
 
 Hadoop is one of the most popular tool to deal with the big data. I construct the environment of Hadoop in mint 17. Mint 17 is based on the ubuntu 14.04. The following steps also works in ubuntu 14.04.
 
-<!-- more -->
-
 1. install java jdk 8
 
-{% highlight bash %}
+```bash
 sudo apt-get install python-software-properties
 sudo add-apt-repository ppa:webupd8team/java
 sudo apt-get update
@@ -27,11 +18,11 @@ javac -version # check the version of java
 sudo apt-get purge openjdk-\*
 # java version vs hadoop version
 # refer: http://wiki.apache.org/hadoop/HadoopJavaVersions
-{% endhighlight %}
+```
 
 2. install ssh
 
-{% highlight bash %}
+```bash
 sudo apt-get install ssh rsync openssh-server
 ssh-keygen -t rsa -P "" # generate SSH key
 # Enable SSH Key
@@ -39,21 +30,21 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 # test whether it works, it should not need password if it works
 ssh localhost
 exit
-{% endhighlight %}
+```
 
 3. download hadoop
 
-{% highlight bash %}
+```bash
 wget http://apache.stu.edu.tw/hadoop/common/stable2/hadoop-2.7.2.tar.gz
 tar zxvf hadoop-2.7.2.tar.gz
 sudo mv hadoop-2.7.2 /usr/local/hadoop
 cd /usr/local
 sudo chown -R celest hadoop
-{% endhighlight %}
+```
 
 4. setting environment for java and hadoop
 
-{% highlight bash %}
+```bash
 sudo subl /etc/bash.bashrc
 # add following 9 lines into file
 # export JAVA_HOME=/usr/lib/jvm/java-8-oracle/
@@ -67,7 +58,7 @@ sudo subl /etc/bash.bashrc
 # export YARN_HOME=$HADOOP_INSTALL
 source /etc/bash.bashrc
 # in ubuntu, is >> etc/bash.bashrc
-{% endhighlight %}
+```
 
 4-1. network environment (for multi-node hadoop)
 If you use the VMware, you need to add another host-only network card. You can install hadoop successfully and clone it to be slaves. In following, `master` stands for the primary node and `slaveXX` for the other nodes.
@@ -76,14 +67,14 @@ a. setting the network
 
 using `ifconfig` to check whether the network card is adding.
 
-{% highlight bash %}
+```bash
 sudo subl /etc/network/interfaces
-{% endhighlight %}
+```
 
 the content of file looks like this:
 (there must be eth1. Put a address for it on the machines master and slaves.)
 
-{% highlight bash %}
+```bash
 # The loopback network interface for master
 auto lo
 iface lo inet loopback
@@ -97,7 +88,7 @@ auto eth1
   iface eth1:0 inet static
   address 192.168.29.130 # (192.168.29.131 for slave01)
   netmask 255.255.0.0
-{% endhighlight %}
+```
 
 restart network by command `sudo /etc/init.d/networking restart`
 and check the network again by `ifconfig`.
@@ -105,23 +96,23 @@ and check the network again by `ifconfig`.
 5. setup for hadoop
 
 a. disabling IPv6 by editing `/etc/sysctl.conf`
-{% highlight bash %}
+```bash
 subl /etc/sysctl.conf
-{% endhighlight %}
+```
 
 paste the following into `/etc/sysctl.conf`
-{% highlight bash %}
+```bash
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
-{% endhighlight %}
+```
 
 checking whether ipv6 is disable: `cat /proc/sys/net/ipv6/conf/all/disable_ipv6`. (retuen `1`)
 
 b. editing following files:
 
 create the folders for putting data.
-{% highlight bash %}
+```bash
 cd /usr/local/hadoop
 sudo mkdir -p /usr/local/hadoop/tmp
 sudo chown celest /usr/local/hadoop/tmp
@@ -131,7 +122,7 @@ cp etc/hadoop/mapred-site.xml.template etc/hadoop/mapred-site.xml
 subl /usr/local/hadoop/etc/hadoop/mapred-site.xml
 subl /usr/local/hadoop/etc/hadoop/hdfs-site.xml
 subl /usr/local/hadoop/etc/hadoop/yarn-site.xml
-{% endhighlight %}
+```
 
 i. /usr/local/hadoop/etc/hadoop/hadoop-env.sh
 
@@ -150,7 +141,7 @@ replace the line `JAVA_HOME={JAVA_HOME}` with your java root, in my case, it is
 b. core-site.xml
 put the following content to the file.
 
-{% highlight xml %}
+```xml
 <configuration>
  <property>
   <name>hadoop.tmp.dir</name>
@@ -172,23 +163,23 @@ put the following content to the file.
   </description>
  </property>
 </configuration>
-{% endhighlight %}
+```
 
 c. mapred-site.xml
 There is no file `mapred-site.xml`, we get by copy the `mapred-site.xml.template`. This command would be helpful: `cp etc/hadoop/mapred-site.xml.template etc/hadoop/mapred-site.xml && subl etc/hadoop/mapred-site.xml`. We set the specification of job tracker like this:
 
-{% highlight xml %}
+```xml
 <configuration>
 <property>
   <name>mapreduce.framework.name</name>
   <value>yarn</value>
 </property>
 </configuration>
-{% endhighlight %}
+```
 
 d. hdfs-site.xml
 
-{% highlight xml %}
+```xml
 <configuration>
 <property>
   <name>dfs.replication</name>
@@ -206,11 +197,11 @@ d. hdfs-site.xml
   <value>/usr/local/hadoop/tmp/name</value>
 </property>
 </configuration>
-{% endhighlight %}
+```
 
 e. yarn-site.xml
 
-{% highlight xml %}
+```xml
 <configuration>
 <!-- <property>
      <name>yarn.resourcemanager.hostname</name>
@@ -226,20 +217,20 @@ e. yarn-site.xml
      <value>org.apache.hadoop.mapred.ShuffleHandler</value>
 </property>
 </configuration>
-{% endhighlight %}
+```
 
 f. slaves (for multi-node.)
 
 put names of your machines in the `hadoop/etc/hadoop/slaves`. Command: `subl etc/hadoop/slaves`. The file looks like:
 
-{% highlight bash %}
+```bash
 master
 slave01
-{% endhighlight %}
+```
 
 6. Starting hadoop
 
-{% highlight bash %}
+```bash
 # import environment variable
 # ubuntu: source ~/.bashrc
 source /etc/bash.bashrc
@@ -248,10 +239,10 @@ hdfs namenode -format
 # start the hadoop
 start-dfs.sh && start-yarn.sh
 # or start-all.sh
-{% endhighlight %}
+```
 
 The output looks like this: (standalone)
-{% highlight bash %}
+```bash
 localhost: starting namenode, logging to /usr/local/hadoop/logs/hadoop-master-namenode-master-virtual-machine.out
 localhost: starting datanode, logging to /usr/local/hadoop/logs/hadoop-master-datanode-master-virtual-machine.out
 Starting secondary namenodes [0.0.0.0]
@@ -259,10 +250,10 @@ Starting secondary namenodes [0.0.0.0]
 starting yarn daemons
 starting resourcemanager, logging to /usr/local/hadoop/logs/yarn-master-resourcemanager-master-virtual-machine.out
 localhost: starting nodemanager, logging to /usr/local/hadoop/logs/yarn-master-nodemanager-master-virtual-machine.out
-{% endhighlight %}
+```
 
 The output looks like this: (standalone)
-{% highlight bash %}
+```bash
 master: starting namenode, logging to /usr/local/hadoop/logs/hadoop-master-namenode-master.out
 slave01: starting datanode, logging to /usr/local/hadoop/logs/hadoop-master-datanode-slave01.out
 Starting secondary namenodes [0.0.0.0]
@@ -270,32 +261,32 @@ Starting secondary namenodes [0.0.0.0]
 starting yarn daemons
 starting resourcemanager, logging to /usr/local/hadoop/logs/yarn-master-resourcemanager-master.out
 slave01: starting nodemanager, logging to /usr/local/hadoop/logs/yarn-master-nodemanager-slave01.out
-{% endhighlight %}
+```
 
 check whether the server starts by connecting the local server.
-{% highlight bash %}
+```bash
 # for standalone
 firefox http:\\localhost:50070
 firefox http:\\localhost:50090
 # for multi-node hadoop
 hdfs dfsadmin -report
-{% endhighlight %}
+```
 
 Run a example in the folder
-{% highlight bash %}
+```bash
 hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.2.jar pi 10 100
-{% endhighlight %}
+```
 
 The last two line will show the following informations:
-{% highlight bash %}
+```bash
 Job Finished in 167.153 seconds
 Estimated value of Pi is 3.14800000000000000000
-{% endhighlight %}
+```
 
 Run second example
 
 8. run wordaccout
-{% highlight bash %}
+```bash
 cd ~/Downloads && mkdir testData && cd testData
 # download data for test
 wget http://www.gutenberg.org/ebooks/5000.txt.utf-8
@@ -314,7 +305,7 @@ hdfs dfs -cat /user/celest/testData-output/part-r-00000
 # clean the test file (optional)
 hdfs dfs -rm -r /user/celest/testData
 hdfs dfs -rm -r /user/celest/testData-output
-{% endhighlight %}
+```
 
 8. Stopping hadoop
 `stop-all.sh` or `stop-dfs.sh && stop-yarn.sh`
@@ -325,7 +316,7 @@ hdfs dfs -rm -r /user/celest/testData-output
 To avoid the warning `WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable`, you can build the 64 bit hadoop lib by yourself.
 
 Here is the bash script to compile:
-{% highlight bash %}
+```bash
 # install the necessary packages
 sudo apt-get -y install build-essential protobuf-compiler autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev git subversion
 cd ~/Downloads
@@ -365,5 +356,5 @@ mvn clean package -Pdist -Dtar -Dmaven.javadoc.skip=true -DskipTests -fail-at-en
 sudo cp -r hadoop-2.7.2-src/hadoop-dist/target/hadoop-2.7.2 /usr/local/hadoop
 sudo mv /usr/local/hadoop-2.7.2 /usr/local/hadoop
 sudo chown -R celest hadoop
-{% endhighlight %}
+```
 

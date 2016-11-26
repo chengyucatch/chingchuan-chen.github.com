@@ -1,20 +1,11 @@
 ---
 layout: post
-cTitle: Parsing html page with javascript
-title: "Parsing html page with javascript"
-category: R
-tagline:
-tags: [R, html]
-cssdemo: 2014-spring
-published: true
+title: Parsing html page with javascript
 ---
-{% include JB/setup %}
 
 Here is a demonstration to grab lottery number by using RSelenium. Since RCurl cannot parse the table produced by javascript, we need to construct a server to interpret javascript and grab the information we need. The tool of building server is RSelenium. It is simple to generate the html page by javascript, then we can access the table we want.
 
-<!-- more -->
-
-{% highlight R %}
+```R
 library(RCurl)
 library(XML)
 library(RSelenium)
@@ -61,7 +52,7 @@ lottery_HT = lottery[, lapply(.SD, as.numeric)] # history table
 # 1165:   1165 2015     2   6      3     31     49     20     36     27     40
 # 1166:   1166 2015     2  10     19      6     33     17      6     26     46
 # 1167:   1167 2015     2  13     15      1     19     43      6     26     29
-{% endhighlight %}
+```
 
 The encoding in windows is trouble, I have spent 2 hour on it, but it is still unsolved. Therefore, if you want to parse the html involving non-UTF8 characters, just aware it.
 

@@ -1,22 +1,13 @@
 ---
 layout: post
-cTitle: R data.table - subsets
-title: "R data.table - subsets"
-category: R
-tagline:
-tags: [R, data.table, dplyr]
-cssdemo: 2014-spring
-published: true
+title: R data.table - subsets
 ---
-{% include JB/setup %}
 
 `data.table` is a powerful tool for exploring data. However, how is it fast? Here we provides a performance test for subsetting data.
 
-<!-- more -->
-
 Code:
 
-{% highlight R %}
+```R
 library(data.table)
 library(dplyr)
 library(fastmatch)
@@ -115,7 +106,7 @@ perf_test(5000)
 # 7     fmatch          100   4.797   21.415
 # 1 data.frame          100  10.578   47.223
 # 2     subset          100  12.177   54.362
-{% endhighlight %}
+```
 
 After above benchmarks, we can see that `filter` in `dplyr` is fast when data size is low (lower than 10 MB), but data.table searching by key is faster when data size is larger. Fastmatch is not fast. HAHA!! Even data.frame is slower than matrix. `data.table` is so worth to learn!
 

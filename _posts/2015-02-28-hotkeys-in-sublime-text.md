@@ -1,18 +1,9 @@
 ---
 layout: post
-cTitle: Hotkeys in sublime text
-title: "Hotkeys in sublime text"
-category: sublime_text
-tagline:
-tags: [sublime_text]
-cssdemo: 2014-spring
-published: true
+title: Hotkeys in sublime text
 ---
-{% include JB/setup %}
 
 一些sublime text 3好用的快捷鍵。
-
-<!-- more -->
 
 CTRL + D: 選擇當前的字串(兩個空白字元(包含\n, \t等)之間)
 CTRL + L: 選擇當前行

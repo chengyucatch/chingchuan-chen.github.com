@@ -1,17 +1,9 @@
 ---
 layout: post
-cTitle: "Some installations of centos"
 title: "Some installations of centos"
-category: linux
-tagline:
-tags: [linux]
-cssdemo: 2014-spring
-published: true
 ---
-{% include JB/setup %}
-<!-- more -->
 
-{% highlight bash %}
+``` bash
 # update system
 sudo yml update
 
@@ -86,10 +78,10 @@ sudo apt-get install rsync openssh-server-sysvinit
 ssh-keygen -t rsa -P "" # generate SSH key
 # Enable SSH Key
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-{% endhighlight %}
+```
 
 The installation of rstudio server is recorded:
-{% highlight bash %}
+``` bash
 wget https://download2.rstudio.org/rstudio-server-rhel-0.99.896-x86_64.rpm
 sudo yum install --nogpgcheck rstudio-server-rhel-0.99.896-x86_64.rpm
 ## start the rstudio-server
@@ -103,10 +95,9 @@ sudo firewall-cmd --zone=public --add-port=8787/tcp --permanent
 sudo firewall-cmd --reload
 
 ## To browse localhost:8787 for using the rstudio-server
-{% endhighlight %}
-
+```
 The installation of shiny server is recorded:
-{% highlight bash %}
+``` bash
 ## install shiny-server
 wget https://download3.rstudio.org/centos5.9/x86_64/shiny-server-1.4.2.786-rh5-x86_64.rpm
 sudo yum install --nogpgcheck shiny-server-1.4.2.786-rh5-x86_64.rpm
@@ -124,11 +115,11 @@ sudo firewall-cmd --reload
 ## the server file is in /srv/shiny-server
 ## there are some examples, you can browser localhost:3838,
 ## localhost:3838/sample-apps/hello and localhost:3838/sample-apps/rmd
-{% endhighlight %}
+```
 
 Also, the installation of mongoDB is recorded:
 
-{% highlight bash %}
+``` bash
 ## Configure the package management system
 sudo subl /etc/yum.repos.d/mongodb-org-3.2.repo
 ## add following lines into file
@@ -200,16 +191,16 @@ sudo chkconfig --add disable-transparent-hugepages
 # https://www.centos.org/docs/5/html/5.1/Deployment_Guide/sec-sel-enable-disable.html
 sudo subl /etc/sysconfig/selinux
 # set SELINUX=disabled
-{% endhighlight %}
+```
 
 Automatically enabling your network connection at startup on CentOS 7:
-{% highlight bash %}
+``` bash
 # In my case, it is ifcfg-eno1. It may be different for other machine.
 sudo sed -i -e 's@^ONBOOT=no@ONBOOT=yes@' /etc/sysconfig/network-scripts/ifcfg-eno1
-{% endhighlight %}
+```
 
 Installation of ftp server on CentOS 7:
-{% highlight bash %}
+``` bash
 sudo yum install -y vsftpd
 
 # edit the environment of vsftpd
@@ -224,10 +215,10 @@ chkconfig vsftpd on
 ## open the firewall for xrdp
 sudo firewall-cmd --zone=public --add-port=21/tcp --permanent
 sudo firewall-cmd --reload
-{% endhighlight %}
+```
 
 Installation of xrdp on CentOS 7 / RHEL 7 (remote desktop from windows):
-{% highlight bash %}
+``` bash
 sudo subl /etc/yum.repos.d/xrdp.repo
 ## add following lines into file
 # [xrdp]
@@ -246,10 +237,10 @@ sudo systemctl start xrdp.service
 sudo systemctl enable xrdp.service
 
 ## Attention: the bpp color must be set to be 24bit. (in windows.)
-{% endhighlight %}
+```
 
 Mount another network disk:
-{% highlight bash %}
+``` bash
 sudo mount -t cifs -o username="xxxxxxx",password="yyyyyyy" //ip-address/folder /mnt/folder
 
 # to mount on boot
@@ -257,4 +248,4 @@ subl /etc/fstab
 ## add following lines into file
 # //ip-address/folder /mnt/folder username=xxxxxxx,password=yyyyyyy,uid=1000,gid=1000,sec=ntlm,iocharset=utf8 0 0
 sudo mount -a
-{% endhighlight %}
+```

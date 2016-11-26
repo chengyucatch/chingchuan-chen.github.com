@@ -1,22 +1,13 @@
 ---
 layout: post
-cTitle: Installations of rhdfs, rmr2, plyrmr and rhbase
-title: "Installations of rhdfs, rmr2, plyrmr and rhbase"
-category: R
-tagline:
-tags: [R, hadoop]
-cssdemo: 2014-spring
-published: true
+title: Installations of rhdfs, rmr2, plyrmr and rhbase
 ---
-{% include JB/setup %}
 
 Rsudio provides a series of packages for the connection between R and hadoop. rhdfs provides the manipulation of HDFS in hadoop in R. rmr2 and plyrmr let user do mapreduce job in R. rhbase allow user to access data in hbase.
 
-<!-- more -->
-
 Before using packages in R, we implement wordcount by using hadoop streaming. First, export the hadoop home in the terminal by command `export HADOOP_HOME=/usr/local/hadoop/`. New two R files named mapper.R and reducer.R, respectively.
 
-{% highlight R %}
+```R
 #! /usr/bin/env Rscript
 ## mapper.R
 trimWhiteSpace <- function(line) gsub("(^ +)|( +$)", "", line)
@@ -30,9 +21,9 @@ while (length(line <- readLines(con, n = 1, warn = FALSE)) > 0) {
         cat(w, "\t1\n", sep="")
 }
 close(con)
-{% endhighlight %}
+```
 
-{% highlight R %}
+```R
 #! /usr/bin/env Rscript
 # reducer.R
 trimWhiteSpace <- function(line) gsub("(^ +)|( +$)", "", line)
@@ -56,11 +47,11 @@ while (length(line <- readLines(con, n = 1, warn = FALSE)) > 0) {
 close(con)
 for (w in ls(env, all = TRUE))
     cat(w, "\t", get(w, envir = env), "\n", sep = "")
-{% endhighlight %}
+```
 
 Using the example in previous article for hadoop and run hadoop streaming in the terminal:
 
-{% highlight bash %}
+```bash
 cd ~/Downloads && mkdir testData && cd testData
 wget http://www.gutenberg.org/ebooks/5000.txt.utf-8
 cd ..
@@ -70,21 +61,21 @@ hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.6.0.jar \
 -mapper "mapper.R -m" -reducer "reducer.R -r" \
 -input /user/celest/testData/* -output /user/celest/testData2-output
 hdfs dfs -cat /user/celest/testData2-output/part-00000
-{% endhighlight %}
+```
 
 We can obtain the same result for wordcount. Next, we are going to install the following packages:
 
-{% highlight bash %}
+```bash
 rhdfs
 rmr
 ravro
 plyrmr
 rhbase
-{% endhighlight %}
+```
 Note that ravro is the data parser for avro in R.
 
 Some dependencies need to be installed in system:
-{% highlight bash %}
+```bash
 sudo apt-get install libcurl4-openssl-dev git
 R CMD javareconf # setting the environment for R
 # for rhbase
@@ -110,9 +101,9 @@ make
 sudo make install
 sudo cp /usr/local/lib/libthrift-0.9.2.so /usr/lib/
 sudo /sbin/ldconfig /usr/lib/libthrift-0.9.2.so
-{% endhighlight %}
+```
 
-{% highlight bash %}
+```bash
 sudo subl /etc/bash.bashrc
 # add following 7 lines into file
 # # for rhbase
@@ -136,10 +127,10 @@ source /etc/bash.bashrc
 start-dfs.sh
 start-yarn.sh
 hive --service hiveserver
-{% endhighlight %}
+```
 
 Install the dependent R packages:
-{% highlight R %}
+```R
 install.packages(c("rJava", "Rcpp", "rjson", "RJSONIO", "bit64", "reshape2", "data.table", "plyr", "dplyr", "digest", "functional", "stringr", "caTools", "lazyeval", "Hmisc", "testthat", "devtools", "iterators", "itertools", "pryr"))
 library(devtools)
 install_github("RevolutionAnalytics/quickcheck@3.2.0", subdir = "pkg")
@@ -149,23 +140,23 @@ install_github("RevolutionAnalytics/ravro", subdir = "pkg/ravro")
 install_github("RevolutionAnalytics/rmr2", subdir = "pkg")
 install_github("RevolutionAnalytics/plyrmr", subdir = "pkg")
 install_github("RevolutionAnalytics/rhbase", subdir = "pkg")
-{% endhighlight %}
+```
 
 When I install rhbase, I encounter a problem. The command `pkg-config --cflags thrift` does not return `-I/usr/local/include` instead the correct path `-I/usr/local/include/thrift`. So I copy all files in `/usr/local/include/thrift` into `-I/usr/local/include` by `cp -R /usr/local/include/thrift/* /usr/local/include/`.
 
 When I use the function `hdfs.init()` in package `rhdfs`, it come to a error massage:
-{% highlight R %}
+```R
 sh: /usr/lib/hadoop/bin/: is a directory
 Error in .jnew("org/apache/hadoop/conf/Configuration") :
    java.lang.ClassNotFoundException
 In addition: Warning message:
 running command '/usr/lib/hadoop/bin/ classpath' had status 126
-{% endhighlight %}
+```
 The reason why cause this problem is wrong setting of HADOOP_CMD, fix it and get work.
 
 install rhbase, I encounter a problem. The command `pkg-config --cflags thrift` does not return `-I/usr/local/include` instead the correct path `-I/usr/local/include/thrift`. So I copy all files in `/usr/local/include/thrift` into `-I/usr/local/include` by `cp -R /usr/local/include/thrift/* /usr/local/include/`.
 
-{% highlight bash %}
+```bash
 cd ~/Downloads
 git clone https://github.com/RevolutionAnalytics/rmr2.git
 mv rmr2/pkg pkg
@@ -173,18 +164,18 @@ rm -r rmr2
 mv pkg rmr2
 subl rmr2/R/streaming.R
 R CMD INSTALL rmr2
-{% endhighlight %}
+```
 
 The lines shown in following:
-{% highlight R %}
+```R
 paste.options(
   files =
     paste(
       collapse = ",",
         c(image.files, map.file, reduce.file, combine.file)))
-{% endhighlight %}
+```
 can be modified to following:
-{% highlight R %}
+```R
 ## for intel parallel studio 2013
 paste.options(
   files =
@@ -209,10 +200,10 @@ paste.options(
                 "/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libirng.so",
                 "/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libintlc.so.5",
                 "/usr/lib/jvm/java-8-oracle/jre/lib/amd64/server/libjvm.so"))),
-{% endhighlight %}
+```
 
 Test rhadoop series packages:
-{% highlight R %}
+```R
 # test rhdfs
 library(rhdfs)
 library(data.table)
@@ -305,18 +296,18 @@ model2
 # Coefficients:
 # (Intercept)           x1           x2           x3
 #      0.2506       1.2038       1.9056       3.0477
-{% endhighlight %}
+```
 
 Back to terminal, you can use hdfs to find what R write. (There is some functions in R doing the same way.)
-{% highlight bash %}
+```bash
 hdfs dfs -ls # hdfs.ls("/user/celest") in R
 ## Found 1 items
 ## -rw-r--r--   3 celest supergroup     131535 2015-04-06 13:50 my_smart_unique_name
 # remove the file
 hdfs dfs -rm -r my_smart_unique_name # hdfs.rm("/user/celest/my_smart_unique_name") in R
-{% endhighlight %}
+```
 
-{% highlight R %}
+```R
 # Sys.setenv("HADOOP_CMD"="/usr/local/hadoop/bin/hadoop")
 # test the rmr2 plyrmr
 library(data.table)
@@ -365,4 +356,4 @@ R
 R > library(rhbase)
 R > hb.list.tables() # list()
 R > q("no")
-{% endhighlight %}
+```

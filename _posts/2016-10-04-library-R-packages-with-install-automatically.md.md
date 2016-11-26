@@ -1,18 +1,11 @@
 ---
 layout: post
-cTitle: "library多個套件，並自動安裝沒安裝的套件"
-title: "library R packages with install automatically"
-category: R
-tagline:
-tags: [R]
-cssdemo: 2014-spring
-published: true
+title: "library多個套件，並自動安裝沒安裝的套件"
 ---
-{% include JB/setup %} 
 
 廢話不多說，直接上code
 
-``` R
+```R
 library(pipeR)
 library_mul <- function(..., lib.loc = NULL, quietly = FALSE, warn.conflicts = TRUE){
   pkgs <- as.list(substitute(list(...))) %>>% sapply(as.character) %>>% setdiff("list")
@@ -23,6 +16,6 @@ library_mul <- function(..., lib.loc = NULL, quietly = FALSE, warn.conflicts = T
 library_mul(httr, pipeR, data.table)
 ```
 
-<!-- more -->
+
 
 

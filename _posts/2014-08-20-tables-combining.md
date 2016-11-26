@@ -1,22 +1,13 @@
 ---
 layout: post
-cTitle: Tables combining
-title: "Tables combining"
-category: R
-tagline:
-tags: [R]
-cssdemo: 2014-spring
-published: true
+title: Tables combining
 ---
-{% include JB/setup %}
 
 A simple log for doing a job of mapreduce in python.
 
-<!-- more -->
-
 There are two tables:
 
-{% highlight R %}
+```R
 library(data.table)
 library(plyr)
 library(dplyr)
@@ -129,6 +120,6 @@ benchmark(combine_f(dat, ref_m), combine_f2(dat, ref_m),
 # 2 combine_f2(dat, ref_m)           20    0.11    1.000
 # 3 combine_f3(dat, ref_m)           20    0.38    3.455
 # 1  combine_f(dat, ref_m)           20  406.35 3694.091
-{% endhighlight %}
+```
 
 The second method has the best performance, but it is a hard coding. Therefore, I recommend the third method.

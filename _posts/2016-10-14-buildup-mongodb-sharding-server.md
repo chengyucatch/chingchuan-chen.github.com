@@ -1,20 +1,11 @@
 ---
 layout: post
-cTitle: "建置Mongodb Sharding Server"
-title: "Buildup Mongodb Sharding Server"
-category: mongodb
-tagline:
-tags: [mongodb]
-cssdemo: 2014-spring
-published: true
+title: "建置Mongodb Sharding Server"
 ---
-{% include JB/setup %} 
 
 業務擴展到找尋適合的NoSQL server了
 
 這篇來試Mongodb sharding server
-
-<!-- more -->
 
 基本上都是參考下面幾篇去建置的：
 

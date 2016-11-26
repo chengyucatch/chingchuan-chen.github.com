@@ -1,14 +1,7 @@
 ---
 layout: post
-cTitle: "用Nexus建立本地maven倉庫"
-title: "nexus local maven repository"
-category: Cassandra
-tagline:
-tags: [Cassandra, spark]
-cssdemo: 2014-spring
-published: true
+title: "用Nexus建立本地maven倉庫"
 ---
-{% include JB/setup %} 
 
 sbt每次撈maven跟sbt相關的套件時
 
@@ -19,8 +12,6 @@ sbt每次撈maven跟sbt相關的套件時
 就能夠透過proxy去處理這類問題
 
 此時，簡單易用的Nexus就提供很好的協助
-
-<!-- more -->
 
 安裝很簡單，只需要到[官網](http://www.sonatype.com/download-oss-sonatype?__hssc=31049440.4.1471001289156&__hstc=31049440.ab44c999338fa3bd70ea922bfa73b935.1470829351372.1470829351372.1471001289156.2&__hsfp=203408250&hsCtaTracking=43e2beb1-4cb4-42e4-b2d8-9bb4edf0493b%7C7c6988c8-ca35-42d0-b585-ae5147f27d5b)下載
 
@@ -68,7 +59,7 @@ Remote Storage Location就輸入你要的倉庫
 
 內容是：
 
-``` bash
+```bash
 [repositories]
 
   local

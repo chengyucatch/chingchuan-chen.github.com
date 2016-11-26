@@ -1,22 +1,13 @@
 ---
 layout: post
-cTitle: Rcpp Attributes for Sparse Matrix
-title: "Rcpp Attributes for Sparse Matrix"
-category: R
-tagline:
-tags: [R, Rcpp, Matrix]
-cssdemo: 2014-spring
-published: true
+title: Rcpp Attributes for Sparse Matrix
 ---
-{% include JB/setup %}
 
 Thanks to the R package `Matrix`, we can use the sparse matrix in R. But to use the sparse matrix in the `Rcpp`, we need create a S4 object to get sparse matrix in `Rcpp`. However, `RcppArmadillo` provides a convenient API for interfacing the armadillo class `SpMat` and R class `dgCMatrix`. I provide several methods to use the sparse matrix in R.
 
-<!-- more -->
-
 Code:
 
-{% highlight R %}
+```R
 library(Rcpp)
 library(Matrix)
 library(RcppArmadillo)
@@ -81,7 +72,7 @@ benchmark(CC1 = SparseDenseMatrixMulti(A, B),
 # 3  CC3           20   5.922    1.005
 # 2  CC2           20   5.933    1.007
 # 1  CC1           20   6.820    1.158
-{% endhighlight %}
+```
 
 The above result show that if you use the interface of `RcppArmadillo` or `Rcpp`, then you need suffer from delay of memory copy.
 

@@ -1,6 +1,22 @@
----
-theme :
-  name : casper2013
----
-{% include JB/setup %}
-{% include themes/casper2013/default.html %}
+<!DOCTYPE html>
+<html lang="en">
+	
+	{% include head.html %}
+	
+	<body>
+		<div class="container">
+			
+			{% include header.html %}
+			
+			{{ content }}
+			
+			{% include footer.html %}
+		
+		</div> <!-- /container -->
+	
+	
+		{% include scripts.html %}
+	
+	</body>
+
+</html>

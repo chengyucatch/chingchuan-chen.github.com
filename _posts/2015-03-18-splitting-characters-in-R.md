@@ -1,20 +1,11 @@
 ---
 layout: post
-cTitle: Splitting characters in Rcpp
-title: "Splitting characters in Rcpp"
-category: R
-tagline:
-tags: [R, Rcpp]
-cssdemo: 2014-spring
-published: true
+title: Splitting characters in Rcpp
 ---
-{% include JB/setup %}
 
 We usually need to process the raw data by ourself, the character type of data is the most common type of raw data. I demonstrate a example to simply split the characters.
 
-<!-- more -->
-
-{% highlight R %}
+```R
 library(data.table)
 library(magrittr)
 library(Rcpp)
@@ -70,4 +61,4 @@ dat_split = dat %>% select(V1) %>% extract2(1) %>%
   regmatches(dat_regex) %>% do.call(rbind, .) %>% data.table() %>%
   select(2:ncol(.)) %>% setnames(c("id", "gender", "age", "birthday"))
 proc.time() - tt
-{% endhighlight %}
+```

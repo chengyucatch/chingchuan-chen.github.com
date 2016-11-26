@@ -1,20 +1,11 @@
 ---
 layout: post
-cTitle: Using Rcpp function in doSNOW and snowfall
-title: "Combinations of protein in Rcpp"
-category: R
-tagline:
-tags: [R, Rcpp]
-cssdemo: 2014-spring
-published: true
+title: Using Rcpp function in doSNOW and snowfall
 ---
-{% include JB/setup %}
 
 I had been searching how to use Rcpp function in snowfall or doSNOW for a long time, but there is still not a solution. I recently come up an idea to implement. Since the error is printed when exporting the Rcpp function to nodes, I compile Rcpp function in nodes. Surprisingly, I success.
 
-<!-- more -->
-
-{% highlight R %}
+```R
 library(data.table)
 library(plyr)
 library(dplyr)
@@ -127,4 +118,4 @@ benchmark(
 stopCluster(cl)
 sfStop()
 
-{% endhighlight %}
+```

@@ -1,14 +1,7 @@
 ---
 layout: post
-cTitle: "用R做Oracle跟mongodb的loader"
-title: "using R to load data into mongodb from oracle"
-category: R
-tagline:
-tags: [R, mongodb, Oracle]
-cssdemo: 2014-spring
-published: true
+title: "用R做Oracle跟mongodb的loader"
 ---
-{% include JB/setup %} 
 
 這篇是用R做一個loader
 
@@ -16,9 +9,7 @@ published: true
 
 並且使用設定去將特定column改成list的方式做儲存
 
-<!-- more -->
-
-``` R
+```R
 library(ROracle)
 library(stringr)
 library(data.table)

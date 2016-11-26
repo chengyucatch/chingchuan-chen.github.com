@@ -1,14 +1,8 @@
 ---
 layout: post
-cTitle: "GitLab Server與RStudio結合管理程式碼"
-title: "gitlab with rstudio"
-category: R
-tagline:
-tags: [R]
-cssdemo: 2014-spring
-published: true
+title: "GitLab Server與RStudio結合管理程式碼"
 ---
-{% include JB/setup %} 
+
 
 因為不想要用公開的程式碼管理
 
@@ -19,8 +13,6 @@ published: true
 所以找了一下，發現gitlab又提供類似功能
 
 而且RStudio可以直接使用
-
-<!-- more -->
 
 安裝的話，直接參考：https://about.gitlab.com/downloads/#centos7
 

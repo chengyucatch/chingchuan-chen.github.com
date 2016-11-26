@@ -1,24 +1,15 @@
 ---
 layout: post
-cTitle: "Apache Spark and Apache Hive"
 title: "Apache Spark and Apache Hive"
-category: Spark
-tagline:
-tags: [hive,Spark]
-cssdemo: 2014-spring
-published: true
 ---
-{% include JB/setup %} 
 
 關於Spark操作Hive資料庫的一些心得
-
-<!-- more -->
 
 1. 動態分割表
 
 建議在Hive setup的時候修改這個參數：
 
-``` xml
+```xml
 <property>
   <name>hive.exec.dynamic.partition.mode</name>
   <value>nonstrict</value>
@@ -34,7 +25,7 @@ published: true
 
 `spark-shell mesos://zk://192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181/mesos`開啟spark-shell
 
-``` scala
+```scala
 import org.apache.spark.sql.SparkSession
 
 val spark = SparkSession.builder().appName("spark on hive").
@@ -83,7 +74,7 @@ spark.sql("select * from test_df").show(2)
 
 利用`select`這個函數去調換column的位置以避免寫入問題
 
-``` SQL
+```SQL
 spark.sql("drop table test_df")
 spark.sql("CREATE TABLE test_df (v1 STRING, v2 STRING, v3 DOUBLE)" + 
   "ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE")

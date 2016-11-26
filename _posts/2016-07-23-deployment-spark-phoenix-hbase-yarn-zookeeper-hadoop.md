@@ -1,14 +1,7 @@
 ---
 layout: post
-cTitle: "基於hadoop的spark, phoenix, hbase, yarn, zookeeper部署"
-title: "deployment of environment of spark, phoenix, hbase, yarn, zookeeper based on hadoop"
-category: hadoop
-tagline:
-tags: [hadoop, spark, phoenix, hbase, yarn]
-cssdemo: 2014-spring
-published: true
+title: "基於hadoop的spark, phoenix, hbase, yarn, zookeeper部署"
 ---
-{% include JB/setup %} 
 
 之前有一系列文章是在mint 17上部署R-hadoop的環境
 
@@ -17,8 +10,6 @@ published: true
 一樣是透過VM做部署，所以目標是部署好其中一台後
 
 再把那一台的映像檔做clone，變成slaves
-
-<!-- more -->
 
 1. 準備工作
 
@@ -30,12 +21,12 @@ published: true
     
 a. 給予使用者sudoer權限
       
-{% highlight bash %}
+```bash
 su # 切換到root
 visudo # 打開設定檔
 # 打/root\tALL找到這行 root ALL=(ALL) ALL
 # 在下面新增 tester ALL=(ALL) ALL
-{% endhighlight %}
+```
 
 b. 網路設定
         
@@ -55,7 +46,7 @@ b. 網路設定
 
 改成下方這樣：
       
-{% highlight bash %}
+```bash
 TYPE=Ethernet
 BOOTPROTO=none
 DEFROUTE=yes
@@ -75,7 +66,7 @@ DNS1=192.168.0.1
 IPV6_PEERDNS=yes
 IPV6_PEERROUTES=yes
 IPV6_PRIVACY=no
-{% endhighlight %}
+```
 
 之後使用`sudo service network restart`重啟網路服務
 
@@ -86,7 +77,7 @@ IPV6_PRIVACY=no
     
 c. 安裝ssh跟設定ssh資料夾權限
     
-{% highlight bash %}
+```bash
 # 安裝SSH
 sudo yum -y install rsync openssh-server-*
 # 產生SSH Key
@@ -100,47 +91,47 @@ sudo chmod 700 /home/tester/.ssh
 sudo chmod 644 /home/tester/.ssh/authorized_keys
 sudo chmod 600 /home/tester/.ssh/id_rsa
 sudo service sshd restart
-{% endhighlight %}
+```
   
 d. 編輯/etc/hosts
 
-{% highlight bash %}
+```bash
 sudo tee -a /etc/hosts << "EOF"
 192.168.0.161 sparkServer0
 192.168.0.162 sparkServer1
 192.168.0.163 sparkServer2
 192.168.0.164 sparkServer3
 EOF
-{% endhighlight %}
+```
 
 e. 編輯/etc/hostname
     
-{% highlight bash %}
+```bash
 sudo vi /etc/hostname
 # 對應的電腦修改成對應的名稱
-{% endhighlight %}
+```
 
 f. 斷掉防火牆
     
-{% highlight bash %}
+```bash
 sudo systemctl stop firewalld
 sudo systemctl disable firewalld  
-{% endhighlight %}
+```
 
 2. 開始部署
 i. 關掉ip v6
    
-{% highlight bash %}
+```bash
 sudo tee -a /etc/sysctl.conf << "EOF"
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
 EOF
-{% endhighlight %}
+```
 
 ii. 下載檔案並移到適當位置
     
-{% highlight bash %}
+```bash
 # 下載並安裝java
 curl -v -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-x64.rpm -o jdk-8u101-linux-x64.rpm
 sudo yum install -y jdk-8u101-linux-x64.rpm
@@ -173,11 +164,11 @@ curl -v -j -k -L   http://apache.stu.edu.tw/spark/spark-1.6.2/spark-1.6.2-bin-ha
 tar -zxvf spark-1.6.2-bin-hadoop2.6.tgz
 sudo mv spark-1.6.2-bin-hadoop2.6 /usr/local/spark
 sudo chown -R tester /usr/local/spark
-{% endhighlight %}
+```
    
 iii. 環境變數設置
     
-{% highlight bash %}
+```bash
 sudo tee -a /etc/bashrc << "EOF"
 # JAVA
 export JAVA_HOME=/usr/java/jdk1.8.0_101
@@ -213,14 +204,14 @@ export SPARK_HOME=/usr/local/spark
 export PATH=$PATH:$JAVA_HOME:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$ZOOKEEPER_HOME/bin:$HBASE_HOME/bin:$SCALA_HOME/bin:$SPARK_HOME/bin:$PHOENIX_HOME/bin
 EOF
 source /etc/bashrc
-{% endhighlight %}
+```
   
 iv. 配置Hadoop
   
 a. core-site.xml
 用`vi $HADOOP_CONF_DIR/core-site.xml`編輯，改成下面這樣：
   
-{% highlight xml %}
+```xml
 <configuration>
   <property>
     <name>fs.default.name</name>
@@ -231,24 +222,24 @@ a. core-site.xml
     <value>/usr/local/hadoop/tmp</value>
   </property>
 </configuration>
-{% endhighlight %}
+```
 
 b. mapred-site.xml
 先用`cp $HADOOP_CONF_DIR/mapred-site.xml.template $HADOOP_CONF_DIR/mapred-site.xml`，然後用`vi $HADOOP_CONF_DIR/mapred-site.xml`編輯，改成下面這樣：
     
-{% highlight xml %}
+```xml
 <configuration>
   <property>
     <name>mapreduce.framework.name</name>
     <value>yarn</value>
   </property>
 </configuration>
-{% endhighlight  %}
+```
 
 c. hdfs-site.xml
 用`vi $HADOOP_CONF_DIR/hdfs-site.xml`編輯，改成下面這樣：
         
-{% highlight xml %}
+```xml
 <configuration>
   <property>
     <name>dfs.replication</name>
@@ -271,20 +262,20 @@ c. hdfs-site.xml
     <value>file:///usr/local/hadoop/tmp/name/chkpt</value>
   </property>
 </configuration>
-{% endhighlight  %}
+```
 
 建立node需要的資料夾：
         
-{% highlight bash %}
+```bash
 mkdir -p $HADOOP_HOME/tmp
 mkdir -p $HADOOP_HOME/tmp/data
 mkdir -p $HADOOP_HOME/tmp/name
-{% endhighlight  %}
+```
 
 d. yarn-site.xml
 用`vi $HADOOP_CONF_DIR/yarn-site.xml`編輯，改成下面這樣：
     
-{% highlight xml %}
+```xml
 <configuration>
   <property>
     <name>yarn.resourcemanager.hostname</name>
@@ -299,23 +290,23 @@ d. yarn-site.xml
     <value>org.apache.hadoop.mapred.ShuffleHandler</value>
   </property>
 </configuration>
-{% endhighlight %}
+```
 
 e. 配置slaves
         
-{% highlight bash %}
+```bash
 # 傳入slaves的電腦名稱
 tee $HADOOP_CONF_DIR/slaves << "EOF"
 sparkServer1
 sparkServer2
 sparkServer3
 EOF
-{% endhighlight %}
+```
 
 ii. 配置Zookeeper
 先用`cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg`，然後用`vi $ZOOKEEPER_HOME/conf/zoo.cfg`編輯，改成下面這樣：
 
-{% highlight bash %}
+```bash
 dataDir=/usr/local/zookeeper/data
 server.1=sparkServer0:2888:3888
 server.1=sparkServer1:2888:3888
@@ -325,14 +316,14 @@ mkdir $ZOOKEEPER_HOME/data
 tee $ZOOKEEPER_HOME/data/myid << "EOF"
 1
 EOF
-{% endhighlight %}
+```
 
 在sparkServer2跟sparkServer3分別設定為2跟3。
 
 iii. 配置HBase
 用`vi $HBASE_HOME/conf/hbase-site.xml`編輯，改成下面這樣：
       
-{% highlight xml %}
+```xml
 <configuration>
   <property>
     <name>hbase.master</name>
@@ -363,13 +354,13 @@ iii. 配置HBase
     <value>file:///usr/local/zookeeper/data</value>
   </property>
 </configuration>
-{% endhighlight %}
+```
 
 接著，用`cp $HADOOP_CONF_DIR/slaves $HBASE_HOME/conf/regionservers`複製hadoop的slaves
   
 iv. 配置phoenix
       
-{% highlight bash %}
+```bash
 # 縮短名稱
 mv phoenix-4.7.0-HBase-1.1-bin phoenix-4.7.0
 # 複製lib檔案到HBase/lib下
@@ -387,20 +378,20 @@ cp -R phoenix-4.7.0/bin $PHOENIX_HOME
 cp -R phoenix-4.7.0/examples $PHOENIX_HOME
 cp phoenix-4.7.0/LICENSE $PHOENIX_HOME/LICENSE
 chmod +x $PHOENIX_HOME/bin/*.py
-{% endhighlight %}
+```
 
 並且在用`vi $PHOENIX_HOME/bin/hbase-site.xml`加入下面的設定
       
-{% highlight xml %}
+```xml
 <property>
 <name>fs.hdfs.impl</name>
 <value>org.apache.hadoop.hdfs.DistributedFileSystem</value>
 </property>
-{% endhighlight %}
+```
   
 v. 配置scala and spark
       
-{% highlight bash %}
+```bash
 # 複製hadoop的slaves
 cp $HADOOP_CONF_DIR/slaves $SPARK_HOME/conf/slaves
 
@@ -414,13 +405,13 @@ SPARK_MASTER_IP=sparkServer0
 SPARK_LOCAL_DIRS=/usr/local/spark
 SPARK_DRIVER_MEMORY=2G
 EOF
-{% endhighlight %}
+```
   
 vi. slaves的部署
 
 因為是VM，所以剩下的就是把映像檔clone複製成各個nodes，然後針對需要個別配置的地方做配置：
 
-{% highlight bash %}
+```bash
 # 改hostname
 sudo vi /etc/hostname
 # 改網路設定
@@ -435,11 +426,11 @@ for hostname in `cat $HADOOP_CONF_DIR/slaves`; do
   ssh-copy-id -i ~/.ssh/id_rsa.pub $hostname
 done
 EOF
-{% endhighlight %}
+```
 
 4. 啟動hadoop server / zookeeper server / hbase server / 
 
-{% highlight bash %}
+```bash
 # 執行hadoop的namenode format
 hdfs namenode -format 
 # 啟動hadoop server
@@ -450,24 +441,24 @@ ssh tester@cassSpark2 "zkServer.sh start"
 ssh tester@cassSpark3 "zkServer.sh start"
 # 啟動hbase server
 start-hbase.sh
-{% endhighlight %}
+```
 
 5. 測試
 i. Hadoop MapReduce例子 - pi estimation
   
-{% highlight bash %}
+```bash
 hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.4.jar pi 10 1000
 # output會像下面這樣
 # Job Finished in 2.413 seconds
 # Estimated value of Pi is 3.14800000000000000000
-{% endhighlight %}
+```
 
 ii. zookeeper
 再來是測試看看zookeeper是否有部署成功，先輸入`zkCli.sh -server cassSpark1:2181,cassSpark2:2181,cassSpark3:2181`可以登錄到zookeeper的server上，如果是正常運作會看到下面的訊息：
 
-{% highlight bash %}
+```bash
 [zk: cassSpark1:2181,cassSpark2:2181,cassSpark3:2181(CONNECTED) 0]
-{% endhighlight %}
+```
 
 此時試著輸入看看`create /test01 abcd`，然後輸入`ls /`看看是否會出現`[test01, zookeeper]`
 
@@ -478,7 +469,7 @@ ii. zookeeper
 iii. HBase
 鍵入`hbase shell`會出現下面的訊息：
       
-{% highlight bash %}
+```bash
 SLF4J: Class path contains multiple SLF4J bindings.
 SLF4J: Found binding in [jar:file:/usr/local/hbase/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
 SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
@@ -489,11 +480,11 @@ Type "exit<RETURN>" to leave the HBase Shell
 Version 1.1.5, r239b80456118175b340b2e562a5568b5c744252e, Sun May  8 20:29:26 PDT 2016
 
 hbase(main):001:0>
-{% endhighlight %}
+```
 
 測試建表、塞資料、擷取資料跟刪除表(#後面是會出現的訊息)：
 
-{% highlight bash %}
+```bash
 # 建表
 create 'testData','cf'  
 # 0 row(s) in 1.3420 seconds
@@ -542,13 +533,13 @@ list
 # 0 row(s) in 0.0070 seconds
 # 
 # => []
-{% endhighlight %}
+```
 
 最後可以用`exit`離開hbase shell。
 
 iv. phoenix
   
-{% highlight bash %}
+```bash
 # 創表SQL
 cat $PHOENIX_HOME/examples/STOCK_SYMBOL.sql
 # -- creates stock table with single row
@@ -642,11 +633,11 @@ sqlline.py sparkServer0:2181
 ## | WMT     | Walmart               |
 ## +---------+-----------------------+
 ## 9 rows selected (0.03 seconds)
-{% endhighlight %}
+```
 
 離開請按`CTRL+Z`或是用`!quit`，輸入`exit()`是沒用的。接下來，我們試試看在`hbase`裡面看不看的到我們剛剛插入的表，打`hbase shell`進入，然後開始測試：
   
-{% highlight bash %}
+```bash
 # scan看看就可以發現表已經存進來了
 # hbase(main):001:0> scan 'STOCK_SYMBOL'
 ## ROW                             COLUMN+CELL
@@ -669,11 +660,11 @@ sqlline.py sparkServer0:2181
 ##  WMT                            column=0:COMPANY, timestamp=1469374336318, value=Walmart
 ##  WMT                            column=0:_0, timestamp=1469374336318, value=x
 ## 9 row(s) in 0.1840 seconds
-{% endhighlight %}
+```
    
 最後是進去`sqlline.py`去刪掉剛剛建立的表：
       
-{% highlight bash %}
+```bash
 sqlline.py sparkServer0:2181
 # 0: jdbc:phoenix:sparkServer0:2181> DROP TABLE STOCK_SYMBOL;
 ## No rows affected (3.556 seconds)
@@ -688,12 +679,12 @@ sqlline.py sparkServer0:2181
 ## |            | SYSTEM       | SEQUENCE    | SYSTEM TABLE  |          |            |                            |          |
 ## |            | SYSTEM       | STATS       | SYSTEM TABLE  |          |            |                            |          |
 ## +------------+--------------+-------------+---------------+----------+------------+----------------------------+----------+
-{% endhighlight %}
+```
 
 v. spark 
 利用spark提供的例子去測試看看 (記得要先開啟hadoop)
       
-{% highlight bash %}
+```bash
 spark-submit --class org.apache.spark.examples.SparkPi \
   --deploy-mode cluster  \
   --master yarn  \
@@ -702,7 +693,7 @@ spark-submit --class org.apache.spark.examples.SparkPi \
   --executor-memory 2g \
   --executor-cores 2 \
    /usr/local/spark/lib/spark-examples-1.6.2-hadoop2.6.0.jar
-{% endhighlight %}
+```
 
 最後就可以看到任務成功，如圖所示：
 ![](/images/sparkSucceeded_1.PNG)

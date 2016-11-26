@@ -1,14 +1,7 @@
 ---
 layout: post
-cTitle: "在Python用cx_Oracle去操作Oracle資料庫"
-title: "use cx_Oracle to manipulate Oracle database in Python"
-category: Oracle
-tagline:
-tags: [python, Oracle]
-cssdemo: 2014-spring
-published: true
+title: "在Python用cx_Oracle去操作Oracle資料庫"
 ---
-{% include JB/setup %} 
 
 前一篇用R去操作了Oracle資料庫
 
@@ -18,8 +11,6 @@ published: true
 1. column name也會自動有quote，你預期的表明應該是name，會變成"name"
 
 這一篇實現用Python去操作Oracle資料庫的部分
-
-<!-- more -->
 
 1. 準備工作
 
@@ -47,7 +38,7 @@ conda會幫你把Oracle instant client下載好，並放在適當目錄中
 
 完整程式如下：
 
-``` python
+```python
 # -*- coding: utf-8 -*-
 
 import StringIO, csv, cx_Oracle, sys, os, datetime, time
@@ -236,7 +227,7 @@ adult,testData/adult.csv,datasets_2,adult"""
 
 刪除全部測試資料的程式碼：
 
-``` python
+```python
 # -*- coding: utf-8 -*-
 
 import StringIO, csv, cx_Oracle

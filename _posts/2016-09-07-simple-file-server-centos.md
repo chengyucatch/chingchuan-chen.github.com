@@ -1,20 +1,11 @@
 ---
 layout: post
-cTitle: "simple file server in centos"
 title: "simple file server in centos"
-category: linux
-tagline:
-tags: [linux]
-cssdemo: 2014-spring
-published: true
 ---
-{% include JB/setup %} 
 
 這篇主要是講在centos做一個簡單的file server
 
-<!-- more -->
-
-``` bash
+```bash
 # 安裝httpd
 sudo yum install httpd
 

@@ -1,22 +1,13 @@
 ---
 layout: post
-cTitle: R data.table - sum by groups
-title: "R data.table - sum by groups"
-category: R
-tagline:
-tags: [R, data.table, plyr, dplyr]
-cssdemo: 2014-spring
-published: true
+title: R data.table - sum by groups
 ---
-{% include JB/setup %}
 
 `data.table` is a powerful tool for exploring data. However, how is it fast? Here we provides a performance test for summing by groups.
 
-<!-- more -->
-
 Code:
 
-{% highlight R %}
+```R
 N = 1e4
 x = data.frame(Freq=runif(N,0,1),Category=c("T","F"))
 
@@ -70,12 +61,12 @@ benchmark(data_table = x_dt[, sum(Freq),by = Category],
 # 2     tapply           20  12.080    2.034    11.649
 # 3   plyr_dt2           20  14.759    2.485    13.813
 # 4   plyr_df2           20  14.857    2.502    13.809
-{% endhighlight %}
+```
 
 In the case with small sample size, `tapply` is the most efficient tool for summing by groups. In the case with large sample size, `data.table` and `summarise` in `dplyr` are more efficient.
 
 Next, we benchmark the performance of summing by two groups. Code:
-{% highlight R %}
+```R
 
 N = 1e4
 set.seed(100)
@@ -125,12 +116,12 @@ benchmark(data_table = x_dt[, sum(Freq),by = key(x_dt)],
 # 2     tapply           20  14.732    3.294    14.245
 # 4   plyr_df2           20  31.481    7.040    48.578
 # 3   plyr_dt2           20  31.625    7.072    48.127
-{% endhighlight %}
+```
 
 In the case of summing by two groups, `data.table` is much more efficient in large size. We also try a `Rcpp` in summing by groups. Code:
 
 
-{% highlight R %}
+```R
 
 library(Rcpp)
 sourceCpp(code = '
@@ -195,7 +186,7 @@ benchmark(data_table = x_dt[, sum(Freq),by = Category],
 # 5   dplyr_df           20   5.916    1.086     5.821
 # 1 data_table           20   5.967    1.095     5.841
 # 2     tapply           20  12.030    2.208    11.603
-{% endhighlight %}
+```
 
 We can see that `data.table` is compatible with `Rcpp` and more convenient than `Rcpp`.
 

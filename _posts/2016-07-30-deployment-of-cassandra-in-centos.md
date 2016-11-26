@@ -1,18 +1,9 @@
 ---
 layout: post
-cTitle: "在centos下部署cassandra"
-title: "deployment of cassandra in centos"
-category: Cassandra
-tagline:
-tags: [Cassandra]
-cssdemo: 2014-spring
-published: true
+title: "在centos下部署cassandra"
 ---
-{% include JB/setup %} 
 
 這篇是我在centos部署cassandra的紀錄
-
-<!-- more -->
 
 1. 準備工作
 
@@ -20,7 +11,7 @@ published: true
 
 2. 部署Cassandra
 
-``` bash
+```bash
 curl -v -j -k -L http://apache.stu.edu.tw/cassandra/2.2.7/apache-cassandra-2.2.7-bin.tar.gz -o apache-cassandra-2.2.7-bin.tar.gz
 tar -zxvf apache-cassandra-2.2.7-bin.tar.gz
 sudo mv apache-cassandra-2.2.7 /usr/local/cassandra
@@ -36,7 +27,7 @@ EOF
 
 使用`vi $CASSANDRA_HOME/conf/cassandra.yaml`去改設定檔，改的部分如下：
 
-``` yaml
+```yaml
 # first place:
 cluster_name: 'sparkSever'
 
@@ -63,7 +54,7 @@ endpoint_snitch: GossipingPropertyFileSnitch
 
 一台裝完之後，可以用下面指令做複製的動作，然後修改需要設定的地方(listen_address跟rpc_address)：
 
-``` bash
+```bash
 scp -rp /usr/local/cassandra tester@sparkServer1:/usr/local
 scp -rp /usr/local/cassandra tester@sparkServer2:/usr/local
 scp -rp /usr/local/cassandra tester@sparkServer3:/usr/local
@@ -77,7 +68,7 @@ ssh tester@sparkServer3 "sed -i -e 's/: 192.168.0.161/: 192.168.0.164/g' /usr/lo
 
 在sparkServer0上輸入下面的指令，就可以成功開啟四台Cassandra的node：
 
-``` bash
+```bash
 ssh tester@sparkServer1 "cassandra"
 ssh tester@sparkServer2 "cassandra"
 ssh tester@sparkServer3 "cassandra"
@@ -86,7 +77,7 @@ cassandra
 
 用`nodetool status`可以確定一下是不是都有跑起來，顯示資訊如下：
 
-``` bash
+```bash
 nodetool status
 # Datacenter: dc1
 # ===============
@@ -103,7 +94,7 @@ nodetool status
 
 開機自動啟動Cassandra的script(用`sudo vi /etc/init.d/cassandra`去create)：
 
-``` bash 
+```bash 
 #!/bin/bash
 # chkconfig: 2345 99 01
 # description: Cassandra
@@ -197,7 +188,7 @@ exit $RETVAL
 
 然後使用下面指令讓這個script能夠自動跑：
 
-``` bash 
+```bash 
 sudo chmod +x /etc/init.d/cassandra
 sudo chkconfig --add cassandra
 sudo service cassandra start
@@ -207,7 +198,7 @@ sudo service cassandra start
 
 打開Terminal，輸入`cqlsh 192.168.0.161` (任意一台有cassandra在運行的電腦IP)就可以開始用Cassandra的cql了，簡單測試如下：
 
-``` SQL
+```SQL
 -- Create KEYSPACE
 CREATE KEYSPACE mariadbtest2
     WITH replication = {'class': 'SimpleStrategy', 

@@ -1,22 +1,13 @@
 ---
 layout: post
-cTitle: Implementation for summing a list of matrices
-title: "Implementation for summing a list of matrices"
-category: R
-tagline:
-tags: [R, Rcpp]
-cssdemo: 2014-spring
-published: true
+title: Implementation for summing a list of matrices
 ---
-{% include JB/setup %}
 
 Usually, we have to sum a list of matrices, I introduce several ways to do that.
 
-<!-- more -->
-
 In my test, `Reduce` is the most easy and fast to do this, but it need a lot of memory. A function written in `Rcpp` is the fastest way to do. But there is a requirement that you have learned C++. Besides above two methods, the naive method by using `for` is not so slow, it is also a good option.
 
-{% highlight R %}
+```R
 # Aware that this setting require your memory to be large than 6GB. Otherwise, your computer will be out of memory and maybe shut down. If this happens or not enough memory, please change the `mat_size` or `length_list`.
 
 length_list = 30
@@ -107,4 +98,4 @@ benchmark(res1(), res2(), res3(), res4(), res5(), res6(), res1_cmp(), res2_cmp()
 #     test replications elapsed relative user.self
 # 2 res6()           20   12.02    1.000     11.73
 # 1 res2()           20   31.66    2.634     16.44
-{% endhighlight %}
+```

@@ -1,20 +1,11 @@
 ---
 layout: post
-cTitle: Combinations of protein in Rcpp
-title: "Combinations of protein in Rcpp"
-category: R
-tagline:
-tags: [R, Rcpp]
-cssdemo: 2014-spring
-published: true
+title: Combinations of protein in Rcpp
 ---
-{% include JB/setup %}
 
 There is a sequence of protein like `A B1/B2 C1/C2 K/D E F1/F2`, `K` does not connect to next point, so it is cut at K. Therefore, the combinations of protein is in the following:
 
-<!-- more -->
-
-{% highlight R %}
+```R
 A B1 C1 K
 A B2 C1 K
 A B1 C2 K
@@ -28,10 +19,10 @@ A B1 C1 D E F2
 A B2 C1 D E F2
 A B1 C2 D E F2
 A B2 C2 D E F2
-{% endhighlight %}
+```
 
 The code to generate sequence of protein and list the all combinations is below.
-{% highlight R %}
+```R
 library(Rcpp)
 library(RcppArmadillo)
 sourceCpp(code = '
@@ -136,7 +127,7 @@ proc.time() - t2
 object.size(result2) # 1408520016 bytes
 all.equal(result_transform, result2)
 # TRUE
-{% endhighlight %}
+```
 
 This code alert me that I should go to the destination directly, not windingly. It saves a lot of time.
 

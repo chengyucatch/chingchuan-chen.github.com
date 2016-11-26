@@ -1,23 +1,13 @@
 ---
 layout: post
-cTitle: R with GPU performance of gputools
-title: "R with GPU performance of gputools"
-category: R
-tagline:
-tags: [R]
-cssdemo: 2014-spring
-published: true
+title: R with GPU performance of gputools
 ---
-{% include JB/setup %}
 
 I can't wait to test the performance of R with GPU. I test the performance of gputools and OpenCL.
 
-
-<!-- more -->
-
 The test code is showed in following:
 
-{% highlight R %}
+```R
 library(Rcpp)
 sourceCpp(code = '
 // [[Rcpp::depends(RcppArmadillo)]]
@@ -169,7 +159,7 @@ proc.time() - s
 # same BLAS, so the result is the same.
 #    user  system elapsed
 # 123.486   1.766  88.519
-{% endhighlight %}
+```
 
 R with GPU is 2 times faster than R with CPU!! My environment is ubuntu 14.04. My CPU is 3770K@4.3GHz and GPU is GTX 670. If you have some questions, you can reference following urls:
 

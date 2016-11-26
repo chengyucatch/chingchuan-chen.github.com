@@ -1,23 +1,13 @@
 ---
 layout: post
-cTitle: R with GPU performance of HiPLARM
-title: "R with GPU performance of HiPLARM"
-category: R
-tagline:
-tags: [R]
-cssdemo: 2014-spring
-published: true
+title: R with GPU performance of HiPLARM
 ---
-{% include JB/setup %}
 
 This post is to benchmark the performance of HiPLARM and to introduce how to install HiPLARM.
 
-
-<!-- more -->
-
 The performance and test code are showed in following:
 
-{% highlight R %}
+```R
 library(Matrix)
 p = 6000
 X = Matrix(rnorm(p**2), p)
@@ -57,21 +47,21 @@ s = proc.time(); Z = chol(X %*% t(X)); proc.time() - s
 s = proc.time(); Z = solve(t(X) %*% X, X %*% Y); proc.time() - s
 #   user  system elapsed
 # 10.440   3.377  13.825
-{% endhighlight %}
+```
 
 HiPLARM is 1.6 times faster than the R without HiPLARM. I think that it will be much faster if the size of matrix is bigger. Since the memory of my gpu is 2GB, I can't test bigger size matrix. The tests for smaller size matrix are almost the same because the data movement between host (CPU) and device (GPU). PS: I have ran the `benchmark script`(found in [Simon Urbanek’s](http://r.research.att.com/benchmarks/)), but it is so slow that I do not put it on this post.
 
 I simply introduce how to install `HiPLARM`. Since my R is compiled by icc and MKL, so I have some trouble in installing it. You can download the auto-installer in [here](http://www.hiplar.org/download.html). I ran the auto-installer with ALTAS (I can't compile OpenBLAS and I don't know why.) and it stopped at installing the R package caused by the environment variable. I solve this problem by add following line in the file `.bashrc`:
 
-{% highlight bash%}
+```bash
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/clarence/Downloads/LALibs/lib
-{% endhighlight %}
+```
 
 where `/home/clarence/Downloads/LALibs/lib` is the installation directory of magma, plasma and hwloc. After installation, you should add `export R_PLASMA_NUM_THREADS=4` into `.bashrc`. Then you can use it!!
 
 I have tried to compile plasma and magma with icc and MKL, the install script is present in following:
 
-{% highlight bash%}
+```
 #!/bin/bash
 
 mkdir LALibs
@@ -193,14 +183,14 @@ cd $BLDDIR
 ## install HiPLARM
 wget http://www.hiplar.org/downloads/HiPLARM_0.1.1.tar.gz
 R CMD INSTALL --configure-args="--with-lapack=-L$MKLROOT/lib/intel64 --with-plasma-lib=/home/clarence/Downloads/LALibs --with-cuda-home=/usr/local/cuda-6.0 --with-magma-lib=/home/clarence/Downloads/LALibs" HiPLARM_0.1.1.tar.gz
-{% endhighlight %}
+```
 
 I have two troubles in compiling magma. First one is failure on compiling magma with icc and success with switching the compiler to gcc. Another trouble is the function `lapack_const` which is defined in both plasma and magma, so I can't compile and I use the suggestion on [MAGMA forum](http://icl.cs.utk.edu/magma/forum/viewtopic.php?f=2&t=961) to disable the magma-with-plasma routines. To disable the magma-with-plasma routines, you need to comment the line `PLASMA = ...` in the file `Makefile.internal` like this:
 
-{% highlight bash %}
+```bash
 # Use Plasma to compile zgetfl and ztstrf
 # PLASMA = $(shell pkg-config --libs plasma 2> /dev/null )
-{% endhighlight %}
+```
 
 My environment is ubuntu 14.04. My CPU is 3770K@4.3GHz and GPU is GTX 670. If you have some questions, you can reference following urls:
 

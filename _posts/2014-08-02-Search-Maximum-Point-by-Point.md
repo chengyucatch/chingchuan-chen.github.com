@@ -1,18 +1,9 @@
 ---
 layout: post
-cTitle: Search Maximum Point by Point
-title: "Search Maximum Point by Point"
-category: R
-tagline:
-tags: [R]
-cssdemo: 2014-spring
-published: true
+title: Search Maximum Point by Point
 ---
-{% include JB/setup %}
 
 We have an image data, it is discrete and I want to find the local maximum. I write a Rcpp function for searching maximum point by point.
-
-<!-- more -->
 
 I have two strategies to search, one is in circle, another one is in square. Besides, I add a radius parameter to control the search region. Figure 1 shows that there are 34 by 34 points which each point contains a value of height, it searches maximum point by point with an unit circle. Figure 2, 3 and 4 show that searching maximum in circle with radius 2, square with radius 1 and square with radius 2, respectively.
 
@@ -27,7 +18,7 @@ Figure 4: Searching in square with radius 2
 
 I have three versions for searching maximum point by point. First one rely on Rcpp function completely, second one use sapply and Rcpp function which searching one point and third one use parallel and R function. Code is present as following:
 
-{% highlight R %}
+```R
 x.range.v = 1:300
 y.range.v = 1:300
 data.m = expand.grid(x.range.v, y.range.v)
@@ -166,7 +157,7 @@ all.equal(as.vector(loc1), loc2)
 # TRUE
 all.equal(as.vector(loc1), as.numeric(loc3))
 # TRUE
-{% endhighlight %}
+```
 
 The above result shows that sapply is not fast enough, write Rcpp function if you can! The speed of paralleled R function (8 threads) is close to Rcpp function with sapply (one threads), the for loop in R is so slow.
 

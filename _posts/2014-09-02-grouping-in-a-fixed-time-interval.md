@@ -1,22 +1,13 @@
 ---
 layout: post
-cTitle: Grouping in a fixed time interval
-title: "Grouping in a fixed time interval"
-category: R
-tagline:
-tags: [R]
-cssdemo: 2014-spring
-published: true
+title: Grouping in a fixed time interval
 ---
-{% include JB/setup %}
 
 There is a data give the Time and ID to find the Session. The value of variable session is given by the `Time` variable. The session of first time in ID is 1, session is 2 if the different time between its time and the first time of session time is longer than 1 hour, and otherwise session is 1 until next time is out of range of 1 hour.
 
-<!-- more -->
-
 For example, the data looks like:
 
-{% highlight R %}
+```R
 ID                Time Session
 1  2014-08-28 00:00:00       1
 1  2014-08-28 00:23:33       1
@@ -28,11 +19,11 @@ ID                Time Session
 2  2014-08-28 03:25:49       2
 2  2014-08-28 03:49:13       2
 2  2014-08-28 04:29:15       3
-{% endhighlight %}
+```
 
 We generate ID and time to test the performance.
 
-{% highlight R %}
+```R
 library(data.table)
 library(dplyr)
 library(magrittr)
@@ -111,4 +102,4 @@ benchmark(split_session_f(dat), split_session_f2(dat),
 # 3 split_session_f3(dat)           20   43.43    1.000
 # 2 split_session_f2(dat)           20   44.99    1.036
 # 1  split_session_f(dat)           20  121.34    2.794
-{% endhighlight %}
+```

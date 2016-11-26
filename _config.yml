@@ -1,74 +1,16 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely need to edit after that.
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'jekyll serve'. If you change this file, please restart the server process.
-
-# Site settings
-title: CELESTIAL
-tagline: Anything is Possible
-author :
-  name : ChingChuan Chen
-  email : zw12356@gmail.com
-  github : ChingChuan-Chen
-email: zw12356@gmail
-description: > # this means to ignore newlines until "baseurl:"
-  Talking about R, C++ and statiscal learnings.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://chingchuan-chen.github.io" # the base hostname & protocol for your site
-twitter_username: celestialgod
-github_username:  chingchuan-chen
-
-# Build settings
+permalink: /posts/:year/:month/:day/:title
 markdown: kramdown
+repository: ChingChuan-Chen/ChingChuan-Chen.github.io
 highlighter: rouge
 
 kramdown:
   input: GFM
   auto_ids: true
   footnote_nr: 1
-  entity_output: as_char
-  toc_levels: 1..6
   enable_coderay: true
-  coderay_line_numbers: nil
-  coderay_css: class
-    
-JB :
-  BASE_PATH : false
-  ASSET_PATH : /css
-  archive_path: /archive.html
-  categories_path : /categories.html
-  tags_path : /tags.html
-  rss_path : /rss.xml
-  
-  comments :
-    provider : disqus
-    disqus :
-      short_name : celestial0230
-    livefyre :
-      site_id : 1
-    intensedebate :
-      account : 123abc
-    facebook :
-      appid : 1
-      num_posts: 1
-      width: 580
-      colorscheme: light
-
-  analytics :
-    provider : google
-    google :
-        tracking_id : 'UA-72564040-1'
-    getclicky :
-      site_id :
-    mixpanel :
-        token : '_MIXPANEL_TOKEN_'
-    piwik :
-        baseURL : 'myserver.tld/piwik' # Piwik installation address (without protocol)
-        idsite : '1'                   # the id of the site on Piwik
-  googleSearch : '005890701063422651090:k08eix30qoi'
-
-  sharing :
-    provider : false
-  paginate: 10
+  hard_wrap: false
+ 
+gems:
+  - jekyll-paginate
+  - jekyll-gist
+  - jekyll-github-metadata

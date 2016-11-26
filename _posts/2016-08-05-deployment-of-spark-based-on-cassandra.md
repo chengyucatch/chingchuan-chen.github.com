@@ -1,14 +1,7 @@
 ---
 layout: post
-cTitle: "基於cassandra的spark環境部署"
-title: "deployment of spark environment based on cassandra"
-category: Cassandra
-tagline:
-tags: [Cassandra, spark]
-cssdemo: 2014-spring
-published: true
+title: "基於cassandra的spark環境部署"
 ---
-{% include JB/setup %} 
 
 之前的部屬是base on hadoop所建立的spark環境
 
@@ -20,8 +13,6 @@ published: true
 
 Cassandra則部署到全部的節點上
 
-<!-- more -->
-
 1. 準備工作
 
     1. 安裝好VMware，然後新增一台VM (網路連接方式使用bridged即可)，引進centos 7.2安裝映像檔
@@ -31,16 +22,16 @@ Cassandra則部署到全部的節點上
     
 安裝後重開機後，先幫你自己的使用者帳號開權限：
           
-{% highlight bash %}
+```bash
 su # 切換到root
 visudo # 打開設定檔
 # 打/root\tALL找到這行 root ALL=(ALL) ALL
 # 在下面新增 tester ALL=(ALL) ALL
-{% endhighlight %}
+```
 
 而ssh已經有了，就不用安裝了，直接產生key：
     
-{% highlight bash %}
+```bash
 # 產生SSH Key
 ssh-keygen -t rsa -P ""
 # 授權SSH Key
@@ -52,26 +43,26 @@ sudo chmod 700 /home/tester/.ssh
 sudo chmod 644 /home/tester/.ssh/authorized_keys
 sudo chmod 600 /home/tester/.ssh/id_rsa
 sudo service sshd restart
-{% endhighlight %}
+```
   
 再來是讓電腦認得自己，並讓其他電腦認得自己
 
 `echo "cassSpark1" | sudo tee /etc/hostname` (每台電腦用不同名字)
 
-{% highlight bash %}
+```bash
 sudo tee -a /etc/hosts << "EOF"
 192.168.0.121 cassSpark1
 192.168.0.122 cassSpark2
 192.168.0.123 cassSpark3
 EOF
-{% endhighlight %}
+```
 
 最後是斷掉防火牆
     
-{% highlight bash %}
+```bash
 sudo systemctl stop firewalld
 sudo systemctl disable firewalld  
-{% endhighlight %}
+```
 
 然後用`sudo reboot`重開機
 
@@ -83,7 +74,7 @@ Note: spark-cassandra-connector 1.6是用spark 1.6.1, scala 2.10.5編譯出來�
 
 i. 下載檔案並移到適當位置
     
-{% highlight bash %}
+```bash
 sudo mkdir /usr/local/bigdata
 sudo chown -R tester /usr/local/bigdata
 
@@ -107,11 +98,11 @@ mv apache-cassandra-2.2.7 /usr/local/bigdata/cassandra
 # 如果不是VM，實體可以一台下載之後用scp
 # scp -r /usr/local/bigdata/* tester@cassSpark2:/usr/local/bigdata
 # scp -r /usr/local/bigdata/* tester@cassSpark3:/usr/local/bigdata
-{% endhighlight %}
+```
    
 ii. 環境變數設置
     
-{% highlight bash %}
+```bash
 sudo tee -a /etc/bashrc << "EOF"
 # JAVA
 export JAVA_HOME=/usr/java/jdk1.8.0_101
@@ -125,11 +116,11 @@ export CASSANDRA_HOME=/usr/local/bigdata/cassandra
 export PATH=$PATH:$JAVA_HOME:$SPARK_HOME/bin:$SPARK_HOME/sbin:$CASSANDRA_HOME/bin
 EOF
 source /etc/bashrc
-{% endhighlight %}
+```
 
 iii. 配置scala and spark
       
-{% highlight bash %}
+```bash
 # 複製hadoop的slaves
 tee $SPARK_HOME/conf/slaves << "EOF"
 cassSpark1
@@ -183,13 +174,13 @@ echo "spark.jars $jarsToImport2" >> $SPARK_HOME/conf/spark-defaults.conf
 # 複製到各台
 scp -r /usr/local/bigdata/spark tester@cassSpark2:/usr/local/bigdata
 scp -r /usr/local/bigdata/spark tester@cassSpark3:/usr/local/bigdata
-{% endhighlight %}
+```
 
 iv. slaves的部署
 
 因為是VM，所以剩下的就是把映像檔clone複製成各個nodes，然後針對需要個別配置的地方做配置：
 
-{% highlight bash %}
+```bash
 # 改hostname
 sudo vi /etc/hostname
 # 改網路設定
@@ -205,13 +196,13 @@ for hostname in `cat $SPARK_HOME/conf/slaves`; do
 done
 EOF
 bash ./run.sh
-{% endhighlight %}
+```
 
 v. 設置Cassandra
 
 使用`vi $CASSANDRA_HOME/conf/cassandra.yaml`去改設定檔，改的部分如下：
 
-``` yaml
+```yaml
 # first place:
 cluster_name: 'cassSparkServer'
 
@@ -244,7 +235,7 @@ vi. 設置Cassandra自動開機啟動
 
 開機自動啟動Cassandra的script(用`sudo vi /etc/init.d/cassandra`去create)：
 
-``` bash 
+```bash 
 #!/bin/bash
 # chkconfig: - 79 01
 # description: Cassandra
@@ -338,7 +329,7 @@ exit $RETVAL
 
 然後使用下面指令讓這個script能夠自動跑：
 
-``` bash 
+```bash 
 sudo chmod +x /etc/init.d/cassandra
 sudo chkconfig --add cassandra
 sudo service cassandra start
@@ -346,7 +337,7 @@ sudo service cassandra start
 
 接著用`nodetool status`可以確定一下是不是都有跑起來，顯示資訊如下：
 
-``` bash
+```bash
 nodetool status
 # Datacenter: dc1
 # ===============
@@ -424,7 +415,7 @@ master跟slave都執行`sudo systemctl start spark-slave.service`
 
 用下面指令去創測試資料：
 
-``` SQL
+```SQL
 CREATE KEYSPACE test WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 3 };
 CREATE TABLE test.kv(key text PRIMARY KEY, value int);
 INSERT INTO test.kv(key, value) VALUES ('key1', 1);
@@ -435,7 +426,7 @@ INSERT INTO test.kv(key, value) VALUES ('key4', 25);
 
 然後用`spark-shell`打開spark的shell
 
-``` scala
+```scala
 sc.stop()
 import com.datastax.spark.connector._, org.apache.spark.SparkContext, org.apache.spark.SparkContext._, org.apache.spark.SparkConf
 val conf = new SparkConf(true).set("spark.cassandra.connection.host", "192.168.0.121")
@@ -453,7 +444,7 @@ sc.stop()
 
 用`cqlsh cassSpark1`登入CQL，去看剛剛塞進去的資料
 
-``` SQL
+```SQL
 USE test;
 select * from kv;
 #  key   | value
@@ -474,7 +465,7 @@ Intellij的application不能直接跑，所以先用intellij的SBT Task: package
 
 把這個jar上傳到cluster上，然後用下面指令就可以成功運行：
 
-``` bash
+```bash
 spark-submit --class cassSpark test_cassspark_2.10-1.0.jar --master spark://192.168.0.121:7077
 ```
 

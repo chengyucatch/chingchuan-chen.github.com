@@ -1,14 +1,7 @@
 ---
 layout: post
-cTitle: "test on apache sqoop"
 title: "test on apache sqoop"
-category: hadoop
-tagline:
-tags: [hadoop, sqoop]
-cssdemo: 2014-spring
-published: true
 ---
-{% include JB/setup %} 
 
 前四篇分別裝了Hadoop, Oracle, ROracle跟Python的cx_Oracle套件
 
@@ -17,8 +10,6 @@ published: true
 接下來是安裝sqoop，試試看用sqoop從Oracle DB把資料撈進HBase
 
 這篇僅是紀錄而已，並沒有成功撈進，
-
-<!-- more -->
 
 1. 準備工作
 
@@ -30,7 +21,7 @@ published: true
 
 從官網上下載下來，然後解壓縮，並加入環境變數：
 
-``` bash
+```bash
 # 下載安裝sqoop
 curl -v -j -k -L http://apache.stu.edu.tw/sqoop/1.4.6/sqoop-1.4.6.bin__hadoop-2.0.4-alpha.tar.gz -o sqoop-1.4.6.bin__hadoop-2.0.4-alpha.tar.gz
 tar -zxvf sqoop-1.4.6.bin__hadoop-2.0.4-alpha.tar.gz

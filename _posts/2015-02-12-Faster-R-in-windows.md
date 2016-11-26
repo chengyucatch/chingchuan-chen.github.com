@@ -1,18 +1,9 @@
 ---
 layout: post
-cTitle: Faster R in windows
-title: "Faster R in windows"
-category: R
-tagline:
-tags: [R]
-cssdemo: 2014-spring
-published: true
+title: Faster R in windows
 ---
-{% include JB/setup %}
 
 R的BLAS庫效率不彰，在linux上可以透過更換成openBLAS來加速，或是compiled with intel MKL，在windows上compile R是一個痛苦的過程。
-
-<!-- more -->
 
 因此，有人提供這方面的資源，最有名的就是Revolution，Revolution是compiled with intel MKL，但是要錢。但是天無絕人之路，總是有其他辦法的。
 

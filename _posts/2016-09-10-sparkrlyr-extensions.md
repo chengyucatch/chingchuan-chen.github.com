@@ -1,20 +1,11 @@
 ---
 layout: post
-cTitle: "sparklyr extensions"
 title: "sparklyr extensions"
-category: Spark
-tagline:
-tags: [R, Spark]
-cssdemo: 2014-spring
-published: true
 ---
-{% include JB/setup %} 
 
 稍微介紹一下sparklyr的extension寫法
 
 但是細節都還在研究，只是環境的配置跟使用官方的extension套件而已
-
-<!-- more -->
 
 環境只有一點要注意，sparklyr只會找下面三個地方有沒有`scala-2.10`或是`scala-2.11`
 
@@ -26,14 +17,14 @@ published: true
 
 使用下面的指令做調整的動作即可
 
-``` bash
+```bash
 sudo mkdir /usr/local/scala
 sudo mv /usr/local/bigdata/scala /usr/local/scala/scala-2.11
 ```
 
 接著run下面的script
 
-``` R
+```R
 library(sparklyr)
 
 # 下載sparkhello套件

@@ -1,25 +1,16 @@
 ---
 layout: post
-cTitle: Rcpp Attributes with lasso
-title: "Rcpp Attributes with lasso"
-category: R
-tagline:
-tags: [R, Rcpp]
-cssdemo: 2014-spring
-published: true
+title: Rcpp Attributes with lasso
 ---
-{% include JB/setup %}
 
 I try to write a lasso algorithm by Rcpp attributes.
 
 Reference:
 Friedman, J., Hastie, T. and Tibshirani, R. (2008) Regularization Paths for Generalized Linear Models via Coordinate Descent, [http://www.stanford.edu/~hastie/Papers/glmnet.pdf](http://www.stanford.edu/~hastie/Papers/glmnet.pdf), Journal of Statistical Software, Vol. 33(1), 1-22 Feb 2010, [http://www.jstatsoft.org/v33/i01/](http://www.jstatsoft.org/v33/i01/)
 
-<!-- more -->
-
 Code:
 
-{% highlight R %}
+```R
 library(Rcpp)
 library(RcppArmadillo)
 sourceCpp(code = '
@@ -80,7 +71,7 @@ fit = glmnet(x,y, lambda = a$penalties)
 t_glmnet = Sys.time() - t1
 c(t_glmnet, t_cpp)
 # [1] 0.7171087 0.2032089
-{% endhighlight %}
+```
 
 It works well!!
 

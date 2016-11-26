@@ -1,14 +1,7 @@
 ---
 layout: post
-cTitle: introduction to data.table
-title: data-table
-category: R
-tagline:
-tags: [R]
-cssdemo: 2014-spring
-published: true
+title: introduction to data.table
 ---
-{% include JB/setup %}
 
 這是我自己在PTT PO的文，詳細介紹data.table，以下是正文~~
 
@@ -21,8 +14,6 @@ data.table包含的東西很多
 這裡簡單介紹一下data.table
 
 如果你想要了解更多，請自行去看manual
-
-<!-- more -->
 
 要了解data.table，我們可以先從package的description來看
 
@@ -52,7 +43,7 @@ data.table提供這方面更有效率的操作。
 
 這點跟data.frame不同，使用上需要注意，範例如下：
 
-{% highlight R %}
+```R
   t = data.table(a = LETTERS[1:3])
   str(t)
 # Classes ‘data.table’ and 'data.frame':  3 obs. of  1 variable:
@@ -62,7 +53,7 @@ data.table提供這方面更有效率的操作。
   str(t2)
 # 'data.frame':   3 obs. of  1 variable:
 #  $ a: Factor w/ 3 levels "A","B","C": 1 2 3
-{% endhighlight %}
+```
 
 第二個差異是data.table不包含rownames，
 
@@ -88,7 +79,7 @@ key可以是一個變數，也可以是多個變數，這點看個人使用。
 
 a. 我們很常在data.frame做取多行的動作，在data.table是不可行的，舉例：
 
-{% highlight R %}
+```R
   vars = data.frame(X = rnorm(3), Y = rnorm(3), Z = rnorm(3))
   vars[,1:2]
 #            X         Y
@@ -99,11 +90,11 @@ a. 我們很常在data.frame做取多行的動作，在data.table是不可行的
   vars_dt = data.table(vars)
   vars_dt[,1:2]
 # [1] 1 2
-{% endhighlight %}
+```
 
 但是你想這麼做，怎麼辦？ 加上with=FALSE就好了，或是用list包住column name
 
-{% highlight R %}
+```R
   vars_dt[,1:2,with=FALSE]
 #             X         Y
 # 1: -0.5677575 2.1831285
@@ -115,7 +106,7 @@ a. 我們很常在data.frame做取多行的動作，在data.table是不可行的
 # 1: -0.5677575 2.1831285
 # 2: -0.7161529 0.3714633
 # 3:  1.2665120 0.7837508
-{% endhighlight %}
+```
 
 剩下像是by, .SD, .SDcols等自行?data.table查看吧
 
@@ -129,7 +120,7 @@ d. setDF: 在不製作複本下，把data.table的class改為data.frame
 
 舉例：
 
-{% highlight R %}
+```R
   DT = data.table(X = rnorm(3), Y = rnorm(3))
   str(DT)
 # Classes ‘data.table’ and 'data.frame':  3 obs. of  2 variables:
@@ -152,7 +143,7 @@ d. setDF: 在不製作複本下，把data.table的class改為data.frame
   retracemem(DF, retracemem(DT))
 # tracemem[<0000000006A1BE28> -> 0x00000000061ec928]:
   ## 記憶體位置就發生改變了，就複製了DT一次
-{% endhighlight %}
+```
 
 這部分可能不太懂，不過沒關係，記住一點，要轉成data.frame用setDF就好
 
@@ -166,7 +157,7 @@ TRUE代表前面有一樣的列，FALSE代表沒有
 
 unique則是留下沒有重複的列，舉例來說：
 
-{% highlight R %}
+```R
   set.seed(100)
   DT = data.table(A = rbinom(5, 1, 0.5), B = rbinom(5, 1, 0.5))
 #    A B
@@ -190,11 +181,11 @@ unique則是留下沒有重複的列，舉例來說：
 # 1: 0 0
 # 2: 0 1
 # 3: 1 0
-{% endhighlight %}
+```
 
 不過unique還有更多功能，它可以選擇變數做unique，舉例來說：
 
-{% highlight R %}
+```R
   unique(DT, by = "A")
 #    A B
 # 1: 0 0
@@ -204,19 +195,19 @@ unique則是留下沒有重複的列，舉例來說：
 #    A B
 # 1: 0 0
 # 2: 0 1
-{% endhighlight %}
+```
 順便一提，dplyr的distinct，如果你input的class是data.table
 
 它就是用unique做的
 
-{% highlight R %}
+```R
   library(dplyr)
   distinct(DT)
 #    A B
 # 1: 0 0
 # 2: 0 1
 # 3: 1 0
-{% endhighlight %}
+```
 你如果想看distinct怎麼做，可以在R上面打dplyr:::distinct_.data.table
 
 > dplyr:::distinct_.data.table
@@ -243,7 +234,7 @@ function (.data, ..., .dots)
 g. transform: 改變column的屬性、值等，舉例來說：
 
 
-{% highlight R %}
+```R
   DT = data.table(a = 1:3, b = 2:4, c = LETTERS[1:3])
   DT2 = copy(DT)
   DT[, b := b**2]
@@ -256,17 +247,17 @@ g. transform: 改變column的屬性、值等，舉例來說：
 #  $ b: num  4 9 16
 #  $ c: Factor w/ 3 levels "A","B","C": 1 2 3
 #   - attr(*, ".internal.selfref")=<externalptr>
-{% endhighlight %}
+```
 
 h. set: 用來變更特定column，某些列的值，舉個簡單的例子
 
-{% highlight R %}
+```R
   DT = data.table(a = 1:3, b = 2:4)
   DT2 = copy(DT)
   DT[, b := 1]
   set(DT2,, "b", value = 1)
   all.equal(DT, DT2) # TRUE
-{% endhighlight %}
+```
 一般來說都用'['來做，但是你如果需要用到for再來完成，再用set
 
 
@@ -310,7 +301,7 @@ d. colClasses：各行的classes，可以自行設定
 
 舉例來說
 
-{% highlight R %}
+```R
 text = "a b
 1 2
 3 4"
@@ -321,7 +312,7 @@ DF2 = read.table(textConnection(text), header = TRUE) # file format
 
 all.equal(DT, DF)  # TRUE
 all.equal(DT, DF2) # TRUE
-{% endhighlight %}
+```
 
 fread很適合拿來讀大資料，所以有必要把table輸出成text
 

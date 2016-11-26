@@ -1,22 +1,13 @@
 ---
 layout: post
-cTitle: Rcpp Attributes for kernelMatrix with openmp
-title: "Rcpp Attributes for kernelMatrix with openmp"
-category: R
-tagline:
-tags: [R, Rcpp, openmp]
-cssdemo: 2014-spring
-published: true
+title: Rcpp Attributes for kernelMatrix with openmp
 ---
-{% include JB/setup %}
 
 I use Rcpp Attributes to compute the kernel matrix and show how to link omp to speedup your Rcpp code. I also present that the speed of Rcpp Attributes is competitive with the function kernelMatrix written in C in the R package kernlab.
 
-<!-- more -->
-
 Code:
 
-{% highlight R %}
+```R
 library(kernlab)
 library(Rcpp)
 library(RcppArmadillo)
@@ -72,11 +63,11 @@ benchmark(cpp = kernelMatrix_cpp(X, center, sigma),
 #      test replications elapsed relative
 # 1     cpp           10   0.131    1.000
 # 2 kernlab           10   0.199    1.519
-{% endhighlight %}
+```
 
 With openmp, it is faster than kernlab with small input matrix size, however, the efficiency is too low when the size increase. Another efficient method is listed below:
 
-{% highlight R %}
+```R
 library(kernlab)
 library(Rcpp)
 library(RcppArmadillo)
@@ -149,7 +140,7 @@ benchmark(cpp = kernelMatrix_cpp(X, center, sigma),
 # 2    cpp2           10   0.059    1.000
 # 1     cpp           10   0.179    3.034
 # 3 kernlab           10   0.230    3.898
-{% endhighlight %}
+```
 
 The above result show that there is a trick you should know to speedup the code: if you can directly use matrix manipulation to finish the calculation, then please do it! Or you get low efficiency if you use for loop.
 

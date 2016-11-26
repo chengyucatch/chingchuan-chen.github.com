@@ -1,22 +1,13 @@
 ---
 layout: post
-cTitle: R Performance for calculating the maximum of two normal random variable
-title: "R Performance for calculating the maximum of two normal random variable"
-category: R
-tagline:
-tags: [R, Rcpp]
-cssdemo: 2014-spring
-published: true
+title: R Performance for calculating the maximum of two normal random variable
 ---
-{% include JB/setup %}
 
 There is a performance test between R functions, R functions with byte compiler, Rcpp and RcppArmadillo. It is about the generating the normal random variables and the vectorized computations.
 
-<!-- more -->
-
 Code:
 
-{% highlight R %}
+```R
 # 1
 a = function(){
   sum = 0
@@ -240,7 +231,7 @@ benchmark(a(),b(),d(),e(),f(),g(),h(),i(),j(),k(),l(),m(),n(), a_cmp(),b_cmp(),d
 # 18 f_cmp()           10 621.092   89.896   621.314
 # 3      d()           10 634.046   91.771   634.205
 # 16 d_cmp()           10 686.426   99.352   686.650
-{% endhighlight %}
+```
 
 Number 1, 2, 3, 4, 5 and 6 are the R functions. Number 14, 15, 16, 17 and 18 are R functions with byte compiler. Number 7, 8, 9, 10 and 11 are the Rcpp functions. Number 12 and 13 are RcppArmadillo functions.
 
@@ -257,7 +248,7 @@ My environment is ubuntu 14.04, R 3.1.1 compiled by intel c++, fortran compiler 
 Remark:
 I think that the reason why the calculation with matrix is slow is that c++ is a row-major language, so I try another example:
 
-{% highlight R %}
+```R
 library(Rcpp)
 library(RcppArmadillo)
 sourceCpp(code = '
@@ -303,7 +294,7 @@ benchmark(m(),n(),o(), replications = 10, columns=c('test', 'replications', 'ela
 # 1  m()           10   7.001    1.000     6.875
 # 3  o()           10   7.090    1.013     6.977
 # 2  n()           10   7.247    1.035     7.124
-{% endhighlight %}
+```
 
 The results show that calculation in row and calculation in column is big difference. My environment is ubuntu 14.04, R 3.1.1 compiled by intel c++, fortran compiler with MKL. My CPU is 3770K@4.3GHz.
 

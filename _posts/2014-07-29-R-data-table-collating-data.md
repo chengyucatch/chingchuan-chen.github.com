@@ -1,24 +1,15 @@
 ---
 layout: post
-cTitle: R data.table - collating data
-title: "R data.table - collating data"
-category: R
-tagline:
-tags: [R, data.table, dplyr]
-cssdemo: 2014-spring
-published: true
+title: R data.table - collating data
 ---
-{% include JB/setup %}
 
 `data.table` is a powerful tool for collating data. Here we provides a example. Recently, I join a team and participate a competition of R data analysis.
-
-<!-- more -->
 
 It is an estate data which contains housing price and some variables. I put data in my [Google drive].(https://drive.google.com/open?id=0B1UBN4lCLHrVeWRzQ1FHQUoyem8).
 
 Code:
 
-{% highlight R %}
+```R
 library(data.table)
 library(dplyr)
 dat = lapply(paste0("List_", LETTERS[LETTERS!="L" & LETTERS!="R" & LETTERS!="S" & LETTERS!="Y"], ".csv"), read.csv)
@@ -157,7 +148,7 @@ out.glasso$lambda.min
 out.glasso$cve[out.glasso$min]
 # 0.1911332
 coef(out.glasso)
-{% endhighlight %}
+```
 
 Thanks to this competition, I have an interesting data to practice the use of `data.table`. In addition, `data.table` and `dplyr` are so fast that I drop `data.frame`.
 

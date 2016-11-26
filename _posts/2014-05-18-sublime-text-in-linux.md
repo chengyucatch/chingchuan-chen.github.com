@@ -1,21 +1,12 @@
 ---
 layout: post
-cTitle: Sublime Text 3 in Linux
-title: "Sublime Text 3 in Linux"
-category: sublime_text
-tagline:
-tags: [sublime_text]
-cssdemo: 2014-spring
-published: true
+title: Sublime Text 3 in Linux
 ---
-{% include JB/setup %}
 
 以下文章參考下列四個網址：
 
 1. [完美解决 Linux 下 Sublime Text 中文输入](https://www.sinosky.org/linux-sublime-text-fcitx.html)
 2. [How do I make Sublime Text 3 the default text editor](http://askubuntu.com/questions/396938/how-do-i-make-sublime-text-3-the-default-text-editor)
-
-<!-- more -->
 
 linux上，中文輸入法一直是難題，應用程式沒辦法支援中文輸入是非常常見的事情，連sublime text也是。還不只如此，還有輸入法的戰爭，我在進入linux時，最一開使用的輸入法是gcin，然後去用hime，最後因為sublime text的解決方法只能只用fcitx，最後用了這個輸入法。
 
@@ -24,7 +15,7 @@ linux上，中文輸入法一直是難題，應用程式沒辦法支援中文輸
 1. 把下列的程式碼存為sublime_imfix.c:
 
 
-{% highlight c %}
+```c
 /*
 sublime-imfix.c
 Use LD_PRELOAD to interpose some function to fix sublime input method support for linux.
@@ -104,65 +95,65 @@ void gtk_im_context_set_client_window (GtkIMContext *context,
   }
   gdk_window_add_filter (window, event_filter, context);
 }
-{% endhighlight %}
+```
 
 2. Ctrl+Alt+T打開你的Terminal視窗到你儲存上面檔案的地方，鍵入：
 
-{% highlight bash %}
+```bash
 sudo apt-get install build-essential libgtk2.0-dev
 gcc -shared -o libsublime-imfix.so sublime-imfix.c `pkg-config --libs --cflags gtk+-2.0` -fPIC
 sudo mv libsublime-imfix.so /opt/sublime_text/
-{% endhighlight %}
+```
 
 這樣就完成編譯，並且將檔案放置到安裝目錄了。
 
 3. 修改啟動部份
 
-{% highlight bash %}
+```bash
 sudo subl /usr/share/applications/sublime-text.desktop
-{% endhighlight %}
+```
 
 在每一個`Exec=`後面都加上下面的指令：
 
-{% highlight bash %}
+```bash
 env LD_PRELOAD=/opt/sublime_text/libsublime-imfix.so
-{% endhighlight %}
+```
 
 然後輸入
 
-{% highlight bash %}
+```bash
 sudo subl /usr/bin/subl
-{% endhighlight %}
+```
 
 更動內容為
 
-{% highlight bash %}
+```bash
 #!/bin/sh
 export LD_PRELOAD=/opt/sublime_text/libsublime-imfix.so
 exec /opt/sublime_text/sublime_text "$@"
-{% endhighlight %}
+```
 
 4. 如果想要把sublime text更動為預設編輯器，先使用下列指令確定是否有安裝成功：
 
-{% highlight bash %}
+```bash
 ls /usr/share/applications/sublime-text.desktop
-{% endhighlight %}
+```
 
 接著打開linux的default列表：
 
-{% highlight bash %}
+```bash
 sudo subl /usr/share/applications/defaults.list
-{% endhighlight %}
+```
 
 按下Ctrl+H replace gedit with sublime-text。接著打開user的設定列表：
 
-{% highlight bash %}
+```bash
 subl ~/.local/share/applications/mimeapps.list
-{% endhighlight %}
+```
 
 修改或添加下列下列文字：
 
-{% highlight bash %}
+```bash
 [Added Associations]
 text/plain=ubuntu-software-center.desktop;shotwell.desktop;sublime-text.desktop;
 text/x-chdr=shotwell-viewer.desktop;
@@ -171,5 +162,5 @@ text/x-chdr=shotwell-viewer.desktop;
 text/plain=sublime-text.desktop
 text/x-c++src=sublime-text.desktop
 text/x-chdr=sublime-text.desktop
-{% endhighlight %}
+```
 

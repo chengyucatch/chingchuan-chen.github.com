@@ -1,14 +1,7 @@
 ---
 layout: post
-cTitle: "在R用ROracle去操作Oracle資料庫"
-title: "use ROracle to manipulate Oracle database in R"
-category: Oracle
-tagline:
-tags: [R, Oracle]
-cssdemo: 2014-spring
-published: true
+title: 在R用ROracle去操作Oracle資料庫
 ---
-{% include JB/setup %} 
 
 前兩篇裝了Hadoop跟Oracle
 
@@ -17,8 +10,6 @@ published: true
 在windows下，安裝ROracle，也測試看看在centos下安裝看看
 
 (ubuntu, mint部分前面有文章介紹怎麼裝R，就不在贅述，至於裝ROracle就跟centos大同小異了)
-
-<!-- more -->
 
 1. 準備工作
 
@@ -35,7 +26,7 @@ Some installations of centos](http://chingchuan-chen.github.io/linux/2016/05/11/
 
 簡單敘述一下(不同的地方是centos最小安裝沒有wget)：
 
-``` bash
+```bash
 ## 更新repo，並安裝R
 su -c 'rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'
 sudo yum update
@@ -107,7 +98,7 @@ R -e 'install.packages(c("data.table", "pipeR", "dplyr", "GGally", "ggplot2", "n
 
 接著下載ROracle原始包，利用`R CMD INSTALL`並同時configure做安裝的動作，指令如下：
 
-``` bash
+```bash
 # 安裝Oracle instant client
 sudo yum install oracle-instantclient12.1-basic-12.1.0.2.0-1.x86_64.rpm
 sudo yum install oracle-instantclient12.1-devel-12.1.0.2.0-1.x86_64.rpm
@@ -136,14 +127,14 @@ windows部分：
 
 打開R輸入
 
-``` R
+```R
 install.packages("installr")
 installr::install.Rtools()
 ```
 
 接著安裝一些需要的套件：
 
-``` R
+```R
 ## 安裝一些ROracle的必要套件
 install.packages("DBI")
 
@@ -161,7 +152,7 @@ install.packages(c("data.table", "pipeR", "dplyr", "GGally", "ggplot2", "nycflig
 
 按右鍵編輯貼上下方內容後執行就可以成功安裝ROracle了
 
-``` batch
+```batch
 SET OCI_LIB64=C:\instantclient_12_1
 SET OCI_INC=C:\instantclient_12_1\sdk\include
 SET PATH=%PATH%;C:\instantclient_12_1
@@ -178,7 +169,7 @@ PS: 這裡我還沒有測試過，因為避免牽扯到windwos的環境變數就
 
 我想要創造三個使用者，等等利用ROracle上傳到這三個使用者下的schema，SQL內容如下：
 
-``` sql
+```sql
 CREATE TABLESPACE nycflights13
   DATAFILE 'nycflights13.dat'
   SIZE 40M REUSE AUTOEXTEND ON;
@@ -262,7 +253,7 @@ PS: C##是Oracle要求的，請搜尋common users vs local users oracle就知道
 
 程式如下：
 
-``` R
+```R
 library(ROracle)
 library(data.table)
 library(pipeR)
@@ -397,13 +388,13 @@ ROracle寫入表格的時候，會自動加上double quote框住表格
 
 只是最神奇的事情是
 
-``` R
+```R
 dbWriteTable(con, "airlines", as.data.frame(airlines), row.names = FALSE)
 ```
 
 寫入表格之後，query的表格名字要加quote，像這樣：
 
-``` R
+```R
 dbSendQuery(con, "select * from \"airlines\"") %>>% fetch(n = -1) %>>% data.table
 ```
 我查表是否存在不用quote

@@ -1,20 +1,11 @@
 ---
 layout: post
-cTitle: Shiny App for Ising Model
-title: "Shiny App for Ising Model"
-category: R
-tagline:
-tags: [R, Rcpp, shiny]
-cssdemo: 2014-spring
-published: true
+title: Shiny App for Ising Model
 ---
-{% include JB/setup %}
 
 Here is a demonstration for ising model with an interative interface created by R package `shiny`.
 
-<!-- more -->
-
-{% highlight R %}
+```R
 library(lattice)
 library(shiny)
 app = shinyApp(
@@ -129,4 +120,4 @@ app = shinyApp(
   }
 )
 runApp(app)
-{% endhighlight %}
+```

@@ -1,20 +1,11 @@
 ---
 layout: post
-cTitle: bsxfun in R -- matrix-vector arithmetic operation
-title: "bsxfun in R -- matrix-vector arithmetic operation"
-category: R
-tagline:
-tags: [R, bsxfun]
-cssdemo: 2014-spring
-published: true
+title: bsxfun in R -- matrix-vector arithmetic operation
 ---
-{% include JB/setup %}
 
 The matrix-vector arithmetic operation in R is difficult to do before. We need for-loop or `replicate` to compute. Now, we have `sweep` to do. There are several examples to demonstrate.
 
-<!-- more -->
-
-{% highlight R %}
+```R
 M = 3
 N = 5
 (mat = replicate(N, 1:M))
@@ -121,4 +112,4 @@ microbenchmark(Rfun = kernelMatrix_f(X, center, sigma),
 #     Rfun 872.8854 981.1995 1036.2209 1074.0526 1098.9185 1132.9356    20
 #  kernlab 773.7489 841.9028 1059.3098  862.7476  883.3874 2979.2541    20
 #     Rcpp 490.2462 501.2993  520.1283  522.5060  532.5426  571.0949    20
-{% endhighlight %}
+```

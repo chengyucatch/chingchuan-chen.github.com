@@ -1,22 +1,13 @@
 ---
 layout: post
-cTitle: "deployment of Oracle database"
-title: "deployment of Oracle database"
-category: Oracle
-tagline:
-tags: [Oracle]
-cssdemo: 2014-spring
-published: true
+title: deployment of Oracle database
 ---
-{% include JB/setup %} 
 
 這一篇文章主要是在centos 7.2最小安裝下去部署Oracle database
 
 我會建立Oracle database的主要原因是
 
 為了下一篇測試從Oracle database拉資料到sqoop
-
-<!-- more -->
 
 1. 準備工作
     

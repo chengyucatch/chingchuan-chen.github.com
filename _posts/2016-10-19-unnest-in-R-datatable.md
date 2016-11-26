@@ -1,18 +1,11 @@
 ---
 layout: post
-cTitle: "unnest in R data.table"
 title: "unnest in R data.table"
-category: R
-tagline:
-tags: [R]
-cssdemo: 2014-spring
-published: true
 ---
-{% include JB/setup %} 
 
 我們今天可能會遇到json parse出來的資料長下面這樣
 
-``` R
+```R
 library(data.table)
 DT <- data.table(a = list(c(1:5), c(2:4), c(1:5)), b = 1:3, 
                  c = list(c(0:4), c(6:8), c(7:11)),  d = 2:4)
@@ -22,11 +15,9 @@ DT <- data.table(a = list(c(1:5), c(2:4), c(1:5)), b = 1:3,
 # 3: 1,2,3,4,5 3  7, 8, 9,10,11 4
 ```
 
-<!-- more -->
-
 那在這種情況下，可以直接選擇用`tidyr`的`unnest`去做，如下面所示
 
-``` R
+```R
 library(tidyr)
 unnest(DT, a, c)
 #     b d a  c
@@ -53,7 +44,7 @@ unnest(DT, a, c)
 
 基於此，我就用data.table去開發了這樣想的程式，如下：
 
-``` R
+```R
 extendTbl <- function(DT, unnestCols = NULL){
   # check the columns to unnest
   if (is.null(unnestCols)) {
@@ -118,7 +109,7 @@ extendTbl(DT, c("b", "d"))
 
 不用快一點的方法，真的會等很久
 
-``` R
+```R
 library(microbenchmark)
 N <- 1e5
 dbColsCnt <- 300

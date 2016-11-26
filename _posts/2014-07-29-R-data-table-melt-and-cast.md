@@ -1,23 +1,14 @@
 ---
 layout: post
-cTitle: R data.table - melt and cast
-title: "R data.table - melt and cast"
-category: R
-tagline:
-tags: [R, data.table, dplyr, reshape]
-cssdemo: 2014-spring
-published: true
+title: R data.table - melt and cast
 ---
-{% include JB/setup %}
 
 `data.table` is a powerful tool for exploring data.
 Here we provides a example for melting and casting data.
 
-<!-- more -->
-
 Code:
 
-{% highlight R %}
+```R
 library(data.table)
 library(reshape2)
 library(dplyr)
@@ -55,7 +46,7 @@ dat4 = filter(melt(dat3, "name"), !is.na(value))
 # 7:    B     day3    11
 # 8:    D     day3    44
 # 9:    E     day3    55
-{% endhighlight %}
+```
 
 `cast` can change raw data into a wide table and `melt` can change data in wide table format back to raw data. I think that it is faster and easier than other functions on `data.frame`. (Some functions like `reshape`, `cast` and `melt` in `reshape`.)
 

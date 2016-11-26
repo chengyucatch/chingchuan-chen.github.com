@@ -1,20 +1,11 @@
 ---
 layout: post
-cTitle: "RcppParallel and RRO: about Intel MKL multithread"
 title: "RcppParallel and RRO: about Intel MKL multithread"
-category: R
-tagline:
-tags: [R]
-cssdemo: 2014-spring
-published: true
 ---
-{% include JB/setup %}
 
 Revolution R Open (Now named Microsoft R Open) provides Intel MKL multi-threaded BLAS.
 RcppParallel provides parallel tools for R via Intel TBB. (Note: On other platforms, it use TinyThread library.)
 However, does RcppParallel conflict with Intel MKL multi-threaded BLAS?
-
-<!-- more -->
 
 We do a simple test on this issue. The cross-validation is simple but time-consuming which is a great method for testing the power of parallel.
 Therefore, we use leave-one-out-cross-validation to compute the mean squared errors of regression model.
@@ -40,7 +31,7 @@ and is better than using 1 MKL threads. From this test, we think that the perfor
 deeply affected the number of threads Intel MKL used.
 We suggest not to change the number of threads Intel MKL used, just keep it default.
 
-{% highlight R %}
+```R
 library(Rcpp)
 library(RcppArmadillo)
 library(RcppParallel)
@@ -220,4 +211,4 @@ microbenchmark(LOOCV_R(y, X), fastLOOCV_noRP(y, X), fastLOOCV(y, X),
 
 # The information of machine: i7-5820K@4.0GHz with 32GB ram.
 # The information of session: RRO 3.2.3 on windows 7 64bit.
-{% endhighlight %}
+```

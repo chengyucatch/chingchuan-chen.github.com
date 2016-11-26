@@ -1,21 +1,12 @@
 ---
 layout: post
-cTitle: "Installation of centos on fake raid machine (intel RST)"
 title: "Installation of centos on fake raid machine (intel RST)"
-category: linux
-tagline:
-tags: [linux]
-cssdemo: 2014-spring
-published: true
 ---
-{% include JB/setup %}
 
 I try to install Unix system on a machine with fake raid supported by intel RST in BIOS.
 But I spent 36 hours to install ubuntu 16.04, it did not come to succeed.
 Accidentally, I saw a massage that installation of centos on fake raid is easier than ubuntu,
 so I try to install and succeed. The reference website is [PowerRC](https://www.powerrc.net/intel-raid-fakeraid-centos.html).
-
-<!-- more -->
 
 Simply record the steps:
 

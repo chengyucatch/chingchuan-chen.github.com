@@ -1,21 +1,12 @@
 ---
 layout: post
-cTitle: Processing string in R (Rcpp and rJava)
-title: "rocessing string in R (Rcpp and rJava)"
-category: R
-tagline:
-tags: [R, regexp]
-cssdemo: 2014-spring
-published: true
+title: Processing string in R (Rcpp and rJava)
 ---
-{% include JB/setup %}
 
 There is a example for processing string in R.
 
-<!-- more -->
-
 Before we use rJava, we need a class file first. The `regex_java.java` is shown in below and compilation can be done with command `javac regex_java.java`.
-{% highlight java %}
+```java
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,11 +47,11 @@ public class regex_java {
   public static void main(String[] args) {
   }
 }
-{% endhighlight %}
+```
 
 Next, we demonstrate the performance between R, Rcpp and rJava. However, Rcpp cannot process string in regular expression because the standard of C++ does not support regular expression before C++14. Note that g++ have `regexp.h` to support regular expression in linux.
 
-{% highlight R %}
+```R
 library(data.table)
 library(plyr)
 library(dplyr)
@@ -145,4 +136,4 @@ all.equal(output, output2)    # TRUE
 all.equal(output, dat_split)  # TRUE
 all.equal(output, dat_split2) # TRUE
 all.equal(output, output3) # TRUE
-{% endhighlight %}
+```

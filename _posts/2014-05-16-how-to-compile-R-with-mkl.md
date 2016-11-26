@@ -1,14 +1,7 @@
 ---
 layout: post
-cTitle: 如何compile R with Intel C++ compiler and Intel MKL
-title: "how to compile R with mkl"
-category: R
-tagline:
-tags: [R, MKL]
-cssdemo: 2014-spring
-published: true
+title: 如何compile R with Intel C++ compiler and Intel MKL
 ---
-{% include JB/setup %}
 
 以下文章參考下列四個網址：
 
@@ -17,11 +10,9 @@ published: true
 3. [Compiling R 3.0.1 with MKL support](http://www.r-bloggers.com/compiling-r-3-0-1-with-mkl-support/)
 4. [R Installation and Administraction](http://cran.r-project.org/doc/manuals/r-devel/R-admin.html)
 
-<!-- more -->
-
 開始之前，先用Default R and R with Openblas來測試看看，I use testing script found in [Simon Urbanek’s](http://r.research.att.com/benchmarks/)，Openblas部份參考這個網站[For faster R use OpenBLAS instead: better than ATLAS, trivial to switch to on Ubuntu](http://www.r-bloggers.com/for-faster-r-use-openblas-instead-better-than-atlas-trivial-to-switch-to-on-ubuntu/)。
 
-{% highlight bash %}
+```bash
 # to install package in /usr/lib/R/library
 sudo chmod -R 774 /usr/lib/R
 sudo chown -R celest.celest /usr/lib/R
@@ -38,12 +29,12 @@ sudo update-alternatives --config libblas.so.3
 sudo update-alternatives --config liblapack.so.3
 # run benchmark again
 R -e "source('http://r.research.att.com/benchmarks/R-benchmark-25.R')"
-{% endhighlight %}
+```
 
 測試結果如下：
 Default R：
 
-{% highlight R %}
+```R
    R Benchmark 2.5
    ===============
 Number of times each test is run__________________________:  3
@@ -82,11 +73,11 @@ Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.378999999999991
 Total time for all 15 tests_________________________ (sec):  27.8006666666666
 Overall mean (sum of I, II and III trimmed means/3)_ (sec):  1.01548017027814
                       --- End of test ---
-{% endhighlight %}
+```
 
 R with Openblas:
 
-{% highlight R %}
+```R
    R Benchmark 2.5
    ===============
 Number of times each test is run__________________________:  3
@@ -125,56 +116,56 @@ Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.352999999999994
 Total time for all 15 tests_________________________ (sec):  6.84366666666667
 Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.411666478563312
                       --- End of test ---
-{% endhighlight %}
+```
 
 可以看到total time已經從27.8秒到6.8秒左右，改善幅度已經不少，接著來compile R:
 
 1. 取得R與其開發包，並安裝需要的套件，在terminal use following commands:
 
-{% highlight bash %}
+```bash
 sudo add-apt-repository ppa:webupd8team/java && sudo apt-get update && sudo apt-get install oracle-java8-installer && sudo apt-get install oracle-java8-set-default
 apt-cache search readline xorg-dev && sudo apt-get install libreadline6 libreadline6-dev texinfo texlive texlive-binaries texlive-latex-base xorg-dev tcl8.6-dev tk8.6-dev libtiff5 libtiff5-dev libjpeg-dev libpng12-dev libcairo2-dev libglu1-mesa-dev libgsl0-dev libicu-dev R-base R-base-dev libnlopt-dev libstdc++6 build-essential libcurl4-openssl-dev texlive-fonts-extra libxml2-dev aptitude
 # sudo apt-get install texlive-latex-extra
-{% endhighlight %}
+```
 
 有一個工具要另外安裝，方式如下：
 
-{% highlight bash %}
+```bash
 wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz
 tar -xvzf libiconv-1.14.tar.gz
 cd libiconv-1.14 && ./configure --prefix=/usr/local/libiconv
 make && sudo make install
-{% endhighlight %}
+```
 
 但是我在make過程中有出錯，我google之後找到的解法是修改`srclib/stdio.in.h`的698列:
 原本的script:
 
-{% highlight c %}
+```c
 _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");
-{% endhighlight %}
+```
 
 修改後的scipt:
 
-{% highlight c %}
+```c
 #if defined(__GLIBC__) && !defined(__UCLIBC__) && !__GLIBC_PREREQ(2, 16)
  _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");
 #endif
-{% endhighlight %}
+```
 
 之後再重新make就成功了。
 
 2. 取得R source code:
 
-{% highlight bash %}
+```bash
 wget http://cran.csie.ntu.edu.tw/src/base/R-3/R-3.2.3.tar.gz
 tar -xvzf R-3.2.3.tar.gz
-{% endhighlight %}
+```
 
 3. 取得Intel C++ compiler and Intel MKL，你可以取得non-commercial license for this two software in intel website. 另外，64bit linux system不支援32 bits的compiler，安裝時記得取消掉IA32的安裝。
 
 4. compilitation:
 
-{% highlight bash %}
+```bash
 sudo -s
 source /opt/intel/composer_xe_2015/mkl/bin intel64
 source /opt/intel/composer_xe_2015/bin/compilervars.sh intel64
@@ -198,11 +189,11 @@ export SHLIB_LDFLAGS="-shared -fPIC"
 export SHLIB_CXXLDFLAGS="-shared -fPIC"
 MKL="-L$MKL_path/lib/intel64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread -ldl -lm"
 ./configure --with-blas="$MKL" --with-lapack --with-x --enable-memory-profiling --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh --enable-R-shlib --enable-BLAS-shlib --enable-prebuilt-html
-{% endhighlight %}
+```
 
 如果順利會出現下方的畫面：
 
-{% highlight bash %}
+```bash
 R is now configured for x86_64-pc-linux-gnu
 
   Source directory:          .
@@ -225,11 +216,11 @@ R is now configured for x86_64-pc-linux-gnu
   Options not enabled:
 
   Recommended packages:      yes
-{% endhighlight %}
+```
 
 出現上方畫面就可以開始make跟install了：
 
-{% highlight bash %}
+```bash
 make && make check
 # removing R before installation
 rm /usr/lib/libR.so
@@ -251,13 +242,13 @@ R -e "source('http://r.research.att.com/benchmarks/R-benchmark-25.R')"
 # to run rstudio-server, you have two options, first:
 # echo 'rsession-which-r=/usr/local/bin/R' >> /etc/rstudio/rserver.conf
 # second , please use option configure with --prefix=/usr
-{% endhighlight %}
+```
 
 然後他就會幫你把R安裝於`usr/local/lib/R`中。
 
 5. 測試結果
 
-{% highlight R %}
+```R
    R Benchmark 2.5
    ===============
 Number of times each test is run__________________________:  3
@@ -296,31 +287,31 @@ Escoufier's method on a 45x45 matrix (mixed)________ (sec):  0.338999999999999
 Total time for all 15 tests_________________________ (sec):  4.80466666666666
 Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.293214347493761
                       --- End of test ---
-{% endhighlight %}
+```
 
 最後只需要用到4.8秒就可以完成了，可是complitation過程是滿麻煩的，雖然參考了多個網站，可是參數的設定都不太一樣，linux又有權限的限制，而且就算編譯成功，Rcpp這個套件不見得能夠成功，因此花了很久才終於編譯成功，並且能夠直接開啟，只是要利用到c, cpp or fortran時還是需要source compilervars.sh才能夠運行，而且我安裝了三四十個套件都沒有問題了。最後，如果沒有特別要求速度下，其實直接用OpenBLAS就可以省下很多麻煩。另外，我做了一個小小的測試於Rcpp上，速度有不少的提昇(因為用intel C++ compiler，大概增加5~10倍)，測試結果就不放上來了。以上資訊供大家參考，轉載請註明來源，謝謝。
 
 最後附上測試環境: My environment is mint 17.3, R 3.2.3 compiled by Intel c++, fortran compiler with Intel MKL. My CPU is 3770K@4.4GHz.
 
 To use the html help page and change the default language of R to english, you can do that:
-{% highlight bash %}
+```bash
 echo 'options("help_type"="html")' > ~/.Rprofile
 echo 'LANGUAGE="en"' > ~/.Renviron
-{% endhighlight %}
+```
 
 如果要讓Rstudio Server裡面成功啟動並且可以使用`icpc`，請在`/usr/lib/rstudio-server/R/ServerOptions.R`裡面加入下方：
 
-{% highlight R %}
+```R
 Sys.setenv(PATH = "/opt/intel/composer_xe_2015.1.133/bin/intel64:/opt/intel/composer_xe_2015.1.133/debugger/gdb/intel64_mic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:$PATH")
-{% endhighlight %}
+```
 
 java config and install some useful packages:
-{% highlight R %}
+```R
 R CMD javareconf
 install.packages(c('devtools', 'testthat'))
 devtools::install_github(c('klutometis/roxygen', 'hadley/assertthat', 'RcppCore/Rcpp', 'hadley/devtools', 'hadley/testthat', 'hadley/lazyeval'))
 devtools::install_github(c('smbache/magrittr', 'Rdatatable/data.table', 'hadley/reshape', 'hadley/plyr', 'hadley/dplyr'))
 devtools::install_github(c('RcppCore/RcppArmadillo', 'RcppCore/RcppEigen', 'RcppCore/RcppParallel'))
 devtools::install_github(c('hadley/tidyr', 'hadley/purrr', 'yihui/knitr'))
-{% endhighlight %}
+```
 

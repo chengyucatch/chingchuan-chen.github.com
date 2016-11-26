@@ -1,20 +1,11 @@
 ---
 layout: post
-cTitle: Finding unique rows of a matrix in mex
-title: "Finding unique rows of a matrix in mex"
-category: MATLAB
-tagline:
-tags: [MATLAB, mex, C++]
-cssdemo: 2014-spring
-published: true
+title: Finding unique rows of a matrix in mex
 ---
-{% include JB/setup %}
 
 This code is to find the unique rows of a matrix. It is based on the quick sort algorithm. Thanks to this, I find that MATLAB also use quick sort to sort data.
 
-<!-- more -->
-
-{% highlight C++ %}
+```C++
 // import header files
 #include <omp.h>
 // use armadillo
@@ -97,4 +88,4 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
   plhs[0] = mxCreateDoubleMatrix(x_unique.n_rows, x_unique.n_cols, mxREAL);
     armaSetPr(plhs[0], x_unique);
 }
-{% endhighlight %}
+```

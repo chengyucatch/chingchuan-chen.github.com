@@ -1,14 +1,7 @@
 ---
 layout: post
-cTitle: "用Python將Oracle DB的資料匯出到Cassandra"
-title: "export oracle data to cassandra using python"
-category: python
-tagline:
-tags: [python, Oracle, Cassandra]
-cssdemo: 2014-spring
-published: true
+title: "用Python將Oracle DB的資料匯出到Cassandra"
 ---
-{% include JB/setup %} 
 
 基本上的工具在前幾篇都安裝完
 
@@ -17,8 +10,6 @@ published: true
 原本這部分要用sqoop做，結果發現沒辦法使用
 
 只好用Python自己做輪子，於是這篇就誕生了
-
-<!-- more -->
 
 1. 準備工作
 
@@ -40,7 +31,7 @@ published: true
 
 最後發現使用`execute_concurrent_with_args`可以比正常用for + execute快上7倍
 
-``` python
+```python
 #!/usr/bin/python
 
 import sys, cx_Oracle, datetime, time
@@ -179,7 +170,7 @@ if __name__ == "__main__":
 
 手上表格不多(六個)，反正處理時間大概就是最大那張表格的時間：
 
-``` python
+```python
 #!/usr/bin/python
 
 from itertools import islice

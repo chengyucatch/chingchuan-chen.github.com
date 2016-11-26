@@ -1,16 +1,9 @@
 ---
 layout: post
-cTitle: "Initialization of ubuntu"
-title: "Initialization of ubuntu"
-category: linux
-tagline:
-tags: [linux]
-cssdemo: 2014-spring
-published: true
+title: Initialization of ubuntu
 ---
-<!-- more -->
 
-{% highlight bash %}
+``` bash
 sudo add-apt-repository ppa:webupd8team/sublime-text-3
 sudo apt-get update
 sudo apt-get install sublime-text-installer
@@ -57,4 +50,4 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
 # for VM, to use unity mode
 sudo apt-get install gnome-shell
-{% endhighlight %}
+```

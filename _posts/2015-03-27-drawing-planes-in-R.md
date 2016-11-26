@@ -1,21 +1,11 @@
 ---
 layout: post
-cTitle: Drawing planes in R
-title: "Drawing planes in R"
-category: R
-tagline:
-tags: [R]
-cssdemo: 2014-spring
-published: true
+title: Drawing planes in R
 ---
-{% include JB/setup %}
 
 A simple log for drawing 2 planes in 3D plot.
 
-<!-- more -->
-
-
-{% highlight R %}
+```R
 library(dplyr)
 library(data.table)
 library(magrittr)
@@ -38,4 +28,4 @@ wireframe(z_value ~ x + y, dat_piled, groups=group,
   auto.key = list(columns = 2, text = paste("z", 1:2),
     rectangles = TRUE, points = FALSE),
   panel.3d.wireframe = panel.custom )
-{% endhighlight %}
+```
