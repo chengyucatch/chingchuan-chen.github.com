@@ -1,6 +1,6 @@
 ---
 layout: post
-Title: "plyr::ddply vs data.table::rbindlist"
+title: plyr::ddply vs data.table::rbindlist
 ---
 
 最近遇到在計算functinoal data的cross-covariance surface的時候
