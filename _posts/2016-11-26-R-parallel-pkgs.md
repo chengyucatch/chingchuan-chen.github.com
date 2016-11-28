@@ -150,3 +150,39 @@ class(o3)  # "matrix"
 class(o4)  # "numeric"
 ```
 
+2016/11/28補充：
+
+後來發現一個整合還不錯的套件 - `parallelMap`
+
+``` R
+require2(parallelMap)
+parallelStart("socket", 6L)
+
+a <- rnorm(1e3)
+b <- rnorm(1e4)
+d <- 0.5
+e <- rnorm(1e5) # unused variables
+# f is not a good method to get that result, it is just for benchmark
+f <- function(x) {
+  sum <- 0
+  for (i in seq(1, x)) sum <- sum + (mean(a) - mean(b))*d*i
+  return(sum)
+}
+parallelExport("a", "b", "d")
+
+g9 <- function(x) {
+  out9 <- parallelSapply(1:1000, f)
+  return(out9)
+}
+
+library(microbenchmark)
+microbenchmark(g9(), times = 20L)
+# Unit: seconds
+#  expr      min       lq     mean   median    uq      max neval
+#  g9() 2.921699 2.931741 3.002052 2.941502 3.018 3.317669    20
+parallelStop()
+```
+
+表現也跟前面用loading balancing的函數差不多
+
+

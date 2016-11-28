@@ -100,13 +100,9 @@ D. 其他部分，最重要的是如何預覽，在cmd中輸入`jekyll serve`會
 ```html
 ---
 layout: post
-title: 如何利用jekyll建立你的blogger
-title: "how to build blog by using jekyll"
+cTitle: 如何利用jekyll建立你的blogger
+title: how to build blog by using jekyll
 description: ""
-
-
-
-
 ---
 {}
 一些文字...
