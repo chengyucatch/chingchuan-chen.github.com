@@ -9,7 +9,9 @@ title: "Locally quantile regression in R"
 
 不過這方法沒有直覺的方式去選擇bandwidth，所以我就自己加了一點東西進去
 
-結合`rfda`(`rfda`可以在[這裡](https://github.com/ChingChuan-Chen/rfda)找到)裡面的`locPoly1d`就可以很自然使用bandwidth去調整線的平滑程度了，程式如下：
+結合我開發套件中的`rfda`(`rfda`可以在[這裡](https://github.com/ChingChuan-Chen/rfda)找到)裡面的`locPoly1d`
+
+就可以很自然使用bandwidth去調整線的平滑程度了，程式如下：
 
 ```R
 data(airquality)
