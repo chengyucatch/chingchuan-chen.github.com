@@ -72,9 +72,11 @@ ravro
 plyrmr
 rhbase
 ```
+
 Note that ravro is the data parser for avro in R.
 
 Some dependencies need to be installed in system:
+
 ``` bash
 sudo apt-get install libcurl4-openssl-dev git
 R CMD javareconf # setting the environment for R
@@ -130,6 +132,7 @@ hive --service hiveserver
 ```
 
 Install the dependent R packages:
+
 ``` R
 install.packages(c("rJava", "Rcpp", "rjson", "RJSONIO", "bit64", "reshape2", "data.table", "plyr", "dplyr", "digest", "functional", "stringr", "caTools", "lazyeval", "Hmisc", "testthat", "devtools", "iterators", "itertools", "pryr"))
 library(devtools)
@@ -145,6 +148,7 @@ install_github("RevolutionAnalytics/rhbase", subdir = "pkg")
 When I install rhbase, I encounter a problem. The command `pkg-config --cflags thrift` does not return `-I/usr/local/include` instead the correct path `-I/usr/local/include/thrift`. So I copy all files in `/usr/local/include/thrift` into `-I/usr/local/include` by `cp -R /usr/local/include/thrift/* /usr/local/include/`.
 
 When I use the function `hdfs.init()` in package `rhdfs`, it come to a error massage:
+
 ``` R
 sh: /usr/lib/hadoop/bin/: is a directory
 Error in .jnew("org/apache/hadoop/conf/Configuration") :
@@ -152,6 +156,7 @@ Error in .jnew("org/apache/hadoop/conf/Configuration") :
 In addition: Warning message:
 running command '/usr/lib/hadoop/bin/ classpath' had status 126
 ```
+
 The reason why cause this problem is wrong setting of HADOOP_CMD, fix it and get work.
 
 install rhbase, I encounter a problem. The command `pkg-config --cflags thrift` does not return `-I/usr/local/include` instead the correct path `-I/usr/local/include/thrift`. So I copy all files in `/usr/local/include/thrift` into `-I/usr/local/include` by `cp -R /usr/local/include/thrift/* /usr/local/include/`.
@@ -167,6 +172,7 @@ R CMD INSTALL rmr2
 ```
 
 The lines shown in following:
+
 ``` R
 paste.options(
   files =
@@ -174,7 +180,9 @@ paste.options(
       collapse = ",",
         c(image.files, map.file, reduce.file, combine.file)))
 ```
+
 can be modified to following:
+
 ``` R
 ## for intel parallel studio 2013
 paste.options(
@@ -203,6 +211,7 @@ paste.options(
 ```
 
 Test rhadoop series packages:
+
 ``` R
 # test rhdfs
 library(rhdfs)
@@ -299,6 +308,7 @@ model2
 ```
 
 Back to terminal, you can use hdfs to find what R write. (There is some functions in R doing the same way.)
+
 ``` bash
 hdfs dfs -ls # hdfs.ls("/user/celest") in R
 ## Found 1 items
