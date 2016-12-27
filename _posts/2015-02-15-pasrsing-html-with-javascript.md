@@ -5,7 +5,7 @@ title: Parsing html page with javascript
 
 Here is a demonstration to grab lottery number by using RSelenium. Since RCurl cannot parse the table produced by javascript, we need to construct a server to interpret javascript and grab the information we need. The tool of building server is RSelenium. It is simple to generate the html page by javascript, then we can access the table we want.
 
-```R
+``` R
 library(RCurl)
 library(XML)
 library(RSelenium)

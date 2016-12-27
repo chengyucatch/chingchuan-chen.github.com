@@ -7,7 +7,7 @@ Thanks to the R package `Matrix`, we can use the sparse matrix in R. But to use 
 
 Code:
 
-```R
+``` R
 library(Rcpp)
 library(Matrix)
 library(RcppArmadillo)

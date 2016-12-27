@@ -7,7 +7,7 @@ This post is to benchmark the performance of HiPLARM and to introduce how to ins
 
 The performance and test code are showed in following:
 
-```R
+``` R
 library(Matrix)
 p = 6000
 X = Matrix(rnorm(p**2), p)
@@ -53,7 +53,7 @@ HiPLARM is 1.6 times faster than the R without HiPLARM. I think that it will be 
 
 I simply introduce how to install `HiPLARM`. Since my R is compiled by icc and MKL, so I have some trouble in installing it. You can download the auto-installer in [here](http://www.hiplar.org/download.html). I ran the auto-installer with ALTAS (I can't compile OpenBLAS and I don't know why.) and it stopped at installing the R package caused by the environment variable. I solve this problem by add following line in the file `.bashrc`:
 
-```bash
+``` bash
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/clarence/Downloads/LALibs/lib
 ```
 
@@ -187,7 +187,7 @@ R CMD INSTALL --configure-args="--with-lapack=-L$MKLROOT/lib/intel64 --with-plas
 
 I have two troubles in compiling magma. First one is failure on compiling magma with icc and success with switching the compiler to gcc. Another trouble is the function `lapack_const` which is defined in both plasma and magma, so I can't compile and I use the suggestion on [MAGMA forum](http://icl.cs.utk.edu/magma/forum/viewtopic.php?f=2&t=961) to disable the magma-with-plasma routines. To disable the magma-with-plasma routines, you need to comment the line `PLASMA = ...` in the file `Makefile.internal` like this:
 
-```bash
+``` bash
 # Use Plasma to compile zgetfl and ztstrf
 # PLASMA = $(shell pkg-config --libs plasma 2> /dev/null )
 ```

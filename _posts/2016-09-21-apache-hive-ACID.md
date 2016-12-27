@@ -16,7 +16,7 @@ Hive支援ACID，可以讓資料庫做transactions
 
 重新下載一個新的Hive做部署，MySQL那裏則跳過
 
-```bash
+``` bash
 # 下載hive並部署
 curl -v -j -k -L http://apache.stu.edu.tw/hive/stable/apache-hive-1.2.1-bin.tar.gz -o apache-hive-1.2.1-bin.tar.gz
 tar zxvf apache-hive-1.2.1-bin.tar.gz
@@ -42,7 +42,7 @@ schematool -initSchema -dbType mysql
 
 用`vi $HIVE_HOME/conf/hive-site.xml`去配置設定
 
-```XML
+``` XML
   <property>
     <name>javax.jdo.option.ConnectionURL</name>
     <value>jdbc:mysql://192.168.0.121:3306/hive?autoReconnect=true&amp;useSSL=true&amp;createDatabaseIfNotExist=true&amp;characterEncoding=utf8</value>
@@ -141,7 +141,7 @@ schematool -initSchema -dbType mysql
 
 測試：
 
-```bash
+``` bash
 # 新增資料
 tee ~/test_df2.csv << "EOF"
 id1,a,0.01991423
@@ -155,7 +155,7 @@ id8,d,-0.73893442
 EOF
 ```
 
-```SQL
+``` SQL
 -- 創一張表，先放資料
 CREATE TABLE test_df2 (v1 STRING, v2 STRING, v3 DOUBLE)
 ROW FORMAT DELIMITED
@@ -231,7 +231,7 @@ id1     b       2.001
 
 用`spark-shell mesos://zk://192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181/mesos`開啟
 
-```scala
+``` scala
 import org.apache.spark.sql.SparkSession
 
 val spark = SparkSession.builder().appName("spark on hive").

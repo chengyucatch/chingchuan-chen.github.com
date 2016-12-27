@@ -9,7 +9,7 @@ Based on hadoop, we install the hbase.
 
 1. Get hbase
 
-```bash
+``` bash
 wget http://apache.stu.edu.tw/hbase/stable/hbase-1.0.0-bin.tar.gz
 tar zxvf hbase-1.0.0-bin.tar.gz
 sudo mv hbase-1.0.0 /usr/local/hbase
@@ -19,7 +19,7 @@ cd /usr/local/hbase
 Put the following into the file by command: `subl conf/hbase-env.sh`.
 
 
-```bash
+``` bash
 export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 export HBASE_HOME=/usr/local/hbase
 export HADOOP_INSTALL=/usr/local/hadoop
@@ -28,7 +28,7 @@ export HBASE_MANAGES_ZK=true
 ```
 
 Set up the hbase by command: `subl conf/hbase-site.xml`
-```bash
+``` bash
 <configuration>
   <property>
     <name>hbase.rootdir</name>
@@ -63,7 +63,7 @@ Copy the setting of hdfs into hbase folder by command:
 `cp /usr/local/hadoop/etc/hadoop/hdfs-site.xml /usr/local/hbase/conf`
 
 2. start hbase
-```bash
+``` bash
 sudo subl /etc/bash.bashrc
 # add following 2 lines into file
 # export HBASE_INSTALL=/usr/local/hbase
@@ -72,14 +72,14 @@ source /etc/bash.bashrc
 # in ubuntu, is >> etc/bash.bashrc
 ```
 
-```bash
+``` bash
 start-dfs.sh && start-yarn.sh # or start-all.sh
 start-hbase.sh
 ```
 
 3. test hbase
 type `hbase shell` in the terminal, then it will show:
-```bash
+``` bash
 HBase Shell; enter 'help<RETURN>' for list of supported commands.
 Type "exit<RETURN>" to leave the HBase Shell
 Version 1.0.0, r6c98bff7b719efdb16f71606f3b7d8229445eb81, Sat Feb 14 19:49:22 PST 2015
@@ -88,20 +88,20 @@ hbase(main):001:0>
 ```
 
 type `list` and it return
-```bash
+``` bash
 TABLE
 0 row(s) in 4.4510 seconds
 ```
 
 The other tests remain in the rhbase. Stop the server:
 
-```bash
+``` bash
 stop-hbase.sh
 stop-dfs.sh && stop-yarn.sh # or stop-all.sh
 ```
 
 ## hive installation
-```bash
+``` bash
 wget http://apache.stu.edu.tw/hive/stable/apache-hive-1.1.0-bin.tar.gz
 tar zxvf apache-hive-1.1.0-bin.tar.gz
 sudo mv apache-hive-1.1.0-bin /usr/local/hive

@@ -5,7 +5,7 @@ title: Splitting characters in Rcpp
 
 We usually need to process the raw data by ourself, the character type of data is the most common type of raw data. I demonstrate a example to simply split the characters.
 
-```R
+``` R
 library(data.table)
 library(magrittr)
 library(Rcpp)

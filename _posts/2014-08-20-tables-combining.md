@@ -7,7 +7,7 @@ A simple log for doing a job of mapreduce in python.
 
 There are two tables:
 
-```R
+``` R
 library(data.table)
 library(plyr)
 library(dplyr)

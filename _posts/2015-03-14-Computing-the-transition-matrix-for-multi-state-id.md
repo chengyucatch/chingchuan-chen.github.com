@@ -5,7 +5,7 @@ title: Computing the transition matrix for multi-state individual
 
 We have a repeated-measuring data. We want to take average every 3 periods. Here is code to do it.
 
-```R
+``` R
 ## A simple way to compute transition matrix if every individual does not have multiple state.
 library(data.table)
 library(dplyr)
@@ -46,7 +46,7 @@ proc.time() - st
 #   0.72    0.05    0.78
 ```
 
-```R
+``` R
 ## A method to compute transition matrix if every individual does have multiple state.
 library(data.table)
 library(dplyr)

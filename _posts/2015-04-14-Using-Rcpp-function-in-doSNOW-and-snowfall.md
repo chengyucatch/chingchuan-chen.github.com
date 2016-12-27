@@ -5,7 +5,7 @@ title: Using Rcpp function in doSNOW and snowfall
 
 I had been searching how to use Rcpp function in snowfall or doSNOW for a long time, but there is still not a solution. I recently come up an idea to implement. Since the error is printed when exporting the Rcpp function to nodes, I compile Rcpp function in nodes. Surprisingly, I success.
 
-```R
+``` R
 library(data.table)
 library(plyr)
 library(dplyr)

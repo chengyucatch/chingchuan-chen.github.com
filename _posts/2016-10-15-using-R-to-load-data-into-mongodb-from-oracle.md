@@ -9,7 +9,7 @@ title: "用R做Oracle跟mongodb的loader"
 
 並且使用設定去將特定column改成list的方式做儲存
 
-```R
+``` R
 library(ROracle)
 library(stringr)
 library(data.table)

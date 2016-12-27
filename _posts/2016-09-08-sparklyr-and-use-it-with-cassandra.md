@@ -9,7 +9,7 @@ RStudio推出了一個感覺很厲害的套件`sparklyr`
 
 先從安裝R, RStudio Server開始：
 
-```bash
+``` bash
 curl -v -j -k -L https://mran.microsoft.com/install/mro/3.3.1/microsoft-r-open-3.3.1.tar.gz -o microsoft-r-open-3.3.1.tar.gz
 tar -zxvf microsoft-r-open-3.3.1.tar.gz
 cd microsoft-r-open/rpm
@@ -47,7 +47,7 @@ sudo chkconfig --add rstudio-server
 
 為了測試，我先用scala在spark-shell上塞了一些資料進去
 
-```scala
+``` scala
 spark.stop()
 
 import java.net.InetAddress._
@@ -121,7 +121,7 @@ cass_tbl_agg.write.format("org.apache.spark.sql.cassandra").options(Map("table" 
 
 接下來安裝`sparklyr`
 
-```R
+``` R
 install.packages("devtools")
 devtools::install_github("rstudio/sparklyr")
 ```
@@ -130,7 +130,7 @@ devtools::install_github("rstudio/sparklyr")
 
 下面的R script就可以直接執行看到結果了：
 
-```R
+``` R
 # 設定spark home的位置
 Sys.setenv(SPARK_HOME = "/usr/local/bigdata/spark")
 # library sparklyr跟dplyr

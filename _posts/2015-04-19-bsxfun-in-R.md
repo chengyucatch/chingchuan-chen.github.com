@@ -5,7 +5,7 @@ title: bsxfun in R -- matrix-vector arithmetic operation
 
 The matrix-vector arithmetic operation in R is difficult to do before. We need for-loop or `replicate` to compute. Now, we have `sweep` to do. There are several examples to demonstrate.
 
-```R
+``` R
 M = 3
 N = 5
 (mat = replicate(N, 1:M))

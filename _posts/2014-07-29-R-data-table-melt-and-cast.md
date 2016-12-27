@@ -8,7 +8,7 @@ Here we provides a example for melting and casting data.
 
 Code:
 
-```R
+``` R
 library(data.table)
 library(reshape2)
 library(dplyr)

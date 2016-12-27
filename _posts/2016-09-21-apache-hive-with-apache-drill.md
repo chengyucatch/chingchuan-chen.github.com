@@ -38,7 +38,7 @@ http://dev.mysql.com/downloads/mysql/
 
 1. 安裝
 
-```bash
+``` bash
 # 開始部署
 tar xvf mysql-5.7.15-1.el7.x86_64.rpm-bundle.tar
 sudo yum remove mariadb-libs
@@ -88,7 +88,7 @@ vi $HIVE_HOME/conf/hive-site.xml
 
 hive的配置項目：
 
-```XML
+``` XML
   <property>
     <name>javax.jdo.option.ConnectionURL</name>
     <value>jdbc:mysql://192.168.0.121:3306/hive?autoReconnect=true&amp;useSSL=true&amp;createDatabaseIfNotExist=true&amp;characterEncoding=utf8</value>
@@ -123,7 +123,7 @@ hive的配置項目：
 
 配置完hive之後，就可以開始啟動了
 
-```bash
+``` bash
 # 新增hive所需的目錄
 sudo mkdir /tmp/tester
 sudo mkdir /tmp/tester/hive_resource
@@ -158,7 +158,7 @@ scp -r $HIVE_HOME tester@cassSpark3:/usr/local/bigdata
 
 2. 測試：
 
-```bash 
+``` bash 
 tee ~/test_df.csv << "EOF"
 b,d,0.01991423
 b,e,0.73282957
@@ -203,7 +203,7 @@ b,c,0.69678599
 EOF
 ```
 
-```SQL
+``` SQL
 CREATE TABLE test_df (v1 STRING, v2 STRING, v3 DOUBLE)
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
@@ -232,7 +232,7 @@ select v1,v2,sum(v3) from test_df group by v1,v2;
 
 先修改Storage的hive，改成下方這樣：
 
-```json
+``` json
 {
   "type": "hive",
   "enabled": true,
@@ -246,7 +246,7 @@ select v1,v2,sum(v3) from test_df group by v1,v2;
 
 到query去執行下方的查詢：
 
-```SQL
+``` SQL
 select v1,v2,avg(v3) from test_df group by v1,v2; 
 ```
 
@@ -294,7 +294,7 @@ content(post_data, type = "text") %>>% fromJSON %>>% `[[`(2) %>>%
 
 執行下面的指令即可
 
-```bash
+``` bash
 sudo systemctl stop mysqld
 sudo systemctl disable mysqld
 

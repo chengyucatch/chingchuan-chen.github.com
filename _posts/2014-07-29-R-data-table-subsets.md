@@ -7,7 +7,7 @@ title: R data.table - subsets
 
 Code:
 
-```R
+``` R
 library(data.table)
 library(dplyr)
 library(fastmatch)

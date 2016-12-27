@@ -21,7 +21,7 @@ title: "test on apache sqoop"
 
 從官網上下載下來，然後解壓縮，並加入環境變數：
 
-```bash
+``` bash
 # 下載安裝sqoop
 curl -v -j -k -L http://apache.stu.edu.tw/sqoop/1.4.6/sqoop-1.4.6.bin__hadoop-2.0.4-alpha.tar.gz -o sqoop-1.4.6.bin__hadoop-2.0.4-alpha.tar.gz
 tar -zxvf sqoop-1.4.6.bin__hadoop-2.0.4-alpha.tar.gz

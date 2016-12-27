@@ -15,7 +15,7 @@ linux上，中文輸入法一直是難題，應用程式沒辦法支援中文輸
 1. 把下列的程式碼存為sublime_imfix.c:
 
 
-```c
+``` c
 /*
 sublime-imfix.c
 Use LD_PRELOAD to interpose some function to fix sublime input method support for linux.
@@ -99,7 +99,7 @@ void gtk_im_context_set_client_window (GtkIMContext *context,
 
 2. Ctrl+Alt+T打開你的Terminal視窗到你儲存上面檔案的地方，鍵入：
 
-```bash
+``` bash
 sudo apt-get install build-essential libgtk2.0-dev
 gcc -shared -o libsublime-imfix.so sublime-imfix.c `pkg-config --libs --cflags gtk+-2.0` -fPIC
 sudo mv libsublime-imfix.so /opt/sublime_text/
@@ -109,25 +109,25 @@ sudo mv libsublime-imfix.so /opt/sublime_text/
 
 3. 修改啟動部份
 
-```bash
+``` bash
 sudo subl /usr/share/applications/sublime-text.desktop
 ```
 
 在每一個`Exec=`後面都加上下面的指令：
 
-```bash
+``` bash
 env LD_PRELOAD=/opt/sublime_text/libsublime-imfix.so
 ```
 
 然後輸入
 
-```bash
+``` bash
 sudo subl /usr/bin/subl
 ```
 
 更動內容為
 
-```bash
+``` bash
 #!/bin/sh
 export LD_PRELOAD=/opt/sublime_text/libsublime-imfix.so
 exec /opt/sublime_text/sublime_text "$@"
@@ -135,25 +135,25 @@ exec /opt/sublime_text/sublime_text "$@"
 
 4. 如果想要把sublime text更動為預設編輯器，先使用下列指令確定是否有安裝成功：
 
-```bash
+``` bash
 ls /usr/share/applications/sublime-text.desktop
 ```
 
 接著打開linux的default列表：
 
-```bash
+``` bash
 sudo subl /usr/share/applications/defaults.list
 ```
 
 按下Ctrl+H replace gedit with sublime-text。接著打開user的設定列表：
 
-```bash
+``` bash
 subl ~/.local/share/applications/mimeapps.list
 ```
 
 修改或添加下列下列文字：
 
-```bash
+``` bash
 [Added Associations]
 text/plain=ubuntu-software-center.desktop;shotwell.desktop;sublime-text.desktop;
 text/x-chdr=shotwell-viewer.desktop;

@@ -7,7 +7,7 @@ Recently, I went to the 23th STSC, I got some information about the new API of `
 
 First example: call the `pnorm` function in Rcpp:
 
-```R
+``` R
 require(Rcpp)
 sourceCpp(code = '
 #include <Rcpp.h>
@@ -34,7 +34,7 @@ Rcpp attributes allows user to write Rcpp in a simple way. User does not need to
 
 Next two example is about the two extension packages of Rcpp, RcppArmadillo and RcppEigen. The two packages provide Rcpp to link the C++ linear algebra libraries, armadillo and Eigen.
 
-```R
+``` R
 library(Rcpp)
 library(RcppArmadillo)
 library(RcppEigen)

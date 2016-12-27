@@ -9,7 +9,7 @@ title: "Installation of OpenCPU in centos"
 
 讓local的R可以去call server服務
 
-```bash
+``` bash
 # install Microsoft R Open
 su -c 'rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'
 sudo yum update
@@ -42,7 +42,7 @@ opencpu-server/rpm/buildscript.sh
 
 最後使用下面指令開port就可以順利在網頁上登入`http://<your_ip_address>/ocpu/test`
 
-```bash
+``` bash
 sudo iptables -I INPUT -p tcp --dport 80 -j ACCEPT
 sudo service iptables save
 ```

@@ -7,7 +7,7 @@ Usually, we have to sum a list of matrices, I introduce several ways to do that.
 
 In my test, `Reduce` is the most easy and fast to do this, but it need a lot of memory. A function written in `Rcpp` is the fastest way to do. But there is a requirement that you have learned C++. Besides above two methods, the naive method by using `for` is not so slow, it is also a good option.
 
-```R
+``` R
 # Aware that this setting require your memory to be large than 6GB. Otherwise, your computer will be out of memory and maybe shut down. If this happens or not enough memory, please change the `mat_size` or `length_list`.
 
 length_list = 30

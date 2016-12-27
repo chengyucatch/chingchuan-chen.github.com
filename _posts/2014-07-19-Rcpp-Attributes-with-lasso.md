@@ -10,7 +10,7 @@ Friedman, J., Hastie, T. and Tibshirani, R. (2008) Regularization Paths for Gene
 
 Code:
 
-```R
+``` R
 library(Rcpp)
 library(RcppArmadillo)
 sourceCpp(code = '

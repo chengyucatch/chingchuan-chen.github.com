@@ -22,7 +22,7 @@ title: "R web service with opencpu"
 
 首先，安裝`opencpu`，然後安裝`devtools`
 
-```R
+``` R
 # 安裝我的套件
 devtools::install_github("ChingChuan-Chen/test.opencpu")
 # 啟動opencpu
@@ -49,7 +49,7 @@ opencpu web UI操作POST：![](/images/opencpu3.PNG)
 
 來用R來取得，其程式碼就會像下面這樣：
 
-```R
+``` R
 library(pipeR)
 library(httr)
 library(stringr)

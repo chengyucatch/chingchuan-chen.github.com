@@ -7,7 +7,7 @@ A simple log for doing a job of mapreduce in python.
 
 We implement wordcount by using hadoop streaming. New two python script files named mapper.py and reducer.py, respectively.
 
-```python
+``` python
 #!/usr/bin/env python
 ## mapper.py
 import sys
@@ -18,7 +18,7 @@ for line in sys.stdin:
         print '%s\t%s' % (word, 1)
 ```
 
-```python
+``` python
 #!/usr/bin/env python
 ## reducer.py
 from operator import itemgetter
@@ -45,7 +45,7 @@ if current_word == word:
 ```
 
 Using the example in previous article for hadoop and run hadoop streaming in the terminal:
-```bash
+``` bash
 cd ~/Downloads && mkdir testData && cd testData
 wget http://www.gutenberg.org/ebooks/5000.txt.utf-8
 cd ..

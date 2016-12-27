@@ -7,7 +7,7 @@ There is a data give the Time and ID to find the Session. The value of variable 
 
 For example, the data looks like:
 
-```R
+``` R
 ID                Time Session
 1  2014-08-28 00:00:00       1
 1  2014-08-28 00:23:33       1
@@ -23,7 +23,7 @@ ID                Time Session
 
 We generate ID and time to test the performance.
 
-```R
+``` R
 library(data.table)
 library(dplyr)
 library(magrittr)

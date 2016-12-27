@@ -9,7 +9,7 @@ This post is to record the installation of MRo in ubuntu 16.04.
 First, go to the official website of MRO to check the download link ([Link](https://mran.revolutionanalytics.com/download/)).
 The installation is refer to the manual at the website ([Link](https://mran.microsoft.com/documents/rro/installation/)).
 
-```bash
+``` bash
 # download the installation file
 wget https://mran.revolutionanalytics.com/install/mro/3.2.4/MRO-3.2.4-Ubuntu-15.4.x86_64.deb
 wget https://mran.revolutionanalytics.com/install/mro/3.2.4/RevoMath-3.2.4.tar.gz

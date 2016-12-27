@@ -5,7 +5,7 @@ title: Combinations of protein in Rcpp
 
 There is a sequence of protein like `A B1/B2 C1/C2 K/D E F1/F2`, `K` does not connect to next point, so it is cut at K. Therefore, the combinations of protein is in the following:
 
-```R
+``` R
 A B1 C1 K
 A B2 C1 K
 A B1 C2 K
@@ -22,7 +22,7 @@ A B2 C2 D E F2
 ```
 
 The code to generate sequence of protein and list the all combinations is below.
-```R
+``` R
 library(Rcpp)
 library(RcppArmadillo)
 sourceCpp(code = '

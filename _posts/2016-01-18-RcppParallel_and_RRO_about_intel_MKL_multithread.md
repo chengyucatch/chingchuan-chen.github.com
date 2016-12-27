@@ -31,7 +31,7 @@ and is better than using 1 MKL threads. From this test, we think that the perfor
 deeply affected the number of threads Intel MKL used.
 We suggest not to change the number of threads Intel MKL used, just keep it default.
 
-```R
+``` R
 library(Rcpp)
 library(RcppArmadillo)
 library(RcppParallel)

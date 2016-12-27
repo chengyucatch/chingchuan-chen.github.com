@@ -44,7 +44,7 @@ ssh部分要實現全部都能互相連接，不能只有master能夠連到slave
 
 因此，這裡給一個簡單的script去做key的傳遞
 
-```bash
+``` bash
 # 每一台都執行完下面兩個指令後
 ssh-keygen -t rsa -P ""
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
@@ -66,7 +66,7 @@ done
 
 1. 下載檔案
 
-```bash
+``` bash
 # 建立放置資料夾
 sudo mkdir /usr/local/bigdata
 sudo chown -R tester /usr/local/bigdata
@@ -100,7 +100,7 @@ mv spark-2.0.0-bin-hadoop2.7 /usr/local/bigdata/spark
 
 2. 環境變數設置：
 
-```bash
+``` bash
 sudo tee -a /etc/bashrc << "EOF"
 # JAVA
 export JAVA_HOME=/usr/java/jdk1.8.0_101
@@ -131,7 +131,7 @@ source /etc/bashrc
 
 a. Zookeeper, Mesos設定
 
-```bash
+``` bash
 ## Zookeeper
 # 複製zoo.cfg
 cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg
@@ -169,7 +169,7 @@ EOF
 
 b. Hadoop設定
 
-```bash
+``` bash
 # slaves
 tee $HADOOP_CONF_DIR/slaves << "EOF"
 cassSpark1
@@ -358,7 +358,7 @@ scp -r /usr/local/bigdata/hadoop tester@cassSpark3:/usr/local/bigdata
 
 c. HBase設定
 
-```bash 
+``` bash 
 sed -i -e 's/<\/configuration>//g' $HBASE_HOME/conf/hbase-site.xml
 tee -a $HBASE_HOME/conf/hbase-site.xml << "EOF"
   <property>
@@ -402,7 +402,7 @@ scp -r /usr/local/bigdata/hbase tester@cassSpark3:/usr/local/bigdata
 
 4. 啟動
 
-```bash
+``` bash
 # 啟動zookeeper server (設定自動啟動可以跳過)
 zkServer.sh start
 ssh tester@cassSpark2 "zkServer.sh start"
@@ -452,7 +452,7 @@ ssh tester@cassSpark3 "hbase-daemon.sh start regionserver"
 
 先安裝supervisor:
 
-```bash
+``` bash
 sudo yum install python-setuptools
 sudo easy_install pip
 sudo pip install supervisor

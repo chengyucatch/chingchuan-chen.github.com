@@ -21,7 +21,7 @@ title: "基於hadoop的spark, phoenix, hbase, yarn, zookeeper部署"
     
 a. 給予使用者sudoer權限
       
-```bash
+``` bash
 su # 切換到root
 visudo # 打開設定檔
 # 打/root\tALL找到這行 root ALL=(ALL) ALL
@@ -46,7 +46,7 @@ b. 網路設定
 
 改成下方這樣：
       
-```bash
+``` bash
 TYPE=Ethernet
 BOOTPROTO=none
 DEFROUTE=yes
@@ -77,7 +77,7 @@ IPV6_PRIVACY=no
     
 c. 安裝ssh跟設定ssh資料夾權限
     
-```bash
+``` bash
 # 安裝SSH
 sudo yum -y install rsync openssh-server-*
 # 產生SSH Key
@@ -95,7 +95,7 @@ sudo service sshd restart
   
 d. 編輯/etc/hosts
 
-```bash
+``` bash
 sudo tee -a /etc/hosts << "EOF"
 192.168.0.161 sparkServer0
 192.168.0.162 sparkServer1
@@ -106,14 +106,14 @@ EOF
 
 e. 編輯/etc/hostname
     
-```bash
+``` bash
 sudo vi /etc/hostname
 # 對應的電腦修改成對應的名稱
 ```
 
 f. 斷掉防火牆
     
-```bash
+``` bash
 sudo systemctl stop firewalld
 sudo systemctl disable firewalld  
 ```
@@ -121,7 +121,7 @@ sudo systemctl disable firewalld
 2. 開始部署
 i. 關掉ip v6
    
-```bash
+``` bash
 sudo tee -a /etc/sysctl.conf << "EOF"
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
@@ -131,7 +131,7 @@ EOF
 
 ii. 下載檔案並移到適當位置
     
-```bash
+``` bash
 # 下載並安裝java
 curl -v -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-x64.rpm -o jdk-8u101-linux-x64.rpm
 sudo yum install -y jdk-8u101-linux-x64.rpm
@@ -168,7 +168,7 @@ sudo chown -R tester /usr/local/spark
    
 iii. 環境變數設置
     
-```bash
+``` bash
 sudo tee -a /etc/bashrc << "EOF"
 # JAVA
 export JAVA_HOME=/usr/java/jdk1.8.0_101
@@ -211,7 +211,7 @@ iv. 配置Hadoop
 a. core-site.xml
 用`vi $HADOOP_CONF_DIR/core-site.xml`編輯，改成下面這樣：
   
-```xml
+``` xml
 <configuration>
   <property>
     <name>fs.default.name</name>
@@ -227,7 +227,7 @@ a. core-site.xml
 b. mapred-site.xml
 先用`cp $HADOOP_CONF_DIR/mapred-site.xml.template $HADOOP_CONF_DIR/mapred-site.xml`，然後用`vi $HADOOP_CONF_DIR/mapred-site.xml`編輯，改成下面這樣：
     
-```xml
+``` xml
 <configuration>
   <property>
     <name>mapreduce.framework.name</name>
@@ -239,7 +239,7 @@ b. mapred-site.xml
 c. hdfs-site.xml
 用`vi $HADOOP_CONF_DIR/hdfs-site.xml`編輯，改成下面這樣：
         
-```xml
+``` xml
 <configuration>
   <property>
     <name>dfs.replication</name>
@@ -266,7 +266,7 @@ c. hdfs-site.xml
 
 建立node需要的資料夾：
         
-```bash
+``` bash
 mkdir -p $HADOOP_HOME/tmp
 mkdir -p $HADOOP_HOME/tmp/data
 mkdir -p $HADOOP_HOME/tmp/name
@@ -275,7 +275,7 @@ mkdir -p $HADOOP_HOME/tmp/name
 d. yarn-site.xml
 用`vi $HADOOP_CONF_DIR/yarn-site.xml`編輯，改成下面這樣：
     
-```xml
+``` xml
 <configuration>
   <property>
     <name>yarn.resourcemanager.hostname</name>
@@ -294,7 +294,7 @@ d. yarn-site.xml
 
 e. 配置slaves
         
-```bash
+``` bash
 # 傳入slaves的電腦名稱
 tee $HADOOP_CONF_DIR/slaves << "EOF"
 sparkServer1
@@ -306,7 +306,7 @@ EOF
 ii. 配置Zookeeper
 先用`cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg`，然後用`vi $ZOOKEEPER_HOME/conf/zoo.cfg`編輯，改成下面這樣：
 
-```bash
+``` bash
 dataDir=/usr/local/zookeeper/data
 server.1=sparkServer0:2888:3888
 server.1=sparkServer1:2888:3888
@@ -323,7 +323,7 @@ EOF
 iii. 配置HBase
 用`vi $HBASE_HOME/conf/hbase-site.xml`編輯，改成下面這樣：
       
-```xml
+``` xml
 <configuration>
   <property>
     <name>hbase.master</name>
@@ -360,7 +360,7 @@ iii. 配置HBase
   
 iv. 配置phoenix
       
-```bash
+``` bash
 # 縮短名稱
 mv phoenix-4.7.0-HBase-1.1-bin phoenix-4.7.0
 # 複製lib檔案到HBase/lib下
@@ -382,7 +382,7 @@ chmod +x $PHOENIX_HOME/bin/*.py
 
 並且在用`vi $PHOENIX_HOME/bin/hbase-site.xml`加入下面的設定
       
-```xml
+``` xml
 <property>
 <name>fs.hdfs.impl</name>
 <value>org.apache.hadoop.hdfs.DistributedFileSystem</value>
@@ -391,7 +391,7 @@ chmod +x $PHOENIX_HOME/bin/*.py
   
 v. 配置scala and spark
       
-```bash
+``` bash
 # 複製hadoop的slaves
 cp $HADOOP_CONF_DIR/slaves $SPARK_HOME/conf/slaves
 
@@ -411,7 +411,7 @@ vi. slaves的部署
 
 因為是VM，所以剩下的就是把映像檔clone複製成各個nodes，然後針對需要個別配置的地方做配置：
 
-```bash
+``` bash
 # 改hostname
 sudo vi /etc/hostname
 # 改網路設定
@@ -430,7 +430,7 @@ EOF
 
 4. 啟動hadoop server / zookeeper server / hbase server / 
 
-```bash
+``` bash
 # 執行hadoop的namenode format
 hdfs namenode -format 
 # 啟動hadoop server
@@ -446,7 +446,7 @@ start-hbase.sh
 5. 測試
 i. Hadoop MapReduce例子 - pi estimation
   
-```bash
+``` bash
 hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.4.jar pi 10 1000
 # output會像下面這樣
 # Job Finished in 2.413 seconds
@@ -456,7 +456,7 @@ hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.4.j
 ii. zookeeper
 再來是測試看看zookeeper是否有部署成功，先輸入`zkCli.sh -server cassSpark1:2181,cassSpark2:2181,cassSpark3:2181`可以登錄到zookeeper的server上，如果是正常運作會看到下面的訊息：
 
-```bash
+``` bash
 [zk: cassSpark1:2181,cassSpark2:2181,cassSpark3:2181(CONNECTED) 0]
 ```
 
@@ -469,7 +469,7 @@ ii. zookeeper
 iii. HBase
 鍵入`hbase shell`會出現下面的訊息：
       
-```bash
+``` bash
 SLF4J: Class path contains multiple SLF4J bindings.
 SLF4J: Found binding in [jar:file:/usr/local/hbase/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
 SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
@@ -484,7 +484,7 @@ hbase(main):001:0>
 
 測試建表、塞資料、擷取資料跟刪除表(#後面是會出現的訊息)：
 
-```bash
+``` bash
 # 建表
 create 'testData','cf'  
 # 0 row(s) in 1.3420 seconds
@@ -539,7 +539,7 @@ list
 
 iv. phoenix
   
-```bash
+``` bash
 # 創表SQL
 cat $PHOENIX_HOME/examples/STOCK_SYMBOL.sql
 # -- creates stock table with single row
@@ -637,7 +637,7 @@ sqlline.py sparkServer0:2181
 
 離開請按`CTRL+Z`或是用`!quit`，輸入`exit()`是沒用的。接下來，我們試試看在`hbase`裡面看不看的到我們剛剛插入的表，打`hbase shell`進入，然後開始測試：
   
-```bash
+``` bash
 # scan看看就可以發現表已經存進來了
 # hbase(main):001:0> scan 'STOCK_SYMBOL'
 ## ROW                             COLUMN+CELL
@@ -664,7 +664,7 @@ sqlline.py sparkServer0:2181
    
 最後是進去`sqlline.py`去刪掉剛剛建立的表：
       
-```bash
+``` bash
 sqlline.py sparkServer0:2181
 # 0: jdbc:phoenix:sparkServer0:2181> DROP TABLE STOCK_SYMBOL;
 ## No rows affected (3.556 seconds)
@@ -684,7 +684,7 @@ sqlline.py sparkServer0:2181
 v. spark 
 利用spark提供的例子去測試看看 (記得要先開啟hadoop)
       
-```bash
+``` bash
 spark-submit --class org.apache.spark.examples.SparkPi \
   --deploy-mode cluster  \
   --master yarn  \

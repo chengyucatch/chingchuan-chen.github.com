@@ -28,7 +28,7 @@ Dynamic resource allocation是為了能夠讓Spark能夠更有效的使用系統
 
 這裡只要重新配置Spark即可
 
-```bash
+``` bash
 # 移除舊的 (有的話)
 rm -r $SPARK_HOME
 
@@ -82,7 +82,7 @@ scp -r /usr/local/bigdata/spark tester@cassSpark3:/usr/local/bigdata
 
 設定自動啟動shuffle service
 
-```bash
+``` bash
 sudo tee /etc/init.d/spark-shuffle << "EOF"
 #!/bin/bash
 #
@@ -168,13 +168,13 @@ sudo service spark-shuffle start
 
 試試看用下面指令submit任務
 
-```bash
+``` bash
 spark-submit --master mesos://zk://192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181/mesos --class cassSpark test_cassspark_2.11-1.0.jar
 ```
 
 下方的指令可以用來找出現在的Mesos master
 
-```bash
+``` bash
 mesos-resolve `cat /etc/mesos/zk`
 ```
 
@@ -191,7 +191,7 @@ mesos-resolve `cat /etc/mesos/zk`
 
 最後是關於刪掉framework的方式，可以在unix系統上使用下方指令去刪除framework：
 
-```bash
+``` bash
 # framework id可以在Framework那頁找到，按copy id就可以複製下來，然後貼到命令裡面來發出刪除的動作
 curl -XPOST http://192.168.0.121:5050/master/teardown -d 'frameworkId=2444f6a3-1bfb-47d6-8b11-ab9c8f56e3c9-0000'
 ```

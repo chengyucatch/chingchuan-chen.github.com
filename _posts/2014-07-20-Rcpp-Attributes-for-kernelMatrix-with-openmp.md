@@ -7,7 +7,7 @@ I use Rcpp Attributes to compute the kernel matrix and show how to link omp to s
 
 Code:
 
-```R
+``` R
 library(kernlab)
 library(Rcpp)
 library(RcppArmadillo)
@@ -67,7 +67,7 @@ benchmark(cpp = kernelMatrix_cpp(X, center, sigma),
 
 With openmp, it is faster than kernlab with small input matrix size, however, the efficiency is too low when the size increase. Another efficient method is listed below:
 
-```R
+``` R
 library(kernlab)
 library(Rcpp)
 library(RcppArmadillo)

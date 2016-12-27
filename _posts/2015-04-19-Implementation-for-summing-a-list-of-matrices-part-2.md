@@ -5,7 +5,7 @@ title: Implementation for summing a list of matrices -- part 2
 
 I have showed several implementations for summing a list of matrices in the previous post. I introduce a function to be applied in `do.call` and test performance.
 
-```R
+``` R
 N = 10
 input = lapply(1:N**2, function(x) matrix(rnorm(N**2), N))
 a = do.call(function(...){

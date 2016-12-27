@@ -11,7 +11,7 @@ title: "A comparison for R parallel packages"
 
 下面是Benchmark的R script:
 
-```R
+``` R
 require(doParallel)
 library(foreach)
 require(snowfall)
@@ -134,7 +134,7 @@ rm(cl)
 
 在使用`foreach`時，這一點要特別注意
 
-```R
+``` R
 # without parallel
 f2 <- function(x) rnorm(5)
 

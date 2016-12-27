@@ -59,7 +59,7 @@ Remote Storage Location就輸入你要的倉庫
 
 內容是：
 
-```bash
+``` bash
 [repositories]
 
   local

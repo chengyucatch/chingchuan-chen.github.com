@@ -44,7 +44,7 @@ Spark SQL, Presto，跟Impala互有上下 ([reference 1](http://allegro.tech/201
 
 1. 下載檔案並部署
 
-```bash
+``` bash
 curl -v -j -k -L http://apache.stu.edu.tw/drill/drill-1.8.0/apache-drill-1.8.0.tar.gz -o apache-drill-1.8.0.tar.gz
 tar -xzvf apache-drill-1.8.0.tar.gz
 mv apache-drill-1.8.0 /usr/local/bigdata/drill
@@ -54,7 +54,7 @@ mv apache-drill-1.8.0 /usr/local/bigdata/drill
 
 使用`vi /usr/local/bigdata/drill/conf/drill-override.conf`去configure Drill
 
-```json
+``` json
 drill.exec: {
   cluster-id: "drillcluster",
   zk.connect: "192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181"
@@ -63,7 +63,7 @@ drill.exec: {
 
 如果記憶體不多的話建議下面配置：
 
-```bash
+``` bash
 tee -a /usr/local/bigdata/drill/conf/drill-env.sh << "EOF"
 # 這一行一定要留著
 DRILL_MAX_DIRECT_MEMORY="2G"
@@ -86,7 +86,7 @@ scp -r /usr/local/bigdata/drill tester@cassSpark3:/usr/local/bigdata
 
 可以再Storage Page看到dfs的Option，按下Update即可更新(更新下面的值即可)：
 
-```json
+``` json
 "connection": "hdfs://hc1",
 "workspaces": {
   "root": {
@@ -107,7 +107,7 @@ scp -r /usr/local/bigdata/drill tester@cassSpark3:/usr/local/bigdata
 
 再來是上傳一些資料吧
 
-```bash
+``` bash
 tee ~/test_df.json << "EOF"
 [{"v1":"b","v2":"d","v3":0.01991423},{"v1":"b","v2":"e","v3":0.73282957},{"v1":"b","v2":"c","v3":0.00552144},
 {"v1":"b","v2":"d","v3":0.83103357},{"v1":"a","v2":"d","v3":-0.79378789},{"v1":"a","v2":"e","v3":-0.36969293},
@@ -137,7 +137,7 @@ EOF
 
 上傳到hdfs去：
 
-```bash
+``` bash
 hdfs dfs -mkdir /drill
 hdfs dfs -mkdir /drill/tmp
 hdfs dfs -put ~/test_df.json /drill
@@ -152,7 +152,7 @@ hdfs dfs -ls /drill
 
 執行下面的SQL可以得到下圖的結果
 
-```SQL
+``` SQL
 SELECT * FROM dfs.`/drill/test_df.json`;
 ```
 
@@ -160,7 +160,7 @@ SELECT * FROM dfs.`/drill/test_df.json`;
 
 執行下面的SQL可以得到下圖的結果
 
-```SQL
+``` SQL
 SELECT * FROM dfs.`/drill/test_widecol.json`;
 ```
 
@@ -209,7 +209,7 @@ jdbc:drill:zk=<zookeeper_quorum>/<drill_directory_in_zookeeper>/<cluster_ID>;sch
 
 ![](/images/drill_rest_2.png)
 
-```R
+``` R
 library(httr)
 
 POST("http://192.168.0.121:8047/query.json", 
@@ -227,7 +227,7 @@ POST("http://192.168.0.121:8047/query.json",
 
 然後在web UI的Storage增加一個New Storage Plugin，叫做oracle：
 
-```json
+``` json
 {
   type: "jdbc",
   enabled: true,

@@ -17,14 +17,14 @@ title: "sparklyr extensions"
 
 使用下面的指令做調整的動作即可
 
-```bash
+``` bash
 sudo mkdir /usr/local/scala
 sudo mv /usr/local/bigdata/scala /usr/local/scala/scala-2.11
 ```
 
 接著run下面的script
 
-```R
+``` R
 library(sparklyr)
 
 # 下載sparkhello套件

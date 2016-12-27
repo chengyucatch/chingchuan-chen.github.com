@@ -38,7 +38,7 @@ conda會幫你把Oracle instant client下載好，並放在適當目錄中
 
 完整程式如下：
 
-```python
+``` python
 # -*- coding: utf-8 -*-
 
 import StringIO, csv, cx_Oracle, sys, os, datetime, time
@@ -227,7 +227,7 @@ adult,testData/adult.csv,datasets_2,adult"""
 
 刪除全部測試資料的程式碼：
 
-```python
+``` python
 # -*- coding: utf-8 -*-
 
 import StringIO, csv, cx_Oracle

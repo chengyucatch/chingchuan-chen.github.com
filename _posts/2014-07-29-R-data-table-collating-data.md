@@ -9,7 +9,7 @@ It is an estate data which contains housing price and some variables. I put data
 
 Code:
 
-```R
+``` R
 library(data.table)
 library(dplyr)
 dat = lapply(paste0("List_", LETTERS[LETTERS!="L" & LETTERS!="R" & LETTERS!="S" & LETTERS!="Y"], ".csv"), read.csv)

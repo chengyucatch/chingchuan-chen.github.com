@@ -6,7 +6,7 @@ title: Processing string in R (Rcpp and rJava)
 There is a example for processing string in R.
 
 Before we use rJava, we need a class file first. The `regex_java.java` is shown in below and compilation can be done with command `javac regex_java.java`.
-```java
+``` java
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,7 +51,7 @@ public class regex_java {
 
 Next, we demonstrate the performance between R, Rcpp and rJava. However, Rcpp cannot process string in regular expression because the standard of C++ does not support regular expression before C++14. Note that g++ have `regexp.h` to support regular expression in linux.
 
-```R
+``` R
 library(data.table)
 library(plyr)
 library(dplyr)

@@ -5,7 +5,7 @@ title: "Installation of mongodb in ubuntu"
 
 mongodb is a noSQL database. I use it to construct the vd database.
 
-```bash
+``` bash
 # install mongodb
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
 echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
@@ -43,7 +43,7 @@ cat /var/log/mongodb/mongod.log
 
 
 use `subl /etc/mongod.conf` to edit the configuration of mongodb. The default file:
-```bash
+``` bash
 # mongod.conf
 
 # for documentation of all options, see:
@@ -89,7 +89,7 @@ net:
 ```
 
 After some edits:
-```bash
+``` bash
 # mongod.conf
 
 # for documentation of all options, see:
@@ -137,7 +137,7 @@ security:
 ```
 
 For security, to add admin user and create users:
-```bash
+``` bash
 use admin
 # the user managing users
 db.createUser(

@@ -11,7 +11,7 @@ title: "Spark assembly"
 
 在Intellij開啟專案後，在`build.sbt`新增如下：
 
-```scala
+``` scala
 // Spark相關的記得都加上 % "provided" 因為cluster上已經會有對應的jar檔了
 libraryDependencies ++= Seq(
   "com.datastax.spark" %% "spark-cassandra-connector" % "2.0.0-M1",
@@ -38,7 +38,7 @@ assemblyShadeRules in assembly := Seq(
 
 並在project下方新增一個檔案`assembly.sbt`，其內容是：
 
-```scala
+``` scala
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.3")
 ```
 
@@ -46,7 +46,7 @@ addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.3")
 
 程式內容如下：
 
-```scala
+``` scala
 import java.net.InetAddress._
 import com.datastax.spark.connector._
 import org.apache.spark.sql.{SparkSession, SaveMode}
@@ -111,7 +111,7 @@ object cassSpark {
 
 然後上傳`test_cassSpark-assembly-1.0.jar`，在console輸入下面的指令就可以執行了
 
-```bash
+``` bash
 spark-submit --master mesos://zk://192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181/mesos --class cassSpark test_cassSpark-assembly-1.0.jar
 ```
 

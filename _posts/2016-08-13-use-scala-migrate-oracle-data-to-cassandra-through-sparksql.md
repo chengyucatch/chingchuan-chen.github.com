@@ -15,7 +15,7 @@ ROracle安裝部分請參考[這篇](http://chingchuan-chen.github.io/oracle/201
 
 透過sqlplus在Oracle server上創新的user，其SQL如下：
 
-```sql
+``` sql
 CREATE TABLESPACE testuser
   DATAFILE 'testuser.dat'
   SIZE 40M REUSE AUTOEXTEND ON;
@@ -39,7 +39,7 @@ TO C##testuser;
 
 我們再透過R去塞一個夠大的資料到Oracle上去，其R code如下：
 
-```R
+``` R
 library(rpace)  # my package (there is a big data.frame)
 library(fasttime)
 library(ROracle)
@@ -97,7 +97,7 @@ dbDisconnect(con)
 
 `build.sbt`的部分：
 
-```bash
+``` bash
 name := "oracle2cassandra_sparksql"
 
 version := "1.0"
@@ -113,7 +113,7 @@ libraryDependencies += "com.datastax.spark" %% "spark-cassandra-connector" % "2.
 
 scala code:
 
-```scala
+``` scala
 import java.net.InetAddress
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.cassandra._
@@ -175,7 +175,7 @@ object ora2cass {
 
 然後把ojdbc7.jar放進server，用
 
-```bash
+``` bash
 cp ~/ojdbc7.jar $SPARK_HOME/extraClass
 cp $SPARK_HOME/conf/spark-defaults.conf.template $SPARK_HOME/conf/spark-defaults.conf
 
@@ -190,7 +190,7 @@ EOF
 
 重開spark，再用`spark-submit`：
 
-```bash
+``` bash
 spark-submit --class ora2cass oracle2cassandra_sparksql_2.11-1.0.jar C##TESTUSER VDDATA testuser vddata
 ```
 

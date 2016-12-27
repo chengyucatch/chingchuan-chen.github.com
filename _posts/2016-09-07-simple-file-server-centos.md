@@ -5,7 +5,7 @@ title: "simple file server in centos"
 
 這篇主要是講在centos做一個簡單的file server
 
-```bash
+``` bash
 # 安裝httpd
 sudo yum install httpd
 

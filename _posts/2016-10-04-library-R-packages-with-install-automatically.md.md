@@ -5,7 +5,7 @@ title: "library多個套件，並自動安裝沒安裝的套件"
 
 廢話不多說，直接上code
 
-```R
+``` R
 library(pipeR)
 library_mul <- function(..., lib.loc = NULL, quietly = FALSE, warn.conflicts = TRUE){
   pkgs <- as.list(substitute(list(...))) %>>% sapply(as.character) %>>% setdiff("list")

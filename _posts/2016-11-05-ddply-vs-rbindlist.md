@@ -17,7 +17,7 @@ title: plyr::ddply vs data.table::rbindlist
 
 下面是Benchmark的R script:
 
-```R
+``` R
 library(plyr)
 library(data.table)
 library(pipeR)

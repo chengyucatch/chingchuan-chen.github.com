@@ -18,7 +18,7 @@ Figure 4: Searching in square with radius 2
 
 I have three versions for searching maximum point by point. First one rely on Rcpp function completely, second one use sapply and Rcpp function which searching one point and third one use parallel and R function. Code is present as following:
 
-```R
+``` R
 x.range.v = 1:300
 y.range.v = 1:300
 data.m = expand.grid(x.range.v, y.range.v)

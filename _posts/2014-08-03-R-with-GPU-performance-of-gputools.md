@@ -7,7 +7,7 @@ I can't wait to test the performance of R with GPU. I test the performance of gp
 
 The test code is showed in following:
 
-```R
+``` R
 library(Rcpp)
 sourceCpp(code = '
 // [[Rcpp::depends(RcppArmadillo)]]

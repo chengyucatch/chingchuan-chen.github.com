@@ -5,7 +5,7 @@ title: Taking average every k periods
 
 We have a repeated-measuring data. We want to take average every 3 periods. Here is code to do it.
 
-```R
+``` R
 library(plyr)
 library(dplyr)
 library(data.table)

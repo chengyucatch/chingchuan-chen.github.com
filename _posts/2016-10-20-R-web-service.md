@@ -13,7 +13,7 @@ R也可以開啟一個簡單的server
 
 先用一個給什麼Query都回成JSON的app
 
-```R
+``` R
 library(httpuv)
 library(stringr)
 library(RCurl)
@@ -46,7 +46,7 @@ openServer(app)
 
 在一個R跑上面這個script，然後再開一個R去跑下面的script就可以看到成果：
 
-```R
+``` R
 library(httr)
 library(pipeR)
 
@@ -58,7 +58,7 @@ library(pipeR)
 
 下面給一個或許可以用來拉資料的方案XD
 
-```R
+``` R
 app2 <- list(call = function(request) {
   query <- request$QUERY_STRING %>>% str_replace_all("^\\?", "")
   if (str_detect(query, "data=")) {

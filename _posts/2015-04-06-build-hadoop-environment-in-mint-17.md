@@ -7,7 +7,7 @@ Hadoop is one of the most popular tool to deal with the big data. I construct th
 
 1. install java jdk 8
 
-```bash
+``` bash
 sudo apt-get install python-software-properties
 sudo add-apt-repository ppa:webupd8team/java
 sudo apt-get update
@@ -22,7 +22,7 @@ sudo apt-get purge openjdk-\*
 
 2. install ssh
 
-```bash
+``` bash
 sudo apt-get install ssh rsync openssh-server
 ssh-keygen -t rsa -P "" # generate SSH key
 # Enable SSH Key
@@ -34,7 +34,7 @@ exit
 
 3. download hadoop
 
-```bash
+``` bash
 wget http://apache.stu.edu.tw/hadoop/common/stable2/hadoop-2.7.2.tar.gz
 tar zxvf hadoop-2.7.2.tar.gz
 sudo mv hadoop-2.7.2 /usr/local/hadoop
@@ -44,7 +44,7 @@ sudo chown -R celest hadoop
 
 4. setting environment for java and hadoop
 
-```bash
+``` bash
 sudo subl /etc/bash.bashrc
 # add following 9 lines into file
 # export JAVA_HOME=/usr/lib/jvm/java-8-oracle/
@@ -67,14 +67,14 @@ a. setting the network
 
 using `ifconfig` to check whether the network card is adding.
 
-```bash
+``` bash
 sudo subl /etc/network/interfaces
 ```
 
 the content of file looks like this:
 (there must be eth1. Put a address for it on the machines master and slaves.)
 
-```bash
+``` bash
 # The loopback network interface for master
 auto lo
 iface lo inet loopback
@@ -96,12 +96,12 @@ and check the network again by `ifconfig`.
 5. setup for hadoop
 
 a. disabling IPv6 by editing `/etc/sysctl.conf`
-```bash
+``` bash
 subl /etc/sysctl.conf
 ```
 
 paste the following into `/etc/sysctl.conf`
-```bash
+``` bash
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
@@ -112,7 +112,7 @@ checking whether ipv6 is disable: `cat /proc/sys/net/ipv6/conf/all/disable_ipv6`
 b. editing following files:
 
 create the folders for putting data.
-```bash
+``` bash
 cd /usr/local/hadoop
 sudo mkdir -p /usr/local/hadoop/tmp
 sudo chown celest /usr/local/hadoop/tmp
@@ -141,7 +141,7 @@ replace the line `JAVA_HOME={JAVA_HOME}` with your java root, in my case, it is
 b. core-site.xml
 put the following content to the file.
 
-```xml
+``` xml
 <configuration>
  <property>
   <name>hadoop.tmp.dir</name>
@@ -168,7 +168,7 @@ put the following content to the file.
 c. mapred-site.xml
 There is no file `mapred-site.xml`, we get by copy the `mapred-site.xml.template`. This command would be helpful: `cp etc/hadoop/mapred-site.xml.template etc/hadoop/mapred-site.xml && subl etc/hadoop/mapred-site.xml`. We set the specification of job tracker like this:
 
-```xml
+``` xml
 <configuration>
 <property>
   <name>mapreduce.framework.name</name>
@@ -179,7 +179,7 @@ There is no file `mapred-site.xml`, we get by copy the `mapred-site.xml.template
 
 d. hdfs-site.xml
 
-```xml
+``` xml
 <configuration>
 <property>
   <name>dfs.replication</name>
@@ -201,7 +201,7 @@ d. hdfs-site.xml
 
 e. yarn-site.xml
 
-```xml
+``` xml
 <configuration>
 <!-- <property>
      <name>yarn.resourcemanager.hostname</name>
@@ -223,14 +223,14 @@ f. slaves (for multi-node.)
 
 put names of your machines in the `hadoop/etc/hadoop/slaves`. Command: `subl etc/hadoop/slaves`. The file looks like:
 
-```bash
+``` bash
 master
 slave01
 ```
 
 6. Starting hadoop
 
-```bash
+``` bash
 # import environment variable
 # ubuntu: source ~/.bashrc
 source /etc/bash.bashrc
@@ -242,7 +242,7 @@ start-dfs.sh && start-yarn.sh
 ```
 
 The output looks like this: (standalone)
-```bash
+``` bash
 localhost: starting namenode, logging to /usr/local/hadoop/logs/hadoop-master-namenode-master-virtual-machine.out
 localhost: starting datanode, logging to /usr/local/hadoop/logs/hadoop-master-datanode-master-virtual-machine.out
 Starting secondary namenodes [0.0.0.0]
@@ -253,7 +253,7 @@ localhost: starting nodemanager, logging to /usr/local/hadoop/logs/yarn-master-n
 ```
 
 The output looks like this: (standalone)
-```bash
+``` bash
 master: starting namenode, logging to /usr/local/hadoop/logs/hadoop-master-namenode-master.out
 slave01: starting datanode, logging to /usr/local/hadoop/logs/hadoop-master-datanode-slave01.out
 Starting secondary namenodes [0.0.0.0]
@@ -264,7 +264,7 @@ slave01: starting nodemanager, logging to /usr/local/hadoop/logs/yarn-master-nod
 ```
 
 check whether the server starts by connecting the local server.
-```bash
+``` bash
 # for standalone
 firefox http:\\localhost:50070
 firefox http:\\localhost:50090
@@ -273,12 +273,12 @@ hdfs dfsadmin -report
 ```
 
 Run a example in the folder
-```bash
+``` bash
 hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.2.jar pi 10 100
 ```
 
 The last two line will show the following informations:
-```bash
+``` bash
 Job Finished in 167.153 seconds
 Estimated value of Pi is 3.14800000000000000000
 ```
@@ -286,7 +286,7 @@ Estimated value of Pi is 3.14800000000000000000
 Run second example
 
 8. run wordaccout
-```bash
+``` bash
 cd ~/Downloads && mkdir testData && cd testData
 # download data for test
 wget http://www.gutenberg.org/ebooks/5000.txt.utf-8
@@ -316,7 +316,7 @@ hdfs dfs -rm -r /user/celest/testData-output
 To avoid the warning `WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable`, you can build the 64 bit hadoop lib by yourself.
 
 Here is the bash script to compile:
-```bash
+``` bash
 # install the necessary packages
 sudo apt-get -y install build-essential protobuf-compiler autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev git subversion
 cd ~/Downloads

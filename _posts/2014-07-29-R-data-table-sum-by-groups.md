@@ -7,7 +7,7 @@ title: R data.table - sum by groups
 
 Code:
 
-```R
+``` R
 N = 1e4
 x = data.frame(Freq=runif(N,0,1),Category=c("T","F"))
 
@@ -66,7 +66,7 @@ benchmark(data_table = x_dt[, sum(Freq),by = Category],
 In the case with small sample size, `tapply` is the most efficient tool for summing by groups. In the case with large sample size, `data.table` and `summarise` in `dplyr` are more efficient.
 
 Next, we benchmark the performance of summing by two groups. Code:
-```R
+``` R
 
 N = 1e4
 set.seed(100)
@@ -121,7 +121,7 @@ benchmark(data_table = x_dt[, sum(Freq),by = key(x_dt)],
 In the case of summing by two groups, `data.table` is much more efficient in large size. We also try a `Rcpp` in summing by groups. Code:
 
 
-```R
+``` R
 
 library(Rcpp)
 sourceCpp(code = '

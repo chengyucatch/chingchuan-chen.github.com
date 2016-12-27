@@ -13,7 +13,7 @@ title: "Locally quantile regression in R"
 
 就可以很自然使用bandwidth去調整線的平滑程度了，程式如下：
 
-```R
+``` R
 data(airquality)
 library(quantreg)
 library(ggplot2)

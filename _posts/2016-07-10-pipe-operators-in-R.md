@@ -58,7 +58,7 @@ title: "Pipe Operators in R"
 例如：
 
 
-```r
+``` r
 a_list <- list(1:6, 3:5, 4:7)
 sort_uni_a <- sort(unique(unlist(a_list)))
 ```
@@ -66,7 +66,7 @@ sort_uni_a <- sort(unique(unlist(a_list)))
 第二行這樣連在一起非常的難讀，但是改成下面這樣，又有效能問題(暫存變數)：
 
 
-```r
+``` r
 unlist_list <- unlist(a_list)
 sort_uni_a <- sort(unique(unlist_list))
 ```
@@ -74,14 +74,14 @@ sort_uni_a <- sort(unique(unlist_list))
 或是改成這樣，卻沒覺得可讀性上升多少：
 
 
-```r
+``` r
 sort_uni_a <- sort(unique(unlist(a_list)))
 ```
 
 但是用`%>%`改寫就可以兼顧可讀性跟效能問題：
 
 
-```r
+``` r
 sort_uni_a <- a_list %>% unlist %>% unique %>% sort
 ```
 
@@ -98,7 +98,7 @@ sort_uni_a <- a_list %>% unlist %>% unique %>% sort
 舉一個簡單的例子，來說明`%>%`的用法
 
 
-```r
+``` r
 a <- 1
 f <- function(a) a + 1
 f(a)
@@ -132,7 +132,7 @@ a %>% f(.)
 針對這個，我給一段簡單的程式碼來示範：
 
 
-```r
+``` r
 a_list <- list(1:5, 3:7, 6:10)
 a_list %>% do.call(rbind, .)
 a_list %>% Reduce(cbind, .)
@@ -155,7 +155,7 @@ f <- function(x, a, b) a * x^2 + b
 這樣說有點難懂，舉個例子
 
 
-```r
+``` r
 1:2 %>% {
     list(cbind(9:10, .), 3:4 %>% cbind(9:10, .))
 }
@@ -185,7 +185,7 @@ f <- function(x, a, b) a * x^2 + b
 
 
 
-```r
+``` r
 f <- function(x, y, z = "nothing") {
     cat("x =", x, "\n")
     cat("y =", y, "\n")
@@ -223,7 +223,7 @@ f <- function(x, y, z = "nothing") {
 先看簡單的例子 (`add`是`magrittr`提供用在`%>%`上的`+` (這部分請看最後面的補充))
 
 
-```r
+``` r
 a <- 1
 a %>% add(1)  # 同 a %>% '+'(1) or a %>% '+'(., 1)
 a  # 1
@@ -240,7 +240,7 @@ a  # 2
 只需要在第一個傳導變數的operator做改變即可，舉例來說：
 
 
-```r
+``` r
 dat <- data.frame(a = 1:3, b = 8:10)
 dat <- dat %>% rbind(dat)
 dat2 <- data.frame(a = 1:3, b = 8:10)
@@ -257,7 +257,7 @@ all.eqaul(dat, dat2)  # TRUE
 並且同時做後面function的動作，舉例來說：
 
 
-```r
+``` r
 dat <- data.frame(a = rep(1:3, 2), b = rnorm(6))
 dat2 <- dat %>% {
     tapply(.$b, .$a, sum)
@@ -287,7 +287,7 @@ dat2 <- dat %>% {
 再給一個例子說明`%$%`就好
 
 
-```r
+``` r
 a <- 3
 b <- -2
 x <- rnorm(100)
@@ -309,14 +309,14 @@ sigma_hat <- fit %$% {
 這個可以讓你寫pipe chain的時候更加順手，像是
 
 
-```r
+``` r
 vals <- 1:3 %>% data.frame(a = ., b = .^2) %>% set_rownames(LETTERS[1:3]) %>% lm(b ~ a, data = .) %>% predict
 ```
 
 不然你可能會這樣寫
 
 
-```r
+``` r
 dat <- 1:3 %>% data.frame(a = ., b = .^2)
 rownames(dat) <- LETTERS[1:3]
 vals = dat %>% lm(b ~ a, data = .) %>% predict
@@ -388,7 +388,7 @@ vals = dat %>% lm(b ~ a, data = .) %>% predict
 例如：
 
 
-```r
+``` r
 a_list <- list(1:5, 3:7, 6:10)
 sort_uni_a <- a_list %>>% unlist %>>% (~cat("what is it? show me:\n", .)) %>>% unique %>>% sort
 ```
@@ -402,7 +402,7 @@ sort_uni_a <- a_list %>>% unlist %>>% (~cat("what is it? show me:\n", .)) %>>% u
 以往的寫法會像是：
 
 
-```r
+``` r
 a_list <- list(1:5, 3:7, 6:10)
 a_list_to_vec <- a_list %>>% unlist
 mean_list_a <- mean(a_list_to_vec)
@@ -414,7 +414,7 @@ sort_uni_demean_a <- a_list_to_vec - mean_list_a
 那改用side effect之後，就可以寫成這樣：
 
 
-```r
+``` r
 a_list <- list(1:5, 3:7, 6:10)
 sort_uni_demean_a <- a_list %>>% unlist %>>% (~mean_list_a <- mean(.)) %>>% unique %>>% sort %>>% -mean_list_a
 ```
@@ -422,7 +422,7 @@ sort_uni_demean_a <- a_list %>>% unlist %>>% (~mean_list_a <- mean(.)) %>>% uniq
 至於`%>%`跟`%>>%`的效能比較可以看下面這段程式(例子取自前面提及的Kun Ren部落格文章)：
 
 
-```r
+``` r
 library(magrittr)
 library(pipeR)
 library(microbenchmark)

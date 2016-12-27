@@ -5,7 +5,7 @@ title: The length of runs of equal values in a vector
 
 We usually encounter the problem for counting the length of equal values repeatedly. `rle` is the build-in command in R to solve this problem which is consist of `diff` and `which`. But it is not so fast, I write another version of `rle` in Rcpp.
 
-```R
+``` R
 library(Rcpp)
 library(RcppArmadillo)
 sourceCpp(code = '

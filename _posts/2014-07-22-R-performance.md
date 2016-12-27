@@ -7,7 +7,7 @@ There is a performance test between R functions, R functions with byte compiler,
 
 Code:
 
-```R
+``` R
 # 1
 a = function(){
   sum = 0
@@ -248,7 +248,7 @@ My environment is ubuntu 14.04, R 3.1.1 compiled by intel c++, fortran compiler 
 Remark:
 I think that the reason why the calculation with matrix is slow is that c++ is a row-major language, so I try another example:
 
-```R
+``` R
 library(Rcpp)
 library(RcppArmadillo)
 sourceCpp(code = '

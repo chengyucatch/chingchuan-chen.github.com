@@ -13,7 +13,7 @@ title: 利用winbash快速複製excel檔案(逐月)，並在excel依檔名變更
 1. EXCEL可以根據呼叫該檔檔名，根據該檔檔名去變動日期
 EX: 1040216日報表.xls 裡面日期會顯示 104年02月16日
 EXCEL指令：
-```javascript
+``` javascript
 =CONCATENATE( LEFT(MID(CELL("filename"), SEARCH("[",CELL("filename"))+1,
    SEARCH("]",CELL("filename")) - SEARCH("[",CELL("filename"))-1), 3), "年",
   RIGHT(LEFT(MID(CELL("filename"), SEARCH("[",CELL("filename")) + 1,
@@ -25,7 +25,7 @@ EXCEL指令：
 母檔：YYYMMDD***.xls
 複製成 1040201***.xls 到 1040228***.xls
 
-```bash
+``` bash
 @Echo Off
 set "year=1990"
 set "month=01"

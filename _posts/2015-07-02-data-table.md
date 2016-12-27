@@ -43,7 +43,7 @@ data.table提供這方面更有效率的操作。
 
 這點跟data.frame不同，使用上需要注意，範例如下：
 
-```R
+``` R
   t = data.table(a = LETTERS[1:3])
   str(t)
 # Classes ‘data.table’ and 'data.frame':  3 obs. of  1 variable:
@@ -79,7 +79,7 @@ key可以是一個變數，也可以是多個變數，這點看個人使用。
 
 a. 我們很常在data.frame做取多行的動作，在data.table是不可行的，舉例：
 
-```R
+``` R
   vars = data.frame(X = rnorm(3), Y = rnorm(3), Z = rnorm(3))
   vars[,1:2]
 #            X         Y
@@ -94,7 +94,7 @@ a. 我們很常在data.frame做取多行的動作，在data.table是不可行的
 
 但是你想這麼做，怎麼辦？ 加上with=FALSE就好了，或是用list包住column name
 
-```R
+``` R
   vars_dt[,1:2,with=FALSE]
 #             X         Y
 # 1: -0.5677575 2.1831285
@@ -120,7 +120,7 @@ d. setDF: 在不製作複本下，把data.table的class改為data.frame
 
 舉例：
 
-```R
+``` R
   DT = data.table(X = rnorm(3), Y = rnorm(3))
   str(DT)
 # Classes ‘data.table’ and 'data.frame':  3 obs. of  2 variables:
@@ -157,7 +157,7 @@ TRUE代表前面有一樣的列，FALSE代表沒有
 
 unique則是留下沒有重複的列，舉例來說：
 
-```R
+``` R
   set.seed(100)
   DT = data.table(A = rbinom(5, 1, 0.5), B = rbinom(5, 1, 0.5))
 #    A B
@@ -185,7 +185,7 @@ unique則是留下沒有重複的列，舉例來說：
 
 不過unique還有更多功能，它可以選擇變數做unique，舉例來說：
 
-```R
+``` R
   unique(DT, by = "A")
 #    A B
 # 1: 0 0
@@ -200,7 +200,7 @@ unique則是留下沒有重複的列，舉例來說：
 
 它就是用unique做的
 
-```R
+``` R
   library(dplyr)
   distinct(DT)
 #    A B
@@ -234,7 +234,7 @@ function (.data, ..., .dots)
 g. transform: 改變column的屬性、值等，舉例來說：
 
 
-```R
+``` R
   DT = data.table(a = 1:3, b = 2:4, c = LETTERS[1:3])
   DT2 = copy(DT)
   DT[, b := b**2]
@@ -251,7 +251,7 @@ g. transform: 改變column的屬性、值等，舉例來說：
 
 h. set: 用來變更特定column，某些列的值，舉個簡單的例子
 
-```R
+``` R
   DT = data.table(a = 1:3, b = 2:4)
   DT2 = copy(DT)
   DT[, b := 1]
@@ -301,7 +301,7 @@ d. colClasses：各行的classes，可以自行設定
 
 舉例來說
 
-```R
+``` R
 text = "a b
 1 2
 3 4"

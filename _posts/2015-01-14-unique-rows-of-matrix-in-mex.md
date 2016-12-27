@@ -5,7 +5,7 @@ title: Finding unique rows of a matrix in mex
 
 This code is to find the unique rows of a matrix. It is based on the quick sort algorithm. Thanks to this, I find that MATLAB also use quick sort to sort data.
 
-```C++
+``` C++
 // import header files
 #include <omp.h>
 // use armadillo

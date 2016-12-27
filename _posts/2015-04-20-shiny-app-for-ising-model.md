@@ -5,7 +5,7 @@ title: Shiny App for Ising Model
 
 Here is a demonstration for ising model with an interative interface created by R package `shiny`.
 
-```R
+``` R
 library(lattice)
 library(shiny)
 app = shinyApp(

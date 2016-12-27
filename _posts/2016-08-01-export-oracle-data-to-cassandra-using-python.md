@@ -31,7 +31,7 @@ title: "用Python將Oracle DB的資料匯出到Cassandra"
 
 最後發現使用`execute_concurrent_with_args`可以比正常用for + execute快上7倍
 
-```python
+``` python
 #!/usr/bin/python
 
 import sys, cx_Oracle, datetime, time
@@ -170,7 +170,7 @@ if __name__ == "__main__":
 
 手上表格不多(六個)，反正處理時間大概就是最大那張表格的時間：
 
-```python
+``` python
 #!/usr/bin/python
 
 from itertools import islice

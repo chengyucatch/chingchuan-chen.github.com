@@ -41,7 +41,7 @@ B. 為了工作方便，請先按下windows鍵(在Ctr跟Alt之間)+R，開啟執
 
 然後在cmd中輸入下列指令：
 
-```bash
+``` bash
 cd C:/rubydevkit
 ruby dk.rb init
 notepad config.yml
@@ -61,7 +61,7 @@ notepad config.yml
 
 C. 申請git，並且clone我的庫當作基底。請到 [Github](https://github.com/)申請一個帳號，假設你的使用者名稱(username)為USERNAME，在你的github中建立一個新的repository，repository的名稱請設定為USERNAME.github.com，這樣就完成github初步的設定。接下來，請先建立好你的工作目錄，例如我設定在E:\website中，那我可以利用這個指令`cd /d E:\website`到該目錄下，你可以自行更改工作目錄，假設clone我的庫做為基底，輸入下方指令：
 
-```bash
+``` bash
 mkdir USERNAME.github.com
 git clone https://github.com/ChingChuan-Chen/chingchuan-chen.github.com USERNAME.github.com
 ```
@@ -71,7 +71,7 @@ git clone https://github.com/ChingChuan-Chen/chingchuan-chen.github.com USERNAME
 
 再來就是init github的本地倉庫，以及設定你的github遠端帳號，指令如下：
 
-```bash
+``` bash
 cd USERNAME.github.com
 git init
 git remote set-url origin https://github.com/USERNAME/USERNAME.github.com.git
@@ -97,7 +97,7 @@ D. 其他部分，最重要的是如何預覽，在cmd中輸入`jekyll serve`會
 
 還有PO文部分，可以先更改_posts下我的文章，它的檔案格式是yyyy-mm-dd-ANameOfPost.md，可以直接利用記事本做編輯，最前面是一些基本設定：
 
-```html
+``` html
 ---
 layout: post
 cTitle: 如何利用jekyll建立你的blogger
@@ -119,7 +119,7 @@ Note: github不會即時更新，需要等待幾分鐘才會更新你新的上�
 
 沒空寫新的文章，根據這個部落格風格的原作者表示出了一個github-page的gem，用法參考這篇，[這篇](http://wcc723.github.io/jekyll/2014/09/05/github-page)。
 
-```bash
+``` bash
 gem install github-pages
 gem install rails
 cd USERNAME.github.com

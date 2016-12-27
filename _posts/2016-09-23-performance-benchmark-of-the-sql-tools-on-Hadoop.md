@@ -41,7 +41,7 @@ Hive可以使用mapreduce, tez或是Spark，儲存媒介也可以選hdfs或是hb
 
 先稍微看一下資料：
 
-```bash
+``` bash
 head tw5_df.csv
 # nfbVD-5S-9.063,30,2015,1,1,0,0,5,TRUE,row1
 # nfbVD-5N-9.013,11,2015,1,1,0,0,5,TRUE,row2
@@ -91,7 +91,7 @@ HBase使用hbase shell，然後用下面的script去input資料以及做query：
 
 `hbase shell >`是打開hbase shell跑的意思，不然請在console跑
 
-```bash
+``` bash
 ## hbase shell > create 'vddata','vdid','vd_info','datetime'
 hbase org.apache.hadoop.hbase.mapreduce.ImportTsv -Dimporttsv.columns="vdid,vd_info:volume,datetime:year,datetime:month,datetime:day,datetime:hour,datetime:minute,datetime:weekday,datetime:holiday,vd_info:speed,vd_info:laneoccupy,HBASE_ROW_KEY" '-Dimporttsv.separator=,' vddata /drill/tw5_df_hbase.csv
 
@@ -116,7 +116,7 @@ hbase org.apache.hadoop.hbase.mapreduce.ImportTsv -Dimporttsv.columns="vdid,vd_i
 
 Hive則用下面的SQL script：
 
-```SQL
+``` SQL
 CREATE TABLE vddata (vdid STRING, speed DOUBLE, laneoccupy DOUBLE, volume INT, 
 date_year INT, date_month INT, date_day INT, time_hour INT, time_minute INT, 
 weekday INT, holiday BOOLEAN)
@@ -157,7 +157,7 @@ select date_month,date_day,avg(speed),avg(laneoccupy),avg(volume) from vddata gr
 
 再來是Spark SQL，要用Spark SQL就只能用
 
-```SQL
+``` SQL
 import org.apache.spark.sql.SparkSession
 import java.util.Calendar._
 import java.sql.Timestamp
@@ -249,7 +249,7 @@ datatype error是因為裡面有int, double混在同一列，Drill現在還無�
 
 先看一下資料長相
 
-```bash
+``` bash
 head SUSY.csv
 # 0.000000000000000000e+00,9.728614687919616699e-01,6.538545489311218262e-01,1.176224589347839355e+00,1.157156467437744141e+00,-1.739873170852661133e+00,-8.743090629577636719e-01,5.677649974822998047e-01,-1.750000417232513428e-01,8.100607395172119141e-01,-2.525521218776702881e-01,1.921887040138244629e+00,8.896374106407165527e-01,4.107718467712402344e-01,1.145620822906494141e+00,1.932632088661193848e+00,9.944640994071960449e-01,1.367815494537353516e+00,4.071449860930442810e-02
 # 1.000000000000000000e+00,1.667973041534423828e+00,6.419061869382858276e-02,-1.225171446800231934e+00,5.061022043228149414e-01,-3.389389812946319580e-01,1.672542810440063477e+00,3.475464344024658203e+00,-1.219136357307434082e+00,1.295456290245056152e-02,3.775173664093017578e+00,1.045977115631103516e+00,5.680512785911560059e-01,4.819284379482269287e-01,0.000000000000000000e+00,4.484102725982666016e-01,2.053557634353637695e-01,1.321893453598022461e+00,3.775840103626251221e-01  
@@ -265,14 +265,14 @@ head HIGGS.csv
 # 1.000000000000000000e+00,1.105008959770202637e+00,3.213555514812469482e-01,1.522401213645935059e+00,8.828076124191284180e-01,-1.205349326133728027e+00,6.814661026000976562e-01,-1.070463895797729492e+00,-9.218706488609313965e-01,0.000000000000000000e+00,8.008721470832824707e-01,1.020974040031433105e+00,9.714065194129943848e-01,2.214872121810913086e+00,5.967612862586975098e-01,-3.502728641033172607e-01,6.311942934989929199e-01,0.000000000000000000e+00,4.799988865852355957e-01,-3.735655248165130615e-01,1.130406111478805542e-01,0.000000000000000000e+00,7.558564543724060059e-01,1.361057043075561523e+00,9.866096973419189453e-01,8.380846381187438965e-01,1.133295178413391113e+00,8.722448945045471191e-01,8.084865212440490723e-01
 ```
 
-```bash
+``` bash
 hdfs dfs -put SUSY.csv.gz /drill/SUSY.csv.gz
 hdfs dfs -put HIGGS.csv.gz /drill/HIGGS.csv.gz
 ```
 
 Hive上傳local file
 
-```SQL
+``` SQL
 CREATE TABLE susy_df (lepton1pt DOUBLE, lepton1eta DOUBLE, lepton1phi DOUBLE, 
 lepton2pt DOUBLE, lepton2eta DOUBLE, lepton2phi DOUBLE, mem DOUBLE, mep DOUBLE, 
 met_rel DOUBLE, axialmet DOUBLE, m_r DOUBLE, m_tr_2 DOUBLE, r DOUBLE, mt2 DOUBLE,
@@ -314,7 +314,7 @@ OVERWRITE INTO TABLE higgs_df;
 
 Spark script:
 
-```scala
+``` scala
 import org.apache.spark.sql.SparkSession
 import java.util.Calendar._
 import java.sql.Timestamp
@@ -333,7 +333,7 @@ println(getInstance().getTime().getTime() - st.getTime())
 
 Drill運行SQL script
 
-```SQL
+``` SQL
 select count(lepton1phi) from hive_cassSpark1.susy_df group by lepton1pt
 select count(lepton_phi) from hive_cassSpark1.higgs_df group by lepton_pt
 ```
