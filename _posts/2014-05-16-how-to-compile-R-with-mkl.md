@@ -294,6 +294,7 @@ Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.293214347493761
 最後附上測試環境: My environment is mint 17.3, R 3.2.3 compiled by Intel c++, fortran compiler with Intel MKL. My CPU is 3770K@4.4GHz.
 
 To use the html help page and change the default language of R to english, you can do that:
+
 ``` bash
 echo 'options("help_type"="html")' > ~/.Rprofile
 echo 'LANGUAGE="en"' > ~/.Renviron
@@ -306,6 +307,7 @@ Sys.setenv(PATH = "/opt/intel/composer_xe_2015.1.133/bin/intel64:/opt/intel/comp
 ```
 
 java config and install some useful packages:
+
 ``` R
 R CMD javareconf
 install.packages(c('devtools', 'testthat'))

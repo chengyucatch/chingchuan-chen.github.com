@@ -28,6 +28,7 @@ export HBASE_MANAGES_ZK=true
 ```
 
 Set up the hbase by command: `subl conf/hbase-site.xml`
+
 ``` bash
 <configuration>
   <property>
@@ -63,6 +64,7 @@ Copy the setting of hdfs into hbase folder by command:
 `cp /usr/local/hadoop/etc/hadoop/hdfs-site.xml /usr/local/hbase/conf`
 
 2. start hbase
+
 ``` bash
 sudo subl /etc/bash.bashrc
 # add following 2 lines into file
@@ -79,6 +81,7 @@ start-hbase.sh
 
 3. test hbase
 type `hbase shell` in the terminal, then it will show:
+
 ``` bash
 HBase Shell; enter 'help<RETURN>' for list of supported commands.
 Type "exit<RETURN>" to leave the HBase Shell
@@ -101,6 +104,7 @@ stop-dfs.sh && stop-yarn.sh # or stop-all.sh
 ```
 
 ## hive installation
+
 ``` bash
 wget http://apache.stu.edu.tw/hive/stable/apache-hive-1.1.0-bin.tar.gz
 tar zxvf apache-hive-1.1.0-bin.tar.gz

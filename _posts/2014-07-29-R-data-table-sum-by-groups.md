@@ -66,8 +66,8 @@ benchmark(data_table = x_dt[, sum(Freq),by = Category],
 In the case with small sample size, `tapply` is the most efficient tool for summing by groups. In the case with large sample size, `data.table` and `summarise` in `dplyr` are more efficient.
 
 Next, we benchmark the performance of summing by two groups. Code:
-``` R
 
+``` R
 N = 1e4
 set.seed(100)
 x <- data.frame(Freq=runif(N,0,1),Category=c("T","F"),Category2=sample(c("T","F"), N, replace = TRUE))
@@ -122,7 +122,6 @@ In the case of summing by two groups, `data.table` is much more efficient in lar
 
 
 ``` R
-
 library(Rcpp)
 sourceCpp(code = '
 // [[Rcpp::depends(RcppArmadillo)]]

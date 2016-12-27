@@ -96,11 +96,13 @@ and check the network again by `ifconfig`.
 5. setup for hadoop
 
 a. disabling IPv6 by editing `/etc/sysctl.conf`
+
 ``` bash
 subl /etc/sysctl.conf
 ```
 
 paste the following into `/etc/sysctl.conf`
+
 ``` bash
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
@@ -112,6 +114,7 @@ checking whether ipv6 is disable: `cat /proc/sys/net/ipv6/conf/all/disable_ipv6`
 b. editing following files:
 
 create the folders for putting data.
+
 ``` bash
 cd /usr/local/hadoop
 sudo mkdir -p /usr/local/hadoop/tmp
@@ -242,6 +245,7 @@ start-dfs.sh && start-yarn.sh
 ```
 
 The output looks like this: (standalone)
+
 ``` bash
 localhost: starting namenode, logging to /usr/local/hadoop/logs/hadoop-master-namenode-master-virtual-machine.out
 localhost: starting datanode, logging to /usr/local/hadoop/logs/hadoop-master-datanode-master-virtual-machine.out
@@ -253,6 +257,7 @@ localhost: starting nodemanager, logging to /usr/local/hadoop/logs/yarn-master-n
 ```
 
 The output looks like this: (standalone)
+
 ``` bash
 master: starting namenode, logging to /usr/local/hadoop/logs/hadoop-master-namenode-master.out
 slave01: starting datanode, logging to /usr/local/hadoop/logs/hadoop-master-datanode-slave01.out
@@ -264,6 +269,7 @@ slave01: starting nodemanager, logging to /usr/local/hadoop/logs/yarn-master-nod
 ```
 
 check whether the server starts by connecting the local server.
+
 ``` bash
 # for standalone
 firefox http:\\localhost:50070
@@ -273,11 +279,13 @@ hdfs dfsadmin -report
 ```
 
 Run a example in the folder
+
 ``` bash
 hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.2.jar pi 10 100
 ```
 
 The last two line will show the following informations:
+
 ``` bash
 Job Finished in 167.153 seconds
 Estimated value of Pi is 3.14800000000000000000
@@ -286,6 +294,7 @@ Estimated value of Pi is 3.14800000000000000000
 Run second example
 
 8. run wordaccout
+
 ``` bash
 cd ~/Downloads && mkdir testData && cd testData
 # download data for test
@@ -316,6 +325,7 @@ hdfs dfs -rm -r /user/celest/testData-output
 To avoid the warning `WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable`, you can build the 64 bit hadoop lib by yourself.
 
 Here is the bash script to compile:
+
 ``` bash
 # install the necessary packages
 sudo apt-get -y install build-essential protobuf-compiler autoconf automake libtool cmake zlib1g-dev pkg-config libssl-dev git subversion

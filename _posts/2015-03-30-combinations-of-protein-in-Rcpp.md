@@ -22,6 +22,7 @@ A B2 C2 D E F2
 ```
 
 The code to generate sequence of protein and list the all combinations is below.
+
 ``` R
 library(Rcpp)
 library(RcppArmadillo)

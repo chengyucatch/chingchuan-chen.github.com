@@ -81,6 +81,7 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 ```
 
 The installation of rstudio server is recorded:
+
 ``` bash
 wget https://download2.rstudio.org/rstudio-server-rhel-0.99.896-x86_64.rpm
 sudo yum install --nogpgcheck rstudio-server-rhel-0.99.896-x86_64.rpm
@@ -97,6 +98,7 @@ sudo firewall-cmd --reload
 ## To browse localhost:8787 for using the rstudio-server
 ```
 The installation of shiny server is recorded:
+
 ``` bash
 ## install shiny-server
 wget https://download3.rstudio.org/centos5.9/x86_64/shiny-server-1.4.2.786-rh5-x86_64.rpm
@@ -194,12 +196,14 @@ sudo subl /etc/sysconfig/selinux
 ```
 
 Automatically enabling your network connection at startup on CentOS 7:
+
 ``` bash
 # In my case, it is ifcfg-eno1. It may be different for other machine.
 sudo sed -i -e 's@^ONBOOT=no@ONBOOT=yes@' /etc/sysconfig/network-scripts/ifcfg-eno1
 ```
 
 Installation of ftp server on CentOS 7:
+
 ``` bash
 sudo yum install -y vsftpd
 
@@ -218,6 +222,7 @@ sudo firewall-cmd --reload
 ```
 
 Installation of xrdp on CentOS 7 / RHEL 7 (remote desktop from windows):
+
 ``` bash
 sudo subl /etc/yum.repos.d/xrdp.repo
 ## add following lines into file
@@ -240,6 +245,7 @@ sudo systemctl enable xrdp.service
 ```
 
 Mount another network disk:
+
 ``` bash
 sudo mount -t cifs -o username="xxxxxxx",password="yyyyyyy" //ip-address/folder /mnt/folder
 

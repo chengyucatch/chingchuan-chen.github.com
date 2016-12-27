@@ -57,7 +57,6 @@ title: "Pipe Operators in R"
 
 例如：
 
-
 ``` r
 a_list <- list(1:6, 3:5, 4:7)
 sort_uni_a <- sort(unique(unlist(a_list)))

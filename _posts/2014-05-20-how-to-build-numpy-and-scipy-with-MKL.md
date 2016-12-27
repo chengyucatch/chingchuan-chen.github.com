@@ -72,6 +72,7 @@ python3 setup.py config --compiler=intelem build_clib --compiler=intelem build_e
 如果出現`No module named msvc9compiler`，就把`numpy/distutil/intelccompiler.py`裡面有關msvc9compiler的code都註解掉就好了。
 
 請先測試numpy是否正常，先安裝nose這個套件：
+
 ``` bash
 easy_install nose
 # python3
@@ -79,6 +80,7 @@ easy_install3 nose
 ```
 
 開啟python並運行(注意環境還是要source上方兩個檔案)：
+
 ``` python
 import numpy
 numpy.test()
@@ -95,6 +97,7 @@ python3 setup.py config --compiler=intelem --fcompiler=intelem build_clib --comp
 ```
 
 開啟python測試scipy(注意環境還是要source上方兩個檔案)：
+
 ``` python
 import scipy
 scipy.test()
@@ -110,9 +113,8 @@ sudo rm -r /usr/local/lib/python3.4/dist-packages/numpy
 sudo rm -r /usr/local/lib/python3.4/dist-packages/scipy
 ```
 
-
 Add $LD_LIBRARY_PATH in environment by using `subl ~/.bashrc`.
+
 ``` bash
 export LD_LIBRARY_PATH=/opt/intel/composer_xe_2013_sp1.3.174/compiler/lib/intel64:/opt/intel/composer_xe_2013_sp1.3.174/mkl/lib/intel64:$LD_LIBRARY_PATH
 ```
-

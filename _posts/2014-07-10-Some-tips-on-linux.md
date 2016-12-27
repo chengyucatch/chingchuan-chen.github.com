@@ -75,6 +75,7 @@ sudo apt-get install fcitx fcitx-chewing fcitx-config-gtk fcitx-frontend-all fci
 ```
 
 viii. Install ruby, jekyll and git.
+
 ``` bash
 sudo apt-get install software-properties-common
 sudo apt-add-repository ppa:brightbox/ruby-ng

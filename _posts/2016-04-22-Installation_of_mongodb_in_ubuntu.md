@@ -43,6 +43,7 @@ cat /var/log/mongodb/mongod.log
 
 
 use `subl /etc/mongod.conf` to edit the configuration of mongodb. The default file:
+
 ``` bash
 # mongod.conf
 
@@ -89,6 +90,7 @@ net:
 ```
 
 After some edits:
+
 ``` bash
 # mongod.conf
 
@@ -137,6 +139,7 @@ security:
 ```
 
 For security, to add admin user and create users:
+
 ``` bash
 use admin
 # the user managing users
