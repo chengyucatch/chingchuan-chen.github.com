@@ -100,7 +100,7 @@ RcppEigen有自己的LAPACK，在某些case下可以比RcppArmadillo快
 
 而SVD方面的表現卻是不盡人意，非常的慢
 
-再來是連結到我的文章，WLS的計算上RcppArmadillo快，LOOCV with RcppParallel/OpenMP則是RcppEigen快
+再來是連結到我的文章，WLS的計算上RcppArmadillo快([連結](http://chingchuan-chen.github.io/posts/2016/12/31/weighted-least-square-algorithm)，LOOCV with RcppParallel/OpenMP則是RcppEigen快([連結](http://chingchuan-chen.github.io/posts/2016/12/31/RcppEigen-Work-With-RcppParall)
 
 所以求速度的話，使用RcppEigen基本上沒錯，只是svd的performance真的很差，這部分需要謹記(其他雷目前未知)
 
