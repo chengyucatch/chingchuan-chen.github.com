@@ -1,234 +1,76 @@
 ---
 layout: post
-title: "Weighted Least-Square Algorithm"
+title: "Rcpp call F77 blas/lapack"
 ---
 
-最近一直work on locally weighted least-square
+剛好有點時間來研究一下Rcpp怎樣直接使用底層Fortran 77的BLAS跟LAPACK函數
 
-結果發現使用`gausvar`這個kernel的時候，weight會出現負的
+我覺得最難的還是要去讀BLAS或LAPACK的文件，然後配置適當的input餵進去
 
-我原本的解法是直接在input跟output都乘上根號的weight
+我這裡就簡單demo一下怎麼樣用LAPACK的dsyevr去計算symmetric matrix的eigenvalues跟eigenvectors
 
-結果這招就行不通了
+裡面還是有不少配置，我沒有好好活用，不過我覺得就先這樣吧，等到有需要再慢慢深入去寫
 
-另外還有再一些case下，解不是穩健的，有可能跑出虛數，但是虛數的係數其實很小...
+畢竟我現在直接使用BLAS/LAPACK的場合真的不多，寫那麼底層對我真的有點困難Orz
 
-所以就下定決心來研究一下各種WLS的解法
+我還是乖乖去用RcppEigen跟RcppArmadillo好了~"~
 
+不過直接用BLAS，可以gain到一些performance，也有比較多flexible的設定
 
-稍微GOOGLE了一下，發現不外乎下面四種解法：
-
-1. 直接解，就是利用`(X^T * W * X)^(-1) * X^T * W * y`去解出迴歸係數
-1. 再來就是把inverse部分用pseudo inverse代替，以避免rank不足的問題出現
-1. Cholesky Decomposition (LDL Decomposition)
-1. QR Decomposition
-
-效率的話，`4 > 3 > 1 > 2`，但是QR在一些情況下會跑出虛數
-
-所以我這裡會偏向以3為主
-
-
-下面是用程式去實作各種解法：
+深入去玩的話，我覺得對程式效能改進有一定幫助
 
 R code:
 
 ``` R
-Rcpp::sourceCpp("wls.cpp")
-n <- 3e3
-p <- 150
-X <- matrix(rnorm(n * p), n , p)
-beta <- rnorm(p)
-w <- sqrt(rowMeans(X**2) - (n / (n-1)) * rowMeans(X)**2)
-y <- 3 + X %*% beta + rnorm(n)
+Sys.setenv("PKG_LIBS" = "$(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)")
+Rcpp::sourceCpp("eigen_sym_cpp.cpp")
+
+n_row <- 1e4L
+n_col <- 5e1L
+A <- matrix(rnorm(n_row * n_col), n_row, n_col)
+S <- cov(A)
 
 library(microbenchmark)
 microbenchmark(
-  eigen_llt = eigen_llt(X, w, y),
-  eigen_ldlt = eigen_ldlt(X, w, y),
-  eigen_fullLU = eigen_fullLU(X, w, y),
-  eigen_HHQR = eigen_HHQR(X, w, y),
-  eigen_colPivHHQR = eigen_colPivHHQR(X, w, y),
-  eigen_fullPivHHQR = eigen_fullPivHHQR(X, w, y),
-  eigen_chol_llt = eigen_chol_llt(X, w, y),
-  arma_qr = arma_qr(X, w, y), # can't run if n is too big
-  arma_pinv = arma_pinv(X, w, y),
-  arma_chol = arma_chol(X, w, y),
-  arma_direct = arma_direct(X, w, y),
-  r_lm = coef(lm(y ~ -1 + X, weights = w)),
-  times = 30L
-)
-#Unit: milliseconds
-#              expr        min         lq       mean     median         uq        max neval
-#         eigen_llt  11.058238  12.689018  14.149124  13.982906  15.355786  17.817171    30
-#        eigen_ldlt  11.159174  11.885624  13.437352  12.940628  14.562046  17.304883    30
-#      eigen_fullLU  12.250750  12.667661  14.849008  14.778841  16.804589  19.108864    30
-#        eigen_HHQR  11.486851  12.342032  13.821047  14.068336  14.757776  17.555322    30
-#  eigen_colPivHHQR  11.635769  12.906982  14.416562  13.775475  16.215648  18.840285    30
-# eigen_fullPivHHQR  12.553851  13.307803  15.403671  14.655083  17.562929  19.163867    30
-#    eigen_chol_llt  13.737879  14.170297  16.367413  15.978666  18.294937  20.462289    30
-#           arma_qr 266.718062 288.134711 293.853288 293.809090 300.613079 311.078572    30
-#         arma_pinv   8.234946   9.832958  10.322982  10.146301  10.730268  13.186678    30
-#         arma_chol   3.189005   4.528679   4.591776   4.730990   5.020780   5.459342    30
-#       arma_direct   3.052960   4.376543   4.372905   4.494302   4.703635   5.453197    30
-#              r_lm  45.051851  51.599549  74.144940  55.085365 116.950143 147.734857    30
+  Rcpp_BLAS = eigen_sym_cpp(S),
+  R = eigen(S),
+  times = 100L)
+# Unit: microseconds
+#      expr      min       lq      mean    median       uq      max neval
+# Rcpp_BLAS  789.644  874.196  904.5647  891.4575  943.974 1545.057   100
+#         R 1194.267 1344.793 1444.1375 1404.7695 1516.385 3655.062   100
 ```
 
 C++ code:
 
 ``` C++
-// [[Rcpp::depends(RcppArmadillo, RcppEigen)]]
-#include <RcppArmadillo.h>
-#include <RcppEigen.h>
-using namespace arma;
-
-// [[Rcpp::export]]
-Eigen::VectorXd eigen_fullPivHHQR(const Eigen::Map<Eigen::MatrixXd> & X,
-                                  const Eigen::Map<Eigen::VectorXd> & w,
-                                  const Eigen::Map<Eigen::VectorXd> & y) {
-  Eigen::VectorXd beta = (X.transpose() * w.asDiagonal() * X).fullPivHouseholderQr().solve(X.transpose() * w.asDiagonal() * y);;
-  return beta;
-}
-
-// [[Rcpp::export]]
-Eigen::VectorXd eigen_colPivHHQR(const Eigen::Map<Eigen::MatrixXd> & X,
-                                 const Eigen::Map<Eigen::VectorXd> & w,
-                                 const Eigen::Map<Eigen::VectorXd> & y) {
-  Eigen::VectorXd beta = (X.transpose() * w.asDiagonal() * X).colPivHouseholderQr().solve(X.transpose() * w.asDiagonal() * y);;
-  return beta;
-}
-
-// [[Rcpp::export]]
-Eigen::VectorXd eigen_HHQR(const Eigen::Map<Eigen::MatrixXd> & X,
-                           const Eigen::Map<Eigen::VectorXd> & w,
-                           const Eigen::Map<Eigen::VectorXd> & y) {
-  Eigen::VectorXd beta = (X.transpose() * w.asDiagonal() * X).householderQr().solve(X.transpose() * w.asDiagonal() * y);
-  return beta;
-}
-
-// [[Rcpp::export]]
-Eigen::VectorXd eigen_fullLU(const Eigen::Map<Eigen::MatrixXd> & X, 
-                             const Eigen::Map<Eigen::VectorXd> & w, 
-                             const Eigen::Map<Eigen::VectorXd> & y) {
-  Eigen::VectorXd beta = (X.transpose() * w.asDiagonal() * X).fullPivLu().solve(X.transpose() * w.asDiagonal() * y);
-  return beta;
-}
-  
-// [[Rcpp::export]]
-Eigen::VectorXd eigen_llt(const Eigen::Map<Eigen::MatrixXd> & X, 
-                          const Eigen::Map<Eigen::VectorXd> & w, 
-                          const Eigen::Map<Eigen::VectorXd> & y) {
-  Eigen::VectorXd beta = (X.transpose() * w.asDiagonal() * X).llt().solve(X.transpose() * w.asDiagonal() * y);
-  return beta;
-}
-
-// [[Rcpp::export]]
-Eigen::VectorXd eigen_ldlt(const Eigen::Map<Eigen::MatrixXd> & X, 
-                           const Eigen::Map<Eigen::VectorXd> & w, 
-                           const Eigen::Map<Eigen::VectorXd> & y) {
-  Eigen::VectorXd beta = (X.transpose() * w.asDiagonal() * X).ldlt().solve(X.transpose() * w.asDiagonal() * y);
-  return beta;
-}
-
-// [[Rcpp::export]]
-Eigen::VectorXd eigen_chol_llt1(const Eigen::Map<Eigen::MatrixXd> & X,
-                                const Eigen::Map<Eigen::VectorXd> & w,
-                                const Eigen::Map<Eigen::VectorXd> & y) {
-  Eigen::MatrixXd XWX = X.transpose() * w.asDiagonal() * X;
-  Eigen::MatrixXd R = XWX.llt().matrixU();
-  Eigen::VectorXd XWY = X.transpose() * (w.array() * y.array()).matrix();
-  Eigen::VectorXd beta = R.householderQr().solve(R.transpose().householderQr().solve(XWY));
-  return beta;
-}
-
-// [[Rcpp::export]]
-Eigen::VectorXd eigen_chol_llt2(const Eigen::Map<Eigen::MatrixXd> & X,
-                                const Eigen::Map<Eigen::VectorXd> & w,
-                                const Eigen::Map<Eigen::VectorXd> & y) {
-  Eigen::MatrixXd XW = X.transpose() * w.asDiagonal();
-  Eigen::MatrixXd R = (XW * X).llt().matrixU();
-  Eigen::VectorXd beta = R.householderQr().solve(R.transpose().householderQr().solve(XW * y));
-  return beta;
-}
-
-// [[Rcpp::export]]
-Eigen::VectorXd eigen_chol_llt3(const Eigen::Map<Eigen::MatrixXd> & X,
-                                const Eigen::Map<Eigen::VectorXd> & w,
-                                const Eigen::Map<Eigen::VectorXd> & y) {
-  Eigen::MatrixXd XW(X.cols(), X.rows());
-  for (unsigned int i = 0; i < X.cols(); ++i)
-    XW.row(i) = X.col(i).array() * w.array();
-  Eigen::MatrixXd R = (XW * X).llt().matrixU();
-  Eigen::VectorXd beta = R.householderQr().solve(R.transpose().householderQr().solve(XW * y));
-  return beta;
-}
-
-// [[Rcpp::export]]
-Eigen::VectorXd eigen_colPivHHQR2(const Eigen::Map<Eigen::MatrixXd> & X,
-                                  const Eigen::Map<Eigen::VectorXd> & w,
-                                  const Eigen::Map<Eigen::VectorXd> & y) {
-  Eigen::VectorXd sw = w.cwiseSqrt();
-  Eigen::MatrixXd XW(X.rows(), X.cols());
-  for (unsigned int i = 0; i < X.cols(); ++i)
-    XW.col(i) = X.col(i).array() * sw.array();
-  Eigen::VectorXd beta = XW.colPivHouseholderQr().solve(y.cwiseProduct(sw));
-  return beta;
-}
-
-// [[Rcpp::export]]
-arma::vec arma_qr(const arma::mat& X, const arma::vec& w, const arma::vec& y) {
-  mat Q, R;
-  qr(Q, R, X.each_col() % sqrt(w));
-  vec p = solve(R.head_rows(X.n_cols), Q.head_cols(X.n_cols).t() * (y % sqrt(w)));
-  return p;
-}
-
-// [[Rcpp::export]]
-arma::vec arma_pinv(const arma::mat& X, const arma::vec& w, const arma::vec& y) {
-  vec p = pinv(X.t() * (repmat(w, 1, X.n_cols) % X)) * X.t() * (w % y);
-  return p;
-}
-
-// [[Rcpp::export]]
-arma::vec arma_chol1(const arma::mat& X, const arma::vec& w, const arma::vec& y) {
-  mat R = chol((X.each_col() % w).t() * X);
-  vec p = solve(R, solve(R.t(), X.t() * (w % y), solve_opts::fast), solve_opts::fast);
-  return p;
-}
-
-// [[Rcpp::export]]
-arma::vec arma_chol2(const arma::mat& X, const arma::vec& w, const arma::vec& y) {
-  mat XW = (X.each_col() % w).t();
-  mat R = chol(XW * X);
-  vec p = solve(R, solve(R.t(), XW * y, solve_opts::fast), solve_opts::fast);
-  return p;
-}
-
-// [[Rcpp::export]]
-arma::vec arma_direct1(const arma::mat& X, const arma::vec& w, const arma::vec& y) {
-  vec sw = sqrt(w);
-  vec p = solve(X.each_col() % sw, y % sw);
-  return p;
-}
-
-// [[Rcpp::export]]
-arma::vec arma_direct2(const arma::mat& X, const arma::vec& w, const arma::vec& y) {
-  vec p = solve((X.each_col() % w).t() * X, X.t() * (w % y));
-  return p;
+#include <Rcpp.h>
+#include <R_ext/Lapack.h>
+#include <R_ext/BLAS.h>
+ 
+//[[Rcpp::export]]
+Rcpp::List eigen_sym_cpp(Rcpp::NumericMatrix X, int num_eig = -1, bool eigenvalues_only = false, double tol = 1.5e-8)
+{
+  Rcpp::NumericMatrix A = Rcpp::clone(X); // perform deep copy of input
+  char jobz = eigenvalues_only?'N':'V', range = (num_eig == -1)?'A':'I', uplo = 'U';
+  int N = A.nrow(), lda = std::max(1, N), il = 1, iu = (num_eig == -1)?N:num_eig;
+  int m = (range == 'A')?N:(iu-il+1), ldz = std::max(1, N), lwork = std::max(1, 26*N), liwork = std::max(1, 10*N), info = 0;
+  double abstol = tol, vl = 0.0, vu = 0.0;
+  Rcpp::IntegerVector isuppz(2 * std::max(1, m)), iwork(std::max(1, lwork));
+  Rcpp::NumericVector work(std::max(1, lwork)), W(N);
+  Rcpp::NumericMatrix Z(ldz, std::max(1, m));
+  F77_CALL(dsyevr)(&jobz, &range, &uplo, &N, A.begin(), &lda, &vl, &vu, &il, &iu, &abstol,
+           &m, W.begin(), Z.begin(), &ldz, isuppz.begin(), work.begin(), &lwork, iwork.begin(), &liwork, &info);
+  return Rcpp::List::create(Rcpp::Named("info") = info,
+                            Rcpp::Named("vectors") = Z,
+                            Rcpp::Named("values") = W);
 }
 ```
 
-這裡的QR解得很慢，我不知道要怎麼樣讓armadillo只輸出跟rank一樣多的Q，R矩陣就好
+後記：歡迎留言，我最近才剛把DISQUS，改成可以guest留言，加上不用審查
 
-而直接解會是最快的，我猜這原因是裡面某部分有被優化過了...
+之前設定錯誤，造成一些問題，害我PTT信箱收了不少信Orz
 
-不然以程式來看，Cholesky Decomposition的performance是最好的
+希望大家新的一年，能夠善用DISQUS留言，不要再塞爆我信箱了XDD
 
-只是我也不解的是Eigen也用一樣的方法去做
-
-卻比Armadillo手動去寫慢了好幾倍 (eigen_chol_llt vs arma_chol)
-
-不確定是不是Eigen在solve linear system時用不一樣的LAPACK函數
-
-或是Eigen在這做了比較多check
-
-這裡就留給後人慢慢玩賞QQ
+新的一年第一篇部落格，請大家多多指教
