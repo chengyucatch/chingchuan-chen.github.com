@@ -43,7 +43,7 @@ microbenchmark(
 
 C++ code:
 
-``` C++
+``` c++
 #include <Rcpp.h>
 #include <R_ext/Lapack.h>
 #include <R_ext/BLAS.h>

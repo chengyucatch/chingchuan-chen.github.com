@@ -42,7 +42,7 @@ stopifnot(all(abs(res1 - res2) < 1e-8))
 
 C++ code:
 
-``` C++
+``` c++
 // [[Rcpp::depends(RcppParallel)]]
 // [[Rcpp::depends(RcppEigen)]]
 #include <Rcpp.h>

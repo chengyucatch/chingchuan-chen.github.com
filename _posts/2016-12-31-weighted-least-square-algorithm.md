@@ -75,7 +75,7 @@ microbenchmark(
 
 C++ code:
 
-``` C++
+``` c++
 // [[Rcpp::depends(RcppArmadillo, RcppEigen)]]
 #include <RcppArmadillo.h>
 #include <RcppEigen.h>

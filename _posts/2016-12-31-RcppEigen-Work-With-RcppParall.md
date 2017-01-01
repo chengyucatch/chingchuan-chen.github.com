@@ -62,7 +62,7 @@ microbenchmark(
 
 C++ code:
 
-``` C++
+``` c++
 // [[Rcpp::depends(RcppArmadillo, RcppEigen, RcppParallel)]]
 // [[Rcpp::plugins(openmp)]]
 #include <RcppArmadillo.h>
