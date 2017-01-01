@@ -1,118 +1,64 @@
 ---
 layout: post
-title: "Differences between RcppEigen and RcppArmadillo"
+title: "Rcpp call F77 blas/lapack"
 ---
 
-R maillist有討論過這個問題，而且回的非常長
+剛好有點時間來研究一下Rcpp怎樣直接使用底層Fortran 77的BLAS跟LAPACK函數
 
-我稍微看了一下，發問者試了RcppArmadillo跟RcppEigen
+我覺得最難的還是要去讀BLAS或LAPACK的文件，然後配置適當的input餵進去
 
-發現RcppEigen的SVD decomposition不是那麼合用，而且不太好去做coding
+我這裡就簡單demo一下怎麼樣用LAPACK的dsyevr去計算symmetric matrix的eigenvalues跟eigenvectors
 
-RcppArmadillo比較好去coding
+裡面還是有不少配置，我沒有好好活用，不過我覺得就先這樣吧，等到有需要再慢慢深入去寫
 
+畢竟我現在直接使用BLAS/LAPACK的場合真的不多，寫那麼底層對我真的有點困難Orz
 
-接下來的回文就是RcppEigen會快一點(我的文章也證實了這點)
+我還是乖乖去用RcppEigen跟RcppArmadillo好了~"~
 
-而RcppEigen是用自己的BLAS and LAPACK，RcppArmadillo會使用R session所使用的
-
-然後接下來就跳到RcppArmadillo的svd表現不好的問題：
-
-``` R
-library(inline)
-library(RcppArmadillo)
-library(RcppEigen)
-
-arma_body <- 'using namespace arma; NumericMatrix Xr(Xs); 
-mat X = Rcpp::as<mat>(Xr), U, V; 
-vec s; svd(U, s, V, X); 
-return wrap(s);'
-arma_svd <- cxxfunction(signature(Xs = "numeric"), body = arma_body, plugin = "RcppArmadillo")
-eigen_body <- 'using Eigen::MatrixXd; using Eigen::Map;
-Map<MatrixXd> x(Rcpp::as<Map<MatrixXd> >(Xs));
-Eigen::JacobiSVD<MatrixXd> svd(x, Eigen::ComputeThinU | Eigen::ComputeThinV);
-return wrap(svd.singularValues());'
-eigen_svd <- cxxfunction(signature(Xs = "numeric"), body = eigen_body, plugin = "RcppEigen")
-
-library(microbenchmark)
-N <- 1000L
-A <- matrix(rnorm(N^2), N)
-microbenchmark(svd(A), arma_svd(A), eigen_svd(A), times = 20L)
-# Unit: milliseconds
-#          expr        min         lq       mean     median         uq        max neval
-#        svd(A)   436.0527   441.6736   444.1783   443.7081   445.4228   454.5612    10
-#   arma_svd(A)   354.7630   359.3738   365.7064   365.5194   367.7162   383.8402    10
-#  eigen_svd(A) 56648.3330 56700.3132 57499.2423 57345.0418 58318.3001 58883.5604    10
-```
-
-我在我電腦(i7-3770K@4.2GHz with MRO 3.3.1)上測試
-
-其實RcppArmadillo是最快的
-
-不知道是不是Armadillo做了一些改進
-
-因為討論中提到R只有算sigular values沒算U跟V，而Armadillo有
-
-這造就了底層的LAPACK用的函數就不同了，所以performance會差很多
-
-而RcppEigen因為用自帶的LAPACK比我R用的MKL慢不少，所以performance很差
-
-
-再來，我也測試看看兩個套件中fastLmPure的表現
+R code:
 
 ``` R
-n <- 3e3
-p <- 250
-X <- matrix(rnorm(n * p), n , p)
-beta <- rnorm(p)
-y <- 3 + X %*% beta + rnorm(n)
+Sys.setenv("PKG_LIBS" = "$(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)")
+Rcpp::sourceCpp("eigen_sym_cpp.cpp")
 
-library(microbenchmark)
-microbenchmark(
-eigen_colPivQR = RcppEigen::fastLmPure(X, y, method = 0L),
-    eigen_HHQR = RcppEigen::fastLmPure(X, y, method = 1L),
-     eigen_LLT = RcppEigen::fastLmPure(X, y, method = 2L),
-    eigen_LLDT = RcppEigen::fastLmPure(X, y, method = 3L),
-     eigen_SVD = RcppEigen::fastLmPure(X, y, method = 4L),
-     eigen_eig = RcppEigen::fastLmPure(X, y, method = 5L),
-     armadillo = RcppArmadillo::fastLmPure(X, y),
-         times = 30L
-)
-# Unit: milliseconds
-#            expr        min         lq       mean     median         uq        max neval
-#  eigen_colPivQR   77.37665   78.46618   85.91465   82.41118   89.88866  120.38286    30
-#      eigen_HHQR   47.47491   47.83243   52.40245   48.70604   54.42752   70.18852    30
-#       eigen_LLT   17.68025   18.07902   37.30092   18.50793   21.12671  544.98383    30
-#      eigen_LDLT   19.52899   19.95702   22.62692   20.12774   26.57289   36.44651    30
-#       eigen_SVD 1019.39032 1051.11184 1072.05842 1061.67417 1080.98286 1201.88356    30
-#       eigen_eig   62.97932   63.51531   71.18810   64.34445   79.16513   99.23830    30
-#            arma   47.26046   48.48105   50.61176   49.99042   51.71892   57.41407    30
+n_row <- 1e4L
+n_col <- 5e1L
+A <- matrix(rnorm(n_row * n_col), n_row, n_col)
+S <- cov(A)
+out1 <- eigen_sym_cpp(S)
+out2 <- eigen(S)
 ```
 
-這裡也可以看出來RcppArmadillo的performace平平，RcppEigen的llt, ldlt速度真的很快，比RcppArmadillo快上不少
+C++ code:
 
-可是這裡沒辦法加weights，所以我也測試了一下WLS，RcppArmadillo就快上不少，可以看一下我今天發的其他篇文章
+``` C++
+#include <Rcpp.h>
+#include <R_ext/Lapack.h>
+#include <R_ext/BLAS.h>
+ 
+//[[Rcpp::export]]
+Rcpp::List eigen_sym_cpp(Rcpp::NumericMatrix X, int num_eig = -1, bool eigenvalues_only = false, double tol = 1.5e-8)
+{
+  Rcpp::NumericMatrix A = Rcpp::clone(X); // perform deep copy of input
+  char jobz = eigenvalues_only?'N':'V', range = (num_eig == -1)?'A':'I', uplo = 'U';
+  int N = A.nrow(), lda = std::max(1, N), il = 1, iu = (num_eig == -1)?N:num_eig;
+  int m = (range == 'A')?N:(iu-il+1), ldz = std::max(1, N), lwork = std::max(1, 26*N), liwork = std::max(1, 10*N), info = 0;
+  double abstol = tol, vl = 0.0, vu = 0.0;
+  Rcpp::IntegerVector isuppz(2 * std::max(1, m)), iwork(std::max(1, lwork));
+  Rcpp::NumericVector work(std::max(1, lwork)), W(N);
+  Rcpp::NumericMatrix Z(ldz, std::max(1, m));
+  F77_CALL(dsyevr)(&jobz, &range, &uplo, &N, A.begin(), &lda, &vl, &vu, &il, &iu, &abstol,
+           &m, W.begin(), Z.begin(), &ldz, isuppz.begin(), work.begin(), &lwork, iwork.begin(), &liwork, &info);
+  return Rcpp::List::create(Rcpp::Named("info") = info,
+                            Rcpp::Named("vectors") = Z,
+                            Rcpp::Named("values") = W);
+}
+```
 
+後記：歡迎留言，我最近才剛把DISQUS，改成可以guest留言，加上不用審查
 
-看了兩個Benchmark之後，總結一下：
+之前設定錯誤，造成一些問題，害我PTT信箱收了不少信Orz
 
-RcppEigen有自己的LAPACK，在某些case下可以比RcppArmadillo快
+希望大家新的一年，能夠善用DISQUS留言，不要再塞爆我信箱了XDD
 
-而SVD方面的表現卻是不盡人意，非常的慢
-
-再來是連結到我的文章，WLS的計算上RcppArmadillo快([連結](http://chingchuan-chen.github.io/posts/2016/12/31/weighted-least-square-algorithm)，LOOCV with RcppParallel/OpenMP則是RcppEigen快([連結](http://chingchuan-chen.github.io/posts/2016/12/31/RcppEigen-Work-With-RcppParall)
-
-所以求速度的話，使用RcppEigen基本上沒錯，只是svd的performance真的很差，這部分需要謹記(其他雷目前未知)
-
-但是RcppArmadillo有不少方便的功能
-
-submatrix view可以支援用uword vector拉出
-
-element-wise, column/row-wise的操作也相較起RcppEigen來的強大 
-
-舉例來說，`mat m = p.each_col() % v`，其中`v`是vector，`m`, `p`都是矩陣
-
-而這個在RcppEigen就要用迴圈來處理了，但是performance還是RcppEigen快一些
-
-所以求coding方便性，希望有很多簡單的方式去處理資料，使用RcppArmadillo就好
-
+新的一年第一篇部落格，請大家多多指教
