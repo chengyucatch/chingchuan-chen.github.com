@@ -115,3 +115,10 @@ element-wise, column/row-wise的操作也相較起RcppEigen來的強大
 而這個在RcppEigen就要用迴圈來處理了，但是performance還是RcppEigen快一些
 
 所以求coding方便性，希望有很多簡單的方式去處理資料，使用RcppArmadillo就好
+
+
+延伸閱讀：
+
+1. [kernal matrix computation in Rcpp](http://chingchuan-chen.github.io/posts/2017/01/01/kernal-matrix-computation-in-Rcpp)
+1. [kernal matrix computation in Rcpp (continued)](http://chingchuan-chen.github.io/posts/2017/01/01/kernal-matrix-computation-in-Rcpp-continued)
+1. [pdate RcppEigen to 3.3.1](http://chingchuan-chen.github.io/posts/2017/01/02/update-RcppEigen-to-3-3-1)

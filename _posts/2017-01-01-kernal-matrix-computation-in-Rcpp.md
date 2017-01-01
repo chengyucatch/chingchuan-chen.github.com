@@ -3,7 +3,13 @@ layout: post
 title: "kernal matrix computation in Rcpp"
 ---
 
-剛好被我試到一個RcppEigen比較慢的例子
+會有這篇是剛好想到之前在PTT PO的文章
+
+[文章1](https://www.ptt.cc/bbs/R_Language/M.1429191476.A.F82.html)，[文章2](https://www.ptt.cc/bbs/C_and_CPP/M.1392479791.A.222.html)
+
+就想說順便來把這兩個拿來比較一下，於是就有了這一篇的誕生
+
+這篇剛好也是我試到一個RcppEigen比較慢的例子
 
 當做之前的RcppArmadillo vs RcppEigen的延伸
 
@@ -14,6 +20,8 @@ title: "kernal matrix computation in Rcpp"
 而RcppEigen機制不太確定，但是有趣的事情是Eigen還可以透過include omp配上`Eigen::initParallel`來加速
 
 但是這裡RcppArmadillo毫無疑問的直接打趴RcppEigen(攤手
+
+下一篇會再把RcppParallel拉進來一起玩
 
 R code:
 
