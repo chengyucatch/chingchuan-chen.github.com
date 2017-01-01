@@ -9,6 +9,8 @@ title: "Rcpp call F77 blas/lapack"
 
 我這裡就簡單demo一下怎麼樣用LAPACK的dsyevr去計算symmetric matrix的eigenvalues跟eigenvectors
 
+(BLAS部分其實很接近，有興趣的人可以自己改成用BLAS的函數去做，一樣用F77_CALL即可)
+
 裡面還是有不少配置，我沒有好好活用，不過我覺得就先這樣吧，等到有需要再慢慢深入去寫
 
 畢竟我現在直接使用BLAS/LAPACK的場合真的不多，寫那麼底層對我真的有點困難Orz
