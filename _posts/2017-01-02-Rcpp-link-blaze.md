@@ -39,6 +39,8 @@ pos_->index() == index_
 
 然後就可以快樂的開始玩blaze了
 
+(Note: 其實還有一些要改才能完整使用Blaze，請參考[下一篇文章](http://chingchuan-chen.github.io/posts/2017/01/02/Rcpp-link-blaze-part-2))
+
 R code:
 
 ``` R
