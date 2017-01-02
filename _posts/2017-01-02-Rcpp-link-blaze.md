@@ -11,7 +11,7 @@ Blaze claim it is fast. [Link](https://bitbucket.org/blaze-lib/blaze/wiki/Benchm
 
 看看有沒有大神會把它弄成一個套件，叫做RcppBlaze之類
 
-我試了一下blaze-3.0，怎樣都無法編譯Orz
+我試了一下blaze-3.0，怎樣都無法編譯Orz (後來有找到要用`-std=c++1y`才能編譯成功)
 
 我就改用上一版的blaze-2.6，不過還是有些地方需要更動
 
@@ -30,7 +30,7 @@ Memory.h:
 #if defined(_MSC_VER) || defined(__MINGW32__)
 ```
 
-HermitianValue.h:
+HermitianValue.h: (blaze-3.0不用改)
 
 ``` c++
 // 279, 299, 323, 347, 371, 395, 513行原本是 pos_->index() == index改成：
@@ -42,8 +42,20 @@ pos_->index() == index_
 R code:
 
 ``` R
-Sys.setenv("PKG_LIBS" = "-Iblaze $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)")
-Rcpp::sourceCpp("test_blaze.cpp")
+useBlaze26 <- FALSE
+if (useBlaze26 && dir.exists("blaze26")) {
+  file.rename("blaze", "blaze3")
+  file.rename("blaze26", "blaze")
+  Sys.setenv("PKG_CXXFLAGS" = '-Iblaze')
+} else if (!useBlaze26 && dir.exists("blaze3")) {
+  file.rename("blaze", "blaze26")
+  file.rename("blaze3", "blaze")
+  Sys.setenv("PKG_CXXFLAGS" = "-Iblaze -DUSE_BLAZE3")
+} else {
+  stop("Please use correct tag!")
+}
+Rcpp::sourceCpp("test_blaze.cpp", rebuild = TRUE)
+
 test_blaze1(1:5)
 test_blaze1(rnorm(5))
 
@@ -55,14 +67,14 @@ y <- rnorm(3)
 all.equal(test_blaze3(X, y), as.vector(X %*% y)) # TRUE
 
 library(microbenchmark)
-M <- 500L
-N <- 1e3L
+M <- 6e3L
+N <- 3e4L
 X <- matrix(rnorm(M * N), M, N)
 y <- rnorm(N)
 microbenchmark(
   blaze = test_blaze3(X, y),
   R = as.vector(X %*% y),
-  times = 30L
+  times = 50L
 )
 # Unit: microseconds
 #   expr     min      lq     mean  median      uq      max neval
@@ -74,9 +86,12 @@ test_blaze.cpp:
 
 ``` c++
 // [[Rcpp::depends(BH)]]
+#ifdef USE_BLAZE3
+// [[Rcpp::plugins(cpp14)]]
+#else
 // [[Rcpp::plugins(cpp11)]]
+#endif
 #include <Rcpp.h>
-#include <iostream>
 #include <blaze/Math.h>
 
 //[[Rcpp::export]]
@@ -117,4 +132,16 @@ Rcpp::NumericVector test_blaze3(Rcpp::NumericMatrix X, Rcpp::NumericVector y){
 
 後記：
 
-blaze-3.0的話，其實只要改好`blaze/util/Memory.h`，就可以動了
+blaze-3.0的話，其實只要改好`blaze/util/Memory.h`
+
+然後在cpp file中使用`// [[Rcpp::plugins(cpp14)]]`即可 
+
+Note: 其實還有`cpp1y` for C++14 and C++17 standard under development
+
+Rcpp的plugins可以看[GitHub Rcpp Issue Link](https://github.com/RcppCore/Rcpp/issues/524)
+
+我這裡測試是blaze-3.0跟blaze-2.6效能滿接近的
+
+個人是覺得因為R的Policy問題，所以還是用2.6就好
+
+用太新的C++ std通常都會吃土
