@@ -46,11 +46,11 @@ useBlaze26 <- FALSE
 if (useBlaze26 && dir.exists("blaze26")) {
   file.rename("blaze", "blaze3")
   file.rename("blaze26", "blaze")
-  Sys.setenv("PKG_CXXFLAGS" = '-Iblaze')
+  Sys.setenv("PKG_CXXFLAGS" = '-I.')
 } else if (!useBlaze26 && dir.exists("blaze3")) {
   file.rename("blaze", "blaze26")
   file.rename("blaze3", "blaze")
-  Sys.setenv("PKG_CXXFLAGS" = "-Iblaze -DUSE_BLAZE3")
+  Sys.setenv("PKG_CXXFLAGS" = "-I. -DUSE_BLAZE3")
 } else {
   stop("Please use correct tag!")
 }
