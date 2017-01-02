@@ -3,6 +3,8 @@ layout: post
 title: "Rcpp Link Blaze"
 ---
 
+補充：我把程式放到GitHub，可以到這下載來玩：[Link](https://github.com/ChingChuan-Chen/rcpp_link_blaze)
+
 Blaze claim it is fast. [Link](https://bitbucket.org/blaze-lib/blaze/wiki/Benchmarks)
 
 所以我就來試試看Rcpp去link玩玩看
