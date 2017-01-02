@@ -112,3 +112,7 @@ Rcpp::NumericVector test_blaze3(Rcpp::NumericMatrix X, Rcpp::NumericVector y){
   return out;
 }
 ```
+
+後記：
+
+blaze-3.0的話，其實只要改好`blaze/util/Memory.h`，就可以動了
