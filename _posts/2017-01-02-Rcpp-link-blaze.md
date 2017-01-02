@@ -37,10 +37,6 @@ pos_->index() == index_
 
 然後就可以快樂的開始玩blaze了
 
-只是我還沒測試要怎麼樣把blaze輸出到R XDD
-
-不過我想應該不是難事就是，找一下RcppEigen或是RcppArmadillo的輸出方式就好了~~
-
 R code:
 
 ``` R
@@ -51,6 +47,25 @@ test_blaze1(rnorm(5))
 
 test_blaze2(matrix(1:9, 3, 3))
 test_blaze2(matrix(rnorm(9), 3, 3))
+
+X <- matrix(rnorm(9), 3, 3)
+y <- rnorm(3)
+all.equal(test_blaze3(X, y), as.vector(X %*% y)) # TRUE
+
+library(microbenchmark)
+M <- 500L
+N <- 1e3L
+X <- matrix(rnorm(M * N), M, N)
+y <- rnorm(N)
+microbenchmark(
+  blaze = test_blaze3(X, y),
+  R = as.vector(X %*% y),
+  times = 30L
+)
+# Unit: microseconds
+#   expr     min      lq     mean  median      uq      max neval
+#  blaze 168.228 169.983 195.6315 173.640 202.750  312.172    30
+#      R 554.126 559.099 632.9047 562.757 660.328 1506.730    30
 ```
 
 test_blaze.cpp:
@@ -83,5 +98,17 @@ Rcpp::NumericMatrix test_blaze2(Rcpp::NumericMatrix X){
   Rcpp::Rcout << v(1, 1) << std::endl;
   Rcpp::Rcout << v(1, 2) << std::endl;
   return X;
+}
+
+//[[Rcpp::export]]
+Rcpp::NumericVector test_blaze3(Rcpp::NumericMatrix X, Rcpp::NumericVector y){
+  blaze::CustomMatrix<double, blaze::unaligned, blaze::unpadded, blaze::columnMajor> a( &X[0], X.nrow(), X.ncol() );
+  blaze::CustomVector<double, blaze::unaligned, blaze::unpadded> b( &y[0], y.size() );
+  
+  blaze::DynamicVector<double> c = a * b;
+  Rcpp::NumericVector out(c.size());
+  for (auto i = 0; i < c.size(); ++i) 
+    out[i] = c[i];
+  return out;
 }
 ```
