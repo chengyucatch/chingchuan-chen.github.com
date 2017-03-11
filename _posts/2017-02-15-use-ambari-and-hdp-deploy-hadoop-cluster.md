@@ -65,7 +65,7 @@ sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
 setenforce 0
 ```
 
-d. 關閉防火牆(非必要)
+d. 關閉防火牆
 
 ``` bash
 systemctl stop firewalld
