@@ -46,14 +46,16 @@ SEXP eleMultiBase(Rcpp::Vector<RTYPE>& x, Rcpp::Vector<RTYPE>& y) {
 
 // [[Rcpp::export]]
 SEXP eleMulti_double(Rcpp::NumericVector x, Rcpp::NumericVector y) {
-  const int RTYPE = Rcpp::traits::r_sexptype_traits< double >::rtype;
-  return eleMultiBase<RTYPE, double>(x, y);
+  typedef typename Rcpp::NumericVector::stored_type valueType;
+  const int RTYPE = Rcpp::traits::r_sexptype_traits< valueType >::rtype;
+  return eleMultiBase<RTYPE, valueType>(x, y);
 }
 
 // [[Rcpp::export]]
 SEXP eleMulti_int(Rcpp::IntegerVector x, Rcpp::IntegerVector y) {
-  const int RTYPE = Rcpp::traits::r_sexptype_traits< int >::rtype;
-  return eleMultiBase<RTYPE, int>(x, y);
+  typedef typename Rcpp::IntegerVector::stored_type valueType;
+  const int RTYPE = Rcpp::traits::r_sexptype_traits< valueType >::rtype;
+  return eleMultiBase<RTYPE, valueType>(x, y);
 }
 
 /*** R
