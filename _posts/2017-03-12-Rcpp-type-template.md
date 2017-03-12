@@ -78,7 +78,7 @@ SEXP eleMulti_int(Rcpp::IntegerVector x, Rcpp::IntegerVector y) {
 
 不過在處理`RComplex`的時候就很方便
 
-如果`y`是`Rcpp::ComplexVector`，`x`是`std::vector<std::complex>`
+如果`y`是`Rcpp::ComplexVector`，要轉到`std::vector<std::complex>`這個型別的話，做法如下：
 
 ``` c++
 std::vector<std::complex> x(y.size());
