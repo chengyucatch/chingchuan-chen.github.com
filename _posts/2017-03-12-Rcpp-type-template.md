@@ -82,8 +82,9 @@ SEXP eleMulti_int(Rcpp::IntegerVector x, Rcpp::IntegerVector y) {
 
 ``` c++
 std::vector<std::complex> x(y.size());
+const static int RTYPE = ::Rcpp::traits::r_sexptype_traits<std::complex>::rtype ;
 for( size_t i=0UL; i<(size_t)y.size(); ++i )
-  x[i] Rcpp::internal::caster< typename Rcpp::traits::storage_type<RTYPE>::type, Type >( y[i] );
+  x[i] = Rcpp::internal::caster< typename Rcpp::traits::storage_type<RTYPE>::type, std::complex >( y[i] );
 ```
 
 因為`RComplex`不是型別，所以只能透過`caster`跟`storage_type`去做適當轉換
