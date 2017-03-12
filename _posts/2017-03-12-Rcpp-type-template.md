@@ -23,7 +23,6 @@ title: Rcpp一些type轉換心得
 
 ``` c++
 #include <RcppArmadillo.h>
-#include <typeinfo>
 // [[Rcpp::depends(RcppArmadillo)]]
 
 template <int RTYPE, typename T>
@@ -81,10 +80,24 @@ SEXP eleMulti_int(Rcpp::IntegerVector x, Rcpp::IntegerVector y) {
 如果`y`是`Rcpp::ComplexVector`，要轉到`std::vector<std::complex>`這個型別的話，做法如下：
 
 ``` c++
-std::vector<std::complex> x(y.size());
-const static int RTYPE = ::Rcpp::traits::r_sexptype_traits<std::complex>::rtype ;
-for( size_t i=0UL; i<(size_t)y.size(); ++i )
-  x[i] = Rcpp::internal::caster< typename Rcpp::traits::storage_type<RTYPE>::type, std::complex >( y[i] );
+#include <Rcpp.h>
+#include <vector>
+#include <complex>
+
+// [[Rcpp::export]]
+std::vector< std::complex<double> > complexVec(Rcpp::ComplexVector y) {
+  std::vector< std::complex<double> > x(y.size());
+  const int RTYPE = Rcpp::traits::r_sexptype_traits< std::complex<double> >::rtype;
+  for( size_t i=0UL; i<(size_t)y.size(); ++i )
+    x[i] = Rcpp::internal::caster< typename Rcpp::traits::storage_type<RTYPE>::type, std::complex<double> >( y[i] );
+  return x;
+}
+
+/*** R
+  len <- 5L
+  y <- complex(len, rnorm(len), rnorm(len))
+  complexVec(y)
+*/
 ```
 
 因為`RComplex`不是型別，所以只能透過`caster`跟`storage_type`去做適當轉換
