@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 如何利用jekyll建立你的blogger
+title: Rcpp一些type轉換心得
 ---
 
 最近把RcppBlaze推上CRAN了
