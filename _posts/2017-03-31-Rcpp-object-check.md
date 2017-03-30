@@ -102,12 +102,14 @@ double testFunc(SEXP x){
 Rcpp::sourceCpp("checkValue.cpp")
 testFunc(sample.int(10, 5)) # pass
 testFunc(rnorm(5)) # pass
+# check type
+expect_error(testFunc(c(TRUE, FALSE)), "Not supported type!")
 # cehck NA
-expect_error(testFunc(c(sample.int(10, 3), NA_integer_)))
+expect_error(testFunc(c(sample.int(10, 3), NA_integer_)), "x must not contain NA!")
 # check NA, NaN, Inf, -Inf
-expect_error(testFunc(c(rnorm(3), NA_real_)))
-expect_error(testFunc(c(rnorm(3), NaN)))
-expect_error(testFunc(c(rnorm(3), Inf)))
+expect_error(testFunc(c(rnorm(3), NA_real_)), "x must not contain NA, NaN or Inf!")
+expect_error(testFunc(c(rnorm(3), NaN)), "x must not contain NA, NaN or Inf!")
+expect_error(testFunc(c(rnorm(3), Inf)), "x must not contain NA, NaN or Inf!")
 
 library(testthat)
 # values for RTYPE
