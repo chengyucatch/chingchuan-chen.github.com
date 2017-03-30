@@ -103,9 +103,9 @@ Rcpp::sourceCpp("checkValue.cpp")
 testFunc(sample.int(10, 5)) # pass
 testFunc(rnorm(5)) # pass
 # cehck NA
-expect_error(testFunc(c(sample.int(10, 3), NA)))
+expect_error(testFunc(c(sample.int(10, 3), NA_integer_)))
 # check NA, NaN, Inf, -Inf
-expect_error(testFunc(c(rnorm(3), NA)))
+expect_error(testFunc(c(rnorm(3), NA_real_)))
 expect_error(testFunc(c(rnorm(3), NaN)))
 expect_error(testFunc(c(rnorm(3), Inf)))
 
@@ -131,7 +131,7 @@ expect_error(checkValue(c(1, 2), "x", 14, 3), "The length of x must be 3!")
 expect_error(checkValue(c(1, 2), "x", 13, 2), "x must be integer type!")
 
 # check NA, NaN, Inf, -Inf
-expect_error(checkValue(c(1, NA), "x", 14, 2), "x must not contain NA, NaN or Inf!")
+expect_error(checkValue(c(1, NA_real_), "x", 14, 2), "x must not contain NA, NaN or Inf!")
 expect_error(checkValue(c(1, NaN), "x", 14, 2), "x must not contain NA, NaN or Inf!")
 expect_error(checkValue(c(1, Inf), "x", 14, 2), "x must not contain NA, NaN or Inf!")
 expect_error(checkValue(c(1, -Inf), "x", 14, 2), "x must not contain NA, NaN or Inf!")
