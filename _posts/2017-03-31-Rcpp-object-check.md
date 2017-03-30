@@ -74,12 +74,40 @@ void checkValue(SEXP x, const std::string varName = "x", const int RTYPE = 14, c
     }
   }
 }
+
+// [[Rcpp::export]]
+double testFunc(SEXP x){
+  switch(TYPEOF(x)) {
+  case INTSXP:
+    checkValue(x, "x", INTSXP, -1); // len < 0 to skip checking length
+    return(sum(Rcpp::as<Rcpp::IntegerVector>(x)));
+  case REALSXP:
+    checkValue(x, "x", REALSXP, -1); // len < 0 to skip checking length
+    return(sum(Rcpp::as<Rcpp::NumericVector>(x)));
+  default:
+    Rcpp::stop("Not supported type!\n");
+  }
+}
 ```
 
-為了方便測試就用R來測試，其實真正要用應該是在C++裡面去用這個函數，測試的code如下：
+我們也create一個testFunc，去做對double/integer的vector做總和
+
+那我們就在input時做一個checking
+
+至於其他case，為了方便測試，我們這裡就用R來測試
+
+但別忘了這個函數真正要用地方是在C++，測試的code如下：
 
 ``` R
 Rcpp::sourceCpp("checkValue.cpp")
+testFunc(sample.int(10, 5)) # pass
+testFunc(rnorm(5)) # pass
+# cehck NA
+expect_error(testFunc(c(sample.int(10, 3), NA)))
+# check NA, NaN, Inf, -Inf
+expect_error(testFunc(c(rnorm(3), NA)))
+expect_error(testFunc(c(rnorm(3), NaN)))
+expect_error(testFunc(c(rnorm(3), Inf)))
 
 library(testthat)
 # values for RTYPE
