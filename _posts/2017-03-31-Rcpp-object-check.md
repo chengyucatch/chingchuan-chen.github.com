@@ -13,7 +13,7 @@ title: Rcpp object checking
 
 最後再轉成需要的class去做後續，C++ code如下：
 
-``` C++
+``` c++
 #include <string>
 #include <sstream>
 #include <Rcpp.h>
