@@ -156,36 +156,43 @@ expect_error(checkValue(complex(2, c(1, Inf), 0:1), "x", 15, 2), "x must not con
 
 ``` R
 library(testthat)
-checkValue_r <- function(x, varName, type, length){
+checkValueR <- function(x, type, length = -1L, verbose = FALSE){
   stopifnot(type %in% c("logical", "integer", "double", "complex", "character"))
-  RTYPE <- switch(type, "logical" = 10L, "integer" = 13L, "double" = 14L, 
+  funcCall <- match.call()
+  RTYPE <- switch(type, "logical" = 10L, "integer" = 13L, "double" = 14L,
                   "complex" = 15L, "character" = 16L)
+  varName <- as.character(funcCall$x)
+  if (length(varName) > 1L) {
+    if (verbose)
+      message("x input is not a variable name instead function call, so use x as variable name.")
+    varName <- "x"
+  }
   checkValue(x, varName, RTYPE, length)
   invisible(NULL)
 }
 
 # check length
-expect_error(checkValue_r(c(1, 2), "x", "double", 1), "The length of x must be 1!")
-expect_error(checkValue_r(c(1, 2), "x", "double", 3), "The length of x must be 3!")
+expect_error(checkValueR(c(1, 2), "double", 1), "The length of x must be 1!")
+expect_error(checkValueR(c(1, 2), "double", 3), "The length of x must be 3!")
 
 # check type
-expect_error(checkValue_r(c(1, 2), "x", "integer", 2), "x must be integer type!")
+expect_error(checkValueR(c(1, 2), "integer", 2), "x must be integer type!")
 
 # check NA, NaN, Inf, -Inf
-expect_error(checkValue_r(c(1, NA), "x", "double", 2), "x must not contain NA, NaN or Inf!")
-expect_error(checkValue_r(c(1, NaN), "x", "double", 2), "x must not contain NA, NaN or Inf!")
-expect_error(checkValue_r(c(1, Inf), "x", "double", 2), "x must not contain NA, NaN or Inf!")
-expect_error(checkValue_r(c(1, -Inf), "x", "double", 2), "x must not contain NA, NaN or Inf!")
+expect_error(checkValueR(c(1, NA), "double", 2), "x must not contain NA, NaN or Inf!")
+expect_error(checkValueR(c(1, NaN), "double", 2), "x must not contain NA, NaN or Inf!")
+expect_error(checkValueR(c(1, Inf), "double", 2), "x must not contain NA, NaN or Inf!")
+expect_error(checkValueR(c(1, -Inf), "double", 2), "x must not contain NA, NaN or Inf!")
 
 # check NA
-expect_error(checkValue_r(c(TRUE, NA), "x", "logical", 2), "x must not contain NA.")
-expect_error(checkValue_r(c(1L, NA_integer_), "x", "integer", 2), "x must not contain NA.")
-expect_error(checkValue_r(c("1", NA_character_), "x", "character", 2), "x must not contain NA.")
+expect_error(checkValueR(c(TRUE, NA), "logical", 2), "x must not contain NA.")
+expect_error(checkValueR(c(1L, NA_integer_), "integer", 2), "x must not contain NA.")
+expect_error(checkValueR(c("1", NA_character_), "character", 2), "x must not contain NA.")
 
 # check complex
-expect_error(checkValue_r(complex(2, 1:2, 0:1), "x", "double", 2), "x must be double type!")
-expect_error(checkValue_r(complex(2, c(1, NA), 0:1), "x", "complex", 2), "x must not contain NA, NaN or Inf!")
-expect_error(checkValue_r(complex(2, c(1, NaN), 0:1), "x", "complex", 2), "x must not contain NA, NaN or Inf!")
-expect_error(checkValue_r(complex(2, c(1, Inf), 0:1), "x", "complex", 2), "x must not contain NA, NaN or Inf!")
+expect_error(checkValueR(complex(2, 1:2, 0:1), "double", 2), "x must be double type!")
+expect_error(checkValueR(complex(2, c(1, NA), 0:1), "complex", 2), "x must not contain NA, NaN or Inf!")
+expect_error(checkValueR(complex(2, c(1, NaN), 0:1), "complex", 2), "x must not contain NA, NaN or Inf!")
+expect_error(checkValueR(complex(2, c(1, Inf), 0:1), "complex", 2), "x must not contain NA, NaN or Inf!")
 ```
 
