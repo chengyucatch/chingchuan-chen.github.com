@@ -28,8 +28,10 @@ std::string num2str(T Number) {
 // [[Rcpp::export]]
 void checkValue(SEXP x, const std::string varName = "x", const int RTYPE = 14, const int len = 1){
   int n = LENGTH(x);
-  if (n != len)
-    Rcpp::stop("The length of " + varName + " must be " + num2str(len) + "!\n");
+  if (len > 0) {
+    if (n != len)
+      Rcpp::stop("The length of " + varName + " must be " + num2str(len) + "!\n");
+  }
   if (TYPEOF(x) != RTYPE) {
     switch(RTYPE) {
     case LGLSXP:
