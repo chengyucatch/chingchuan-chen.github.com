@@ -56,9 +56,7 @@ print(gs)
 # 9:       10        8 <rpart>      0.84 0.7142857
 ```
 
-我是覺得寫起來有點麻煩XD
-
-不過改成用`foreach` + `iterators`可能會好很多，code如下：
+我是覺得寫起來有點麻煩XD，改成用`foreach` + `iterators`我覺得會好很多，code如下：
 
 ``` R
 library(data.table)
