@@ -79,16 +79,16 @@ resDT <- CJ(minsplit = c(2, 5, 10), maxdepth = c(1, 3, 8)) %>>%
     }
   } %>>% setorder(-testAccu, -trainAccu)
 print(resDT)
-#    minsplit maxdepth     mod trainAccu testAccu
-# 1:        2        1 <rpart>      0.84     0.84
-# 2:        5        1 <rpart>      0.84     0.84
-# 3:       10        1 <rpart>      0.84     0.84
-# 4:        2        3 <rpart>      0.92     0.92
-# 5:        5        3 <rpart>      0.88     0.88
-# 6:       10        3 <rpart>      0.84     0.84
-# 7:        2        8 <rpart>      1.00     1.00
-# 8:        5        8 <rpart>      0.88     0.88
-# 9:       10        8 <rpart>      0.84     0.84
+#    minsplit maxdepth     mod trainAccu  testAccu
+# 1:        2        8 <rpart>      1.00 0.8571429
+# 2:        2        3 <rpart>      0.92 0.8571429
+# 3:        5        3 <rpart>      0.88 0.8571429
+# 4:        5        8 <rpart>      0.88 0.8571429
+# 5:        2        1 <rpart>      0.84 0.7142857
+# 6:        5        1 <rpart>      0.84 0.7142857
+# 7:       10        1 <rpart>      0.84 0.7142857
+# 8:       10        3 <rpart>      0.84 0.7142857
+# 9:       10        8 <rpart>      0.84 0.7142857
 ```
 
 `isplit`那裏是shadow copy，所以應該不會造成什麼問題
