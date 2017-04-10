@@ -73,7 +73,7 @@ CJ(minsplit = c(2, 5, 10), maxdepth = c(1, 3, 8)) %>>%
     {
       mod <- rpart(am ~ hp + mpg, dataDT[trainFlag == TRUE], control = i$value)
       trainAccu <- dataDT[trainFlag == TRUE] %>>% {mean(predict(mod, ., type = "class") == .$am)}
-      testAccu <- dataDT[trainFlag == TRUE] %>>% {mean(predict(mod, ., type = "class") == .$am)}
+      testAccu <- dataDT[trainFlag == FALSE] %>>% {mean(predict(mod, ., type = "class") == .$am)}
       return(cbind(i$value, data.table(mod = list(mod), trainAccu = trainAccu, testAccu = testAccu)))
     }
   }
