@@ -38,10 +38,8 @@ calAccu <- function(mod, testData, testLabel) {
   mean(predict(mod, testData, type = "class") == testLabel)
 }
 
-gs[ , `:=`(trainAccu = mapply(function(m) calAccu(m, dataDT[trainFlag == TRUE], 
-                                                  dataDT[trainFlag == TRUE]$am), mod),
-           testAccu = mapply(function(m) calAccu(m, dataDT[trainFlag == FALSE], 
-                                                 dataDT[trainFlag == FALSE]$am), mod))]
+gs[ , `:=`(trainAccu = mapply(function(m) dataDT[trainFlag == TRUE] %>>% {calAccu(m, ., .$am)}, mod),
+           testAccu = mapply(function(m) dataDT[trainFlag == FALSE] %>>% {calAccu(m, ., .$am)}, mod))]
 setorder(gs, -testAccu)
 print(gs)
 #    minsplit maxdepth     mod trainAccu  testAccu
