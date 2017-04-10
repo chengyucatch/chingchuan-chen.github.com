@@ -40,11 +40,11 @@ calAccu <- function(mod, testData, testLabel) {
 
 gs[ , `:=`(trainAccu = mapply(function(m) dataDT[trainFlag == TRUE] %>>% {calAccu(m, ., .$am)}, mod),
            testAccu = mapply(function(m) dataDT[trainFlag == FALSE] %>>% {calAccu(m, ., .$am)}, mod))]
-setorder(gs, -testAccu)
+setorder(gs, -testAccu, -trainAccu)
 print(gs)
 #    minsplit maxdepth     mod trainAccu  testAccu
-# 1:        2        3 <rpart>      0.92 0.8571429
-# 2:        2        8 <rpart>      1.00 0.8571429
+# 1:        2        8 <rpart>      1.00 0.8571429
+# 2:        2        3 <rpart>      0.92 0.8571429
 # 3:        5        3 <rpart>      0.88 0.8571429
 # 4:        5        8 <rpart>      0.88 0.8571429
 # 5:        2        1 <rpart>      0.84 0.7142857
@@ -67,16 +67,18 @@ set.seed(245)
 dataDT <- data.table(mtcars) %>>% `[`(j = am := factor(am, labels = c("Automatic", "Manual")))
 dataDT[ , trainFlag := !is.na(match(.I, sample.int(nrow(mtcars), floor(.8 * nrow(mtcars)))))]
 
-CJ(minsplit = c(2, 5, 10), maxdepth = c(1, 3, 8)) %>>%
+resDT <- CJ(minsplit = c(2, 5, 10), maxdepth = c(1, 3, 8)) %>>%
   {
     foreach(i = isplit(., as.list(.)), .final = rbindlist) %do% 
     {
-      mod <- rpart(am ~ hp + mpg, dataDT[trainFlag == TRUE], control = i$value)
+      mod <- rpart(am ~ hp + mpg, dataDT[trainFlag == TRUE], 
+                   control = with(i$value, rpart.control(minsplit = minsplit, maxdepth = maxdepth)))
       trainAccu <- dataDT[trainFlag == TRUE] %>>% {mean(predict(mod, ., type = "class") == .$am)}
       testAccu <- dataDT[trainFlag == FALSE] %>>% {mean(predict(mod, ., type = "class") == .$am)}
       return(cbind(i$value, data.table(mod = list(mod), trainAccu = trainAccu, testAccu = testAccu)))
     }
-  }
+  } %>>% setorder(-testAccu, -trainAccu)
+print(resDT)
 #    minsplit maxdepth     mod trainAccu testAccu
 # 1:        2        1 <rpart>      0.84     0.84
 # 2:        5        1 <rpart>      0.84     0.84
