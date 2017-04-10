@@ -3,7 +3,7 @@ layout: post
 title: Grid search in data.table
 ---
 
-有人傳了一篇用`tidyverse`做grid search的blogger給我看 ((Grid search in the tidyverse)[https://www.r-bloggers.com/grid-search-in-the-tidyverse/])
+有人傳了一篇用`tidyverse`做grid search的blogger給我看 ([Grid search in the tidyverse](https://www.r-bloggers.com/grid-search-in-the-tidyverse/))
 
 我想說那我來寫一篇for `data.table`的吧，code如下：
 
