@@ -72,7 +72,7 @@ resDT <- CJ(minsplit = c(2, 5, 10), maxdepth = c(1, 3, 8)) %>>%
     foreach(i = isplit(., as.list(.)), .final = rbindlist) %do% 
     {
       mod <- rpart(am ~ hp + mpg, dataDT[trainFlag == TRUE], 
-                   control = with(i$value, rpart.control(minsplit = minsplit, maxdepth = maxdepth)))
+                   control = do.call(rpart.control, i$value))
       trainAccu <- dataDT[trainFlag == TRUE] %>>% {mean(predict(mod, ., type = "class") == .$am)}
       testAccu <- dataDT[trainFlag == FALSE] %>>% {mean(predict(mod, ., type = "class") == .$am)}
       return(cbind(i$value, data.table(mod = list(mod), trainAccu = trainAccu, testAccu = testAccu)))
