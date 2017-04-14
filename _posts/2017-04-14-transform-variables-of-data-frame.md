@@ -40,7 +40,7 @@ do.call(function(...) transform(DF, ...), evalExpr)
 
 當然也可以直接用column name帶入去做轉換：
 
-```
+``` R
 lapply(names(DF), function(x){
    iconv(DF[[x]], "UTF8",  "BIG5")
 })
