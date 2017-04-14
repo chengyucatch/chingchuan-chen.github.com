@@ -5,7 +5,7 @@ title: Transform Variables of R data.frame
 
 有人在PTT問說，怎樣轉換R data.frame的多行column，連結：[PTT文章](https://www.ptt.cc/bbs/R_Language/M.1492142292.A.C75.html)
 
-提醒：下面程式沒有判斷factor，如有factor請自行加入
+提醒：下面程式沒有判斷factor，如有factor請自行加入判斷式
 
 ``` R
 # data.table做法：
