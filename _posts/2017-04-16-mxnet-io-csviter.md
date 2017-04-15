@@ -199,9 +199,9 @@ write.table(res, file = "submission.csv", sep = ",", quote = FALSE, row.names = 
 
 本篇的重點在於下面這段R，用MxNet提供的mx.io.CSVIter去batch的訓練Net模型
 
-而這裡的`train-64x64-data.csv`，每一行都是經過resized的三十張圖片
+而這裡的`train-64x64-data.csv`，每一行都是經過resized的`30`張圖片，所以`data.shape`是`64 x 64 x 30`
 
-所以data.shape是`64 x 64 x 30`，而label則每一行是長度600的binary vector，其shape設定成600
+而`label`則每一行是長度`600`的binary vector，其shape設定成`600`
 
 然後給好`batch.size`，MxNet就可以批次的從csv抓資料出來train模型了
 
