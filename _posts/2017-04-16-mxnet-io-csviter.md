@@ -197,7 +197,7 @@ for (i in 1:nrow(res)) {
 write.table(res, file = "submission.csv", sep = ",", quote = FALSE, row.names = FALSE)
 ```
 
-本篇的重點在於下面這段R，data.csv放training的csv檔案
+本篇的重點在於下面這段R，用MxNet提供的mx.io.CSVIter去batch的訓練Net模型
 
 而這裡的`train-64x64-data.csv`，每一行都是經過resized的三十張圖片
 
