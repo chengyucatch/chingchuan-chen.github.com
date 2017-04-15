@@ -205,7 +205,7 @@ write.table(res, file = "submission.csv", sep = ",", quote = FALSE, row.names = 
 
 然後給好`batch.size`，MxNet就可以批次的從csv抓資料出來train模型了
 
-不用一股腦地把資料全部匯入到R裡面再做
+不用一股腦地把資料全部匯入到R裡面再做，不然再多的記憶體也用不完Orz
 
 ``` R
 data_train <- mx.io.CSVIter(
