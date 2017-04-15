@@ -1,6 +1,6 @@
 ---
 layout: post
-title: MxNet所提供的data iterator: mx.io.CSVIter
+title: MxNet所提供的csv data iterator
 ---
 
 這篇是參考mxnet的一個example來的[來源](https://github.com/dmlc/mxnet/tree/e7514fe1b3265aaf15870b124bb6ed0edd82fa76/example/kaggle-ndsb2)
