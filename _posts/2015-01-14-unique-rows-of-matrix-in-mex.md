@@ -3,9 +3,148 @@ layout: post
 title: Finding unique rows of a matrix in mex
 ---
 
-This code is to find the unique rows of a matrix. It is based on the quick sort algorithm. Thanks to this, I find that MATLAB also use quick sort to sort data.
+This code is to find the unique rows of a matrix. It is based on the quick sort algorithm. Thanks to this, I can use MatLab to implement faster sorting of rows.
 
-``` C++
+I compiled this code with Microsoft Visual Studio 2015 and Intel Parallel Studio XE 2017 and linking to armadillo library.
+
+The version of MatLab is 2016a. The compile script:
+
+``` matlab
+MKLROOT = 'C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2017.1.143\windows\mkl';
+ICLLIB = 'C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2017.1.143\windows\compiler\lib\intel64_win';
+OPTIMFLAGS = 'OPTIMFLAGS= /O3 /DNDEBUG /QxHost /Qparallel /Qopenmp /Qprec-div- /Qipo /Qinline-calloc';
+LINKER = 'LINKER=xilink';
+mex('-f', 'intel_cpp_17_vs2015.xml', '-v', '-largeArrayDims', '-IC:\armadillo-7.800.2\include', ...
+    ['-I', MKLROOT, '\include'], ['-L', MKLROOT, '\lib\intel64'], ['-L', ICLLIB], ...
+    'test_mkl_blas.cpp', OPTIMFLAGS, LINKER, '-lmkl_intel_lp64', '-lmkl_intel_thread', ...
+    '-lmkl_core', '-llibiomp5md')
+```
+
+My mex setup file:
+
+``` XML
+<?xml version="1.0" encoding="UTF-8" ?>
+<config
+    Name="Intel C++ Composer XE 2017 with Microsoft Visual Studio 2015"
+    ShortName="IntelCPP15MSVCPP140"
+    Manufacturer="Intel"
+    Version="17.0"
+    Language="C++"
+    Priority="A"
+    Location="$CPPROOT" >
+    <Details
+        CompilerExecutable="$COMPILER"
+        CompilerDefines="$COMPDEFINES"
+        CompilerFlags="$COMPFLAGS"
+        OptimizationFlags="$OPTIMFLAGS"
+        DebugFlags="$DEBUGFLAGS"
+        IncludeFlags="$INCLUDE"
+        LinkerExecutable="$LINKER"
+        LinkerFlags="$LINKFLAGS"
+        LinkerLibraries="$LINKLIBS"
+        LinkerDebugFlags="$LINKDEBUGFLAGS"
+        LinkerOptimizationFlags="$LINKOPTIMFLAGS"
+        CommandLineShell="$CPPROOT\bin\iclvars.bat "
+        CommandLineShellArg="intel64 vs2015"
+        CompilerDefineFormatter="/D%s"
+        LinkerLibrarySwitchFormatter="lib%s.lib;%s.lib"
+        LinkerPathFormatter="/LIBPATH:%s"
+        LibrarySearchPath="$$LIB;$$LIBPATH;$$PATH;$$INCLUDE;$MATLABROOT\extern\lib\$ARCH\microsoft"
+    />
+    <!-- Switch guide: http://msdn.microsoft.com/en-us/library/fwkeyyhe(v=vs.71).aspx -->
+    <vars
+          CMDLINE100="$COMPILER /c $COMPFLAGS $OPTIM $COMPDEFINES $INCLUDE $SRC /Fo$OBJ"
+          CMDLINE200="$LINKER $LINKFLAGS $LINKTYPE $LINKOPTIM $LINKEXPORT $OBJS $LINKLIBS /out:$EXE"
+          CMDLINE250="mt -outputresource:$EXE;2 -manifest $MANIFEST"
+          CMDLINE300="del $EXP $LIB $MANIFEST $ILK"
+ 
+          COMPILER="icl"
+          COMPFLAGS="/Zp8 /GR /W3 /EHs /nologo /MD"
+          COMPDEFINES="/D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0 $MATLABMEX"
+          MATLABMEX=" /DMATLAB_MEX_FILE"
+          OPTIMFLAGS="/O2 /DNDEBUG"
+          INCLUDE="-I&quot;$MATLABROOT\extern\include&quot; -I&quot;$MATLABROOT\simulink\include&quot;"
+          DEBUGFLAGS="/Z7"
+ 
+          LINKER="link"
+          LINKFLAGS="/nologo /manifest "
+          LINKTYPE="/DLL"
+          LINKEXPORT="/EXPORT:mexFunction"
+          LINKLIBS="/LIBPATH:&quot;$MATLABROOT\extern\lib\$ARCH\microsoft&quot; libmx.lib libmex.lib libmat.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib"
+          LINKDEBUGFLAGS="/debug /PDB:&quot;$TEMPNAME$LDEXT.pdb&quot;"
+          LINKOPTIMFLAGS=""
+ 
+          OBJEXT=".obj"
+          LDEXT=".mexw64"
+          SETENV="set COMPILER=$COMPILER
+                set COMPFLAGS=/c $COMPFLAGS $COMPDEFINES $MATLABMEX
+                set OPTIMFLAGS=$OPTIMFLAGS
+                set DEBUGFLAGS=$DEBUGFLAGS
+                set LINKER=$LINKER
+                set LINKFLAGS=$LINKFLAGS /export:%ENTRYPOINT% $LINKTYPE $LINKLIBS $LINKEXPORT
+                set LINKDEBUGFLAGS=/debug /PDB:&quot;%OUTDIR%%MEX_NAME%$LDEXT.pdb&quot;
+                set NAME_OUTPUT=/out:&quot;%OUTDIR%%MEX_NAME%%MEX_EXT%&quot;"
+    />
+    <client>
+        <engine
+          LINKLIBS="$LINKLIBS libeng.lib"
+          LINKEXPORT=""
+          LDEXT=".exe"
+          LINKTYPE=""
+          MATLABMEX=""
+        />
+    </client>
+    <locationFinder>
+        <!-- CPPROOT=C:\Program Files (x86)\IntelSWTools\compilers_and_libraries\windows\ -->
+        <CPPROOT>
+            <and>
+                <envVarExists name="ICPP_COMPILER17" />
+                <fileExists name="$$\Bin\intel64\icl.exe" />
+                <dirExists name="$$\..\.." />
+            </and>
+        </CPPROOT>
+        <!-- VCROOT=C:\Program Files (x86)\Microsoft Visual Studio 14.0\ -->
+        <VCROOT>
+            <and>
+                <or>
+                    <hklmExists path="SOFTWARE\Microsoft\VisualStudio\SxS\VC7" name="14.0" />
+                    <hkcuExists path="SOFTWARE\Microsoft\VisualStudio\SxS\VC7" name="14.0" />
+                    <hklmExists path="SOFTWARE\Wow6432Node\Microsoft\VisualStudio\SxS\VC7" name="14.0" />
+                    <hkcuExists path="SOFTWARE\Wow6432Node\Microsoft\VisualStudio\SxS\VC7" name="14.0" />
+                </or>
+                <fileExists name="$$\bin\amd64\cl.exe" />
+                <dirExists name="$$\..\.." />
+            </and>
+        </VCROOT>
+        <!-- SDKROOT=C:\Program Files (x86)\Windows Kits\8.1\ -->
+        <SDKROOT>
+            <or>
+                <hklmExists path="SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.1" name="InstallationFolder" />
+                <hkcuExists path="SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.1" name="InstallationFolder" />
+                <hklmExists path="SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v8.1" name="InstallationFolder" />
+                <hkcuExists path="SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v8.1" name="InstallationFolder" />
+            </or>
+        </SDKROOT>
+		<!-- KITSROOT=C:\Program Files (x86)\Windows Kits\10 -->
+        <KITSROOT>
+			<or>
+                <hklmExists path="SOFTWARE\Microsoft\Windows Kits\Installed Roots" name="KitsRoot10" />
+                <hkcuExists path="SOFTWARE\Microsoft\Windows Kits\Installed Roots" name="KitsRoot10" />
+                <hklmExists path="SOFTWARE\Wow6432Node\Microsoft\Windows Kits\Installed Roots" name="KitsRoot10" />
+                <hkcuExists path="SOFTWARE\Wow6432Node\Microsoft\Windows Kits\Installed Roots" name="KitsRoot10" />
+			</or>
+		</KITSROOT>
+    </locationFinder>
+    <env
+        PATH="$CPPROOT\bin\intel64;$VCROOT\bin\amd64;$VCROOT\vcpackages;$VCROOT\..\Common7\IDE;$VCROOT\..\Common7\Tools;$SDKROOT\bin\x64;"
+        INCLUDE="$CPPROOT\compiler\include;$VCROOT\include;$VCROOT\ATLMFC\INCLUDE;$KITSROOT\include\10.0.10240.0\ucrt;$SDKROOT\Include\shared;$SDKROOT\Include\um;$SDKROOT\Include\winrt;$MATLABROOT\extern\include;"
+        LIB="$CPPROOT\compiler\lib\intel64;$VCROOT\lib\amd64;$VCROOT\ATLMFC\Lib\amd64;$KITSROOT\Lib\10.0.10240.0\ucrt\x64;$SDKROOT\Lib\winv6.3\um\x64;$MATLABROOT\lib\win64;"
+        LIBPATH="$CPPROOT\compiler\lib\intel64;$VCROOT\lib\amd64;$VCROOT\atlmfc\lib\amd64;$SDKROOT\Lib\winv6.3\um\x64;$MATLABROOT\extern\lib\win64;"
+    />
+</config>
+```
+
+``` cpp
 // import header files
 #include <omp.h>
 // use armadillo
