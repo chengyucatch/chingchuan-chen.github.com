@@ -7,9 +7,9 @@ This code is to find the unique rows of a matrix. It is based on the quick sort 
 
 I compiled this code with Microsoft Visual Studio 2015 and Intel Parallel Studio XE 2017 and linking to armadillo library.
 
-The version of MatLab is 2016a. 
+I put files in my github ([Link](https://github.com/ChingChuan-Chen/fast-unqiue-rows)).
 
-The test script:
+My version of MatLab is 2016a. The test script:
 
 ``` matlab
 A = [9 2 9 5; 9 2 9 0; 9 2 9 5; 9 2 9 0; 9 2 9 5];
@@ -35,7 +35,7 @@ mex('-f', 'intel_cpp_17_vs2015.xml', '-v', '-largeArrayDims', '-IC:\armadillo-7.
     '-lmkl_core', '-llibiomp5md')
 ```
 
-My mex setup file:
+My mex setup file (intel_cpp_17_vs2015.xml):
 
 ``` xml
 <?xml version="1.0" encoding="UTF-8" ?>
