@@ -253,6 +253,8 @@ RcppEigen擁有比較好的performance，我的猜測是SSE指令集帶來的好
 ![](/images/wls_performace_comparison1.png)
 ![](/images/wls_performace_comparison2.png)
 
+測試script如下：
+
 ``` R
 library(iterators)
 library(foreach)
@@ -304,3 +306,24 @@ xyplot(median_time ~ p | factor(n, c(20, 30, 50, 75, 100, 200)),
        scales = list(x = list(relation = "free"), y = list(relation = "free")))
 ```
 
+基於上面的結論，所以我會建議這樣去寫wls的solver:
+
+```
+// [[Rcpp::depends(RcppArmadillo, RcppEigen)]]
+#include <RcppArmadillo.h>
+#include <RcppEigen.h>
+
+// [[Rcpp::export]]
+arma::vec fastSolve(arma::mat& X, arma::vec& w, arma::vec& y) {
+  if (X.n_rows <= 200 && X.n_cols <= 80) {
+    Eigen::Map<Eigen::MatrixXd> X2(X.memptr(), X.n_rows, X.n_cols);
+    Eigen::Map<Eigen::VectorXd> w2(w.memptr(), w.n_elem);
+    Eigen::Map<Eigen::VectorXd> y2(w.memptr(), y.n_elem);
+    Eigen::VectorXd out = (X2.transpose() * w2.asDiagonal() * X2).llt().solve(X2.transpose() * w2.asDiagonal() * y2);
+    arma::vec p(out.data(), out.rows(), false);
+    return p;
+  } else {
+    return arma::solve((X.each_col() % w).t() * X, X.t() * (w % y));
+  }
+}
+```
