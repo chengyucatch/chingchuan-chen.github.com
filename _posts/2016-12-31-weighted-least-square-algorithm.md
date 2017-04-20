@@ -34,7 +34,7 @@ R code:
 
 ``` R
 Rcpp::sourceCpp("wls.cpp")
-n <- 3e3
+n <- 500
 p <- 150
 X <- matrix(rnorm(n * p), n , p)
 beta <- rnorm(p)
@@ -49,28 +49,36 @@ microbenchmark(
   eigen_HHQR = eigen_HHQR(X, w, y),
   eigen_colPivHHQR = eigen_colPivHHQR(X, w, y),
   eigen_fullPivHHQR = eigen_fullPivHHQR(X, w, y),
-  eigen_chol_llt = eigen_chol_llt(X, w, y),
+  eigen_chol_llt1 = eigen_chol_llt1(X, w, y),
+  eigen_chol_llt2 = eigen_chol_llt2(X, w, y),
+  eigen_chol_llt3 = eigen_chol_llt3(X, w, y),
   arma_qr = arma_qr(X, w, y), # can't run if n is too big
   arma_pinv = arma_pinv(X, w, y),
-  arma_chol = arma_chol(X, w, y),
-  arma_direct = arma_direct(X, w, y),
+  arma_chol1 = arma_chol1(X, w, y),
+  arma_chol2 = arma_chol2(X, w, y),
+  arma_direct1 = arma_direct1(X, w, y),
+  arma_direct2 = arma_direct2(X, w, y),
   r_lm = coef(lm(y ~ -1 + X, weights = w)),
   times = 30L
 )
-#Unit: milliseconds
-#              expr        min         lq       mean     median         uq        max neval
-#         eigen_llt  11.058238  12.689018  14.149124  13.982906  15.355786  17.817171    30
-#        eigen_ldlt  11.159174  11.885624  13.437352  12.940628  14.562046  17.304883    30
-#      eigen_fullLU  12.250750  12.667661  14.849008  14.778841  16.804589  19.108864    30
-#        eigen_HHQR  11.486851  12.342032  13.821047  14.068336  14.757776  17.555322    30
-#  eigen_colPivHHQR  11.635769  12.906982  14.416562  13.775475  16.215648  18.840285    30
-# eigen_fullPivHHQR  12.553851  13.307803  15.403671  14.655083  17.562929  19.163867    30
-#    eigen_chol_llt  13.737879  14.170297  16.367413  15.978666  18.294937  20.462289    30
-#           arma_qr 266.718062 288.134711 293.853288 293.809090 300.613079 311.078572    30
-#         arma_pinv   8.234946   9.832958  10.322982  10.146301  10.730268  13.186678    30
-#         arma_chol   3.189005   4.528679   4.591776   4.730990   5.020780   5.459342    30
-#       arma_direct   3.052960   4.376543   4.372905   4.494302   4.703635   5.453197    30
-#              r_lm  45.051851  51.599549  74.144940  55.085365 116.950143 147.734857    30
+# Unit: microseconds
+#               expr      min       lq       mean    median       uq        max neval
+#          eigen_llt 1787.601 1814.225  2341.2993 2287.1645 2889.126   2912.239    30
+#         eigen_ldlt 1812.763 1846.408  2292.7815 2089.9725 2928.916   3020.197    30
+#       eigen_fullLU 3112.649 3133.129  3673.1350 3242.1115 4610.021   4725.294    30
+#         eigen_HHQR 2334.999 2401.120  3095.5537 3073.1525 3820.669   3920.142    30
+#   eigen_colPivHHQR 2411.945 2423.941  2969.3488 2691.4950 3756.888   4029.855    30
+#  eigen_fullPivHHQR 3449.397 3477.776  4179.7097 3585.0035 5282.639   5363.389    30
+#    eigen_chol_llt1 3302.234 3359.286  4111.7262 3828.5675 5297.852   5362.510    30
+#    eigen_chol_llt2 3268.004 3308.379  4065.1882 3418.3850 5253.674   5296.390    30
+#    eigen_chol_llt3 3354.020 3397.027  4130.9969 3857.0925 4929.800   5425.121    30
+#            arma_qr 1868.936 2167.357  2330.0549 2316.5675 2419.552   2829.442    30
+#          arma_pinv 4137.229 4723.245  5024.8460 4877.1375 5474.272   5722.957    30
+#         arma_chol1  702.167  959.337  1042.1535 1041.1100 1147.167   1291.404    30
+#         arma_chol2  780.869 1046.523  1121.4886 1125.5160 1234.645   1423.645    30
+#       arma_direct1 4473.977 4636.645  4956.8919 4701.4490 5481.294   5867.193    30
+#       arma_direct2  676.129  898.482   963.5788  965.4805 1060.565   1184.615    30
+#               r_lm 6257.189 6817.459 11962.0246 8113.9820 9301.084 123398.876    30
 ```
 
 C++ code:
@@ -177,8 +185,8 @@ Eigen::VectorXd eigen_colPivHHQR2(const Eigen::Map<Eigen::MatrixXd> & X,
 // [[Rcpp::export]]
 arma::vec arma_qr(const arma::mat& X, const arma::vec& w, const arma::vec& y) {
   mat Q, R;
-  qr(Q, R, X.each_col() % sqrt(w));
-  vec p = solve(R.head_rows(X.n_cols), Q.head_cols(X.n_cols).t() * (y % sqrt(w)));
+  arma::qr_econ(Q, R, X.each_col() % sqrt(w));
+  vec p = solve(R, Q.t() * (y % sqrt(w)));
   return p;
 }
 
@@ -232,3 +240,67 @@ arma::vec arma_direct2(const arma::mat& X, const arma::vec& w, const arma::vec& 
 或是Eigen在這做了比較多check
 
 這裡就留給後人慢慢玩賞QQ
+
+
+2017/4/20補充：
+
+我後來試了一些簡單的case
+
+發現其實在p不大(大概小於80)，n也不大(小於200)的情況
+
+RcppEigen擁有比較好的performance，我的猜測是SSE指令集帶來的好處
+
+![](/images/wls_performace_comparison1.png)
+![](/images/wls_performace_comparison2.png)
+
+``` R
+library(iterators)
+library(foreach)
+library(data.table)
+library(pipeR)
+library(Rcpp)
+library(RcppArmadillo)
+library(RcppEigen)
+library(microbenchmark)
+
+Rcpp::sourceCpp("wls.cpp")
+
+trainFunc <- function(n, p){
+  X <- matrix(rnorm(n * p), n , p)
+  beta <- rnorm(p)
+  w <- rgamma(nrow(X), 2, 0.5)
+  y <- 3 + X %*% beta + rnorm(n)
+  
+  microRes <- microbenchmark(
+    eigen_llt = eigen_llt(X, w, y),
+    eigen_ldlt = eigen_ldlt(X, w, y),
+    eigen_chol_llt1 = eigen_chol_llt1(X, w, y),
+    eigen_chol_llt2 = eigen_chol_llt2(X, w, y),
+    eigen_chol_llt3 = eigen_chol_llt3(X, w, y),
+    arma_chol1 = arma_chol1(X, w, y),
+    arma_chol2 = arma_chol2(X, w, y),
+    arma_direct1 = arma_direct1(X, w, y),
+    arma_direct2 = arma_direct2(X, w, y),
+    r_lm = coef(lm(y ~ -1 + X, weights = w)),
+    times = 30L
+  )
+  m <- tapply(microRes$time, microRes$expr, median) / 1000
+  return(data.table(n = n, p = p, method = names(m), median_time = m))
+}
+
+paraList <- CJ(p = c(1:20, seq(25, 100, 5)), n = c(20, 30, 50, 75, 100, 200)) %>>% `[`(n > p)
+paraResDT <- foreach(v = iter(paraList, by = "row"), .final = rbindlist) %do% trainFunc(v$n, v$p)
+
+library(lattice)
+
+xyplot(median_time ~ p | factor(n, c(20, 30, 50, 75, 100, 200)), paraResDT, groups = method, type = "o", 
+       auto.key = list(points = TRUE, columns = 3), 
+       scales = list(x = list(relation = "free"), y = list(relation = "free")))
+
+xyplot(median_time ~ p | factor(n, c(20, 30, 50, 75, 100, 200)), 
+       paraResDT[!method %in% c("r_lm", "arma_direct1", "eigen_chol_llt1",
+                                "eigen_chol_llt2", "eigen_chol_llt3")], 
+       groups = method, type = "o", auto.key = list(points = TRUE, columns = 3), 
+       scales = list(x = list(relation = "free"), y = list(relation = "free")))
+```
+
