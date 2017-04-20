@@ -318,7 +318,7 @@ arma::vec fastSolve(arma::mat& X, arma::vec& w, arma::vec& y) {
   if (X.n_rows <= 200 && X.n_cols <= 80) {
     Eigen::Map<Eigen::MatrixXd> X2(X.memptr(), X.n_rows, X.n_cols);
     Eigen::Map<Eigen::VectorXd> w2(w.memptr(), w.n_elem);
-    Eigen::Map<Eigen::VectorXd> y2(w.memptr(), y.n_elem);
+    Eigen::Map<Eigen::VectorXd> y2(y.memptr(), y.n_elem);
     Eigen::VectorXd out = (X2.transpose() * w2.asDiagonal() * X2).llt().solve(X2.transpose() * w2.asDiagonal() * y2);
     arma::vec p(out.data(), out.rows(), false);
     return p;
