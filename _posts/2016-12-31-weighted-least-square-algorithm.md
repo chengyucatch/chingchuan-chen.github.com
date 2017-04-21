@@ -309,16 +309,17 @@ xyplot(median_time ~ p | factor(n, c(20, 30, 50, 75, 100, 200)),
 基於上面的結論，所以我會建議這樣去寫wls的solver:
 
 ```
+// [[Rcpp::plugins(cpp11)]]
 // [[Rcpp::depends(RcppArmadillo, RcppEigen)]]
 #include <RcppArmadillo.h>
 #include <RcppEigen.h>
 
 // [[Rcpp::export]]
-arma::vec fastSolve(arma::mat& X, arma::vec& w, arma::vec& y) {
-  if (X.n_rows <= 200 && X.n_cols <= 80) {
-    Eigen::Map<Eigen::MatrixXd> X2(X.memptr(), X.n_rows, X.n_cols);
-    Eigen::Map<Eigen::VectorXd> w2(w.memptr(), w.n_elem);
-    Eigen::Map<Eigen::VectorXd> y2(y.memptr(), y.n_elem);
+arma::vec fastSolve(arma::mat X, arma::vec w, arma::vec y) {
+  if (X.n_rows * X.n_cols <= 6000) {
+    Eigen::MatrixXd X2 = Eigen::MatrixXd::Map(X.memptr(), X.n_rows, X.n_cols);
+    Eigen::VectorXd w2 = Eigen::VectorXd::Map(w.memptr(), w.size());
+    Eigen::VectorXd y2 = Eigen::VectorXd::Map(y.memptr(), y.size());
     Eigen::VectorXd out = (X2.transpose() * w2.asDiagonal() * X2).llt().solve(X2.transpose() * w2.asDiagonal() * y2);
     arma::vec p(out.data(), out.rows(), false);
     return p;
