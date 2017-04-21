@@ -309,7 +309,6 @@ xyplot(median_time ~ p | factor(n, c(20, 30, 50, 75, 100, 200)),
 基於上面的結論，所以我會建議這樣去寫wls的solver:
 
 ```
-// [[Rcpp::plugins(cpp11)]]
 // [[Rcpp::depends(RcppArmadillo, RcppEigen)]]
 #include <RcppArmadillo.h>
 #include <RcppEigen.h>
