@@ -24,8 +24,8 @@ title: "在Windows環境下安裝GPU版本的mxnet"
 最後，新增一個bat檔案
 
 ``` bash
-echo "import(Rcpp)" > R-package/NAMESPACE
-echo "import(methods)" >> R-package/NAMESPACE
+echo import(Rcpp) > R-package/NAMESPACE
+echo import(methods) >> R-package/NAMESPACE
 R CMD INSTALL R-package
 Rscript -e "require(mxnet); mxnet:::mxnet.export(\"R-package\")"
 rm -rf R-package/NAMESPACE
