@@ -77,3 +77,6 @@ python train_cifar10.py --network mlp --gpus 0
 ```
 
 我這裡測試用MKL是OK的，而且速度感覺有比用OpenBLAS快一點點
+
+![](/image/mxnet-gpu.PNG)
+
