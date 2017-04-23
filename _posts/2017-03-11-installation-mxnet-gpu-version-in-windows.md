@@ -19,7 +19,7 @@ title: "在Windows環境下安裝GPU版本的mxnet"
 
 另外要再建一個``D:\mxnet\mxnet-版本\R-package\inst\include`資料夾
 
-把`D:\mxnet\include\mxnet`, `D:\mxnet\nnvm\include\nnvm`, `D:\mxnet\dmlc-core\include\dlmc`以及`D:\mxnet\mshadow\mshadow`複製到裡面
+把`D:\mxnet\nnvm\nnvm\include\nnvm`, `D:\mxnet\include\mxnet`, `D:\mxnet\dmlc-core\include\dlmc`以及`D:\mxnet\include\mshadow`複製到裡面
 
 最後，新增一個bat檔案
 
