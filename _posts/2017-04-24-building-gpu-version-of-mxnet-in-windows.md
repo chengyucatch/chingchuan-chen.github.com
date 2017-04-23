@@ -43,13 +43,17 @@ title: "在Windows環境下編譯GPU版本的mxnet"
 
 然後把`D:\mxnet\mxnet\Debug\libmxnet.dll`, CUDA路徑下bin的`cublas64_80.dll`, `cudart64_80.dll`, 
 
-`cudnn64_5.dll`, `curand64_80.dll`跟`nvrtc64_80.dll`, opencv路徑下的`bin\opencv_ffmpeg320_64.dll`,
+`cudnn64_5.dll`, `curand64_80.dll`跟`nvrtc64_80.dll`以及opencv路徑下的`bin\opencv_ffmpeg320_64.dll`,
 
-`x64\vc14\bin\opencv_world320.dll`跟`x64\vc14\bin\opencv_world320d.dll`以及
+`x64\vc14\bin\opencv_world320.dll`跟`x64\vc14\bin\opencv_world320d.dll`複製到剛剛建立的`R-package\inst\x64`裡面
 
-INTEL ROOT下面的`redist\intel64_win\mkl\mkl_rt.dll`複製到剛剛建立的`R-package\inst\x64`裡面
+然後把INTEL ROOT下面的`redist\intel64_win\mkl\mkl_rt.dll`, `redist\intel64_win\mkl\mkl_intel_thread.dll`,
 
-(要抓哪些DLL是根據`dependencywalker`找的，請查看[dependencywalker](http://dependencywalker.com/))
+`redist\intel64_win\mkl\mkl_avx.dll` (不同電腦用的指令集不同，不一定是用這個DLL)
+
+以及`redist\intel64_win\mkl\libimalloc.dll`放到R目錄下的`bin\x64`裡面
+
+(要抓哪些DLL是根據`dependencywalker`找的，請查看[dependencywalker](http://dependencywalker.com/)，不過MKL部分是我自己試出來的)
 
 然後跑下面這個script
 
@@ -66,17 +70,15 @@ R CMD INSTALL R-package
 安裝之後就到`D:\mxnet\mxnet\example\image-classification`試跑看看`train_mnist.R --network mlp --gpus 0`
 
 
-至於Python套件部分，請把上面所說的`mkl_rt.dll`, `opencv_ffmpeg320_64.dll`, `opencv_world320.dll`
+至於Python套件部分，請把上面所說的`mkl_rt.dll`, `mkl_core.dll`, `mkl_intel_thread.dll`, `opencv_ffmpeg320_64.dll`, 
 
-以及`opencv_world320d.dll`放到Python的根目錄，然後到`D:\mxnet\mxnet\example\image-classification`
+`opencv_world320.dll`以及`opencv_world320d.dll`放到Python的根目錄，然後到`D:\mxnet\mxnet\example\image-classification`
 
 試跑下面的命令驗證看看GPU是否正常安裝：
 
 ``` python
 python train_cifar10.py --network mlp --gpus 0
 ```
-
-我這裡測試用MKL是OK的，而且速度感覺有比用OpenBLAS快一點點
 
 ![](/image/mxnet-gpu.PNG)
 
