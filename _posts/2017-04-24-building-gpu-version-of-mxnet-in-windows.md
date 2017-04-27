@@ -115,7 +115,7 @@ table(pred.label, test.y)
 python train_mnist.py --network mlp --gpus 0
 ```
 
-![](image/mxnet-gpu.PNG)
+![](images/mxnet-gpu.PNG)
 
 最後用python稍微看一下Performance差異：
 
