@@ -103,7 +103,9 @@ pred.label = max.col(t(preds))-1
 table(pred.label, test.y)
 ```
 
-至於Python套件部分，請把上面所說的`mkl_rt.dll`, `mkl_core.dll`, `mkl_intel_thread.dll`, `opencv_ffmpeg320_64.dll`, 
+至於Python套件部分，到`python`的子資料夾，執行`python setup.py install`
+
+然後把上面所說的`mkl_rt.dll`, `mkl_core.dll`, `mkl_intel_thread.dll`, `pencv_ffmpeg320_64.dll`, 
 
 `opencv_world320.dll`以及`opencv_world320d.dll`放到Python的根目錄，然後到`D:\mxnet\mxnet\example\image-classification`
 
