@@ -49,7 +49,7 @@ title: "在Windows環境下編譯GPU版本的mxnet"
 
 然後把INTEL ROOT下面的`redist\intel64_win\mkl\mkl_rt.dll`, `redist\intel64_win\mkl\mkl_intel_thread.dll`,
 
-`redist\intel64_win\mkl\mkl_avx.dll` (不同電腦用的指令集不同，不一定是用這個DLL)
+`redist\intel64_win\mkl\mkl_avx.dll`, `redist\intel64_win\mkl\mkl_vml_avx.dll` (不同電腦用的指令集不同，不一定是用這兩個DLL)
 
 以及`redist\intel64_win\mkl\libimalloc.dll`放到R目錄下的`bin\x64`裡面
 
