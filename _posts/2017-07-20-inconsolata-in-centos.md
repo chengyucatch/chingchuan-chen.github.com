@@ -18,7 +18,7 @@ unzip inconsolata.tds.zip -d inconsolata
 sudo cp -r inconsolata/* /usr/share/texmf
 sudo mktexlsr
 
-tee -a << EOF
+tee -a /usr/share/texlive/texmf-dist/web2c/updmap.cfg << EOF
 Map zi4.map
 EOF
 
