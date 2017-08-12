@@ -5,7 +5,7 @@ title: "Rcpp link system library"
 
 這篇主要是介紹Linux環境下，如何直接在Rcpp裡面去link系統已有的library
 
-這篇主要是因為我在測試Blaze為什麼效能遠不如直接跑blazemart的結果
+這篇主要是因為我在測試Blaze為什麼效能遠不如直接跑blazemark的結果
 
 所以就想說直接link系統裡面的armadillo, blaze試試看
 
