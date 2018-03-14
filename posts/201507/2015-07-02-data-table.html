@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/earlyaccess//css?family=Noto Sans TC:300,300italic,400,400italic,700,700italic|Noto Sans TC:300,300italic,400,400italic,700,700italic|Inconsolata:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="R,data.table,ptt," />
+
+
+
+
+
+
+
+
+  <meta property="fb:admins" content="celestial0230" />
+  <meta property="fb:app_id" content="418813441900729" />
+
+
+
+<meta name="description" content="這是我自己在PTT PO的文，詳細介紹data.table，以下是正文~~ data.table包含的東西很多 但是很多東西都可以被plyr, dplyr的function取代 所以data.table很多function，我都不太熟 這裡簡單介紹一下data.table">
+<meta name="keywords" content="R,data.table,ptt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="introduction to data.table">
+<meta property="og:url" content="http://chingchuan-chen.github.io/posts/201507/2015-07-02-data-table.html">
+<meta property="og:site_name" content="Celestial">
+<meta property="og:description" content="這是我自己在PTT PO的文，詳細介紹data.table，以下是正文~~ data.table包含的東西很多 但是很多東西都可以被plyr, dplyr的function取代 所以data.table很多function，我都不太熟 這裡簡單介紹一下data.table">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:updated_time" content="2018-03-14T17:02:38.275Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="introduction to data.table">
+<meta name="twitter:description" content="這是我自己在PTT PO的文，詳細介紹data.table，以下是正文~~ data.table包含的東西很多 但是很多東西都可以被plyr, dplyr的function取代 所以data.table很多function，我都不太熟 這裡簡單介紹一下data.table">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chingchuan-chen.github.io/posts/201507/2015-07-02-data-table.html"/>
+
+
+
+
+
+  <title>introduction to data.table | Celestial</title>
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '418813441900729',
+      xfbml      : true,
+      version    : 'v2.10'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-72564040-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Celestial</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站點地圖
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201507/2015-07-02-data-table.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">introduction to data.table</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-07-02T00:00:00+08:00">
+                2015-07-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/R/" itemprop="url" rel="index">
+                    <span itemprop="name">R</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201507/2015-07-02-data-table.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201507/2015-07-02-data-table.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201507/2015-07-02-data-table.html" class="leancloud_visitors" data-flag-title="introduction to data.table">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  1,966
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>這是我自己在PTT PO的文，詳細介紹data.table，以下是正文~~</p>
+<p>data.table包含的東西很多</p>
+<p>但是很多東西都可以被plyr, dplyr的function取代</p>
+<p>所以data.table很多function，我都不太熟</p>
+<p>這裡簡單介紹一下data.table</p>
+<a id="more"></a>
+<p>如果你想要了解更多，請自行去看manual</p>
+<p>要了解data.table，我們可以先從package的description來看</p>
+<p>  “Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins,<br>fast add/modify/delete of columns by group using no copies at all, list<br>columns and a fast file reader (fread). Offers a natural and flexible syntax,<br>for faster development.”</p>
+<p>簡單翻譯一下，大資料(例如，記憶體中大小為100GB的資料)的在不創建複本下，根據</p>
+<p>類別(group)變數進行快速整合、排列、合併、增加/修改/刪除行資料等動作。…</p>
+<p>重點就在不創建複本，因為R修改data.frame時，會先複製一次再修改，</p>
+<p>然後傳回複本，因此，會浪費不少記憶體，而且很容易拖累速度，因此，</p>
+<p>data.table提供這方面更有效率的操作。</p>
+<p>(這方面的速度比較可以參考#1LeXNCKV (R_Language) [分享] 資料數據處理修改)</p>
+<ol>
+<li>data.table</li>
+</ol>
+<p>這個函數基本上data.frame使用差不多，而且data.frame的參數都可以放進</p>
+<p>像是很常用到的stringsAsFactors，只是data.table預設是FALSE，</p>
+<p>這點跟data.frame不同，使用上需要注意，範例如下：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">  t = data.table(a = LETTERS[<span class="number">1</span>:<span class="number">3</span>])</span><br><span class="line">  str(t)</span><br><span class="line"><span class="comment"># Classes ‘data.table’ and 'data.frame':  3 obs. of  1 variable:</span></span><br><span class="line"><span class="comment">#  $ a: chr  "A" "B" "C"</span></span><br><span class="line"><span class="comment">#  - attr(*, ".internal.selfref")=&lt;externalptr&gt;</span></span><br><span class="line">  t2 = data.frame(a = LETTERS[<span class="number">1</span>:<span class="number">3</span>])</span><br><span class="line">  str(t2)</span><br><span class="line"><span class="comment"># 'data.frame':   3 obs. of  1 variable:</span></span><br><span class="line"><span class="comment">#  $ a: Factor w/ 3 levels "A","B","C": 1 2 3</span></span><br></pre></td></tr></table></figure>
+<p>第二個差異是data.table不包含rownames，</p>
+<p>在轉換data.frame到data.table時，要注意這點</p>
+<p>下一章會提到把rowname轉成column的函數</p>
+<p>附註一條：data.table都包含data.frame的class</p>
+<pre><code>可以用在data.frame的方法都可以在data.table上實現
+</code></pre><p>但是data.table還多了一個引數 “key”，我對它的解讀是一種索引的概念</p>
+<p>而透過索引的動作都會被加速。</p>
+<p>key可以是一個變數，也可以是多個變數，這點看個人使用。</p>
+<p>再來，就是data.table的’[‘，這部分跟data.frame不太一樣</p>
+<p>所以需要特別說明，但是這部分，我自己也不是很熟悉，我只能大概講過</p>
+<p>a. 我們很常在data.frame做取多行的動作，在data.table是不可行的，舉例：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">  vars = data.frame(X = rnorm(<span class="number">3</span>), Y = rnorm(<span class="number">3</span>), Z = rnorm(<span class="number">3</span>))</span><br><span class="line">  vars[,<span class="number">1</span>:<span class="number">2</span>]</span><br><span class="line"><span class="comment">#            X         Y</span></span><br><span class="line"><span class="comment"># 1 -0.5677575 2.1831285</span></span><br><span class="line"><span class="comment"># 2 -0.7161529 0.3714633</span></span><br><span class="line"><span class="comment"># 3  1.2665120 0.7837508</span></span><br><span class="line"></span><br><span class="line">  vars_dt = data.table(vars)</span><br><span class="line">  vars_dt[,<span class="number">1</span>:<span class="number">2</span>]</span><br><span class="line"><span class="comment"># [1] 1 2</span></span><br></pre></td></tr></table></figure>
+<p>但是你想這麼做，怎麼辦？ 加上with=FALSE就好了，或是用list包住column name</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">  vars_dt[,<span class="number">1</span>:<span class="number">2</span>,with=<span class="literal">FALSE</span>]</span><br><span class="line"><span class="comment">#             X         Y</span></span><br><span class="line"><span class="comment"># 1: -0.5677575 2.1831285</span></span><br><span class="line"><span class="comment"># 2: -0.7161529 0.3714633</span></span><br><span class="line"><span class="comment"># 3:  1.2665120 0.7837508</span></span><br><span class="line"></span><br><span class="line">  vars_dt[j=list(X, Y)]</span><br><span class="line"><span class="comment">#             X         Y</span></span><br><span class="line"><span class="comment"># 1: -0.5677575 2.1831285</span></span><br><span class="line"><span class="comment"># 2: -0.7161529 0.3714633</span></span><br><span class="line"><span class="comment"># 3:  1.2665120 0.7837508</span></span><br></pre></td></tr></table></figure>
+<p>剩下像是by, .SD, .SDcols等自行?data.table查看吧</p>
+<p>data.table的部分就先說明到這，接下來，講一些相關的function</p>
+<p>b. setkey: 改變key的值, setnames: 改變column name，但是一樣不製造複本</p>
+<p>c. copy: 製造data.table的複本</p>
+<p>d. setDF: 在不製作複本下，把data.table的class改為data.frame</p>
+<p>舉例：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">  DT = data.table(X = rnorm(<span class="number">3</span>), Y = rnorm(<span class="number">3</span>))</span><br><span class="line">  str(DT)</span><br><span class="line"><span class="comment"># Classes ‘data.table’ and 'data.frame':  3 obs. of  2 variables:</span></span><br><span class="line"><span class="comment">#  $ X: num  -1.3738 0.167 -0.0578</span></span><br><span class="line"><span class="comment">#  $ Y: num  0.487 1.728 0.646</span></span><br><span class="line"><span class="comment">#  - attr(*, ".internal.selfref")=&lt;externalptr&gt;</span></span><br><span class="line"></span><br><span class="line">  setDF(DT)</span><br><span class="line">  str(DT)</span><br><span class="line"><span class="comment"># 'data.frame':   3 obs. of  2 variables:</span></span><br><span class="line"><span class="comment">#  $ X: num  -1.3738 0.167 -0.0578</span></span><br><span class="line"><span class="comment">#  $ Y: num  0.487 1.728 0.646</span></span><br><span class="line"></span><br><span class="line">  DT = data.table(X = rnorm(<span class="number">3</span>), Y = rnorm(<span class="number">3</span>))</span><br><span class="line">  tracemem(DT)</span><br><span class="line"><span class="comment"># [1] "&lt;0000000006A1BE28&gt;"</span></span><br><span class="line">  setDF(DT)  <span class="comment">#  沒有複製的動作</span></span><br><span class="line"></span><br><span class="line">  DF = data.frame(DT)</span><br><span class="line">  retracemem(DF, retracemem(DT))</span><br><span class="line"><span class="comment"># tracemem[&lt;0000000006A1BE28&gt; -&gt; 0x00000000061ec928]:</span></span><br><span class="line">  <span class="comment">## 記憶體位置就發生改變了，就複製了DT一次</span></span><br></pre></td></tr></table></figure>
+<p>這部分可能不太懂，不過沒關係，記住一點，要轉成data.frame用setDF就好</p>
+<p>e. setDT: setDF的反向</p>
+<p>f. duplicated, unique</p>
+<p>duplicated提供一個跟data.table列數相等長度的邏輯值向量，</p>
+<p>TRUE代表前面有一樣的列，FALSE代表沒有</p>
+<p>unique則是留下沒有重複的列，舉例來說：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">  set.seed(<span class="number">100</span>)</span><br><span class="line">  DT = data.table(A = rbinom(<span class="number">5</span>, <span class="number">1</span>, <span class="number">0.5</span>), B = rbinom(<span class="number">5</span>, <span class="number">1</span>, <span class="number">0.5</span>))</span><br><span class="line"><span class="comment">#    A B</span></span><br><span class="line"><span class="comment"># 1: 0 0</span></span><br><span class="line"><span class="comment"># 2: 0 1</span></span><br><span class="line"><span class="comment"># 3: 1 0</span></span><br><span class="line"><span class="comment"># 4: 0 1</span></span><br><span class="line"><span class="comment"># 5: 0 0</span></span><br><span class="line"></span><br><span class="line">  duplicated(DT)</span><br><span class="line"><span class="comment"># [1] FALSE FALSE FALSE  TRUE  TRUE</span></span><br><span class="line"></span><br><span class="line">  unique(DT)</span><br><span class="line"><span class="comment">#    A B</span></span><br><span class="line"><span class="comment"># 1: 0 0</span></span><br><span class="line"><span class="comment"># 2: 0 1</span></span><br><span class="line"><span class="comment"># 3: 1 0</span></span><br><span class="line"></span><br><span class="line">  DT[!duplicated(DT)]</span><br><span class="line"><span class="comment">#    A B</span></span><br><span class="line"><span class="comment"># 1: 0 0</span></span><br><span class="line"><span class="comment"># 2: 0 1</span></span><br><span class="line"><span class="comment"># 3: 1 0</span></span><br></pre></td></tr></table></figure>
+<p>不過unique還有更多功能，它可以選擇變數做unique，舉例來說：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">  unique(DT, by = <span class="string">"A"</span>)</span><br><span class="line"><span class="comment">#    A B</span></span><br><span class="line"><span class="comment"># 1: 0 0</span></span><br><span class="line"><span class="comment"># 2: 1 0</span></span><br><span class="line"></span><br><span class="line">  unique(DT, by = <span class="string">"B"</span>)</span><br><span class="line"><span class="comment">#    A B</span></span><br><span class="line"><span class="comment"># 1: 0 0</span></span><br><span class="line"><span class="comment"># 2: 0 1</span></span><br></pre></td></tr></table></figure>
+<p>順便一提，dplyr的distinct，如果你input的class是data.table</p>
+<p>它就是用unique做的</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">library</span>(dplyr)</span><br><span class="line">  distinct(DT)</span><br><span class="line"><span class="comment">#    A B</span></span><br><span class="line"><span class="comment"># 1: 0 0</span></span><br><span class="line"><span class="comment"># 2: 0 1</span></span><br><span class="line"><span class="comment"># 3: 1 0</span></span><br></pre></td></tr></table></figure>
+<p>你如果想看distinct怎麼做，可以在R上面打dplyr:::distinct_.data.table</p>
+<blockquote>
+<p>dplyr:::distinct_.data.table<br>function (.data, …, .dots)<br>{<br>    dist &lt;- distinct_vars(.data, …, .dots = .dots)<br>    if (length(dist$vars) == 0) {<br>        unique(dist$data)<br>    }<br>    else {<br>        unique(dist$data, by = dist$vars)<br>    }<br>}</p>
+</blockquote>
+<p>之後提到distinct，我們再來講distinct</p>
+<p>其他相關function像是subset, setcolorder, setorder (setorderv)</p>
+<p>對這三個function有興趣，再去看manual，不贅述</p>
+<p>這三個對應到dplyr的filter, select, arrange，之後我們會再提到這些</p>
+<p>g. transform: 改變column的屬性、值等，舉例來說：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">  DT = data.table(a = <span class="number">1</span>:<span class="number">3</span>, b = <span class="number">2</span>:<span class="number">4</span>, c = LETTERS[<span class="number">1</span>:<span class="number">3</span>])</span><br><span class="line">  DT2 = copy(DT)</span><br><span class="line">  DT[, b := b**<span class="number">2</span>]</span><br><span class="line">  DT2 %&lt;&gt;% transform(b = b**<span class="number">2</span>)</span><br><span class="line">  all.equal(DT, DT2) <span class="comment"># TRUE</span></span><br><span class="line">  DT %&lt;&gt;% transform(c = as.factor(c))</span><br><span class="line">  str(DT)</span><br><span class="line"><span class="comment"># Classes ‘data.table’ and 'data.frame':  3 obs. of  3 variables:</span></span><br><span class="line"><span class="comment">#  $ a: int  1 2 3</span></span><br><span class="line"><span class="comment">#  $ b: num  4 9 16</span></span><br><span class="line"><span class="comment">#  $ c: Factor w/ 3 levels "A","B","C": 1 2 3</span></span><br><span class="line"><span class="comment">#   - attr(*, ".internal.selfref")=&lt;externalptr&gt;</span></span><br></pre></td></tr></table></figure>
+<p>h. set: 用來變更特定column，某些列的值，舉個簡單的例子</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DT = data.table(a = <span class="number">1</span>:<span class="number">3</span>, b = <span class="number">2</span>:<span class="number">4</span>)</span><br><span class="line">DT2 = copy(DT)</span><br><span class="line">DT[, b := <span class="number">1</span>]</span><br><span class="line">set(DT2,, <span class="string">"b"</span>, value = <span class="number">1</span>)</span><br><span class="line">all.equal(DT, DT2) <span class="comment"># TRUE</span></span><br></pre></td></tr></table></figure>
+<p>一般來說都用’[‘來做，但是你如果需要用到for再來完成，再用set</p>
+<p>還有一個function是 J，這裡就不提了，一樣請洽manual</p>
+<p>最後，還有一個operator，’:=’，它是用來擴增data.table的column，</p>
+<p>同樣，也不創造複本，這樣可以更快的增加column</p>
+<p>那如果刪除怎麼辦？還記得前面學過 DT[, list(‘X’, ‘Y’)]，就用這個</p>
+<p>再來，我們講一些data.table中其他function</p>
+<ol>
+<li>fread</li>
+</ol>
+<p>功能可以用來取代read.table, read.csv</p>
+<p>它可以用多種separate去分割columns，然後讀入R</p>
+<p>而且讀入速度比read.table, read.csv快很多</p>
+<p>但是注意，不規則的檔案會讀入失敗</p>
+<p>這裡提幾個參數：</p>
+<p>a. sep: column跟column之間的分隔，如果是csv就是’,’，</p>
+<p>   如果是tab separated values就是’\t’</p>
+<p>b. na.strings: 視作NA的字串，它可以是一個vector</p>
+<p>c. stringsAsFactors：是否要把字串轉成factor，預設是否</p>
+<p>d. colClasses：各行的classes，可以自行設定</p>
+<p>我愛用fread還有一個原因，第一個input可以直接放我要讀的字串，</p>
+<p>但是read.table需要經過其他的方式，有點麻煩(我懶得記，其實沒記過)</p>
+<p>舉例來說</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">text = <span class="string">"a b</span></span><br><span class="line"><span class="string">1 2</span></span><br><span class="line"><span class="string">3 4"</span></span><br><span class="line">DT = fread(text)</span><br><span class="line">setDF(DT) <span class="comment"># 轉成data.frame，前面學過，還記得嗎？</span></span><br><span class="line">DF = read.table(header = <span class="literal">TRUE</span>, text = text)           <span class="comment"># text format</span></span><br><span class="line">DF2 = read.table(textConnection(text), header = <span class="literal">TRUE</span>) <span class="comment"># file format</span></span><br><span class="line"></span><br><span class="line">all.equal(DT, DF)  <span class="comment"># TRUE</span></span><br><span class="line">all.equal(DT, DF2) <span class="comment"># TRUE</span></span><br></pre></td></tr></table></figure>
+<p>fread很適合拿來讀大資料，所以有必要把table輸出成text</p>
+<p>用文字方式處理時，讀入就變得很方便，可見 #1LegOjwB (R_Language)</p>
+<p>還剩下 dcast.data.table, melt 跟 merge</p>
+<p>它們會留到之後跟tidyr一起介紹</p>
+<p>下一章重點會放在dplyr</p>
+<p>補充：</p>
+<p>key，我也不是很熟悉，也很少用，因此，我這裡介紹的很少</p>
+<p>如果對key有興趣，可能需要自行研究</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/R/" rel="tag"># R</a>
+          
+            <a href="/tags/data-table/" rel="tag"># data.table</a>
+          
+            <a href="/tags/ptt/" rel="tag"># ptt</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+          <div class="social-like">
+            
+
+            
+              <div class="fb_like">
+                <div class="fb-like" data-layout="button_count" data-share="true"></div>
+              </div>
+            
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/201507/2015-07-01-magrittr.html" rel="next" title="introduction to magrittr">
+                <i class="fa fa-chevron-left"></i> introduction to magrittr
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/201507/2015-07-03-dplyr.html" rel="prev" title="introduction to dplyr">
+                introduction to dplyr <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="fb-comments"
+           data-href="http://chingchuan-chen.github.io/posts/201507/2015-07-02-data-table.html"
+           data-numposts="10"
+           data-width="100%"
+           data-colorscheme="light">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Ching-Chuan Chen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">136</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ChingChuan-Chen" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zw12356@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/u/0/110171317328627391486" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/celestial0230" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-thumbs-up"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ching-Chuan Chen</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('10');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("H7MfFf5lhyq2111iytpoFtIz-gzGzoHsz", "tGTKdvBYYQCIIlvxXJGJM2cc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/earlyaccess//css?family=Noto Sans TC:300,300italic,400,400italic,700,700italic|Noto Sans TC:300,300italic,400,400italic,700,700italic|Inconsolata:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="R,foreach,iterators,apply,do.call," />
+
+
+
+
+
+
+
+
+  <meta property="fb:admins" content="celestial0230" />
+  <meta property="fb:app_id" content="418813441900729" />
+
+
+
+<meta name="description" content="Introduction *apply functions, Reduce and do.call我一直沒時間寫*apply系列函數的介紹 不過最近用了foreach跟iterators 發現其實這兩個套件就可以完全取代*apply系列函數 而且對新手來說寫起來也不容易搞錯">
+<meta name="keywords" content="R,foreach,iterators,apply,do.call">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Introduce to foreach and iterators">
+<meta property="og:url" content="http://chingchuan-chen.github.io/posts/201704/2017-04-23-introduce-to-foreach-and-iterators.html">
+<meta property="og:site_name" content="Celestial">
+<meta property="og:description" content="Introduction *apply functions, Reduce and do.call我一直沒時間寫*apply系列函數的介紹 不過最近用了foreach跟iterators 發現其實這兩個套件就可以完全取代*apply系列函數 而且對新手來說寫起來也不容易搞錯">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:updated_time" content="2018-03-14T16:24:03.496Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Introduce to foreach and iterators">
+<meta name="twitter:description" content="Introduction *apply functions, Reduce and do.call我一直沒時間寫*apply系列函數的介紹 不過最近用了foreach跟iterators 發現其實這兩個套件就可以完全取代*apply系列函數 而且對新手來說寫起來也不容易搞錯">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chingchuan-chen.github.io/posts/201704/2017-04-23-introduce-to-foreach-and-iterators.html"/>
+
+
+
+
+
+  <title>Introduce to foreach and iterators | Celestial</title>
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '418813441900729',
+      xfbml      : true,
+      version    : 'v2.10'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-72564040-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Celestial</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站點地圖
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201704/2017-04-23-introduce-to-foreach-and-iterators.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Introduce to foreach and iterators</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-04-23T00:00:00+08:00">
+                2017-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/R/" itemprop="url" rel="index">
+                    <span itemprop="name">R</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201704/2017-04-23-introduce-to-foreach-and-iterators.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201704/2017-04-23-introduce-to-foreach-and-iterators.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201704/2017-04-23-introduce-to-foreach-and-iterators.html" class="leancloud_visitors" data-flag-title="Introduce to foreach and iterators">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  3,311
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Introduction-apply-functions-Reduce-and-do-call"><a href="#Introduction-apply-functions-Reduce-and-do-call" class="headerlink" title="Introduction *apply functions, Reduce and do.call"></a>Introduction <code>*apply</code> functions, <code>Reduce</code> and <code>do.call</code></h2><p>我一直沒時間寫<code>*apply</code>系列函數的介紹</p>
+<p>不過最近用了<code>foreach</code>跟<code>iterators</code></p>
+<p>發現其實這兩個套件就可以完全取代<code>*apply</code>系列函數</p>
+<p>而且對新手來說寫起來也不容易搞錯</p>
+<a id="more"></a>
+<p>這裡先簡介一下<code>*apply</code>系列函數</p>
+<ol>
+<li><code>apply</code></li>
+</ol>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">m &lt;- matrix(<span class="number">1</span>:<span class="number">6</span>, <span class="number">3</span>)</span><br><span class="line"><span class="comment"># input matrix, output vector/matrix/list</span></span><br><span class="line">apply(m, <span class="number">1</span>, sum)  <span class="comment"># output vector</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## [1] 5 7 9</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply(m, <span class="number">1</span>, `*`, <span class="number">2</span>)  <span class="comment"># output matrix</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">##      [,1] [,2] [,3]</span><br><span class="line">## [1,]    2    4    6</span><br><span class="line">## [2,]    8   10   12</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply(m, <span class="number">1</span>, <span class="keyword">function</span>(v) rep(v[<span class="number">1</span>], v[<span class="number">2</span>]))  <span class="comment"># output list</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 1 1 1 1</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 2 2 2 2 2</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 3 3 3 3 3 3</span><br></pre></td></tr></table></figure>
+<ol>
+<li><code>lapply</code></li>
+</ol>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># input vector/list, output list</span></span><br><span class="line">lapply(<span class="number">1</span>:<span class="number">3</span>, `*`, <span class="number">2</span>)  <span class="comment"># input vector</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 2</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 4</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 6</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lapply(as.list(<span class="number">1</span>:<span class="number">3</span>), `*`, <span class="number">2</span>)  <span class="comment"># input list</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 2</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 4</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 6</span><br></pre></td></tr></table></figure>
+<ol>
+<li><code>sapply</code></li>
+</ol>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># input vector/list, output vector/matrix/list</span></span><br><span class="line">sapply(<span class="number">1</span>:<span class="number">3</span>, `*`, <span class="number">2</span>)  <span class="comment"># input vector, output vector</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## [1] 2 4 6</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sapply(<span class="number">1</span>:<span class="number">3</span>, rep, each = <span class="number">2</span>)  <span class="comment"># input vector, output matrix</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">##      [,1] [,2] [,3]</span><br><span class="line">## [1,]    1    2    3</span><br><span class="line">## [2,]    1    2    3</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sapply(<span class="number">1</span>:<span class="number">3</span>, rep, x = <span class="number">2</span>)  <span class="comment"># input vector, output list</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 2</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 2 2</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 2 2 2</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sapply(as.list(<span class="number">1</span>:<span class="number">3</span>), `*`, <span class="number">2</span>)  <span class="comment"># input list, output vector</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## [1] 2 4 6</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sapply(as.list(<span class="number">1</span>:<span class="number">3</span>), rep, each = <span class="number">2</span>)  <span class="comment"># input list, output matrix</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">##      [,1] [,2] [,3]</span><br><span class="line">## [1,]    1    2    3</span><br><span class="line">## [2,]    1    2    3</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sapply(as.list(<span class="number">1</span>:<span class="number">3</span>), rep, x = <span class="number">2</span>)  <span class="comment"># input list, output list</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 2</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 2 2</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 2 2 2</span><br></pre></td></tr></table></figure>
+<ol>
+<li><code>mapply</code></li>
+</ol>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># multiple inputs, output vector/matrix/list stick list output by using `SIMPLIFY = FALSE`</span></span><br><span class="line">mapply(<span class="keyword">function</span>(x, y) x + y, <span class="number">1</span>:<span class="number">3</span>, as.list(<span class="number">2</span>:<span class="number">4</span>))  <span class="comment"># input vector and list, output vector</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## [1] 3 5 7</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mapply(<span class="keyword">function</span>(x, y) rep(x * y, <span class="number">2</span>), <span class="number">1</span>:<span class="number">3</span>, as.list(<span class="number">2</span>:<span class="number">4</span>))  <span class="comment"># input vector and list, output matrix</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">##      [,1] [,2] [,3]</span><br><span class="line">## [1,]    2    6   12</span><br><span class="line">## [2,]    2    6   12</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mapply(<span class="keyword">function</span>(x, y) x + y, <span class="number">1</span>:<span class="number">3</span>, as.list(<span class="number">2</span>:<span class="number">4</span>), SIMPLIFY = <span class="literal">FALSE</span>)  <span class="comment"># input vector and list, output list</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 3</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 5</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 7</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mapply(<span class="keyword">function</span>(x, y) rep(x, y), <span class="number">1</span>:<span class="number">3</span>, as.list(<span class="number">2</span>:<span class="number">4</span>))  <span class="comment"># input vector and list, output list</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 1 1</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 2 2 2</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 3 3 3 3</span><br></pre></td></tr></table></figure>
+<ol>
+<li><code>tapply</code></li>
+</ol>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># input two vectors, one is value and the other one is group.  output vector/matrix</span></span><br><span class="line">tapply(<span class="number">1</span>:<span class="number">6</span>, rep(<span class="number">1</span>:<span class="number">2</span>, <span class="number">3</span>), sum)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">##  1  2 </span><br><span class="line">##  9 12</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tapply(<span class="number">1</span>:<span class="number">6</span>, rep(<span class="number">1</span>:<span class="number">2</span>, <span class="number">3</span>), `+`, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">## $`1`</span><br><span class="line">## [1] 2 4 6</span><br><span class="line">## </span><br><span class="line">## $`2`</span><br><span class="line">## [1] 3 5 7</span><br></pre></td></tr></table></figure>
+<p>簡單掃過<code>apply</code>系列之後，有沒有覺得光要弄懂輸出什麼格式就很折磨人了…</p>
+<p>這裡額外提一下<code>do.call</code>這個指令</p>
+<p><code>do.call</code>是<code>do a function call</code>的意思</p>
+<p>所以如果我們要把<code>list</code>的資料合併再一起</p>
+<p>那我們就可以執行一個<code>c</code>/<code>cbind</code>/<code>rbind</code>的function call</p>
+<p>把<code>list</code>裡面的element當成<code>input</code>丟入這個function call，例子如下：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">do.call(c, list(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## [1] 1 2 3</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">do.call(cbind, list(<span class="number">1</span>:<span class="number">2</span>, <span class="number">2</span>:<span class="number">3</span>, <span class="number">3</span>:<span class="number">4</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">##      [,1] [,2] [,3]</span><br><span class="line">## [1,]    1    2    3</span><br><span class="line">## [2,]    2    3    4</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">do.call(rbind, list(<span class="number">1</span>:<span class="number">2</span>, <span class="number">2</span>:<span class="number">3</span>, <span class="number">3</span>:<span class="number">4</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">##      [,1] [,2]</span><br><span class="line">## [1,]    1    2</span><br><span class="line">## [2,]    2    3</span><br><span class="line">## [3,]    3    4</span><br></pre></td></tr></table></figure>
+<p>這裡可能有人學過<code>Reduce</code>這個函數</p>
+<p>雖然寫法也差不多，像是：<code>Reduce(c, list(1, 2, 3))</code>這樣</p>
+<p>但是其實差異還是滿大的，我這邊簡單呈現一下<code>do.call</code>跟<code>Reduce</code>的差異</p>
+<p>假設一個<code>list</code>有四個elements，那<code>Reduce</code>跟<code>do.call</code>分別的做法如下：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c(c(c(<span class="number">1</span>, <span class="number">2</span>), <span class="number">3</span>), <span class="number">4</span>)  <span class="comment"># &lt;= Reduce的做法</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## [1] 1 2 3 4</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)  <span class="comment"># &lt;= do.call的做法</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## [1] 1 2 3 4</span><br></pre></td></tr></table></figure>
+<p>可以看出<code>Reduce</code>是兩兩做，所以他在內部處理的時候需要不斷擴充output vector/matrix的長度</p>
+<p>但是<code>do.call</code>是一次做完，所以<code>do.call</code>就不需要擴充長度</p>
+<p>效率方面可以自己動手測測看，會比較有感</p>
+<p>那<code>Reduce</code>要幹嘛用？其實像是operator都只能輸入兩個參數，這情境就只能用<code>Reduce</code></p>
+<p>或是有一個<code>list</code>，element都是<code>data.frame</code>，你要根據每個element的<code>id</code>欄位做合併</p>
+<p>那這時候你能用的函數也只有<code>merge</code>而已，簡單範例如下：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">listDF &lt;- list(data.frame(id = <span class="number">1</span>:<span class="number">5</span>, V1 = rnorm(<span class="number">5</span>)), data.frame(id = <span class="number">1</span>:<span class="number">5</span>, V2 = rnorm(<span class="number">5</span>)), data.frame(id = <span class="number">1</span>:<span class="number">5</span>, V3 = rnorm(<span class="number">5</span>)))</span><br><span class="line">Reduce(<span class="keyword">function</span>(x, y) merge(x, y, by = <span class="string">"id"</span>), listDF)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">##   id         V1         V2         V3</span><br><span class="line">## 1  1  0.5019189  1.9036192 -1.6574498</span><br><span class="line">## 2  2 -1.2667358  0.3022502  0.1295988</span><br><span class="line">## 3  3 -0.7827332 -3.4698064  0.4290014</span><br><span class="line">## 4  4 -1.6435900  1.0705252  2.0689225</span><br><span class="line">## 5  5 -0.4572341 -0.1567469 -0.1389343</span><br></pre></td></tr></table></figure>
+<p>講那麼久，還沒到正題Orz</p>
+<h2 id="foreach"><a href="#foreach" class="headerlink" title="foreach"></a><code>foreach</code></h2><p>接下來，我們來進入正題吧！</p>
+<p><code>foreach</code>的用法相當直覺，我們從最簡單的case開始：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(x = <span class="number">1</span>:<span class="number">3</span>) %do% &#123;</span><br><span class="line">    x + <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 2</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 3</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 4</span><br></pre></td></tr></table></figure>
+<p>輸入一個vector: 1:3，對每一個element做加一的動作，然後輸出是<code>list</code></p>
+<p>除非調整<code>foreach</code>的參數，不然輸出絕對是<code>list</code>，這是<code>foreach</code>第一個特性</p>
+<p><code>foreach</code>這個函數會得到一個物件，而透過<code>%do%</code>這個operator就可以執行後面的命令</p>
+<p><code>{}</code>是可以省略的，但是只限於一行，而且那一行不能是用operator的運算，不然會出現像是下面的錯誤</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">tryCatch</span>(&#123;</span><br><span class="line">    foreach(x = <span class="number">1</span>:<span class="number">3</span>) %do% x + <span class="number">1</span></span><br><span class="line">&#125;, error = <span class="keyword">function</span>(e) e)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## &lt;simpleError in foreach(x = 1:3) %do% x + 1: 二元運算子中有非數值引數&gt;</span><br></pre></td></tr></table></figure>
+<p>如果還是不要<code>{}</code>，可以用下面這樣，把operator當成函數來用即可：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foreach(x = <span class="number">1</span>:<span class="number">3</span>) %do% (x + <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 2</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 3</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 4</span><br></pre></td></tr></table></figure>
+<p>再來，我們介紹怎麼改成vector/matrix輸出</p>
+<p>我們只要在<code>foreach</code>這個命令裡面加上<code>.combine</code>這個屬性</p>
+<p>那他裡面放的是我們要把結果合併的<code>function</code>，舉例如下：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(x = <span class="number">1</span>:<span class="number">3</span>, .combine = c) %do% &#123;</span><br><span class="line">    x + <span class="number">1</span></span><br><span class="line">&#125;  <span class="comment"># vector</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## [1] 2 3 4</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(x = <span class="number">1</span>:<span class="number">3</span>, .combine = cbind) %do% &#123;</span><br><span class="line">    c(x, x + <span class="number">1</span>)</span><br><span class="line">&#125;  <span class="comment"># matrix</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">##      result.1 result.2 result.3</span><br><span class="line">## [1,]        1        2        3</span><br><span class="line">## [2,]        2        3        4</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(x = <span class="number">1</span>:<span class="number">3</span>, .combine = rbind) %do% &#123;</span><br><span class="line">    c(x, x + <span class="number">1</span>)</span><br><span class="line">&#125;  <span class="comment"># matrix</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">##          [,1] [,2]</span><br><span class="line">## result.1    1    2</span><br><span class="line">## result.2    2    3</span><br><span class="line">## result.3    3    4</span><br></pre></td></tr></table></figure>
+<p>那這裡的<code>.combine</code>用的是<code>Reduce</code>，如果要用<code>do.call</code>的話，要在加上一個參數，如：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(x = <span class="number">1</span>:<span class="number">3</span>, .combine = c, .multicombine = <span class="literal">TRUE</span>) %do% &#123;</span><br><span class="line">    x + <span class="number">1</span></span><br><span class="line">&#125;  <span class="comment"># vector</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## [1] 2 3 4</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(x = <span class="number">1</span>:<span class="number">3</span>, .combine = cbind, .multicombine = <span class="literal">TRUE</span>) %do% &#123;</span><br><span class="line">    c(x, x + <span class="number">1</span>)</span><br><span class="line">&#125;  <span class="comment"># matrix</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">##      result.1 result.2 result.3</span><br><span class="line">## [1,]        1        2        3</span><br><span class="line">## [2,]        2        3        4</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(x = <span class="number">1</span>:<span class="number">3</span>, .combine = rbind, .multicombine = <span class="literal">TRUE</span>) %do% &#123;</span><br><span class="line">    c(x, x + <span class="number">1</span>)</span><br><span class="line">&#125;  <span class="comment"># matrix</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">##          [,1] [,2]</span><br><span class="line">## result.1    1    2</span><br><span class="line">## result.2    2    3</span><br><span class="line">## result.3    3    4</span><br></pre></td></tr></table></figure>
+<p><code>foreach</code>還有幾個參數，稍微帶過，有些參數之後會再細講</p>
+<p><code>.inorder</code>是輸出是否要照順序，<code>.maxcombine</code>是最大結合數量</p>
+<p><code>.errorhandling</code>則是對錯誤的處理方式，<code>verbose</code>則是顯示更多訊息已提供user debug用</p>
+<p>至於<code>.package</code>, <code>.export</code>跟<code>.noexport</code>，我們留到後面再解釋</p>
+<p>剛剛上面看到<code>foreach</code>可以input vector, output list/vector/matrix了</p>
+<p>但是我們還沒試過是不是<code>list</code>也行，舉個小範例：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foreach(x = as.list(<span class="number">1</span>:<span class="number">3</span>)) %do% rep(x, x)  <span class="comment"># list</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 1</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 2 2</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 3 3 3</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foreach(x = as.list(<span class="number">1</span>:<span class="number">3</span>), .combine = c, .multicombine = <span class="literal">TRUE</span>) %do% rep(x, x)  <span class="comment"># vector</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## [1] 1 2 2 3 3 3</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foreach(x = as.list(<span class="number">1</span>:<span class="number">3</span>), .combine = cbind, .multicombine = <span class="literal">TRUE</span>) %do% rep(x, <span class="number">2</span>)  <span class="comment"># matrix</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">##      result.1 result.2 result.3</span><br><span class="line">## [1,]        1        2        3</span><br><span class="line">## [2,]        1        2        3</span><br></pre></td></tr></table></figure>
+<p>那這樣其實就可以完全取代<code>sapply</code>跟<code>lapply</code>的功能了</p>
+<p>再來是<code>foreach</code>也可以支援多個input，把<code>mapply</code>的範例重新用<code>foreach</code>寫一次：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(x = <span class="number">1</span>:<span class="number">3</span>, y = as.list(<span class="number">2</span>:<span class="number">4</span>)) %do% &#123;</span><br><span class="line">    x + y</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 3</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 5</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 7</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foreach(x = <span class="number">1</span>:<span class="number">3</span>, y = as.list(<span class="number">2</span>:<span class="number">4</span>)) %do% rep(x * y, <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 2 2</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 6 6</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 12 12</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(x = <span class="number">1</span>:<span class="number">3</span>, y = as.list(<span class="number">2</span>:<span class="number">4</span>)) %do% &#123;</span><br><span class="line">    x + y</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 3</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 5</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 7</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foreach(x = <span class="number">1</span>:<span class="number">3</span>, y = as.list(<span class="number">2</span>:<span class="number">4</span>)) %do% rep(x, y)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 1 1</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 2 2 2</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 3 3 3 3</span><br></pre></td></tr></table></figure>
+<p>但是<code>foreach</code>除了取代<code>sapply</code>跟<code>lapply</code>之外</p>
+<p>其實<code>foreach</code>還有很棒的debug功能：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">"i"</span> %<span class="keyword">in</span>% ls())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## [1] FALSE</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">result &lt;- foreach(i = <span class="number">1</span>:<span class="number">3</span>) %do% &#123;</span><br><span class="line">    i + <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (<span class="string">"i"</span> %<span class="keyword">in</span>% ls()) print(i)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## [1] 3</span><br></pre></td></tr></table></figure>
+<p>可以看出來<code>foreach</code>會自動assign <code>i</code>，讓我們能夠直接把<code>i</code>帶入<code>{}</code>裡面直接執行裡面的程式，看最後一次的執行結果</p>
+<p>另外，<code>foreach</code>還會提示是在哪一個task中失敗的：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">tryCatch</span>(&#123;</span><br><span class="line">    foreach(x = <span class="number">1</span>:<span class="number">3</span>) %do% &#123;</span><br><span class="line">        <span class="keyword">if</span> (x == <span class="number">2</span>) </span><br><span class="line">            <span class="keyword">stop</span>(<span class="string">""</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;, error = <span class="keyword">function</span>(e) e)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## &lt;simpleError in &#123;    if (x == 2)         stop(&quot;&quot;)&#125;: task 2 failed - &quot;&quot;&gt;</span><br></pre></td></tr></table></figure>
+<p>上面的輸出可以看的出來就是<code>task 2 failed</code>，所以我們只要用<code>x=2</code>帶進<code>{}</code>裡面就可以找到問題了！</p>
+<p>介紹到這，<code>foreach</code>還只是用到30%而已，這裡我要再介紹搭配同為Revolution R Analysis出的<code>iterators</code>來使用</p>
+<h2 id="iterators"><a href="#iterators" class="headerlink" title="iterators"></a><code>iterators</code></h2><p>一開頭介紹的<code>*apply</code>系列函數還有兩個沒有用<code>foreach</code>取代</p>
+<p>這節就是要來用<code>iteratos</code>的功能來取代<code>apply</code>跟<code>tapply</code></p>
+<p>要取代<code>apply</code>就是我們要讓<code>foreach</code>能一次存取一個列或是一個行</p>
+<p>那麼就是用<code>iter</code>這個函數，然後藉由<code>by</code>這個參數來控制要算列還是行</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">m &lt;- matrix(<span class="number">1</span>:<span class="number">6</span>, <span class="number">3</span>)</span><br><span class="line"><span class="comment"># input matrix, output vector/matrix/list</span></span><br><span class="line">foreach(v = iter(m, by = <span class="string">"row"</span>), .combine = c, .multicombine = <span class="literal">TRUE</span>) %do% sum(v)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## [1] 5 7 9</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foreach(v = iter(m, by = <span class="string">"row"</span>), .combine = cbind, .multicombine = <span class="literal">TRUE</span>) %do% (v * <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">##      [,1] [,2] [,3] [,4] [,5] [,6]</span><br><span class="line">## [1,]    2    8    4   10    6   12</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foreach(v = iter(m, by = <span class="string">"row"</span>)) %do% rep(v[<span class="number">1</span>], v[<span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 1 1 1 1</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 2 2 2 2 2</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 3 3 3 3 3 3</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foreach(v = iter(m, by = <span class="string">"column"</span>), .combine = c, .multicombine = <span class="literal">TRUE</span>) %do% sum(v)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## [1]  6 15</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foreach(v = iter(m, by = <span class="string">"column"</span>), .combine = cbind, .multicombine = <span class="literal">TRUE</span>) %do% (v * <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">##      [,1] [,2]</span><br><span class="line">## [1,]    2    8</span><br><span class="line">## [2,]    4   10</span><br><span class="line">## [3,]    6   12</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foreach(v = iter(m, by = <span class="string">"column"</span>)) %do% rep(v[<span class="number">1</span>], v[<span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 1 1</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 4 4 4 4 4</span><br></pre></td></tr></table></figure>
+<p>如果是<code>array</code>的話就用<code>iapply</code>這個函數來取代<code>iter</code>，舉例如下：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">arr &lt;- array(<span class="number">1</span>:<span class="number">8</span>, rep(<span class="number">2</span>, <span class="number">3</span>))</span><br><span class="line">foreach(v = iapply(arr, <span class="number">1</span>)) %do% &#123;</span><br><span class="line">    v</span><br><span class="line">&#125;  <span class="comment"># iterate over rows</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">##      [,1] [,2]</span><br><span class="line">## [1,]    1    5</span><br><span class="line">## [2,]    3    7</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">##      [,1] [,2]</span><br><span class="line">## [1,]    2    6</span><br><span class="line">## [2,]    4    8</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(v = iapply(arr, <span class="number">2</span>)) %do% &#123;</span><br><span class="line">    v</span><br><span class="line">&#125;  <span class="comment"># iterate over columns</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">##      [,1] [,2]</span><br><span class="line">## [1,]    1    5</span><br><span class="line">## [2,]    2    6</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">##      [,1] [,2]</span><br><span class="line">## [1,]    3    7</span><br><span class="line">## [2,]    4    8</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(v = iapply(arr, <span class="number">3</span>)) %do% &#123;</span><br><span class="line">    v</span><br><span class="line">&#125;  <span class="comment"># iterate over slice</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">##      [,1] [,2]</span><br><span class="line">## [1,]    1    3</span><br><span class="line">## [2,]    2    4</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">##      [,1] [,2]</span><br><span class="line">## [1,]    5    7</span><br><span class="line">## [2,]    6    8</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(v = iapply(arr, <span class="number">2</span>:<span class="number">3</span>)) %do% &#123;</span><br><span class="line">    v</span><br><span class="line">&#125;  <span class="comment"># # iterate over all the columns of all the matrices</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 1 2</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 3 4</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 5 6</span><br><span class="line">## </span><br><span class="line">## [[4]]</span><br><span class="line">## [1] 7 8</span><br></pre></td></tr></table></figure>
+<p><code>tapply</code>的部分則是要引進<code>isplit</code>這個函數</p>
+<p>只是要注意<code>isplit</code>的<code>iterator</code>跟前面使用方式不同</p>
+<p>要用值的話，要用<code>iterator</code>的<code>value</code>，不能直接拿來用</p>
+<p>它另外一個info是包含<code>key</code>，也就是用來分割的group value是什麼</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">str(isplit(<span class="number">1</span>:<span class="number">6</span>, rep(<span class="number">1</span>:<span class="number">2</span>, <span class="number">3</span>))$nextElem())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">## List of 2</span><br><span class="line">##  $ value: int [1:3] 1 3 5</span><br><span class="line">##  $ key  :List of 1</span><br><span class="line">##   ..$ : int 1</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(it = isplit(<span class="number">1</span>:<span class="number">6</span>, rep(<span class="number">1</span>:<span class="number">2</span>, <span class="number">3</span>)), .combine = c, .multicombine = <span class="literal">TRUE</span>) %do% &#123;</span><br><span class="line">    sum(it$value)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## [1]  9 12</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(it = isplit(<span class="number">1</span>:<span class="number">6</span>, rep(<span class="number">1</span>:<span class="number">2</span>, <span class="number">3</span>))) %do% &#123;</span><br><span class="line">    it$value + <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 2 4 6</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 3 5 7</span><br></pre></td></tr></table></figure>
+<p>多組group vector的話，可以這樣做：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">splitList &lt;- list(rep(<span class="number">1</span>:<span class="number">2</span>, <span class="number">3</span>), c(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>))</span><br><span class="line">str(isplit(<span class="number">1</span>:<span class="number">6</span>, splitList)$nextElem())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">## List of 2</span><br><span class="line">##  $ value: int [1:2] 1 3</span><br><span class="line">##  $ key  :List of 2</span><br><span class="line">##   ..$ : int 1</span><br><span class="line">##   ..$ : num 1</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(it = isplit(<span class="number">1</span>:<span class="number">6</span>, splitList), .combine = c, .multicombine = <span class="literal">TRUE</span>) %do% &#123;</span><br><span class="line">    sum(it$value)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">## [1]  4  2  5 10</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach(it = isplit(<span class="number">1</span>:<span class="number">6</span>, splitList)) %do% &#123;</span><br><span class="line">    it$value + <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 2 4</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 3</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 6</span><br><span class="line">## </span><br><span class="line">## [[4]]</span><br><span class="line">## [1] 5 7</span><br></pre></td></tr></table></figure>
+<p>但是<code>isplit</code>除了搭配<code>vector</code>之外，也可以搭配<code>data.frame</code>來使用：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DF &lt;- data.frame(x = rep(<span class="number">1</span>:<span class="number">3</span>, <span class="number">3</span>), y = c(rep(<span class="number">1</span>:<span class="number">2</span>, <span class="number">4</span>), <span class="number">3</span>))</span><br><span class="line">foreach(it = isplit(DF, with(DF, list(x = x, y = y)))) %do% &#123;</span><br><span class="line">    print(it$key)</span><br><span class="line">    nrow(it$value)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">## $x</span><br><span class="line">## [1] 1</span><br><span class="line">## </span><br><span class="line">## $y</span><br><span class="line">## [1] 1</span><br><span class="line">## </span><br><span class="line">## $x</span><br><span class="line">## [1] 2</span><br><span class="line">## </span><br><span class="line">## $y</span><br><span class="line">## [1] 1</span><br><span class="line">## </span><br><span class="line">## $x</span><br><span class="line">## [1] 3</span><br><span class="line">## </span><br><span class="line">## $y</span><br><span class="line">## [1] 1</span><br><span class="line">## </span><br><span class="line">## $x</span><br><span class="line">## [1] 1</span><br><span class="line">## </span><br><span class="line">## $y</span><br><span class="line">## [1] 2</span><br><span class="line">## </span><br><span class="line">## $x</span><br><span class="line">## [1] 2</span><br><span class="line">## </span><br><span class="line">## $y</span><br><span class="line">## [1] 2</span><br><span class="line">## </span><br><span class="line">## $x</span><br><span class="line">## [1] 3</span><br><span class="line">## </span><br><span class="line">## $y</span><br><span class="line">## [1] 2</span><br><span class="line">## </span><br><span class="line">## $x</span><br><span class="line">## [1] 1</span><br><span class="line">## </span><br><span class="line">## $y</span><br><span class="line">## [1] 3</span><br><span class="line">## </span><br><span class="line">## $x</span><br><span class="line">## [1] 2</span><br><span class="line">## </span><br><span class="line">## $y</span><br><span class="line">## [1] 3</span><br><span class="line">## </span><br><span class="line">## $x</span><br><span class="line">## [1] 3</span><br><span class="line">## </span><br><span class="line">## $y</span><br><span class="line">## [1] 3</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">## [1] 2</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">## [1] 1</span><br><span class="line">## </span><br><span class="line">## [[3]]</span><br><span class="line">## [1] 1</span><br><span class="line">## </span><br><span class="line">## [[4]]</span><br><span class="line">## [1] 1</span><br><span class="line">## </span><br><span class="line">## [[5]]</span><br><span class="line">## [1] 2</span><br><span class="line">## </span><br><span class="line">## [[6]]</span><br><span class="line">## [1] 1</span><br><span class="line">## </span><br><span class="line">## [[7]]</span><br><span class="line">## [1] 0</span><br><span class="line">## </span><br><span class="line">## [[8]]</span><br><span class="line">## [1] 0</span><br><span class="line">## </span><br><span class="line">## [[9]]</span><br><span class="line">## [1] 1</span><br></pre></td></tr></table></figure>
+<p>這裡需要注意的是<code>isplit</code>不是現有組合有存在才會取值</p>
+<p>而是將你輸入的group vector分別取unique後做<code>expand.grid</code>的動作展開</p>
+<p>所以會有組合是沒有資料的，要記得在script裡面寫如果零列要怎麼處理：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">DF &lt;- data.frame(x = rep(<span class="number">1</span>:<span class="number">3</span>, <span class="number">3</span>), y = c(rep(<span class="number">1</span>:<span class="number">2</span>, <span class="number">4</span>), <span class="number">3</span>))</span><br><span class="line">foreach(it = isplit(DF, with(DF, list(x = x, y = y))), .combine = rbind, .multicombine = <span class="literal">TRUE</span>) %do% &#123;</span><br><span class="line">    <span class="keyword">if</span> (nrow(it$value) == <span class="number">0</span>) </span><br><span class="line">        <span class="keyword">return</span>(<span class="literal">NULL</span>)</span><br><span class="line">    data.frame(it$key, sum(it$value))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">##   x y sum.it.value.</span><br><span class="line">## 1 1 1             4</span><br><span class="line">## 2 2 1             3</span><br><span class="line">## 3 3 1             4</span><br><span class="line">## 4 1 2             3</span><br><span class="line">## 5 2 2             8</span><br><span class="line">## 6 3 2             5</span><br><span class="line">## 7 3 3             6</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/R/" rel="tag"># R</a>
+          
+            <a href="/tags/foreach/" rel="tag"># foreach</a>
+          
+            <a href="/tags/iterators/" rel="tag"># iterators</a>
+          
+            <a href="/tags/apply/" rel="tag"># apply</a>
+          
+            <a href="/tags/do-call/" rel="tag"># do.call</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+          <div class="social-like">
+            
+
+            
+              <div class="fb_like">
+                <div class="fb-like" data-layout="button_count" data-share="true"></div>
+              </div>
+            
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/201704/2017-04-16-mxnet-io-csviter.html" rel="next" title="MxNet所提供的csv data iterator">
+                <i class="fa fa-chevron-left"></i> MxNet所提供的csv data iterator
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/201704/2017-04-23-RcppArmadillo-call-F77-blas-lapacl.html" rel="prev" title="RcppArmadillo call F77 blas/lapack">
+                RcppArmadillo call F77 blas/lapack <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="fb-comments"
+           data-href="http://chingchuan-chen.github.io/posts/201704/2017-04-23-introduce-to-foreach-and-iterators.html"
+           data-numposts="10"
+           data-width="100%"
+           data-colorscheme="light">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Ching-Chuan Chen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">136</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ChingChuan-Chen" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zw12356@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/u/0/110171317328627391486" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/celestial0230" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction-apply-functions-Reduce-and-do-call"><span class="nav-number">1.</span> <span class="nav-text">Introduction *apply functions, Reduce and do.call</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#foreach"><span class="nav-number">2.</span> <span class="nav-text">foreach</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iterators"><span class="nav-number">3.</span> <span class="nav-text">iterators</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-thumbs-up"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ching-Chuan Chen</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('10');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("H7MfFf5lhyq2111iytpoFtIz-gzGzoHsz", "tGTKdvBYYQCIIlvxXJGJM2cc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

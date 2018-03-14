@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/earlyaccess//css?family=Noto Sans TC:300,300italic,400,400italic,700,700italic|Noto Sans TC:300,300italic,400,400italic,700,700italic|Inconsolata:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="R,Mint,BigData,Hadoop,Hive,HBase,rhdfs,rmr2,plyrmr,rhbase," />
+
+
+
+
+
+
+
+
+  <meta property="fb:admins" content="celestial0230" />
+  <meta property="fb:app_id" content="418813441900729" />
+
+
+
+<meta name="description" content="Rsudio provides a series of packages for the connection between R and hadoop. rhdfs provides the manipulation of HDFS in hadoop in R. rmr2 and plyrmr let user do mapreduce job in R. rhbase allow user">
+<meta name="keywords" content="R,Mint,BigData,Hadoop,Hive,HBase,rhdfs,rmr2,plyrmr,rhbase">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Installations of rhdfs, rmr2, plyrmr and rhbase">
+<meta property="og:url" content="http://chingchuan-chen.github.io/posts/201504/2015-04-08-installations-of-rhdfs-rmr2-plyrmr-and-hbase.html">
+<meta property="og:site_name" content="Celestial">
+<meta property="og:description" content="Rsudio provides a series of packages for the connection between R and hadoop. rhdfs provides the manipulation of HDFS in hadoop in R. rmr2 and plyrmr let user do mapreduce job in R. rhbase allow user">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:updated_time" content="2018-03-14T17:15:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Installations of rhdfs, rmr2, plyrmr and rhbase">
+<meta name="twitter:description" content="Rsudio provides a series of packages for the connection between R and hadoop. rhdfs provides the manipulation of HDFS in hadoop in R. rmr2 and plyrmr let user do mapreduce job in R. rhbase allow user">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chingchuan-chen.github.io/posts/201504/2015-04-08-installations-of-rhdfs-rmr2-plyrmr-and-hbase.html"/>
+
+
+
+
+
+  <title>Installations of rhdfs, rmr2, plyrmr and rhbase | Celestial</title>
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '418813441900729',
+      xfbml      : true,
+      version    : 'v2.10'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-72564040-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Celestial</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站點地圖
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201504/2015-04-08-installations-of-rhdfs-rmr2-plyrmr-and-hbase.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Installations of rhdfs, rmr2, plyrmr and rhbase</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-04-08T00:00:00+08:00">
+                2015-04-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/BigData/" itemprop="url" rel="index">
+                    <span itemprop="name">BigData</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201504/2015-04-08-installations-of-rhdfs-rmr2-plyrmr-and-hbase.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201504/2015-04-08-installations-of-rhdfs-rmr2-plyrmr-and-hbase.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201504/2015-04-08-installations-of-rhdfs-rmr2-plyrmr-and-hbase.html" class="leancloud_visitors" data-flag-title="Installations of rhdfs, rmr2, plyrmr and rhbase">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  2,021
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Rsudio provides a series of packages for the connection between R and hadoop. rhdfs provides the manipulation of HDFS in hadoop in R. rmr2 and plyrmr let user do mapreduce job in R. rhbase allow user to access data in hbase.</p>
+<a id="more"></a>
+<p>Before using packages in R, we implement wordcount by using hadoop streaming. First, export the hadoop home in the terminal by command <code>export HADOOP_HOME=/usr/local/hadoop/</code>. New two R files named mapper.R and reducer.R, respectively.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env Rscript</span></span><br><span class="line"><span class="comment">## mapper.R</span></span><br><span class="line">trimWhiteSpace &lt;- <span class="keyword">function</span>(line) gsub(<span class="string">"(^ +)|( +$)"</span>, <span class="string">""</span>, line)</span><br><span class="line">splitIntoWords &lt;- <span class="keyword">function</span>(line) unlist(strsplit(line, <span class="string">"[[:space:]]+"</span>))</span><br><span class="line">con &lt;- file(<span class="string">"stdin"</span>, open = <span class="string">"r"</span>)</span><br><span class="line"><span class="keyword">while</span> (length(line &lt;- readLines(con, n = <span class="number">1</span>, warn = <span class="literal">FALSE</span>)) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    line &lt;- trimWhiteSpace(line)</span><br><span class="line">    words &lt;- splitIntoWords(line)</span><br><span class="line">    <span class="comment">## **** can be done as cat(paste(words, "\t1\n", sep=""), sep="")</span></span><br><span class="line">    <span class="keyword">for</span> (w <span class="keyword">in</span> words)</span><br><span class="line">        cat(w, <span class="string">"\t1\n"</span>, sep=<span class="string">""</span>)</span><br><span class="line">&#125;</span><br><span class="line">close(con)</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env Rscript</span></span><br><span class="line"><span class="comment"># reducer.R</span></span><br><span class="line">trimWhiteSpace &lt;- <span class="keyword">function</span>(line) gsub(<span class="string">"(^ +)|( +$)"</span>, <span class="string">""</span>, line)</span><br><span class="line">splitLine &lt;- <span class="keyword">function</span>(line) &#123;</span><br><span class="line">    val &lt;- unlist(strsplit(line, <span class="string">"\t"</span>))</span><br><span class="line">    list(word = val[<span class="number">1</span>], count = as.integer(val[<span class="number">2</span>]))</span><br><span class="line">&#125;</span><br><span class="line">env &lt;- new.env(hash = <span class="literal">TRUE</span>)</span><br><span class="line">con &lt;- file(<span class="string">"stdin"</span>, open = <span class="string">"r"</span>)</span><br><span class="line"><span class="keyword">while</span> (length(line &lt;- readLines(con, n = <span class="number">1</span>, warn = <span class="literal">FALSE</span>)) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    line &lt;- trimWhiteSpace(line)</span><br><span class="line">    split &lt;- splitLine(line)</span><br><span class="line">    word &lt;- split$word</span><br><span class="line">    count &lt;- split$count</span><br><span class="line">    <span class="keyword">if</span> (exists(word, envir = env, inherits = <span class="literal">FALSE</span>)) &#123;</span><br><span class="line">        oldcount &lt;- get(word, envir = env)</span><br><span class="line">        assign(word, oldcount + count, envir = env)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> assign(word, count, envir = env)</span><br><span class="line">&#125;</span><br><span class="line">close(con)</span><br><span class="line"><span class="keyword">for</span> (w <span class="keyword">in</span> ls(env, all = <span class="literal">TRUE</span>))</span><br><span class="line">    cat(w, <span class="string">"\t"</span>, get(w, envir = env), <span class="string">"\n"</span>, sep = <span class="string">""</span>)</span><br></pre></td></tr></table></figure>
+<p>Using the example in previous article for hadoop and run hadoop streaming in the terminal:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/Downloads &amp;&amp; mkdir testData &amp;&amp; <span class="built_in">cd</span> testData</span><br><span class="line">wget http://www.gutenberg.org/ebooks/5000.txt.utf-8</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">hdfs dfs -copyFromLocal testData/ /user/celest/</span><br><span class="line">hadoop jar /usr/<span class="built_in">local</span>/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.6.0.jar \</span><br><span class="line">-files mapper.R,reducer.R,/opt/intel/composer_xe_2013_sp1.3.174/compiler/lib/intel64/libiomp5.so \</span><br><span class="line">-mapper <span class="string">"mapper.R -m"</span> -reducer <span class="string">"reducer.R -r"</span> \</span><br><span class="line">-input /user/celest/testData/* -output /user/celest/testData2-output</span><br><span class="line">hdfs dfs -cat /user/celest/testData2-output/part-00000</span><br></pre></td></tr></table></figure>
+<p>We can obtain the same result for wordcount. Next, we are going to install the following packages:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rhdfs</span><br><span class="line">rmr</span><br><span class="line">ravro</span><br><span class="line">plyrmr</span><br><span class="line">rhbase</span><br></pre></td></tr></table></figure>
+<p>Note that ravro is the data parser for avro in R.</p>
+<p>Some dependencies need to be installed in system:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libcurl4-openssl-dev git</span><br><span class="line">R CMD javareconf <span class="comment"># setting the environment for R</span></span><br><span class="line"><span class="comment"># for rhbase</span></span><br><span class="line">sudo apt-get install libboost-dev libboost-test-dev libboost-program-options-dev libboost-system-dev libboost-filesystem-dev libevent-dev automake libtool flex bison pkg-config g++ libssl-dev</span><br><span class="line"><span class="comment"># optional package to install</span></span><br><span class="line">sudo apt-get install php5-dev php5-cli phpunit libbit-vector-perl libclass-accessor-class-perl python-all python-all-dev python-all-dbg libglib2.0-dev ruby-full ruby-dev ruby-rspec rake</span><br><span class="line">sudo gem install daemons gem_plugin mongrel</span><br><span class="line">wget http://apache.stu.edu.tw//ant/binaries/apache-ant-1.9.4-bin.tar.gz</span><br><span class="line">tar -zxvf apache-ant-1.9.4-bin.tar.gz</span><br><span class="line"><span class="built_in">cd</span> apache-ant-1.9.4-bin</span><br><span class="line">sudo mv apache-ant-1.9.4-bin /usr/<span class="built_in">local</span>/ant</span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span></span><br><span class="line">sudo chown -R celest ant</span><br><span class="line"><span class="comment"># install mongrel may occur error, to see http://stackoverflow.com/questions/13851741/install-mongrel-in-ruby-1-9-3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># install thrift (for rhbase)</span></span><br><span class="line"><span class="built_in">cd</span> ~/Downloads</span><br><span class="line">wget http://apache.stu.edu.tw/thrift/0.9.2/thrift-0.9.2.tar.gz</span><br><span class="line">tar -zxvf thrift-0.9.2.tar.gz</span><br><span class="line"><span class="built_in">cd</span> thrift-0.9.2</span><br><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line">sudo cp /usr/<span class="built_in">local</span>/lib/libthrift-0.9.2.so /usr/lib/</span><br><span class="line">sudo /sbin/ldconfig /usr/lib/libthrift-0.9.2.so</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">sudo subl /etc/bash.bashrc</span><br><span class="line"><span class="comment"># add following 7 lines into file</span></span><br><span class="line"><span class="comment"># # for rhbase</span></span><br><span class="line"><span class="comment"># export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig/</span></span><br><span class="line"><span class="comment"># # for rhdfs and rmr2</span></span><br><span class="line"><span class="comment"># export HADOOP_CMD=/usr/local/hadoop/bin/hadoop</span></span><br><span class="line"><span class="comment"># # for rmr2</span></span><br><span class="line"><span class="comment"># export HADOOP_STREAMING=/usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.6.0.jar</span></span><br><span class="line">subl /usr/<span class="built_in">local</span>/hadoop/etc/hadoop/hadoop-env.sh</span><br><span class="line"><span class="comment"># # for compiled R by mkl</span></span><br><span class="line"><span class="comment"># source /opt/intel/composer_xe_2013_sp1.3.174/mkl/bin/mklvars.sh intel64</span></span><br><span class="line"><span class="comment"># source /opt/intel/composer_xe_2015.1.133/mkl/bin/mklvars.sh intel64</span></span><br><span class="line"><span class="comment"># # for compiled R by icc</span></span><br><span class="line"><span class="comment"># source /opt/intel/composer_xe_2013_sp1.3.174/bin/compilervars.sh intel64</span></span><br><span class="line"><span class="comment"># source /opt/intel/composer_xe_2015.1.133/bin/compilervars.sh intel64</span></span><br><span class="line"><span class="comment"># # for hive</span></span><br><span class="line"><span class="comment"># export R_HOME=/usr/lib/R</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /etc/bash.bashrc</span><br><span class="line"><span class="comment"># in ubuntu, is &gt;&gt; etc/bash.bashrc</span></span><br><span class="line">start-dfs.sh</span><br><span class="line">start-yarn.sh</span><br><span class="line">hive --service hiveserver</span><br></pre></td></tr></table></figure>
+<p>Install the dependent R packages:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">install.packages(c(<span class="string">"rJava"</span>, <span class="string">"Rcpp"</span>, <span class="string">"rjson"</span>, <span class="string">"RJSONIO"</span>, <span class="string">"bit64"</span>, <span class="string">"reshape2"</span>, <span class="string">"data.table"</span>, <span class="string">"plyr"</span>, <span class="string">"dplyr"</span>, <span class="string">"digest"</span>, <span class="string">"functional"</span>, <span class="string">"stringr"</span>, <span class="string">"caTools"</span>, <span class="string">"lazyeval"</span>, <span class="string">"Hmisc"</span>, <span class="string">"testthat"</span>, <span class="string">"devtools"</span>, <span class="string">"iterators"</span>, <span class="string">"itertools"</span>, <span class="string">"pryr"</span>))</span><br><span class="line"><span class="keyword">library</span>(devtools)</span><br><span class="line">install_github(<span class="string">"RevolutionAnalytics/quickcheck@3.2.0"</span>, subdir = <span class="string">"pkg"</span>)</span><br><span class="line">install_github(<span class="string">"RevolutionAnalytics/memoise"</span>)</span><br><span class="line">install_github(<span class="string">"RevolutionAnalytics/rhdfs"</span>, subdir = <span class="string">"pkg"</span>)</span><br><span class="line">install_github(<span class="string">"RevolutionAnalytics/ravro"</span>, subdir = <span class="string">"pkg/ravro"</span>)</span><br><span class="line">install_github(<span class="string">"RevolutionAnalytics/rmr2"</span>, subdir = <span class="string">"pkg"</span>)</span><br><span class="line">install_github(<span class="string">"RevolutionAnalytics/plyrmr"</span>, subdir = <span class="string">"pkg"</span>)</span><br><span class="line">install_github(<span class="string">"RevolutionAnalytics/rhbase"</span>, subdir = <span class="string">"pkg"</span>)</span><br></pre></td></tr></table></figure>
+<p>When I install rhbase, I encounter a problem. The command <code>pkg-config --cflags thrift</code> does not return <code>-I/usr/local/include</code> instead the correct path <code>-I/usr/local/include/thrift</code>. So I copy all files in <code>/usr/local/include/thrift</code> into <code>-I/usr/local/include</code> by <code>cp -R /usr/local/include/thrift/* /usr/local/include/</code>.</p>
+<p>When I use the function <code>hdfs.init()</code> in package <code>rhdfs</code>, it come to a error massage:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sh: /usr/lib/hadoop/bin/: is a directory</span><br><span class="line">Error <span class="keyword">in</span> .jnew(<span class="string">"org/apache/hadoop/conf/Configuration"</span>) :</span><br><span class="line">   java.lang.ClassNotFoundException</span><br><span class="line">In addition: Warning message:</span><br><span class="line">running command <span class="string">'/usr/lib/hadoop/bin/ classpath'</span> had status <span class="number">126</span></span><br></pre></td></tr></table></figure>
+<p>The reason why cause this problem is wrong setting of HADOOP_CMD, fix it and get work.</p>
+<p>install rhbase, I encounter a problem. The command <code>pkg-config --cflags thrift</code> does not return <code>-I/usr/local/include</code> instead the correct path <code>-I/usr/local/include/thrift</code>. So I copy all files in <code>/usr/local/include/thrift</code> into <code>-I/usr/local/include</code> by <code>cp -R /usr/local/include/thrift/* /usr/local/include/</code>.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/Downloads</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/RevolutionAnalytics/rmr2.git</span><br><span class="line">mv rmr2/pkg pkg</span><br><span class="line">rm -r rmr2</span><br><span class="line">mv pkg rmr2</span><br><span class="line">subl rmr2/R/streaming.R</span><br><span class="line">R CMD INSTALL rmr2</span><br></pre></td></tr></table></figure>
+<p>The lines shown in following:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">paste.options(</span><br><span class="line">  files =</span><br><span class="line">    paste(</span><br><span class="line">      collapse = <span class="string">","</span>,</span><br><span class="line">        c(image.files, map.file, reduce.file, combine.file)))</span><br></pre></td></tr></table></figure>
+<p>can be modified to following:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## for intel parallel studio 2013</span></span><br><span class="line">paste.options(</span><br><span class="line">  files =</span><br><span class="line">    paste(</span><br><span class="line">      collapse = <span class="string">","</span>,</span><br><span class="line">        c(image.files, map.file, reduce.file, combine.file,</span><br><span class="line">                <span class="string">"/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libiomp5.so"</span>,</span><br><span class="line">                <span class="string">"/usr/lib/jvm/java-8-oracle/jre/lib/amd64/server/libjvm.so"</span>))),</span><br><span class="line"></span><br><span class="line"><span class="comment">## for intel parallel studio 2015</span></span><br><span class="line">paste.options(</span><br><span class="line">  files =</span><br><span class="line">    paste(</span><br><span class="line">      collapse = <span class="string">","</span>,</span><br><span class="line">        c(image.files, map.file, reduce.file, combine.file,</span><br><span class="line">                <span class="string">"/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libiomp5.so"</span>,</span><br><span class="line">                <span class="string">"/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libifport.so.5"</span>,</span><br><span class="line">                <span class="string">"/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libifcoremt.so.5"</span>,</span><br><span class="line">                <span class="string">"/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libimf.so"</span>,</span><br><span class="line">                <span class="string">"/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libsvml.so"</span>,</span><br><span class="line">                <span class="string">"/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libirc.so"</span>,</span><br><span class="line">                <span class="string">"/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libirng.so"</span>,</span><br><span class="line">                <span class="string">"/opt/intel/composer_xe_2015.1.133/compiler/lib/intel64/libintlc.so.5"</span>,</span><br><span class="line">                <span class="string">"/usr/lib/jvm/java-8-oracle/jre/lib/amd64/server/libjvm.so"</span>))),</span><br></pre></td></tr></table></figure>
+<p>Test rhadoop series packages:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># test rhdfs</span></span><br><span class="line"><span class="keyword">library</span>(rhdfs)</span><br><span class="line"><span class="keyword">library</span>(data.table)</span><br><span class="line"><span class="keyword">library</span>(dplyr)</span><br><span class="line"><span class="keyword">library</span>(magrittr)</span><br><span class="line">N = <span class="number">300</span></span><br><span class="line">mydata = replicate(<span class="number">3</span>, rnorm(N)) %&gt;% tbl_dt() %&gt;%</span><br><span class="line">  setnames(paste0(<span class="string">"x"</span>, <span class="number">1</span>:<span class="number">3</span>)) %&gt;% mutate(y = x1+<span class="number">2</span>*x2+<span class="number">3</span>*x3+rnorm(N,<span class="number">0</span>,<span class="number">5</span>))</span><br><span class="line">model = lm(y ~., mydata)</span><br><span class="line">hdfs.init()</span><br><span class="line">modelfilename = <span class="string">"mymodel"</span></span><br><span class="line">modelfile = hdfs.file(modelfilename, <span class="string">"w"</span>)</span><br><span class="line">hdfs.write(model, modelfile)</span><br><span class="line">hdfs.close(modelfile)</span><br><span class="line">model</span><br><span class="line"><span class="comment"># Call:</span></span><br><span class="line"><span class="comment"># lm(formula = y ~ ., data = mydata)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Coefficients:</span></span><br><span class="line"><span class="comment"># (Intercept)           x1           x2           x3</span></span><br><span class="line"><span class="comment">#      0.1105       1.9879       2.6298       3.0040</span></span><br><span class="line"></span><br><span class="line">modelfile = hdfs.file(modelfilename, <span class="string">"r"</span>)</span><br><span class="line">m = hdfs.read(modelfile)</span><br><span class="line">model2 = unserialize(m)</span><br><span class="line">hdfs.close(modelfile)</span><br><span class="line">model2</span><br><span class="line"><span class="comment"># Call:</span></span><br><span class="line"><span class="comment"># lm(formula = y ~ ., data = mydata)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Coefficients:</span></span><br><span class="line"><span class="comment"># (Intercept)           x1           x2           x3</span></span><br><span class="line"><span class="comment">#      0.1105       1.9879       2.6298       3.0040</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">N = <span class="number">3000</span></span><br><span class="line">mydata = replicate(<span class="number">3</span>, rnorm(N)) %&gt;% tbl_dt() %&gt;%</span><br><span class="line">  setnames(paste0(<span class="string">"x"</span>, <span class="number">1</span>:<span class="number">3</span>)) %&gt;% mutate(y = x1+<span class="number">2</span>*x2+<span class="number">3</span>*x3+rnorm(N,<span class="number">0</span>,<span class="number">5</span>))</span><br><span class="line">model = lm(y ~., mydata)</span><br><span class="line">modelfilename = <span class="string">"my_smart_unique_name"</span></span><br><span class="line">modelfile = hdfs.file(modelfilename, <span class="string">"w"</span>)</span><br><span class="line">hdfs.write(model, modelfile)</span><br><span class="line">hdfs.close(modelfile)</span><br><span class="line">model</span><br><span class="line"></span><br><span class="line"><span class="comment"># Call:</span></span><br><span class="line"><span class="comment"># lm(formula = y ~ ., data = mydata)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Coefficients:</span></span><br><span class="line"><span class="comment"># (Intercept)           x1           x2           x3</span></span><br><span class="line"><span class="comment">#      0.2506       1.2038       1.9056       3.0477</span></span><br><span class="line"></span><br><span class="line">modelfile = hdfs.file(modelfilename, <span class="string">"r"</span>)</span><br><span class="line">m = hdfs.read(modelfile)itertools</span><br><span class="line">model2 = unserialize(m)</span><br><span class="line"><span class="comment"># error in reading data</span></span><br><span class="line">hdfs.close(modelfile)</span><br><span class="line"></span><br><span class="line">length(serialize(model,<span class="literal">NULL</span>))</span><br><span class="line"><span class="comment"># [1] 131535</span></span><br><span class="line">length(m)</span><br><span class="line"><span class="comment"># [1] 65536</span></span><br><span class="line"><span class="comment"># it return the wrong size!</span></span><br><span class="line"></span><br><span class="line">modelfile = hdfs.file(modelfilename, <span class="string">"r"</span>)</span><br><span class="line">fileSize = hdfs.file.info(paste0(<span class="string">"/user/celest/"</span>, modelfilename))$size</span><br><span class="line">m = <span class="literal">NULL</span></span><br><span class="line">i = <span class="number">1</span></span><br><span class="line"><span class="keyword">repeat</span></span><br><span class="line">&#123;</span><br><span class="line">  break_out = <span class="number">65536</span>*i &gt; fileSize</span><br><span class="line">  size = ifelse(break_out, <span class="number">65536</span>, fileSize - <span class="number">65536</span>*(i-<span class="number">1</span>))</span><br><span class="line">  tmp = hdfs.read(modelfile, size, <span class="number">65536</span>*(i-<span class="number">1</span>))</span><br><span class="line">  m = c(m, tmp)</span><br><span class="line">  i = i + <span class="number">1</span></span><br><span class="line">  <span class="keyword">if</span> (break_out)</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">&#125;</span><br><span class="line">model2 = unserialize(m)</span><br><span class="line">hdfs.close(modelfile)</span><br><span class="line">length(m)</span><br><span class="line"><span class="comment"># [1] 131535</span></span><br><span class="line">model2</span><br><span class="line"><span class="comment"># to delete this data by using following command</span></span><br><span class="line"><span class="comment"># hdfs.rm("/user/celest/my_smart_unique_name")</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Call:</span></span><br><span class="line"><span class="comment"># lm(formula = y ~ ., data = mydata)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Coefficients:</span></span><br><span class="line"><span class="comment"># (Intercept)           x1           x2           x3</span></span><br><span class="line"><span class="comment">#      0.2506       1.2038       1.9056       3.0477</span></span><br></pre></td></tr></table></figure>
+<p>Back to terminal, you can use hdfs to find what R write. (There is some functions in R doing the same way.)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfs -ls <span class="comment"># hdfs.ls("/user/celest") in R</span></span><br><span class="line"><span class="comment">## Found 1 items</span></span><br><span class="line"><span class="comment">## -rw-r--r--   3 celest supergroup     131535 2015-04-06 13:50 my_smart_unique_name</span></span><br><span class="line"><span class="comment"># remove the file</span></span><br><span class="line">hdfs dfs -rm -r my_smart_unique_name <span class="comment"># hdfs.rm("/user/celest/my_smart_unique_name") in R</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Sys.setenv("HADOOP_CMD"="/usr/local/hadoop/bin/hadoop")</span></span><br><span class="line"><span class="comment"># test the rmr2 plyrmr</span></span><br><span class="line"><span class="keyword">library</span>(data.table)</span><br><span class="line"><span class="keyword">library</span>(dplyr)</span><br><span class="line"><span class="keyword">library</span>(magrittr)</span><br><span class="line"><span class="keyword">library</span>(rmr2)</span><br><span class="line"><span class="keyword">library</span>(plyrmr)</span><br><span class="line"><span class="keyword">library</span>(rhdfs)</span><br><span class="line"><span class="comment"># a simple case</span></span><br><span class="line">ints = to.dfs(<span class="number">1</span>:<span class="number">100</span>)</span><br><span class="line">calc = mapreduce(input = ints, map = <span class="keyword">function</span>(k, v) cbind(v, v=<span class="number">2</span>*v))</span><br><span class="line">output = from.dfs(calc)</span><br><span class="line">output</span><br><span class="line">ints2 = to.dfs(matrix(rnorm(<span class="number">25</span>), <span class="number">5</span>))</span><br><span class="line">calc2 = mapreduce(input = ints2, map = <span class="keyword">function</span>(k, v) v %*% v)</span><br><span class="line">output2 = from.dfs(calc2)</span><br><span class="line">output2</span><br><span class="line"><span class="comment"># $key</span></span><br><span class="line"><span class="comment"># NULL</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># $val</span></span><br><span class="line"><span class="comment">#          v</span></span><br><span class="line"><span class="comment">#   [1,]   1   2</span></span><br><span class="line"><span class="comment">#   [2,]   2   4</span></span><br><span class="line"><span class="comment">#   [3,]   3   6</span></span><br><span class="line"><span class="comment">#   [4,]   4   8</span></span><br><span class="line"><span class="comment">#   [5,]   5  10</span></span><br><span class="line"><span class="comment">#   [6,]   6  12</span></span><br><span class="line"><span class="comment">#   [7,]   7  14</span></span><br><span class="line"><span class="comment">#   [8,]   8  16</span></span><br><span class="line"><span class="comment">#   ............</span></span><br><span class="line"></span><br><span class="line">N = <span class="number">15</span></span><br><span class="line">dat = replicate(<span class="number">3</span>, rnorm(N)) %&gt;% tbl_dt() %&gt;%</span><br><span class="line">  setnames(paste0(<span class="string">"x"</span>, <span class="number">1</span>:<span class="number">3</span>)) %&gt;% mutate(y = x1+<span class="number">2</span>*x2+<span class="number">3</span>*x3+rnorm(N,<span class="number">0</span>,<span class="number">5</span>)) %&gt;%</span><br><span class="line">  as.data.frame()</span><br><span class="line">hdfs.init()</span><br><span class="line">mydata = to.dfs(dat)</span><br><span class="line">as.data.frame(input(mydata), x1_x2 = x1*x2)</span><br><span class="line">bind.cols(input(mydata), x1_x2 = x1*x2)</span><br><span class="line">output(bind.cols(input(mydata),x1_x2 = x1*x2), <span class="string">"/tmp/mydata2"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># test the rhbase</span></span><br><span class="line">hbase thrift start</span><br><span class="line">R</span><br><span class="line">R &gt; <span class="keyword">library</span>(rhbase)</span><br><span class="line">R &gt; hb.list.tables() <span class="comment"># list()</span></span><br><span class="line">R &gt; q(<span class="string">"no"</span>)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/R/" rel="tag"># R</a>
+          
+            <a href="/tags/Mint/" rel="tag"># Mint</a>
+          
+            <a href="/tags/BigData/" rel="tag"># BigData</a>
+          
+            <a href="/tags/Hadoop/" rel="tag"># Hadoop</a>
+          
+            <a href="/tags/Hive/" rel="tag"># Hive</a>
+          
+            <a href="/tags/HBase/" rel="tag"># HBase</a>
+          
+            <a href="/tags/rhdfs/" rel="tag"># rhdfs</a>
+          
+            <a href="/tags/rmr2/" rel="tag"># rmr2</a>
+          
+            <a href="/tags/plyrmr/" rel="tag"># plyrmr</a>
+          
+            <a href="/tags/rhbase/" rel="tag"># rhbase</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+          <div class="social-like">
+            
+
+            
+              <div class="fb_like">
+                <div class="fb-like" data-layout="button_count" data-share="true"></div>
+              </div>
+            
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/201504/2015-04-06-installation-of-hbase-and-hive-in-mint-17.html" rel="next" title="Installation of HBase and Hive in mint 17">
+                <i class="fa fa-chevron-left"></i> Installation of HBase and Hive in mint 17
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/201504/2015-04-09-installation-of-spyder2-and-spyder3.html" rel="prev" title="Installations of spyder2 and spyder3">
+                Installations of spyder2 and spyder3 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="fb-comments"
+           data-href="http://chingchuan-chen.github.io/posts/201504/2015-04-08-installations-of-rhdfs-rmr2-plyrmr-and-hbase.html"
+           data-numposts="10"
+           data-width="100%"
+           data-colorscheme="light">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Ching-Chuan Chen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">136</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ChingChuan-Chen" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zw12356@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/u/0/110171317328627391486" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/celestial0230" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-thumbs-up"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ching-Chuan Chen</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('10');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("H7MfFf5lhyq2111iytpoFtIz-gzGzoHsz", "tGTKdvBYYQCIIlvxXJGJM2cc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

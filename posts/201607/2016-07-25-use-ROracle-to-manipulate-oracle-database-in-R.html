@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/earlyaccess//css?family=Noto Sans TC:300,300italic,400,400italic,700,700italic|Noto Sans TC:300,300italic,400,400italic,700,700italic|Inconsolata:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="R,BigData,Oracle,ROracle," />
+
+
+
+
+
+
+
+
+  <meta property="fb:admins" content="celestial0230" />
+  <meta property="fb:app_id" content="418813441900729" />
+
+
+
+<meta name="description" content="前兩篇裝了Hadoop跟Oracle 為了接下來可以測試sqoop，使用ROracle去塞一下資料表進去 在windows下，安裝ROracle，也測試看看在centos下安裝看看">
+<meta name="keywords" content="R,BigData,Oracle,ROracle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在R用ROracle去操作Oracle資料庫">
+<meta property="og:url" content="http://chingchuan-chen.github.io/posts/201607/2016-07-25-use-ROracle-to-manipulate-oracle-database-in-R.html">
+<meta property="og:site_name" content="Celestial">
+<meta property="og:description" content="前兩篇裝了Hadoop跟Oracle 為了接下來可以測試sqoop，使用ROracle去塞一下資料表進去 在windows下，安裝ROracle，也測試看看在centos下安裝看看">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:updated_time" content="2018-03-14T16:57:53.936Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在R用ROracle去操作Oracle資料庫">
+<meta name="twitter:description" content="前兩篇裝了Hadoop跟Oracle 為了接下來可以測試sqoop，使用ROracle去塞一下資料表進去 在windows下，安裝ROracle，也測試看看在centos下安裝看看">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chingchuan-chen.github.io/posts/201607/2016-07-25-use-ROracle-to-manipulate-oracle-database-in-R.html"/>
+
+
+
+
+
+  <title>在R用ROracle去操作Oracle資料庫 | Celestial</title>
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '418813441900729',
+      xfbml      : true,
+      version    : 'v2.10'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-72564040-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Celestial</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站點地圖
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201607/2016-07-25-use-ROracle-to-manipulate-oracle-database-in-R.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">在R用ROracle去操作Oracle資料庫</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-07-25T00:00:00+08:00">
+                2016-07-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/BigData/" itemprop="url" rel="index">
+                    <span itemprop="name">BigData</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201607/2016-07-25-use-ROracle-to-manipulate-oracle-database-in-R.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201607/2016-07-25-use-ROracle-to-manipulate-oracle-database-in-R.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201607/2016-07-25-use-ROracle-to-manipulate-oracle-database-in-R.html" class="leancloud_visitors" data-flag-title="在R用ROracle去操作Oracle資料庫">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  2,555
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前兩篇裝了Hadoop跟Oracle</p>
+<p>為了接下來可以測試sqoop，使用ROracle去塞一下資料表進去</p>
+<p>在windows下，安裝ROracle，也測試看看在centos下安裝看看</p>
+<a id="more"></a>
+<p>(ubuntu, mint部分前面有文章介紹怎麼裝R，就不在贅述，至於裝ROracle就跟centos大同小異了)</p>
+<ol>
+<li>準備工作</li>
+</ol>
+<p>基本上同Hadoop那篇，這裡就不贅述</p>
+<p>我這裡是直接裝在Hadoop的master (sparkServer0)上</p>
+<p>centos部分： (windows請往下轉)</p>
+<ol>
+<li>安裝Microsoft R Open</li>
+</ol>
+<p>主要參考我自己前幾篇文章 - <a href="http://chingchuan-chen.github.io/linux/2016/05/11/initialization_of_centos.html"><br>Some installations of centos</a></p>
+<p>簡單敘述一下(不同的地方是centos最小安裝沒有wget)：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 更新repo，並安裝R</span></span><br><span class="line">su -c <span class="string">'rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'</span></span><br><span class="line">sudo yum update</span><br><span class="line">sudo yum install gcc-c++ R R-devel R-java</span><br><span class="line"></span><br><span class="line"><span class="comment">## remove R</span></span><br><span class="line">sudo rm -rf /usr/lib64/R</span><br><span class="line"></span><br><span class="line"><span class="comment"># install MRO</span></span><br><span class="line"><span class="comment">## Make sure the system repositories are up-to-date prior to installing Microsoft R Open.</span></span><br><span class="line">sudo yum clean all</span><br><span class="line"><span class="comment">## get the installers</span></span><br><span class="line">curl -v -j -k -L https://mran.microsoft.com/install/mro/3.3.0/MRO-3.3.0.el7.x86_64.rpm -o MRO-3.3.0.el7.x86_64.rpm </span><br><span class="line">curl -v -j -k -L https://mran.microsoft.com/install/mro/3.3.0/RevoMath-3.3.0.tar.gz -o RevoMath-3.3.0.tar.gz</span><br><span class="line"><span class="comment">## 安裝MRO</span></span><br><span class="line">sudo yum install MRO-3.3.0.el7.x86_64.rpm</span><br><span class="line"><span class="comment">## 安裝MKL</span></span><br><span class="line">tar -xzf RevoMath-3.3.0.tar.gz</span><br><span class="line"><span class="comment">## 備註一點，這裡如果直接用 sudo bash ./RevoMath/RevoMath.sh會失敗</span></span><br><span class="line"><span class="comment">## 失敗之後要先 sudo yum remove MRO重裝一次</span></span><br><span class="line"><span class="built_in">cd</span> RevoMath</span><br><span class="line">sudo bash ./RevoMath.sh</span><br><span class="line"></span><br><span class="line"><span class="comment">## 開啟Library讀寫權限</span></span><br><span class="line">sudo chmod -R 777 /usr/lib64/MRO-3.3.0/R-3.3.0/lib64/R</span><br><span class="line"></span><br><span class="line"><span class="comment">## 安裝之後打開R</span></span><br><span class="line">R</span><br><span class="line"><span class="comment">## 會出現下方訊息</span></span><br><span class="line"><span class="comment"># R version 3.3.0 (2016-05-03) -- "Supposedly Educational"</span></span><br><span class="line"><span class="comment"># Copyright (C) 2016 The R Foundation for Statistical Computing</span></span><br><span class="line"><span class="comment"># Platform: x86_64-pc-linux-gnu (64-bit)</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment"># R is free software and comes with ABSOLUTELY NO WARRANTY.</span></span><br><span class="line"><span class="comment"># You are welcome to redistribute it under certain conditions.</span></span><br><span class="line"><span class="comment"># Type 'license()' or 'licence()' for distribution details.</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment">#   Natural language support but running in an English locale</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment"># R is a collaborative project with many contributors.</span></span><br><span class="line"><span class="comment"># Type 'contributors()' for more information and</span></span><br><span class="line"><span class="comment"># 'citation()' on how to cite R or R packages in publications.</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment"># Type 'demo()' for some demos, 'help()' for on-line help, or</span></span><br><span class="line"><span class="comment"># 'help.start()' for an HTML browser interface to help.</span></span><br><span class="line"><span class="comment"># Type 'q()' to quit R.</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment"># Microsoft R Open 3.3.0</span></span><br><span class="line"><span class="comment"># Default CRAN mirror snapshot taken on 2016-06-01</span></span><br><span class="line"><span class="comment"># The enhanced R distribution from Microsoft</span></span><br><span class="line"><span class="comment"># Visit https://mran.microsoft.com/ for information</span></span><br><span class="line"><span class="comment"># about additional features.</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment"># Multithreaded BLAS/LAPACK libraries detected. Using 2 cores for math algorithms.</span></span><br><span class="line"><span class="comment">## 有上面這行代表MKL才有裝成功</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 安裝一些ROracle的必要套件</span></span><br><span class="line">R -e <span class="string">'install.packages("DBI")'</span></span><br><span class="line"><span class="comment">## 也可以打開R輸入指令</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 安裝一些等等資料用到的套件</span></span><br><span class="line">R -e <span class="string">'install.packages(c("data.table", "pipeR", "dplyr", "GGally", "ggplot2", "nycflights13"))'</span></span><br><span class="line"><span class="comment">## 也可以打開R輸入指令</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>安裝ROracle</li>
+</ol>
+<p>先從<a href="http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html" target="_blank" rel="noopener">官方網站</a>下載Oracle instant client，下載basck.rpm跟devel.rpm(詳細檔名看下方)，然後上傳到VM</p>
+<p>接著下載ROracle原始包，利用<code>R CMD INSTALL</code>並同時configure做安裝的動作，指令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安裝Oracle instant client</span></span><br><span class="line">sudo yum install oracle-instantclient12.1-basic-12.1.0.2.0-1.x86_64.rpm</span><br><span class="line">sudo yum install oracle-instantclient12.1-devel-12.1.0.2.0-1.x86_64.rpm</span><br><span class="line"></span><br><span class="line"><span class="comment"># 設定環境變數</span></span><br><span class="line">sudo tee -a /etc/bashrc &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line"><span class="built_in">export</span> ORACLE_HOME=/usr/lib/oracle/12.1/client64</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=<span class="variable">$LD_LIBRARY_PATH</span>:<span class="variable">$ORACLE_HOME</span>/lib  </span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$ORACLE_HOME</span>/bin</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下載ROracle套件</span></span><br><span class="line">curl -v -j -k -L https://cran.r-project.org/src/contrib/ROracle_1.2-2.tar.gz -o ROracle_1.2-2.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安裝ROracle</span></span><br><span class="line">R CMD INSTALL --configure-args=<span class="string">'--with-oci-lib=/usr/lib/oracle/12.1/client64/lib --with-oci-inc=/usr/include/oracle/12.1/client64'</span> ROracle_1.2-2.tar.gz</span><br></pre></td></tr></table></figure>
+<p>windows部分：</p>
+<ol>
+<li>安裝MRO跟MKL</li>
+</ol>
+<p>到<a href="https://mran.revolutionanalytics.com/download/" target="_blank" rel="noopener">官方網站</a>下載安裝包</p>
+<p>然後安裝MRO跟MKL，安裝之後，利用installr安裝Rtools</p>
+<p>打開R輸入</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">install.packages(<span class="string">"installr"</span>)</span><br><span class="line">installr::install.Rtools()</span><br></pre></td></tr></table></figure>
+<p>接著安裝一些需要的套件：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 安裝一些ROracle的必要套件</span></span><br><span class="line">install.packages(<span class="string">"DBI"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">## 安裝一些等等資料用到的套件</span></span><br><span class="line">install.packages(c(<span class="string">"data.table"</span>, <span class="string">"pipeR"</span>, <span class="string">"dplyr"</span>, <span class="string">"GGally"</span>, <span class="string">"ggplot2"</span>, <span class="string">"nycflights13"</span>))</span><br></pre></td></tr></table></figure>
+<p>然後一樣到Oracle的官方網站下載instant client，要下載basic跟sdk</p>
+<p>解壓縮放到<code>C:\instantclient_12_1</code></p>
+<p>接著下載R的套件包：<a href="https://cran.r-project.org/src/contrib/ROracle_1.2-2.tar.gz" target="_blank" rel="noopener">https://cran.r-project.org/src/contrib/ROracle_1.2-2.tar.gz</a></p>
+<p>在安裝的目錄下新增一個<code>install_ROracle.bat</code>的檔案</p>
+<p>按右鍵編輯貼上下方內容後執行就可以成功安裝ROracle了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SET OCI_LIB64=C:\instantclient_12_1</span><br><span class="line">SET OCI_INC=C:\instantclient_12_1\sdk\include</span><br><span class="line">SET PATH=%PATH%;C:\instantclient_12_1</span><br><span class="line">R CMD INSTALL --build ROracle_1.2-2.tar.gz</span><br></pre></td></tr></table></figure>
+<p>PS: 這裡我還沒有測試過，因為避免牽扯到windwos的環境變數就省掉</p>
+<p>如果有人測試過不行，我在提供增加的環境變數</p>
+<p>我是直接安裝Rtools手動設定環境變數… 比較不適合一般初學者</p>
+<ol>
+<li>創造適當的使用者</li>
+</ol>
+<p>我想要創造三個使用者，等等利用ROracle上傳到這三個使用者下的schema，SQL內容如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLESPACE</span> nycflights13</span><br><span class="line">  <span class="keyword">DATAFILE</span> <span class="string">'nycflights13.dat'</span></span><br><span class="line">  <span class="keyword">SIZE</span> <span class="number">40</span>M <span class="keyword">REUSE</span> <span class="keyword">AUTOEXTEND</span> <span class="keyword">ON</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TEMPORARY</span> <span class="keyword">TABLESPACE</span> nycflights13_tmp</span><br><span class="line">  TEMPFILE <span class="string">'nycflights13_tmp.dbf'</span></span><br><span class="line">  <span class="keyword">SIZE</span> <span class="number">10</span>M <span class="keyword">REUSE</span> <span class="keyword">AUTOEXTEND</span> <span class="keyword">ON</span>;</span><br><span class="line">  </span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> C##nycflights13</span><br><span class="line"><span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> nycflights13</span><br><span class="line"><span class="keyword">DEFAULT</span> <span class="keyword">TABLESPACE</span> nycflights13</span><br><span class="line"><span class="keyword">TEMPORARY</span> <span class="keyword">TABLESPACE</span> nycflights13_tmp</span><br><span class="line"><span class="keyword">quota</span> <span class="keyword">unlimited</span> <span class="keyword">on</span> nycflights13;</span><br><span class="line"></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">CREATE</span> <span class="keyword">SESSION</span>,</span><br><span class="line">      <span class="keyword">CREATE</span> <span class="keyword">TABLE</span>,</span><br><span class="line">      <span class="keyword">CREATE</span> <span class="keyword">VIEW</span>,</span><br><span class="line">      <span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span></span><br><span class="line"><span class="keyword">TO</span> C##nycflights13; </span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLESPACE</span> datasets</span><br><span class="line">  <span class="keyword">DATAFILE</span> <span class="string">'datasets.dat'</span></span><br><span class="line">  <span class="keyword">SIZE</span> <span class="number">40</span>M <span class="keyword">AUTOEXTEND</span> <span class="keyword">ON</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TEMPORARY</span> <span class="keyword">TABLESPACE</span> datasets_tmp</span><br><span class="line">  TEMPFILE <span class="string">'datasets_tmp.dbf'</span></span><br><span class="line">  <span class="keyword">SIZE</span> <span class="number">10</span>M <span class="keyword">AUTOEXTEND</span> <span class="keyword">ON</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> C##datasets</span><br><span class="line"><span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> datasets</span><br><span class="line"><span class="keyword">DEFAULT</span> <span class="keyword">TABLESPACE</span> datasets</span><br><span class="line"><span class="keyword">TEMPORARY</span> <span class="keyword">TABLESPACE</span> datasets_tmp</span><br><span class="line"><span class="keyword">quota</span> <span class="keyword">unlimited</span> <span class="keyword">on</span> datasets;</span><br><span class="line"></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">CREATE</span> <span class="keyword">SESSION</span>,</span><br><span class="line">      <span class="keyword">CREATE</span> <span class="keyword">TABLE</span>,</span><br><span class="line">      <span class="keyword">CREATE</span> <span class="keyword">VIEW</span>,</span><br><span class="line">      <span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span></span><br><span class="line"><span class="keyword">TO</span> C##datasets; </span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLESPACE</span> hadley</span><br><span class="line">  <span class="keyword">DATAFILE</span> <span class="string">'hadley.dat'</span></span><br><span class="line">  <span class="keyword">SIZE</span> <span class="number">40</span>M <span class="keyword">AUTOEXTEND</span> <span class="keyword">ON</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TEMPORARY</span> <span class="keyword">TABLESPACE</span> hadley_tmp</span><br><span class="line">  TEMPFILE <span class="string">'hadley_tmp.dbf'</span></span><br><span class="line">  <span class="keyword">SIZE</span> <span class="number">10</span>M <span class="keyword">AUTOEXTEND</span> <span class="keyword">ON</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> C##hadley</span><br><span class="line"><span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> hadley</span><br><span class="line"><span class="keyword">DEFAULT</span> <span class="keyword">TABLESPACE</span> hadley</span><br><span class="line"><span class="keyword">TEMPORARY</span> <span class="keyword">TABLESPACE</span> hadley_tmp</span><br><span class="line"><span class="keyword">quota</span> <span class="keyword">unlimited</span> <span class="keyword">on</span> hadley;</span><br><span class="line"></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">CREATE</span> <span class="keyword">SESSION</span>,</span><br><span class="line">      <span class="keyword">CREATE</span> <span class="keyword">TABLE</span>,</span><br><span class="line">      <span class="keyword">CREATE</span> <span class="keyword">VIEW</span>,</span><br><span class="line">      <span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span></span><br><span class="line"><span class="keyword">TO</span> C##hadley; </span><br><span class="line"></span><br><span class="line"><span class="comment">/* DELETE USERS AND TABLESPACES</span></span><br><span class="line"><span class="comment">DROP USER C##hadley;</span></span><br><span class="line"><span class="comment">DROP USER C##datasets;</span></span><br><span class="line"><span class="comment">DROP USER C##nycflights13;</span></span><br><span class="line"><span class="comment">DROP TABLESPACE hadley;</span></span><br><span class="line"><span class="comment">DROP TABLESPACE datasets;</span></span><br><span class="line"><span class="comment">DROP TABLESPACE nycflights13;</span></span><br><span class="line"><span class="comment">DROP TABLESPACE hadley_tmp;</span></span><br><span class="line"><span class="comment">DROP TABLESPACE datasets_tmp;</span></span><br><span class="line"><span class="comment">DROP TABLESPACE nycflights13_tmp;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>PS: C##是Oracle要求的，請搜尋common users vs local users oracle就知道差異，還有命名要求</p>
+<p>把上面的SQL下載下來命名成<code>createUser.sql</code>並上傳到Oracle的server</p>
+<p>使用<code>$ORACLE_HOME/bin/sqlplus system/password@oracleServer:1521/orcl @createUser.sql</code>來執行創造使用者的SQL</p>
+<ol>
+<li>使用ROracle去上傳資料</li>
+</ol>
+<p>程式如下：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(ROracle)</span><br><span class="line"><span class="keyword">library</span>(data.table)</span><br><span class="line"><span class="keyword">library</span>(pipeR)</span><br><span class="line">Sys.setenv(TZ = <span class="string">"Asia/Taipei"</span>, ORA_SDTZ = <span class="string">"Asia/Taipei"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 創造資料列表</span></span><br><span class="line"><span class="comment"># 全部資料大小: 60 Mb</span></span><br><span class="line">uploadDataList &lt;- <span class="string">'</span></span><br><span class="line"><span class="string">TableName,pkgName,TableSize,savingSchema,savingTblName</span></span><br><span class="line"><span class="string">airlines,nycflights13,"2.9 Kb",nycflights13,airlines</span></span><br><span class="line"><span class="string">airports,nycflights13,"228.9 Kb",nycflights13,airports</span></span><br><span class="line"><span class="string">flights,nycflights13,"38.7 Mb",nycflights13,flights</span></span><br><span class="line"><span class="string">planes,nycflights13,"347.9 Kb",nycflights13,planes</span></span><br><span class="line"><span class="string">weather,nycflights13,"2.8 Mb",nycflights13,weather</span></span><br><span class="line"><span class="string">iris,datasets,"6.9 Kb",datasets,iris</span></span><br><span class="line"><span class="string">cars,datasets,"1.5 Kb",datasets,cars</span></span><br><span class="line"><span class="string">USCancerRates,latticeExtra,"504.8 Kb",datasets,uscancerrates</span></span><br><span class="line"><span class="string">gvhd10,latticeExtra,"6.5 Mb",datasets,gvhd10</span></span><br><span class="line"><span class="string">nasa,GGally,"4.6 Mb",hadley,nasa</span></span><br><span class="line"><span class="string">happy,GGally,"2.7 Mb",hadley,happy</span></span><br><span class="line"><span class="string">diamonds,ggplot2,"3.3 Mb",hadley,diamonds</span></span><br><span class="line"><span class="string">txhousing,ggplot2,"541.8 Kb",hadley,txhousing</span></span><br><span class="line"><span class="string">'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 讀取列表</span></span><br><span class="line">tblListDT &lt;- fread(uploadDataList)</span><br><span class="line"><span class="comment"># 讀取資料</span></span><br><span class="line">tblListDT %&gt;&gt;% apply(<span class="number">1</span>, <span class="keyword">function</span>(v)&#123;</span><br><span class="line">  data(v[<span class="number">1</span>], package = v[<span class="number">2</span>])</span><br><span class="line">&#125;) %&gt;&gt;% invisible </span><br><span class="line"></span><br><span class="line"><span class="comment">#連線資訊</span></span><br><span class="line">host &lt;- <span class="string">"192.168.0.120"</span></span><br><span class="line">port &lt;- <span class="number">1521</span></span><br><span class="line">sid &lt;- <span class="string">"orcl"</span></span><br><span class="line">connectString &lt;- paste(</span><br><span class="line">  <span class="string">"(DESCRIPTION="</span>,</span><br><span class="line">  <span class="string">"(ADDRESS=(PROTOCOL=TCP)(HOST="</span>, host, <span class="string">")(PORT="</span>, port, <span class="string">"))"</span>,</span><br><span class="line">  <span class="string">"(CONNECT_DATA=(SID="</span>, sid, <span class="string">")))"</span>, sep = <span class="string">""</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 先用system權限登入查看user</span></span><br><span class="line">con &lt;- dbConnect(dbDriver(<span class="string">"Oracle"</span>), username = <span class="string">"system"</span>, </span><br><span class="line">                 password = <span class="string">"qscf12356"</span>, dbname = connectString)</span><br><span class="line"><span class="comment"># query all_users</span></span><br><span class="line">userList &lt;- dbSendQuery(con, <span class="string">"select * from ALL_USERS"</span>) %&gt;&gt;% </span><br><span class="line">  fetch(n = -<span class="number">1</span>) %&gt;&gt;% data.table</span><br><span class="line"><span class="comment"># 印出表格，user按照創造時間排列</span></span><br><span class="line"><span class="comment"># 可以看到已經創造了C##NYCFLIGHTS13, C##DATASETS跟C##HADLEY三個user</span></span><br><span class="line">print(userList[order(CREATED)])</span><br><span class="line"><span class="comment"># system帳號斷線</span></span><br><span class="line">dbDisconnect(con)</span><br><span class="line"></span><br><span class="line">st &lt;- proc.time()</span><br><span class="line">uniqueUserNames &lt;- unique(tblListDT$savingSchema)</span><br><span class="line">sapply(uniqueUserNames, <span class="keyword">function</span>(userName)&#123;</span><br><span class="line">  <span class="comment"># filter要上傳的表</span></span><br><span class="line">  uploadDataDT &lt;- tblListDT[savingSchema == userName]</span><br><span class="line">  mapply(<span class="keyword">function</span>(tblName, pkgName) data(list = tblName, package = pkgName),</span><br><span class="line">         uploadDataDT$TableName, uploadDataDT$pkgName) %&gt;&gt;% invisible</span><br><span class="line">  <span class="comment"># 用user去上傳，這樣才會傳到以該user命名的schema下</span></span><br><span class="line">  con &lt;- dbConnect(dbDriver(<span class="string">"Oracle"</span>), username = paste0(<span class="string">"C##"</span>, userName), </span><br><span class="line">                   password = userName, dbname = connectString)</span><br><span class="line">  <span class="comment"># 把每一張要上傳的表 上傳上去</span></span><br><span class="line">  mapply(<span class="keyword">function</span>(tblName, tblNameUpload)&#123;</span><br><span class="line">    <span class="keyword">if</span> (!dbExistsTable(con, tblNameUpload))</span><br><span class="line">      dbWriteTable(con, tblNameUpload, as.data.frame(get(tblName)), row.names = <span class="literal">FALSE</span>)</span><br><span class="line">    &#125;, uploadDataDT$TableName, uploadDataDT$savingTblName) %&gt;&gt;% invisible</span><br><span class="line">  dbDisconnect(con)</span><br><span class="line">&#125;) %&gt;&gt;% invisible</span><br><span class="line">proc.time() - st</span><br><span class="line"><span class="comment"># user  system elapsed </span></span><br><span class="line"><span class="comment"># 0.95    0.16   11.56 </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 移除所有表格</span></span><br><span class="line">rm(list = tblListDT$TableName)</span><br><span class="line"></span><br><span class="line">con &lt;- dbConnect(dbDriver(<span class="string">"Oracle"</span>), username = <span class="string">"system"</span>, </span><br><span class="line">                 password = <span class="string">"qscf12356"</span>, dbname = connectString)</span><br><span class="line"><span class="comment"># list schema</span></span><br><span class="line">dbListTables(con) </span><br><span class="line"><span class="comment"># find the table in current schema (parameter, schema = NULL)</span></span><br><span class="line">dbExistsTable(con, <span class="string">"airlines"</span>)</span><br><span class="line"><span class="comment"># find the table in the schema</span></span><br><span class="line">dbExistsTable(con, <span class="string">"airlines"</span>, schema = <span class="string">'C##NYCFLIGHTS13'</span>)</span><br><span class="line"><span class="comment"># remove table</span></span><br><span class="line">dbRemoveTable(con, <span class="string">"airlines"</span>)</span><br><span class="line"><span class="comment"># query data, fetch all data and convert to data.table (這是查詢全部的tablespaces)</span></span><br><span class="line">dbSendQuery(con, <span class="string">"select * from C##NYCFLIGHTS13.\"airlines\""</span>) %&gt;&gt;% </span><br><span class="line">  fetch(n = -<span class="number">1</span>) %&gt;&gt;% data.table</span><br><span class="line"><span class="comment"># query rowid and name from airlines data, </span></span><br><span class="line"><span class="comment"># fetch all data and convert to data.table (這是查詢全部的tablespaces)</span></span><br><span class="line">dbSendQuery(con, <span class="string">"select rowid,t.\"name\" from C##NYCFLIGHTS13.\"airlines\" t"</span>) %&gt;&gt;% </span><br><span class="line">  fetch(n = -<span class="number">1</span>) %&gt;&gt;% data.table</span><br><span class="line"><span class="comment"># query data, fetch all data and convert to data.table (這是查詢全部的tablespaces)</span></span><br><span class="line">dbSendQuery(con, <span class="string">"select * from dba_tablespaces"</span>) %&gt;&gt;% </span><br><span class="line">  fetch(n = -<span class="number">1</span>) %&gt;&gt;% data.table</span><br><span class="line"><span class="comment"># query data, fetch all data and convert to data.table (這是查詢全部的tables)</span></span><br><span class="line">dbSendQuery(con, <span class="string">"select * from all_tables"</span>) %&gt;&gt;% </span><br><span class="line">  fetch(n = -<span class="number">1</span>) %&gt;&gt;% data.table</span><br><span class="line"><span class="comment"># query data, fetch all data and convert to data.table (這是查詢全部的users)</span></span><br><span class="line">dbSendQuery(con, <span class="string">"select * from all_users"</span>) %&gt;&gt;% </span><br><span class="line">  fetch(n = -<span class="number">1</span>) %&gt;&gt;% data.table</span><br><span class="line"><span class="comment"># 從DB斷線</span></span><br><span class="line">dbDisconnect(con)</span><br><span class="line"></span><br><span class="line"><span class="comment"># remove all tables (用最高權限刪除)</span></span><br><span class="line">st &lt;- proc.time()</span><br><span class="line">con &lt;- dbConnect(dbDriver(<span class="string">"Oracle"</span>), username = <span class="string">"system"</span>, </span><br><span class="line">                 password = <span class="string">"qscf12356"</span>, dbname = connectString)</span><br><span class="line">mapply(<span class="keyword">function</span>(schemaName, tblNameUpload)&#123;</span><br><span class="line">  sn &lt;- paste0(<span class="string">"C##"</span>, schemaName) %&gt;&gt;% toupper</span><br><span class="line">  <span class="keyword">if</span> (dbExistsTable(con, tblNameUpload, schema = sn))</span><br><span class="line">    dbRemoveTable(con, tblNameUpload, schema = sn)</span><br><span class="line">&#125;, tblListDT$savingSchema, tblListDT$savingTblName) %&gt;&gt;% invisible</span><br><span class="line">dbDisconnect(con)</span><br><span class="line">proc.time() - st</span><br><span class="line"><span class="comment"># user  system elapsed </span></span><br><span class="line"><span class="comment"># 0.02    0.00    0.35</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>小抱怨</li>
+</ol>
+<p>ROracle寫入表格的時候，會自動加上double quote框住表格</p>
+<p>因為這一個自動功能，讓我debug，de了一天晚上</p>
+<p>最後是去下載Oracle PL/SQL Developer用介面的自動提示才發現這件事情…</p>
+<p>然後才回去看dbWriteTable下面的解釋</p>
+<blockquote>
+<p>Table, schema, and column names are case sensitive, e.g., table names ABC and abc are not the same. All database schema object names should not include double quotes as they are enclosed in double quotes when the corresponding SQL statement is generated.</p>
+</blockquote>
+<p>只是最神奇的事情是</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dbWriteTable(con, <span class="string">"airlines"</span>, as.data.frame(airlines), row.names = <span class="literal">FALSE</span>)</span><br></pre></td></tr></table></figure>
+<p>寫入表格之後，query的表格名字要加quote，像這樣：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dbSendQuery(con, <span class="string">"select * from \"airlines\""</span>) %&gt;&gt;% fetch(n = -<span class="number">1</span>) %&gt;&gt;% data.table</span><br></pre></td></tr></table></figure>
+<p>我查表是否存在不用quote</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dbExistsTable(con, &quot;airlines&quot;)</span><br></pre></td></tr></table></figure>
+<p>害我一直想說為啥我找不到我的表</p>
+<p>最後只能去安裝Oracle SQL Developer查看真正的表格名稱</p>
+<p>7/31補充：</p>
+<p>更扯的事情是column name都有包quote，select時候，都要多打””去框住column name</p>
+<p>8/12更新：</p>
+<p>全部使用大寫字元，就不會產生上面的情況</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/R/" rel="tag"># R</a>
+          
+            <a href="/tags/BigData/" rel="tag"># BigData</a>
+          
+            <a href="/tags/Oracle/" rel="tag"># Oracle</a>
+          
+            <a href="/tags/ROracle/" rel="tag"># ROracle</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+          <div class="social-like">
+            
+
+            
+              <div class="fb_like">
+                <div class="fb-like" data-layout="button_count" data-share="true"></div>
+              </div>
+            
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/201607/2016-07-24-deployment-of-oracle-database.html" rel="next" title="deployment of Oracle database">
+                <i class="fa fa-chevron-left"></i> deployment of Oracle database
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/201607/2016-07-26-use-cx_Oracle-to-manipulate-oracle-database-in-Python.html" rel="prev" title="在Python用cx_Oracle去操作Oracle資料庫">
+                在Python用cx_Oracle去操作Oracle資料庫 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="fb-comments"
+           data-href="http://chingchuan-chen.github.io/posts/201607/2016-07-25-use-ROracle-to-manipulate-oracle-database-in-R.html"
+           data-numposts="10"
+           data-width="100%"
+           data-colorscheme="light">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Ching-Chuan Chen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">136</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ChingChuan-Chen" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zw12356@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/u/0/110171317328627391486" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/celestial0230" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-thumbs-up"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ching-Chuan Chen</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('10');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("H7MfFf5lhyq2111iytpoFtIz-gzGzoHsz", "tGTKdvBYYQCIIlvxXJGJM2cc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

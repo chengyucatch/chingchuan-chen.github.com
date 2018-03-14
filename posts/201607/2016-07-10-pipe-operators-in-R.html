@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/earlyaccess//css?family=Noto Sans TC:300,300italic,400,400italic,700,700italic|Noto Sans TC:300,300italic,400,400italic,700,700italic|Inconsolata:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="R,Pipe Operator,magrittr,pipeR," />
+
+
+
+
+
+
+
+
+  <meta property="fb:admins" content="celestial0230" />
+  <meta property="fb:app_id" content="418813441900729" />
+
+
+
+<meta name="description" content="我在ptt分享過magrittr的文章(連結)，做為資料處理系列文章的第一篇 後來有一些額外的心得(連結)，所以又有一篇補充了一些觀念 一個大陸人Kun Ren(任堃)後來在2015年上傳了一個pipeR套件">
+<meta name="keywords" content="R,Pipe Operator,magrittr,pipeR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pipe Operators in R">
+<meta property="og:url" content="http://chingchuan-chen.github.io/posts/201607/2016-07-10-pipe-operators-in-R.html">
+<meta property="og:site_name" content="Celestial">
+<meta property="og:description" content="我在ptt分享過magrittr的文章(連結)，做為資料處理系列文章的第一篇 後來有一些額外的心得(連結)，所以又有一篇補充了一些觀念 一個大陸人Kun Ren(任堃)後來在2015年上傳了一個pipeR套件">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:updated_time" content="2018-03-14T16:59:12.296Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Pipe Operators in R">
+<meta name="twitter:description" content="我在ptt分享過magrittr的文章(連結)，做為資料處理系列文章的第一篇 後來有一些額外的心得(連結)，所以又有一篇補充了一些觀念 一個大陸人Kun Ren(任堃)後來在2015年上傳了一個pipeR套件">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chingchuan-chen.github.io/posts/201607/2016-07-10-pipe-operators-in-R.html"/>
+
+
+
+
+
+  <title>Pipe Operators in R | Celestial</title>
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '418813441900729',
+      xfbml      : true,
+      version    : 'v2.10'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-72564040-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Celestial</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站點地圖
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201607/2016-07-10-pipe-operators-in-R.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Pipe Operators in R</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-07-10T00:00:00+08:00">
+                2016-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/R/" itemprop="url" rel="index">
+                    <span itemprop="name">R</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201607/2016-07-10-pipe-operators-in-R.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201607/2016-07-10-pipe-operators-in-R.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201607/2016-07-10-pipe-operators-in-R.html" class="leancloud_visitors" data-flag-title="Pipe Operators in R">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  3,103
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我在ptt分享過magrittr的文章(<a href="https://www.ptt.cc/bbs/R_Language/M.1437452331.A.CD1.html" target="_blank" rel="noopener">連結</a>)，做為資料處理系列文章的第一篇</p>
+<p>後來有一些額外的心得(<a href="https://www.ptt.cc/bbs/Statistics/M.1450534933.A.8A4.html" target="_blank" rel="noopener">連結</a>)，所以又有一篇補充了一些觀念</p>
+<p>一個大陸人Kun Ren(任堃)後來在2015年上傳了一個pipeR套件</p>
+<a id="more"></a>
+<p>宣稱比magrittr的pipe operator更好用，效能更佳，而且沒有模糊的界線(他的文章連結：<a href="https://renkun.me/blog/2014/08/08/difference-between-magrittr-and-pipeR.html" target="_blank" rel="noopener">Blog Post</a>)</p>
+<p>效能差異大概是快了近8倍，後面會在提及這方面</p>
+<h2 id="magrittr"><a href="#magrittr" class="headerlink" title="magrittr"></a>magrittr</h2><h3 id="背景介紹"><a href="#背景介紹" class="headerlink" title="背景介紹"></a>背景介紹</h3><p>先介紹一下magrittr的來由，根據這篇<a href="http://www.r-statistics.com/2014/08/simpler-r-coding-with-pipes-the-present-and-future-of-the-magrittr-package/" target="_blank" rel="noopener">blog文章</a>所提到的：</p>
+<blockquote>
+<p>The <code>|&gt;</code> operator in <code>F#</code> is indeed very simple: it is defined as let <code>(|&gt;) x f = f x</code>. However, the usefulness of this simplicity relies heavily on a concept that is not available in <code>R</code>: partial application. Furthermore, functions in <code>F#</code> almost always adhere to certain design principles which make the simple definition sufficient. Suppose that <code>f</code> is a function of two arguments, then in <code>F#</code> you may apply <code>f</code> to only the first argument and obtain a new function as the result — a function of the second argument alone.</p>
+</blockquote>
+<p><code>F#</code>的pipe operator, <code>|&gt;</code>, 讓他覺得非常的方便以及實用，因此，決定把這個東西實作到R裡面</p>
+<p>(注：其實shell script也有pipe operator, <code>|</code>, 而且更廣為人知。)</p>
+<p>這就是<code>R</code>為什麼會有<code>magrittr</code>這個套件的背景原由了，所以才會有了<code>%&gt;%</code>, <code>%&lt;&gt;%</code>跟<code>%T&gt;%</code>這幾個operator。</p>
+<p>(注：我這裡補充一點，其實此時開發<code>ggplot2</code>, <code>plyr</code>, <code>dplyr</code>等套件的Hadley已經在<code>dplyr</code>上</p>
+<p>推出了<code>%.%</code>這個operator，而且也把<code>dplyr</code>的函數全部都設計第一個放<code>data.frame</code>做為input，</p>
+<p>只是<code>magrittr</code>的推出，把整個功能用到更加完善，並且還涵蓋了alias function，</p>
+<p>因此，Hadley後來加入了<code>magrittr</code>的發展計畫，就未繼續開發<code>%.%</code>，</p>
+<p>在Hadley後面發展的套件都可以看到他都有直接把<code>%&gt;%</code> import在他的套件中，</p>
+<p>例如：很好用的爬蟲套件<code>rvest</code>、開發用來處理list的<code>purrr</code>等都可以看到<code>magrittr</code>的身影。)</p>
+<h3 id="pipe-operator的基本概念"><a href="#pipe-operator的基本概念" class="headerlink" title="pipe operator的基本概念"></a>pipe operator的基本概念</h3><p>假設現在有一個函數<code>f</code>，其input為<code>a</code>，一般在寫程式的時候，</p>
+<p>我們都可以透過<code>f(a)</code>獲得<code>f</code>函數在<code>a</code>這一點的值</p>
+<p>而<code>%&gt;%</code>可以把LHS(注：left hand side of operator)當作RHS(注：right hand side of operator)的函數的第一個input</p>
+<p>因此，透過 a %&gt;% f 或是 a %&gt;% f() 都等同於 f(a)</p>
+<p>同理，如果現在還有一個函數<code>g</code>，有兩個input，<code>x</code>跟<code>y</code>，則<code>g(x,y)</code>可以寫做<code>x %&gt;% g(y)</code></p>
+<p>這樣的好處是當我們有層層推疊的<code>(</code>時，就可以輕易地拆解開來並執行</p>
+<p>例如：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a_list &lt;- list(<span class="number">1</span>:<span class="number">6</span>, <span class="number">3</span>:<span class="number">5</span>, <span class="number">4</span>:<span class="number">7</span>)</span><br><span class="line">sort_uni_a &lt;- sort(unique(unlist(a_list)))</span><br></pre></td></tr></table></figure>
+<p>第二行這樣連在一起非常的難讀，但是改成下面這樣，又有效能問題(暫存變數)：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">unlist_list &lt;- unlist(a_list)</span><br><span class="line">sort_uni_a &lt;- sort(unique(unlist_list))</span><br></pre></td></tr></table></figure>
+<p>或是改成這樣，卻沒覺得可讀性上升多少：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sort_uni_a &lt;- sort(unique(unlist(a_list)))</span><br></pre></td></tr></table></figure>
+<p>但是用<code>%&gt;%</code>改寫就可以兼顧可讀性跟效能問題：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sort_uni_a &lt;- a_list %&gt;% unlist %&gt;% unique %&gt;% sort</span><br></pre></td></tr></table></figure>
+<p>這樣就可以很容易知道他把<code>a_list</code>先拉成一個向量(<code>unlist</code>)，然後取唯一(<code>unique</code>)</p>
+<p>接著排列所有元素(<code>sort</code>)，照著<code>%&gt;%</code>的順序去讀就可以順利解讀</p>
+<p>此時，<code>magrittr</code>的特性就可以被看到，他省去了暫存變數，也增加了易讀性。</p>
+<h3 id="gt-介紹"><a href="#gt-介紹" class="headerlink" title="%&gt;%介紹"></a>%&gt;%介紹</h3><p>舉一個簡單的例子，來說明<code>%&gt;%</code>的用法</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a &lt;- <span class="number">1</span></span><br><span class="line">f &lt;- <span class="keyword">function</span>(a) a + <span class="number">1</span></span><br><span class="line">f(a)</span><br><span class="line">a %&gt;% f</span><br><span class="line">a %&gt;% f()</span><br><span class="line">a %&gt;% f(.)</span><br></pre></td></tr></table></figure>
+<p>跑上面的程式可以發現，最後四個output都一樣</p>
+<p>其實<code>%&gt;%</code>做的就是把左邊變數放進右邊函數裡做執行</p>
+<p>也就是說<code>f(a)</code>等同於<code>a %&gt;% f</code>(或是上面其他三種)</p>
+<p>但是怎麼最後一個<code>a %&gt;% f(.)</code>看起來怪怪的，為啥有個<code>.</code>在那</p>
+<p>其實在<code>magrittr</code>中，<code>.</code>是用來代表<code>%&gt;%</code>前面的變數</p>
+<p>所以<code>a %&gt;% f(.)</code>程式會把<code>.</code>的位置換成<code>a</code>，變成<code>f(a)</code></p>
+<p><code>.</code> 在<code>magrittr</code>的應用中，會佔很大的比例，也在Hadley往後的套件扮演重大的角色</p>
+<p>像是<code>do.call</code>, <code>Reduce</code>第一個input是<code>function</code>，第二個是<code>list</code></p>
+<p>我們通常傳入<code>list</code>，所以此時必須用<code>.</code>做輸入位置的控制</p>
+<p>再者，<code>c</code>, <code>cbind</code>, <code>rbind</code>會根據位置不同來決定是合併於何處</p>
+<p>也是一個很重要的問題，因此，用 <code>.</code>做傳入位置的控制是必須的</p>
+<p>針對這個，我給一段簡單的程式碼來示範：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">a_list &lt;- list(<span class="number">1</span>:<span class="number">5</span>, <span class="number">3</span>:<span class="number">7</span>, <span class="number">6</span>:<span class="number">10</span>)</span><br><span class="line">a_list %&gt;% do.call(rbind, .)</span><br><span class="line">a_list %&gt;% Reduce(cbind, .)</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>:<span class="number">5</span> %&gt;% rbind(<span class="number">3</span>:<span class="number">7</span>, .)</span><br><span class="line"><span class="number">1</span>:<span class="number">5</span> %&gt;% rbind(., <span class="number">3</span>:<span class="number">7</span>)</span><br><span class="line"></span><br><span class="line">f &lt;- <span class="keyword">function</span>(x, a, b) a * x^<span class="number">2</span> + b</span><br><span class="line"><span class="number">1</span>:<span class="number">5</span> %&gt;% f(., <span class="number">2</span>, <span class="number">5</span>)  <span class="comment"># 同 1:5 %&gt;% f(2, 5)</span></span><br><span class="line"><span class="number">1</span>:<span class="number">5</span> %&gt;% f(<span class="number">2</span>, ., <span class="number">5</span>)</span><br><span class="line"><span class="number">1</span>:<span class="number">5</span> %&gt;% f(<span class="number">2</span>, <span class="number">5</span>, .)</span><br></pre></td></tr></table></figure>
+<p>但是，這點被Kun Ren攻擊，這裡有一些模稜兩可的問題，後面在提。</p>
+<p>先介紹一下<code>{}</code>在<code>%&gt;%</code>的用法，用<code>{}</code>括住之後，</p>
+<p>裡面的只要不是其他<code>%&gt;%</code>後面的 <code>.</code>都代表你前面傳入的值</p>
+<p>這樣說有點難懂，舉個例子</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>:<span class="number">2</span> %&gt;% &#123;</span><br><span class="line">    list(cbind(<span class="number">9</span>:<span class="number">10</span>, .), <span class="number">3</span>:<span class="number">4</span> %&gt;% cbind(<span class="number">9</span>:<span class="number">10</span>, .))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">## [[1]]</span><br><span class="line">##         .</span><br><span class="line">## [1,]  9 1</span><br><span class="line">## [2,] 10 2</span><br><span class="line">## </span><br><span class="line">## [[2]]</span><br><span class="line">##         .</span><br><span class="line">## [1,]  9 3</span><br><span class="line">## [2,] 10 4</span><br></pre></td></tr></table></figure>
+<p>可以看到第一個可以很直覺的解讀，<code>9:10</code>是跟傳入的<code>1:2</code>做行合併</p>
+<p>而第二個<code>.</code>，因為前面有了一個新的<code>%&gt;%</code></p>
+<p>所以這一個<code>.</code>就被前面的<code>3:4</code>取代</p>
+<p>所以第二個output變成<code>9:10</code>跟<code>3:4</code>做行合併</p>
+<p>回到Kun Ren攻擊的點</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">f &lt;- <span class="keyword">function</span>(x, y, z = <span class="string">"nothing"</span>) &#123;</span><br><span class="line">    cat(<span class="string">"x ="</span>, x, <span class="string">"\n"</span>)</span><br><span class="line">    cat(<span class="string">"y ="</span>, y, <span class="string">"\n"</span>)</span><br><span class="line">    cat(<span class="string">"z ="</span>, z, <span class="string">"\n"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>1:10 %&gt;% f(mean(.), median(.))</code>到底是</p>
+<p><code>f(1:10, mean(1:10), median(1:10))</code>還是<code>f(mean(1:10),median(1:10))</code>？</p>
+<p>你可能會根據上面的rule很快回答出來是<code>f(1:10, mean(1:10), median(1:10))</code></p>
+<p>但是<code>a_list %&gt;% do.call(rbind, .)</code>這個呢？</p>
+<p>剛剛<code>1:10 %&gt;% f(mean(.), median(.))</code>不是<code>f(1:10, mean(1:10), median(1:10))</code>這個嗎？</p>
+<p>怎麼此時<code>a_list %&gt;% do.call(rbind, .)</code>又是<code>do.call(rbind, a_list)</code>？</p>
+<p>還有剛剛看到的<code>1:5 %&gt;% rbind(3:7, .)</code>這個呢？</p>
+<p>剛剛<code>1:5 %&gt;% rbind(3:7, .)</code>是<code>rbind(1:5, 3:7, 1:5)</code>還是<code>rbind(3:7, 1:5)</code>這個嗎？</p>
+<p>這是<code>magrittr</code>為了一些函數做了特例，讓整個rule出現了一些模糊的情況</p>
+<p>但是，通常也不會去寫成<code>a_list %&gt;% {do.call(rbind, .)}</code>這樣去避免模糊情況(<code>{}</code>後面說明)</p>
+<p>不過這個方式不能說不好，只是<code>pipeR</code>提供了更明確的方式去避免更複雜的方式使用<code>do.call</code>跟<code>Reduce</code></p>
+<h3 id="lt-gt-T-gt-跟-介紹"><a href="#lt-gt-T-gt-跟-介紹" class="headerlink" title="%&lt;&gt;%, %T&gt;%跟%$%介紹"></a>%&lt;&gt;%, %T&gt;%跟%$%介紹</h3><p>如果懂了<code>%&gt;%</code>， 這個就不難了</p>
+<p>先看簡單的例子 (<code>add</code>是<code>magrittr</code>提供用在<code>%&gt;%</code>上的<code>+</code> (這部分請看最後面的補充))</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a &lt;- <span class="number">1</span></span><br><span class="line">a %&gt;% add(<span class="number">1</span>)  <span class="comment"># 同 a %&gt;% '+'(1) or a %&gt;% '+'(., 1)</span></span><br><span class="line">a  <span class="comment"># 1</span></span><br><span class="line">a %&lt;&gt;% add(<span class="number">1</span>)</span><br><span class="line">a  <span class="comment"># 2</span></span><br></pre></td></tr></table></figure>
+<p>這個例子可以看的出來<code>%&lt;&gt;%</code>除了傳入變數之外，也會改變傳入變數的值</p>
+<p>也就是可以把<code>a %&lt;&gt;% add(1)</code>看成<code>a = a + 1</code></p>
+<p>你如果有一串要做最後賦值給你傳入的變數</p>
+<p>只需要在第一個傳導變數的operator做改變即可，舉例來說：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dat &lt;- data.frame(a = <span class="number">1</span>:<span class="number">3</span>, b = <span class="number">8</span>:<span class="number">10</span>)</span><br><span class="line">dat &lt;- dat %&gt;% rbind(dat)</span><br><span class="line">dat2 &lt;- data.frame(a = <span class="number">1</span>:<span class="number">3</span>, b = <span class="number">8</span>:<span class="number">10</span>)</span><br><span class="line">dat2 %&lt;&gt;% rbind(dat2)</span><br><span class="line">all.eqaul(dat, dat2)  <span class="comment"># TRUE</span></span><br></pre></td></tr></table></figure>
+<p>至於<code>%T&gt;%</code>，他只傳遞變數，不回傳值，通常用來傳遞到不回傳值的<code>function</code>上</p>
+<p>像是<code>plot</code>, <code>library</code>, <code>install.packages</code>, <code>plyr</code>的<code>*_ply</code>等</p>
+<p>這個operator可以幫你把前面做好的值賦予一個變數</p>
+<p>並且同時做後面function的動作，舉例來說：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dat &lt;- data.frame(a = rep(<span class="number">1</span>:<span class="number">3</span>, <span class="number">2</span>), b = rnorm(<span class="number">6</span>))</span><br><span class="line">dat2 &lt;- dat %&gt;% &#123;</span><br><span class="line">    tapply(.$b, .$a, sum)</span><br><span class="line">&#125; %&gt;% &#123;</span><br><span class="line">    data.frame(a = names(.) %&gt;% as.integer, b = .)</span><br><span class="line">&#125; %<span class="literal">T</span>&gt;% plot(.$a, .$b)</span><br></pre></td></tr></table></figure>
+<p>這裡<code>dat2</code>就是一個新的<code>data.frame</code>，同時，我們也把<code>a, b</code>的scatter plot畫出來</p>
+<p>這部分可以用<code>dplyr</code>的<code>group_by</code>以及<code>summarise</code>完成</p>
+<p>還沒提到<code>dplyr</code>，所以我們先用替代方法做</p>
+<p>再來是第四個operator <code>%$%</code></p>
+<p>舉個例來說，雖然有了<code>%&gt;%</code>，但是<code>dat %&gt;% {tapply(.$b, .$a, sum)}</code>還是會覺得冗長</p>
+<p>而且也容易忘記要放<code>.$</code>，此時<code>%$%</code>就提供了直接把前面變數的元素直接以名字做操作</p>
+<p>再也不需要<code>.$name</code>這麼麻煩，直接用<code>name</code>做你想要的操作就好</p>
+<p>所以，就可以簡單寫成<code>dat %$% tapply(b, a, sum)</code></p>
+<p>是不是就變得簡單的很多？</p>
+<p>再給一個例子說明<code>%$%</code>就好</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a &lt;- <span class="number">3</span></span><br><span class="line">b &lt;- -<span class="number">2</span></span><br><span class="line">x &lt;- rnorm(<span class="number">100</span>)</span><br><span class="line">y &lt;- a + b * x + rnorm(<span class="number">100</span>)</span><br><span class="line">fit &lt;- lm(y ~ x)</span><br><span class="line">sigma_hat &lt;- fit %$% &#123;</span><br><span class="line">    crossprod(residuals)/df.residual</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="magrittr一些補充"><a href="#magrittr一些補充" class="headerlink" title="magrittr一些補充"></a>magrittr一些補充</h3><p><code>magrittr</code>提供很多其他<code>function</code>的別名</p>
+<p>像是<code>+</code>, <code>*</code>, <code>[</code>, <code>[[</code>, <code>&lt;- rownames()</code>等等</p>
+<p>有興趣請去<code>magrittr</code>的manual查看<code>extract</code>的部分</p>
+<p>這個可以讓你寫pipe chain的時候更加順手，像是</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vals &lt;- <span class="number">1</span>:<span class="number">3</span> %&gt;% data.frame(a = ., b = .^<span class="number">2</span>) %&gt;% set_rownames(LETTERS[<span class="number">1</span>:<span class="number">3</span>]) %&gt;% lm(b ~ a, data = .) %&gt;% predict</span><br></pre></td></tr></table></figure>
+<p>不然你可能會這樣寫</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dat &lt;- <span class="number">1</span>:<span class="number">3</span> %&gt;% data.frame(a = ., b = .^<span class="number">2</span>)</span><br><span class="line">rownames(dat) &lt;- LETTERS[<span class="number">1</span>:<span class="number">3</span>]</span><br><span class="line">vals = dat %&gt;% lm(b ~ a, data = .) %&gt;% predict</span><br></pre></td></tr></table></figure>
+<p>你可能只是要<code>vals</code>這個變數，你卻還要多創一個<code>dat</code>這個暫存變數，而中斷chain</p>
+<h2 id="pipeR"><a href="#pipeR" class="headerlink" title="pipeR"></a>pipeR</h2><p>這部分是未在ptt上分享過的部分，我主要根據<a href="http://renkun.me/pipeR/" target="_blank" rel="noopener">pipeR Tutorial</a>的內容作介紹</p>
+<p>我先說明差異，<code>pipeR</code>提供了另一個pipe operator, <code>%&gt;&gt;%</code>, 其中最重要的改進就是上面說的模糊問題</p>
+<p>強制LHS一定是RHS的第一個input</p>
+<p>例如：</p>
+<p><code>1:5 %&gt;&gt;% rbind(3:7)</code>是<code>rbind(1:5, 3:7)</code></p>
+<p><code>1:5 %&gt;&gt;% rbind(3:7, .)</code>是<code>rbind(1:5, 3:7, 1:5)</code></p>
+<p><code>1:5 %&gt;&gt;% rbind(., 3:7)</code>是<code>rbind(1:5, 1:5, 3:7)</code></p>
+<p>那<code>a_list %&gt;% do.call(rbind, .)</code>怎麼辦</p>
+<p><code>pipeR</code>設定只要寫上第一個的parameter name之後，他就會自動傳到第二個</p>
+<p>舉例來說，<code>a_list %&gt;&gt;% do.call(what = rbind)</code>，他就會看成<code>do.call(rbind, a_list)</code></p>
+<p>因為第一個parameter的名字已經被用了，所以會自動傳到第二個參數去</p>
+<p>或像是tutorial裡面提到的<code>lm</code>函數，打<code>mtcars %&gt;&gt;% lm(formula = mpg ~ cyl + wt)</code></p>
+<p>就會等於<code>lm(formula = mpg ~ cyl + wt, mtcars)</code>，其中的<code>mtcars</code>就會自動放在第二個<code>data</code>的input</p>
+<p>這樣就規則就會沒有模糊問題，而且不需要再用<code>{}</code>去界定位置了</p>
+<h3 id="in-pipeR"><a href="#in-pipeR" class="headerlink" title="() in pipeR"></a>() in pipeR</h3><p>再來是一些新功能，<code>pipeR</code>提供了<code>()</code>去使用單行命令，做指定位置的動作</p>
+<p>不需要再開block (<code>{}</code>)去產生新的<code>environment</code>，可以增進效率</p>
+<p>例如上面的<code>a_list %&gt;&gt;% do.call(what = rbind)</code>也可以寫成</p>
+<p><code>a_list %&gt;&gt;% (do.call(rbind, .))</code>或像是<code>lm</code>的例子也可以寫成</p>
+<p><code>mtcars %&gt;&gt;% (lm(mpg ~ cyl + wt, .))</code>，至於要用上面的方式還是這裡的模式去寫</p>
+<p>就看個人的coding習慣了，基本上，我個人是偏好前面那一種，第二種會多出太多<code>()</code></p>
+<p>而且<code>()</code>在<code>pipeR</code>還會有其他功能，在讀程式時，有時候會有點搞混，不建議用<code>()</code></p>
+<p><code>()</code>在<code>pipeR</code>的另一個用途就是side effect，下面就來介紹他</p>
+<h3 id="side-effect-in-pipeR"><a href="#side-effect-in-pipeR" class="headerlink" title="side effect in pipeR"></a>side effect in pipeR</h3><p>那什麼是side effect?</p>
+<p>如果想要在pipe的過程中，想要作指派、輸出一些資訊</p>
+<p>而輸出一些資訊就跟<code>%T&gt;%</code>的功能一樣，但指派就是新東西了</p>
+<p>所有side effect的指令都需要用<code>(~</code>跟<code>)</code>包起來</p>
+<p>例如：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a_list &lt;- list(<span class="number">1</span>:<span class="number">5</span>, <span class="number">3</span>:<span class="number">7</span>, <span class="number">6</span>:<span class="number">10</span>)</span><br><span class="line">sort_uni_a &lt;- a_list %&gt;&gt;% unlist %&gt;&gt;% (~cat(<span class="string">"what is it? show me:\n"</span>, .)) %&gt;&gt;% unique %&gt;&gt;% sort</span><br></pre></td></tr></table></figure>
+<p>這樣一來就可以在pipe的過程中把途中的變數show出來</p>
+<p>這樣有兩個好處，一個是不需要在額外print東西出來，可以直接pipe，另一個則是方便debug</p>
+<p>接著是指派，舉個例子，你需要把a取unique排序後，去掉全資料的平均</p>
+<p>以往的寫法會像是：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a_list &lt;- list(<span class="number">1</span>:<span class="number">5</span>, <span class="number">3</span>:<span class="number">7</span>, <span class="number">6</span>:<span class="number">10</span>)</span><br><span class="line">a_list_to_vec &lt;- a_list %&gt;&gt;% unlist</span><br><span class="line">mean_list_a &lt;- mean(a_list_to_vec)</span><br><span class="line">sort_uni_demean_a &lt;- a_list_to_vec - mean_list_a</span><br></pre></td></tr></table></figure>
+<p>這樣寫就需要兩個暫存變數，<code>a_list_to_vec</code>跟<code>mean_list_a</code>，而且不能一路pipe</p>
+<p>那改用side effect之後，就可以寫成這樣：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a_list &lt;- list(<span class="number">1</span>:<span class="number">5</span>, <span class="number">3</span>:<span class="number">7</span>, <span class="number">6</span>:<span class="number">10</span>)</span><br><span class="line">sort_uni_demean_a &lt;- a_list %&gt;&gt;% unlist %&gt;&gt;% (~mean_list_a &lt;- mean(.)) %&gt;&gt;% unique %&gt;&gt;% sort %&gt;&gt;% -mean_list_a</span><br></pre></td></tr></table></figure>
+<p>至於<code>%&gt;%</code>跟<code>%&gt;&gt;%</code>的效能比較可以看下面這段程式(例子取自前面提及的Kun Ren部落格文章)：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(magrittr)</span><br><span class="line"><span class="keyword">library</span>(pipeR)</span><br><span class="line"><span class="keyword">library</span>(microbenchmark)</span><br><span class="line">eq_f &lt;- `==`</span><br><span class="line">microbenchmark(magrittr = &#123;</span><br><span class="line">    lapply(<span class="number">1</span>:<span class="number">10000</span>, <span class="keyword">function</span>(i) &#123;</span><br><span class="line">        sample(letters, <span class="number">6</span>, replace = <span class="literal">T</span>) %&gt;% paste(collapse = <span class="string">""</span>) %&gt;% eq_f(<span class="string">"rstats"</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;, pipeR = &#123;</span><br><span class="line">    lapply(<span class="number">1</span>:<span class="number">10000</span>, <span class="keyword">function</span>(i) &#123;</span><br><span class="line">        sample(letters, <span class="number">6</span>, replace = <span class="literal">T</span>) %&gt;&gt;% paste(collapse = <span class="string">""</span>) %&gt;&gt;% eq_f(<span class="string">"rstats"</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;, times = <span class="number">20L</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">## Unit: milliseconds</span><br><span class="line">##      expr       min       lq      mean   median        uq       max neval</span><br><span class="line">##  magrittr 1215.1390 1253.883 1282.4720 1279.271 1304.1553 1400.9079    20</span><br><span class="line">##     pipeR  377.7212  386.284  395.8731  393.892  406.5949  418.6119    20</span><br></pre></td></tr></table></figure>
+<p>可以看出效能改進相當顯著，大概快了3倍，隨著loop次數增加</p>
+<p>效能改進的倍率還會再增加，這裡就留給有興趣的人自己測試了</p>
+<p>而<code>pipeR</code>還有兩個函數<code>Pipe</code>跟<code>pipeline</code>，不過我就沒研究了，有興趣的人在自己看吧</p>
+<p>以上是我這篇文章的分享</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/R/" rel="tag"># R</a>
+          
+            <a href="/tags/Pipe-Operator/" rel="tag"># Pipe Operator</a>
+          
+            <a href="/tags/magrittr/" rel="tag"># magrittr</a>
+          
+            <a href="/tags/pipeR/" rel="tag"># pipeR</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+          <div class="social-like">
+            
+
+            
+              <div class="fb_like">
+                <div class="fb-like" data-layout="button_count" data-share="true"></div>
+              </div>
+            
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/201605/2016-05-11-initialization_of_centos.html" rel="next" title="Some installations of centos">
+                <i class="fa fa-chevron-left"></i> Some installations of centos
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/201607/2016-07-23-deployment-spark-phoenix-hbase-yarn-zookeeper-hadoop.html" rel="prev" title="基於Hadoop的Spark, Phoenix, HBase, Yarn, Zookeeper部署">
+                基於Hadoop的Spark, Phoenix, HBase, Yarn, Zookeeper部署 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="fb-comments"
+           data-href="http://chingchuan-chen.github.io/posts/201607/2016-07-10-pipe-operators-in-R.html"
+           data-numposts="10"
+           data-width="100%"
+           data-colorscheme="light">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Ching-Chuan Chen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">136</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ChingChuan-Chen" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zw12356@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/u/0/110171317328627391486" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/celestial0230" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#magrittr"><span class="nav-number">1.</span> <span class="nav-text">magrittr</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景介紹"><span class="nav-number">1.1.</span> <span class="nav-text">背景介紹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pipe-operator的基本概念"><span class="nav-number">1.2.</span> <span class="nav-text">pipe operator的基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gt-介紹"><span class="nav-number">1.3.</span> <span class="nav-text">%&gt;%介紹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-gt-T-gt-跟-介紹"><span class="nav-number">1.4.</span> <span class="nav-text">%&lt;&gt;%, %T&gt;%跟%$%介紹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#magrittr一些補充"><span class="nav-number">1.5.</span> <span class="nav-text">magrittr一些補充</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pipeR"><span class="nav-number">2.</span> <span class="nav-text">pipeR</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#in-pipeR"><span class="nav-number">2.1.</span> <span class="nav-text">() in pipeR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#side-effect-in-pipeR"><span class="nav-number">2.2.</span> <span class="nav-text">side effect in pipeR</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-thumbs-up"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ching-Chuan Chen</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('10');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("H7MfFf5lhyq2111iytpoFtIz-gzGzoHsz", "tGTKdvBYYQCIIlvxXJGJM2cc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

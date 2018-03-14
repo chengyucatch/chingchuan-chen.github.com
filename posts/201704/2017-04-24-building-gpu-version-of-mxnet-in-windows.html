@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/earlyaccess//css?family=Noto Sans TC:300,300italic,400,400italic,700,700italic|Noto Sans TC:300,300italic,400,400italic,700,700italic|Inconsolata:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="MxNet,Windows,GPU,Deep Learning," />
+
+
+
+
+
+
+
+
+  <meta property="fb:admins" content="celestial0230" />
+  <meta property="fb:app_id" content="418813441900729" />
+
+
+
+<meta name="description" content="本篇主要介紹如何在Windows環境下編譯GPU版本的mxnet">
+<meta name="keywords" content="MxNet,Windows,GPU,Deep Learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Windows環境下編譯GPU版本的mxnet">
+<meta property="og:url" content="http://chingchuan-chen.github.io/posts/201704/2017-04-24-building-gpu-version-of-mxnet-in-windows.html">
+<meta property="og:site_name" content="Celestial">
+<meta property="og:description" content="本篇主要介紹如何在Windows環境下編譯GPU版本的mxnet">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="http://chingchuan-chen.github.io/images/cmake-setup.PNG">
+<meta property="og:image" content="http://chingchuan-chen.github.io/images/mxnet-gpu.PNG">
+<meta property="og:updated_time" content="2018-03-14T16:23:21.991Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在Windows環境下編譯GPU版本的mxnet">
+<meta name="twitter:description" content="本篇主要介紹如何在Windows環境下編譯GPU版本的mxnet">
+<meta name="twitter:image" content="http://chingchuan-chen.github.io/images/cmake-setup.PNG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chingchuan-chen.github.io/posts/201704/2017-04-24-building-gpu-version-of-mxnet-in-windows.html"/>
+
+
+
+
+
+  <title>在Windows環境下編譯GPU版本的mxnet | Celestial</title>
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '418813441900729',
+      xfbml      : true,
+      version    : 'v2.10'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-72564040-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Celestial</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站點地圖
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201704/2017-04-24-building-gpu-version-of-mxnet-in-windows.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">在Windows環境下編譯GPU版本的mxnet</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-04-24T00:00:00+08:00">
+                2017-04-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MxNet/" itemprop="url" rel="index">
+                    <span itemprop="name">MxNet</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201704/2017-04-24-building-gpu-version-of-mxnet-in-windows.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201704/2017-04-24-building-gpu-version-of-mxnet-in-windows.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201704/2017-04-24-building-gpu-version-of-mxnet-in-windows.html" class="leancloud_visitors" data-flag-title="在Windows環境下編譯GPU版本的mxnet">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  2,077
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本篇主要介紹如何在Windows環境下編譯GPU版本的mxnet</p>
+<a id="more"></a>
+<p>需要的components有：</p>
+<ol>
+<li>Visual Studio 2015 Update 3以上</li>
+<li>OpenBLAS或是Intel MKL 2017 (我這用Intel MKL 2017)</li>
+<li><a href="https://developer.nvidia.com/cuda-toolkit" target="_blank" rel="noopener">CUDA Toolkit 8.0</a> 下載安裝</li>
+<li><a href="https://developer.nvidia.com/cudnn" target="_blank" rel="noopener">cuDNN</a> 需要登入會員</li>
+<li><a href="https://cmake.org/download/" target="_blank" rel="noopener">CMake</a> 下載Windows win64-x64 ZIP，然後解壓縮</li>
+<li><a href="http://opencv.org/releases.html" target="_blank" rel="noopener">OpenCV</a> 下載最新版本的3.2.0 win pack，然後解壓縮</li>
+</ol>
+<p>為了說明方便，假設在D槽開一個資料夾，叫做mxnet</p>
+<p>先把整個mxnet repository clone到<code>D:\mxnet\mxnet</code>，然後開啟<code>CMake\bin\cmake-gui.exe</code></p>
+<p>(可能開啟會錯誤，先檢查一下bin下面所有檔案，右鍵內容，右下角是否有<code>解除鎖定</code>的按鈕)</p>
+<p>然後where is the source code選<code>D:\mxnet\mxnet</code>，然後按下configure</p>
+<p>他會先問你要用什麼編譯，選VS 2015 Win64，然後問是否要開一個新資料夾for build，按下Yes繼續</p>
+<p>接下來會說找不到BLAS，那我這裡要用MKL，所以BLAS那個選項選MKL，然後再按一次configure</p>
+<p>(如果要用OpenBLAS就直接把<code>OpenBLAS_INCLUDE_DIR</code>跟<code>OpenBLAS_LIB</code>修改上去即可)</p>
+<p>然後會跳出INTEL_ROOT, MKL_INCLUDE, MKL_ROOT這三個選項，設定好相對的路徑後按下configure</p>
+<p>接下來會問OpenCV的位置，一樣設定路徑之後再按一次configure，最後應該會看到下面這樣的配置</p>
+<p><img src="/images/cmake-setup.PNG" alt=""></p>
+<p>然後再按一次configure不會跳出任何錯誤後，按下Generate，下方出現<code>Generate Done</code>之後</p>
+<p>按下<code>Open Project</code>就會打開Visual Studio 2015，接下來點<code>方案&#39;mxnet&#39;</code>右鍵選擇<code>建置方案</code></p>
+<p>大概等個一小時之後就build完了</p>
+<p>再來是安裝R套件，請先在<code>D:\mxnet\mxnet\R-package\inst</code>建一個<code>libs</code>資料夾，裡面再建一個<code>x64</code>資料夾</p>
+<p>然後把<code>D:\mxnet\mxnet\Debug\libmxnet.dll</code>, CUDA路徑下bin的<code>cublas64_80.dll</code>, <code>cudart64_80.dll</code>, </p>
+<p><code>cudnn64_5.dll</code>, <code>curand64_80.dll</code>跟<code>nvrtc64_80.dll</code>以及opencv路徑下的<code>bin\opencv_ffmpeg320_64.dll</code>,</p>
+<p><code>x64\vc14\bin\opencv_world320.dll</code>跟<code>x64\vc14\bin\opencv_world320d.dll</code>複製到剛剛建立的<code>R-package\inst\x64</code>裡面</p>
+<p>然後把INTEL ROOT下面的<code>redist\intel64_win\mkl\mkl_rt.dll</code>, <code>redist\intel64_win\mkl\mkl_intel_thread.dll</code>,</p>
+<p><code>redist\intel64_win\mkl\mkl_avx.dll</code>, <code>redist\intel64_win\mkl\mkl_vml_avx.dll</code> (不同電腦用的指令集不同，不一定是用這兩個DLL)</p>
+<p>以及<code>redist\intel64_win\mkl\libimalloc.dll</code>放到R目錄下的<code>bin\x64</code>裡面</p>
+<p>(要抓哪些DLL是根據<code>dependencywalker</code>找的，請查看<a href="http://dependencywalker.com/" target="_blank" rel="noopener">dependencywalker</a>，不過MKL部分是我自己試出來的)</p>
+<p>再來是建立一個<code>R-package\inst\include</code>的資料夾，把<code>D:\mxnet\mxnet\mshadow\mshadow</code>, <code>D:\mxnet\mxnet\dmlc-core\include\dmlc</code>, </p>
+<p><code>D:\mxnet\mxnet\nnvm\include\nnvm</code>, <code>D:\mxnet\mxnet\include\mxnet</code>複製到<code>R-package\inst\include</code></p>
+<p>跑下面這個script</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> import(Rcpp) &gt; R-package/NAMESPACE</span><br><span class="line"><span class="built_in">echo</span> import(methods) &gt;&gt; R-package/NAMESPACE</span><br><span class="line">R CMD INSTALL R-package</span><br><span class="line">Rscript -e <span class="string">"require(mxnet); mxnet:::mxnet.export(\"R-package\")"</span></span><br><span class="line">rm -rf R-package/NAMESPACE</span><br><span class="line">Rscript -e <span class="string">"require(roxygen2); roxygen2::roxygenise(\"R-package\")"</span></span><br><span class="line">R CMD INSTALL R-package</span><br></pre></td></tr></table></figure>
+<p>安裝之後就到<code>D:\mxnet\mxnet\example\image-classification</code>試跑看看<code>train_mnist.R --network mlp --gpus 0</code></p>
+<p>或是簡單測一下下面的script:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span>(mlbench)</span><br><span class="line"><span class="keyword">require</span>(mxnet)</span><br><span class="line">data(Sonar, package = <span class="string">"mlbench"</span>)</span><br><span class="line"></span><br><span class="line">Sonar[,<span class="number">61</span>] &lt;- as.numeric(Sonar[,<span class="number">61</span>])-<span class="number">1</span></span><br><span class="line">train.ind &lt;- c(<span class="number">1</span>:<span class="number">50</span>, <span class="number">100</span>:<span class="number">150</span>)</span><br><span class="line">train.x &lt;- data.matrix(Sonar[train.ind, <span class="number">1</span>:<span class="number">60</span>])</span><br><span class="line">train.y &lt;- Sonar[train.ind, <span class="number">61</span>]</span><br><span class="line">test.x &lt;- data.matrix(Sonar[-train.ind, <span class="number">1</span>:<span class="number">60</span>])</span><br><span class="line">test.y &lt;- Sonar[-train.ind, <span class="number">61</span>]</span><br><span class="line"></span><br><span class="line">mx.set.seed(<span class="number">0</span>)</span><br><span class="line"><span class="comment"># GPU</span></span><br><span class="line">model &lt;- mx.mlp(train.x, train.y, hidden_node=<span class="number">10</span>, out_node=<span class="number">2</span>, out_activation=<span class="string">"softmax"</span>,</span><br><span class="line">                num.round = <span class="number">20</span>, array.batch.size=<span class="number">15</span>, learning.rate=<span class="number">0.07</span>, momentum=<span class="number">0.9</span>, </span><br><span class="line">                eval.metric=mx.metric.accuracy, device = mx.gpu(<span class="number">0</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># CPU</span></span><br><span class="line">model &lt;- mx.mlp(train.x, train.y, hidden_node=<span class="number">10</span>, out_node=<span class="number">2</span>, out_activation=<span class="string">"softmax"</span>,</span><br><span class="line">                num.round = <span class="number">20</span>, array.batch.size=<span class="number">15</span>, learning.rate=<span class="number">0.07</span>, momentum=<span class="number">0.9</span>, </span><br><span class="line">                eval.metric=mx.metric.accuracy, device = lapply(<span class="number">0</span>:<span class="number">1</span>, mx.cpu))</span><br><span class="line"></span><br><span class="line">preds &lt;- predict(model, test.x, mx.gpu(<span class="number">0</span>))</span><br><span class="line">pred.label = max.col(t(preds))-<span class="number">1</span></span><br><span class="line">table(pred.label, test.y)</span><br></pre></td></tr></table></figure>
+<p>至於Python套件部分，到<code>python</code>的子資料夾，執行<code>python setup.py install</code></p>
+<p>然後把上面所說的<code>mkl_rt.dll</code>, <code>mkl_core.dll</code>, <code>mkl_intel_thread.dll</code>, <code>pencv_ffmpeg320_64.dll</code>, </p>
+<p><code>opencv_world320.dll</code>以及<code>opencv_world320d.dll</code>放到Python的根目錄，然後到<code>D:\mxnet\mxnet\example\image-classification</code></p>
+<p>試跑下面的命令驗證看看GPU是否正常安裝：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python train_mnist.py --network mlp --gpus <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/mxnet-gpu.PNG" alt=""></p>
+<p>最後用python稍微看一下Performance差異：</p>
+<p>Performance of prebuilt GPU:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"># GPU</span><br><span class="line">INFO:root:Epoch[0] Batch [100]  Speed: 49999.99 samples/sec     Train-accuracy=0.783261</span><br><span class="line">INFO:root:Epoch[0] Batch [200]  Speed: 49999.99 samples/sec     Train-accuracy=0.909062</span><br><span class="line">INFO:root:Epoch[0] Batch [300]  Speed: 50393.66 samples/sec     Train-accuracy=0.931875</span><br><span class="line">INFO:root:Epoch[0] Batch [400]  Speed: 49999.99 samples/sec     Train-accuracy=0.934375</span><br><span class="line">INFO:root:Epoch[0] Batch [500]  Speed: 51200.00 samples/sec     Train-accuracy=0.935781</span><br><span class="line">INFO:root:Epoch[0] Batch [600]  Speed: 49999.99 samples/sec     Train-accuracy=0.950469</span><br><span class="line">INFO:root:Epoch[0] Batch [700]  Speed: 49612.42 samples/sec     Train-accuracy=0.950469</span><br><span class="line">INFO:root:Epoch[0] Batch [800]  Speed: 50000.08 samples/sec     Train-accuracy=0.949531</span><br><span class="line">INFO:root:Epoch[0] Batch [900]  Speed: 49612.33 samples/sec     Train-accuracy=0.957812</span><br><span class="line">INFO:root:Epoch[0] Train-accuracy=0.957348</span><br><span class="line">INFO:root:Epoch[0] Time cost=1.629</span><br><span class="line">INFO:root:Epoch[0] Validation-accuracy=0.959793</span><br><span class="line"># CPU</span><br><span class="line">INFO:root:Epoch[0] Batch [100]  Speed: 42666.71 samples/sec     Train-accuracy=0.790687</span><br><span class="line">INFO:root:Epoch[0] Batch [200]  Speed: 42105.21 samples/sec     Train-accuracy=0.906250</span><br><span class="line">INFO:root:Epoch[0] Batch [300]  Speed: 42384.10 samples/sec     Train-accuracy=0.928438</span><br><span class="line">INFO:root:Epoch[0] Batch [400]  Speed: 41830.03 samples/sec     Train-accuracy=0.942656</span><br><span class="line">INFO:root:Epoch[0] Batch [500]  Speed: 41025.67 samples/sec     Train-accuracy=0.946250</span><br><span class="line">INFO:root:Epoch[0] Batch [600]  Speed: 42105.28 samples/sec     Train-accuracy=0.942344</span><br><span class="line">INFO:root:Epoch[0] Batch [700]  Speed: 42105.28 samples/sec     Train-accuracy=0.950469</span><br><span class="line">INFO:root:Epoch[0] Batch [800]  Speed: 41025.60 samples/sec     Train-accuracy=0.955937</span><br><span class="line">INFO:root:Epoch[0] Batch [900]  Speed: 42384.10 samples/sec     Train-accuracy=0.958594</span><br><span class="line">INFO:root:Epoch[0] Train-accuracy=0.953125</span><br><span class="line">INFO:root:Epoch[0] Time cost=1.853</span><br><span class="line">INFO:root:Epoch[0] Validation-accuracy=0.962082</span><br></pre></td></tr></table></figure></p>
+<p>Performance of built by myself (RelWithDebInfo):<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"># GPU</span><br><span class="line">INFO:root:Epoch[0] Batch [100]  Speed: 52459.03 samples/sec     Train-accuracy=0.781405</span><br><span class="line">INFO:root:Epoch[0] Batch [200]  Speed: 54700.81 samples/sec     Train-accuracy=0.907656</span><br><span class="line">INFO:root:Epoch[0] Batch [300]  Speed: 56637.21 samples/sec     Train-accuracy=0.925000</span><br><span class="line">INFO:root:Epoch[0] Batch [400]  Speed: 55172.44 samples/sec     Train-accuracy=0.940156</span><br><span class="line">INFO:root:Epoch[0] Batch [500]  Speed: 51200.00 samples/sec     Train-accuracy=0.941406</span><br><span class="line">INFO:root:Epoch[0] Batch [600]  Speed: 55652.17 samples/sec     Train-accuracy=0.944063</span><br><span class="line">INFO:root:Epoch[0] Batch [700]  Speed: 54237.27 samples/sec     Train-accuracy=0.952812</span><br><span class="line">INFO:root:Epoch[0] Batch [800]  Speed: 55172.44 samples/sec     Train-accuracy=0.954844</span><br><span class="line">INFO:root:Epoch[0] Batch [900]  Speed: 55172.33 samples/sec     Train-accuracy=0.960313</span><br><span class="line">INFO:root:Epoch[0] Train-accuracy=0.949324</span><br><span class="line">INFO:root:Epoch[0] Time cost=1.493</span><br><span class="line">INFO:root:Epoch[0] Validation-accuracy=0.952130</span><br><span class="line"># CPU</span><br><span class="line">INFO:root:Epoch[0] Batch [100]  Speed: 42105.28 samples/sec     Train-accuracy=0.790842</span><br><span class="line">INFO:root:Epoch[0] Batch [200]  Speed: 41830.03 samples/sec     Train-accuracy=0.907813</span><br><span class="line">INFO:root:Epoch[0] Batch [300]  Speed: 41558.43 samples/sec     Train-accuracy=0.927188</span><br><span class="line">INFO:root:Epoch[0] Batch [400]  Speed: 42105.28 samples/sec     Train-accuracy=0.934844</span><br><span class="line">INFO:root:Epoch[0] Batch [500]  Speed: 42105.28 samples/sec     Train-accuracy=0.944531</span><br><span class="line">INFO:root:Epoch[0] Batch [600]  Speed: 42384.10 samples/sec     Train-accuracy=0.944063</span><br><span class="line">INFO:root:Epoch[0] Batch [700]  Speed: 42384.10 samples/sec     Train-accuracy=0.950469</span><br><span class="line">INFO:root:Epoch[0] Batch [800]  Speed: 42105.28 samples/sec     Train-accuracy=0.957812</span><br><span class="line">INFO:root:Epoch[0] Batch [900]  Speed: 42384.10 samples/sec     Train-accuracy=0.957812</span><br><span class="line">INFO:root:Epoch[0] Train-accuracy=0.959882</span><br><span class="line">INFO:root:Epoch[0] Time cost=1.789</span><br><span class="line">INFO:root:Epoch[0] Validation-accuracy=0.962082</span><br></pre></td></tr></table></figure></p>
+<p>Performance of built by myself (Release with Intel C++ 2017, /O3 flags):<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"># GPU</span><br><span class="line">INFO:root:Epoch[0] Batch [100]  Speed: 60377.39 samples/sec     Train-accuracy=0.791151</span><br><span class="line">INFO:root:Epoch[0] Batch [200]  Speed: 59259.24 samples/sec     Train-accuracy=0.913438</span><br><span class="line">INFO:root:Epoch[0] Batch [300]  Speed: 60952.37 samples/sec     Train-accuracy=0.927031</span><br><span class="line">INFO:root:Epoch[0] Batch [400]  Speed: 57657.63 samples/sec     Train-accuracy=0.938906</span><br><span class="line">INFO:root:Epoch[0] Batch [500]  Speed: 61538.41 samples/sec     Train-accuracy=0.943594</span><br><span class="line">INFO:root:Epoch[0] Batch [600]  Speed: 60377.39 samples/sec     Train-accuracy=0.945000</span><br><span class="line">INFO:root:Epoch[0] Batch [700]  Speed: 61538.55 samples/sec     Train-accuracy=0.945781</span><br><span class="line">INFO:root:Epoch[0] Batch [800]  Speed: 62135.82 samples/sec     Train-accuracy=0.952500</span><br><span class="line">INFO:root:Epoch[0] Batch [900]  Speed: 60952.37 samples/sec     Train-accuracy=0.957031</span><br><span class="line">INFO:root:Epoch[0] Train-accuracy=0.960726</span><br><span class="line">INFO:root:Epoch[0] Time cost=1.386</span><br><span class="line">INFO:root:Epoch[0] Validation-accuracy=0.962878</span><br><span class="line"># CPU</span><br><span class="line">INFO:root:Epoch[0] Batch [100]  Speed: 52458.92 samples/sec     Train-accuracy=0.786665</span><br><span class="line">INFO:root:Epoch[0] Batch [200]  Speed: 52892.64 samples/sec     Train-accuracy=0.911094</span><br><span class="line">INFO:root:Epoch[0] Batch [300]  Speed: 52892.54 samples/sec     Train-accuracy=0.930781</span><br><span class="line">INFO:root:Epoch[0] Batch [400]  Speed: 52032.56 samples/sec     Train-accuracy=0.933594</span><br><span class="line">INFO:root:Epoch[0] Batch [500]  Speed: 53333.38 samples/sec     Train-accuracy=0.941094</span><br><span class="line">INFO:root:Epoch[0] Batch [600]  Speed: 52892.64 samples/sec     Train-accuracy=0.945781</span><br><span class="line">INFO:root:Epoch[0] Batch [700]  Speed: 52892.54 samples/sec     Train-accuracy=0.950156</span><br><span class="line">INFO:root:Epoch[0] Batch [800]  Speed: 53333.28 samples/sec     Train-accuracy=0.957031</span><br><span class="line">INFO:root:Epoch[0] Batch [900]  Speed: 53333.38 samples/sec     Train-accuracy=0.958125</span><br><span class="line">INFO:root:Epoch[0] Train-accuracy=0.953125</span><br><span class="line">INFO:root:Epoch[0] Time cost=1.506</span><br><span class="line">INFO:root:Epoch[0] Validation-accuracy=0.962480</span><br></pre></td></tr></table></figure></p>
+<p>可以看出我們自己用Intel C++ 2017 加上 O3 optimization的速度</p>
+<p>在GPU方面比prebuilt每秒多了一千張，CPU部分則多了將近10000張</p>
+<p>The performace gain worths your time!!</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MxNet/" rel="tag"># MxNet</a>
+          
+            <a href="/tags/Windows/" rel="tag"># Windows</a>
+          
+            <a href="/tags/GPU/" rel="tag"># GPU</a>
+          
+            <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+          <div class="social-like">
+            
+
+            
+              <div class="fb_like">
+                <div class="fb-like" data-layout="button_count" data-share="true"></div>
+              </div>
+            
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/201704/2017-04-23-RcppArmadillo-call-F77-blas-lapacl.html" rel="next" title="RcppArmadillo call F77 blas/lapack">
+                <i class="fa fa-chevron-left"></i> RcppArmadillo call F77 blas/lapack
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/201705/2017-05-25-use-R-to-construct-web-service.html" rel="prev" title="使用R來建立web service">
+                使用R來建立web service <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="fb-comments"
+           data-href="http://chingchuan-chen.github.io/posts/201704/2017-04-24-building-gpu-version-of-mxnet-in-windows.html"
+           data-numposts="10"
+           data-width="100%"
+           data-colorscheme="light">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Ching-Chuan Chen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">136</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ChingChuan-Chen" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zw12356@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/u/0/110171317328627391486" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/celestial0230" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-thumbs-up"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ching-Chuan Chen</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('10');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("H7MfFf5lhyq2111iytpoFtIz-gzGzoHsz", "tGTKdvBYYQCIIlvxXJGJM2cc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/earlyaccess//css?family=Noto Sans TC:300,300italic,400,400italic,700,700italic|Noto Sans TC:300,300italic,400,400italic,700,700italic|Inconsolata:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Julia," />
+
+
+
+
+
+
+
+
+  <meta property="fb:admins" content="celestial0230" />
+  <meta property="fb:app_id" content="418813441900729" />
+
+
+
+<meta name="description" content="出處：source Julia是一種致力於技術計算的同像性(homoiconic)函數式語言， 涵蓋同像性巨集、頭等函數(first-class functions)以及低階控制， Julia是一個如同Python般簡單去學習以及使用 這份是基於Julia-0.4，但是我自己有根據0.5.1的文件追加一些備註 12345678910111213141516171819202122232425262">
+<meta name="keywords" content="Julia">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Learn Julia in Y minutes (翻譯並追加部分內容)">
+<meta property="og:url" content="http://chingchuan-chen.github.io/posts/201803/2018-03-15-translation-of-learning-julia-in-y-minutes.html">
+<meta property="og:site_name" content="Celestial">
+<meta property="og:description" content="出處：source Julia是一種致力於技術計算的同像性(homoiconic)函數式語言， 涵蓋同像性巨集、頭等函數(first-class functions)以及低階控制， Julia是一個如同Python般簡單去學習以及使用 這份是基於Julia-0.4，但是我自己有根據0.5.1的文件追加一些備註 12345678910111213141516171819202122232425262">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:updated_time" content="2018-03-14T16:49:43.492Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Learn Julia in Y minutes (翻譯並追加部分內容)">
+<meta name="twitter:description" content="出處：source Julia是一種致力於技術計算的同像性(homoiconic)函數式語言， 涵蓋同像性巨集、頭等函數(first-class functions)以及低階控制， Julia是一個如同Python般簡單去學習以及使用 這份是基於Julia-0.4，但是我自己有根據0.5.1的文件追加一些備註 12345678910111213141516171819202122232425262">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chingchuan-chen.github.io/posts/201803/2018-03-15-translation-of-learning-julia-in-y-minutes.html"/>
+
+
+
+
+
+  <title>Learn Julia in Y minutes (翻譯並追加部分內容) | Celestial</title>
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '418813441900729',
+      xfbml      : true,
+      version    : 'v2.10'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-72564040-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Celestial</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站點地圖
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201803/2018-03-15-translation-of-learning-julia-in-y-minutes.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Learn Julia in Y minutes (翻譯並追加部分內容)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-03-15T00:00:00+08:00">
+                2018-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Julia/" itemprop="url" rel="index">
+                    <span itemprop="name">Julia</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201803/2018-03-15-translation-of-learning-julia-in-y-minutes.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201803/2018-03-15-translation-of-learning-julia-in-y-minutes.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201803/2018-03-15-translation-of-learning-julia-in-y-minutes.html" class="leancloud_visitors" data-flag-title="Learn Julia in Y minutes (翻譯並追加部分內容)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  3,538
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>出處：<a href="https://github.com/adambard/learnxinyminutes-docs/blob/master/julia.html.markdown" target="_blank" rel="noopener">source</a></p>
+<p>Julia是一種致力於技術計算的同像性(homoiconic)函數式語言，</p>
+<p>涵蓋同像性巨集、頭等函數(first-class functions)以及低階控制，</p>
+<p>Julia是一個如同Python般簡單去學習以及使用</p>
+<p>這份是基於Julia-0.4，但是我自己有根據0.5.1的文件追加一些備註</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 單行註解，一開頭用#符號(hash/pound)</span></span><br><span class="line"><span class="comment">#= 多行註解</span></span><br><span class="line"><span class="comment">   使用#=開頭，然後=#</span>結尾，可以巢狀擺放</span><br><span class="line">=<span class="comment">#</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">####################################################</span></span><br><span class="line"><span class="comment">## 1. 主要資料型態跟運算子</span></span><br><span class="line"><span class="comment">####################################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 任何東西在Julia中，都是表達式(expression)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 下列是幾個數值的基本型態</span></span><br><span class="line"><span class="number">3</span> <span class="comment"># =&gt; 3 (Int64，64位元整數)</span></span><br><span class="line"><span class="number">3.2</span> <span class="comment"># =&gt; 3.2 (Float64，64位元浮點數)</span></span><br><span class="line"><span class="number">2</span> + <span class="number">1</span><span class="literal">im</span> <span class="comment"># =&gt; 2 + 1im (Complex&#123;Int64&#125;，64位元整數複數)</span></span><br><span class="line"><span class="number">2</span>//<span class="number">3</span> <span class="comment"># =&gt; 2//3 (Rational&#123;Int64&#125;，64位元整數有理數)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 全部可用的中序運算子</span></span><br><span class="line"><span class="number">1</span> + <span class="number">1</span> <span class="comment"># =&gt; 2</span></span><br><span class="line"><span class="number">8</span> - <span class="number">1</span> <span class="comment"># =&gt; 7</span></span><br><span class="line"><span class="number">10</span> * <span class="number">2</span> <span class="comment"># =&gt; 20</span></span><br><span class="line"><span class="number">35</span> / <span class="number">5</span> <span class="comment"># =&gt; 7.0</span></span><br><span class="line"><span class="number">5</span> / <span class="number">2</span> <span class="comment"># =&gt; 2.5 # 整數除上整數，結果一定是浮點數</span></span><br><span class="line">div(<span class="number">5</span>, <span class="number">2</span>) <span class="comment"># =&gt; 2 # 使用div函數可只留下整數部分</span></span><br><span class="line"><span class="number">5</span> ÷ <span class="number">2</span>     <span class="comment"># =&gt; 2 # 同上，÷輸入方式為鍵入`\div`然後按`tab`鍵</span></span><br><span class="line"><span class="number">5</span> \ <span class="number">35</span> <span class="comment"># =&gt; 7.0 # 等同於 35 / 5</span></span><br><span class="line"><span class="number">2</span> ^ <span class="number">2</span> <span class="comment"># =&gt; 4 # 次方運算子，而非bitwise xor運算子</span></span><br><span class="line"><span class="number">12</span> % <span class="number">10</span> <span class="comment"># =&gt; 2 # 餘數，也可以用</span></span><br><span class="line">rem(<span class="number">12</span>, <span class="number">10</span>) <span class="comment"># =&gt; 2 # 同上</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用括號讓運算按序計算</span></span><br><span class="line">(<span class="number">1</span> + <span class="number">3</span>) * <span class="number">2</span> <span class="comment"># =&gt; 8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 位元運算子</span></span><br><span class="line">~<span class="number">2</span> <span class="comment"># =&gt; -3   # 位元NOT運算子/位元補數運算子</span></span><br><span class="line"><span class="number">3</span> &amp; <span class="number">5</span> <span class="comment"># =&gt; 1 # 位元AND運算子</span></span><br><span class="line"><span class="number">2</span> | <span class="number">4</span> <span class="comment"># =&gt; 6 # 位元OR運算子</span></span><br><span class="line"><span class="number">2</span> $ <span class="number">4</span> <span class="comment"># =&gt; 6 # 位元XOR運算子/位元互斥運算子</span></span><br><span class="line"><span class="number">2</span> &gt;&gt;&gt; <span class="number">1</span> <span class="comment"># =&gt; 1 # 邏輯右移運算子</span></span><br><span class="line"><span class="number">2</span> &gt;&gt; <span class="number">1</span>  <span class="comment"># =&gt; 1 # 算數右移運算子</span></span><br><span class="line"><span class="number">2</span> &lt;&lt; <span class="number">1</span>  <span class="comment"># =&gt; 4 # 邏輯/算數左移運算子</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 你可以使用`bits`函數去看一個數字的二元表示</span></span><br><span class="line">bits(<span class="number">12345</span>)</span><br><span class="line"><span class="comment"># =&gt; "0000000000000000000000000000000000000000000000000011000000111001"</span></span><br><span class="line">bits(<span class="number">12345.0</span>)</span><br><span class="line"><span class="comment"># =&gt; "0100000011001000000111001000000000000000000000000000000000000000"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 布林值都是內建的</span></span><br><span class="line"><span class="literal">true</span></span><br><span class="line"><span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 布林運算子</span></span><br><span class="line">!<span class="literal">true</span> <span class="comment"># =&gt; false</span></span><br><span class="line">!<span class="literal">false</span> <span class="comment"># =&gt; true</span></span><br><span class="line"><span class="number">1</span> == <span class="number">1</span> <span class="comment"># =&gt; true</span></span><br><span class="line"><span class="number">2</span> == <span class="number">1</span> <span class="comment"># =&gt; false</span></span><br><span class="line"><span class="number">1</span> != <span class="number">1</span> <span class="comment"># =&gt; false</span></span><br><span class="line"><span class="number">2</span> != <span class="number">1</span> <span class="comment"># =&gt; true</span></span><br><span class="line"><span class="number">1</span> &lt; <span class="number">10</span> <span class="comment"># =&gt; true</span></span><br><span class="line"><span class="number">1</span> &gt; <span class="number">10</span> <span class="comment"># =&gt; false</span></span><br><span class="line"><span class="number">2</span> &lt;= <span class="number">2</span> <span class="comment"># =&gt; true</span></span><br><span class="line"><span class="number">2</span> &gt;= <span class="number">2</span> <span class="comment"># =&gt; true</span></span><br><span class="line"><span class="comment"># 比較是可以串連的</span></span><br><span class="line"><span class="number">1</span> &lt; <span class="number">2</span> &lt; <span class="number">3</span> <span class="comment"># =&gt; true</span></span><br><span class="line"><span class="number">2</span> &lt; <span class="number">3</span> &lt; <span class="number">2</span> <span class="comment"># =&gt; false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用"表示字串</span></span><br><span class="line"><span class="string">"This is a string."</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Julia有好數種字串型別，包括ASCII字串跟UTF8字串，Type那節會在介紹</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用'表示字元常值(character literals)</span></span><br><span class="line"><span class="string">'a'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 有些字串是可以如同字元常值的陣列來索引</span></span><br><span class="line"><span class="string">"This is a string"</span>[<span class="number">1</span>] <span class="comment"># =&gt; 'T' # Julia索引從1開始</span></span><br><span class="line"><span class="comment"># 然而，這個在UTF8字串並不起作用</span></span><br><span class="line"><span class="comment"># 所以比較推薦將字串做疊代 (如用map, for迴圈等)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># $ 可以用於字串插值(string interpolation)</span></span><br><span class="line"><span class="string">"2 + 2 = <span class="subst">$(<span class="number">2</span> + <span class="number">2</span>)</span>"</span> <span class="comment"># =&gt; "2 + 2 = 4"</span></span><br><span class="line"><span class="comment"># 可以將Julia表示式放於括號之中</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用printf巨集也可以格式化字串</span></span><br><span class="line"><span class="meta">@printf</span> <span class="string">"%d is less than %f"</span> <span class="number">4.5</span> <span class="number">5.3</span> <span class="comment"># 5 is less than 5.300000</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 最簡單方式就是使用println</span></span><br><span class="line">println(<span class="string">"I'm Julia. Nice to meet you!"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 字串可以按照字典順序相比</span></span><br><span class="line"><span class="string">"good"</span> &gt; <span class="string">"bye"</span> <span class="comment"># =&gt; true</span></span><br><span class="line"><span class="string">"good"</span> == <span class="string">"good"</span> <span class="comment"># =&gt; true</span></span><br><span class="line"><span class="string">"1 + 2 = 3"</span> == <span class="string">"1 + 2 = <span class="subst">$(<span class="number">1</span>+<span class="number">2</span>)</span>"</span> <span class="comment"># =&gt; true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">####################################################</span></span><br><span class="line"><span class="comment">## 2. 變數與集合</span></span><br><span class="line"><span class="comment">####################################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 你不需要先宣告變數才進行賦值</span></span><br><span class="line">some_var = <span class="number">5</span> <span class="comment"># =&gt; 5</span></span><br><span class="line">some_var <span class="comment"># =&gt; 5</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用一個之前未指派的變數會出現錯誤</span></span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">    some_other_var <span class="comment"># =&gt; ERROR: some_other_var not defined (未定義some_other_var)</span></span><br><span class="line"><span class="keyword">catch</span> <span class="literal">e</span></span><br><span class="line">    println(<span class="literal">e</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 變數名稱可以用英文字母或是底線(_)做為開頭</span></span><br><span class="line"><span class="comment"># 第二個之後可以使用英文字母、數字、底線或是驚嘆號</span></span><br><span class="line">SomeOtherVar123! = <span class="number">6</span> <span class="comment"># =&gt; 6</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 你也可以使用unicode字符</span></span><br><span class="line">☃ = <span class="number">8</span> <span class="comment"># =&gt; 8</span></span><br><span class="line"><span class="comment"># 像是這個特別方便的數學記號</span></span><br><span class="line"><span class="number">2</span> * <span class="literal">π</span> <span class="comment"># =&gt; 6.283185307179586 備註：在Julia鍵入`\pi`然後按`tab`鍵就可以得到π</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Julia命名常規之註記</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># * 字之間的可以使用底線(_)，但是並不鼓勵這種方式，除非是特別難讀的情境</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># * 型別的名稱都是以一個大寫英文字母做為開頭</span></span><br><span class="line"><span class="comment">#   並使用駝峰式大小寫來分割不同字，而非使用底線</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># * 函數以及巨集的名稱都是用小寫，而且沒有底線</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># * 用來修改參數的函數結尾通常使用`!`，這種函數有時被稱作</span></span><br><span class="line"><span class="comment">#   突變函數(mutating functions)或是原地函數(in-place functions)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 陣列儲存一序列的值，並且以整數1到n做為索引：</span></span><br><span class="line">a = <span class="built_in">Int64</span>[] <span class="comment"># =&gt; 0個元素的Int64陣列</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 一維陣列可以用逗號分隔的值表示</span></span><br><span class="line">b = [<span class="number">4</span>; <span class="number">5</span>; <span class="number">6</span>] <span class="comment"># =&gt; 3個元素的Int64陣列: [4, 5, 6]</span></span><br><span class="line">b[<span class="number">1</span>] <span class="comment"># =&gt; 4</span></span><br><span class="line">b[<span class="keyword">end</span>] <span class="comment"># =&gt; 6</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 二維矩陣則使用空白搭配分號分隔每一個列</span></span><br><span class="line">matrix = [<span class="number">1</span> <span class="number">2</span>; <span class="number">3</span> <span class="number">4</span>] <span class="comment"># =&gt; 2乘2個的Int64陣列: [1 2; 3 4]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 特定型別的陣列</span></span><br><span class="line">b = <span class="built_in">Int8</span>[<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>] <span class="comment"># =&gt; 3個元素數的Int8陣列: [4, 5, 6]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以用`push!`跟`append!`這兩個函數於陣列後面新增值</span></span><br><span class="line">push!(a,<span class="number">1</span>)     <span class="comment"># =&gt; [1]</span></span><br><span class="line">push!(a,<span class="number">2</span>)     <span class="comment"># =&gt; [1,2]</span></span><br><span class="line">push!(a,<span class="number">4</span>)     <span class="comment"># =&gt; [1,2,4]</span></span><br><span class="line">push!(a,<span class="number">3</span>)     <span class="comment"># =&gt; [1,2,4,3]</span></span><br><span class="line">append!(a,b) <span class="comment"># =&gt; [1,2,4,3,4,5,6]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以使用`pop!`來移除陣列最後一個元素</span></span><br><span class="line">pop!(b)        <span class="comment"># =&gt; 6 b現在變成 [4,5]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 將6放回去</span></span><br><span class="line">push!(b,<span class="number">6</span>)   <span class="comment"># b 現在又是[4,5,6]了！</span></span><br><span class="line"></span><br><span class="line">a[<span class="number">1</span>] <span class="comment"># =&gt; 1 # 記得Julia索引是從1開始</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># end是最後一個索引的代稱，它可以被用於任意的索引表示式中</span></span><br><span class="line">a[<span class="keyword">end</span>] <span class="comment"># =&gt; 6</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 另外，還有`shift!`跟`unshift!`來做首個元素的變更</span></span><br><span class="line">shift!(a) <span class="comment"># =&gt; 1 # a 現在就變成 [2,4,3,4,5,6]</span></span><br><span class="line">unshift!(a,<span class="number">7</span>) <span class="comment"># =&gt; [7,2,4,3,4,5,6]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以驚嘆號結尾的函數會改變其輸入的值</span></span><br><span class="line">arr = [<span class="number">5</span>,<span class="number">4</span>,<span class="number">6</span>] <span class="comment"># =&gt; 3-element Int64 Array: [5,4,6]</span></span><br><span class="line">sort(arr) <span class="comment"># =&gt; [4,5,6]; arr仍然是 [5,4,6]</span></span><br><span class="line">sort!(arr) <span class="comment"># =&gt; [4,5,6]; arr現在是 [4,5,6]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 看一下超出邊界錯誤: BoundsError</span></span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">    a[<span class="number">0</span>] <span class="comment"># =&gt; ERROR: BoundsError() in getindex at array.jl:270</span></span><br><span class="line">    a[<span class="keyword">end</span>+<span class="number">1</span>] <span class="comment"># =&gt; ERROR: BoundsError() in getindex at array.jl:270</span></span><br><span class="line"><span class="keyword">catch</span> <span class="literal">e</span></span><br><span class="line">    println(<span class="literal">e</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 當錯誤發生時，訊息會顯示出在哪個檔案的哪一行發生的，即使是標準庫裡面的函數</span></span><br><span class="line"><span class="comment"># 如果你的Julia是從原始碼編譯的，你可以找到原始碼的檔案</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用`ranges`來初始化陣列</span></span><br><span class="line">a = [<span class="number">1</span>:<span class="number">5</span>;] <span class="comment"># =&gt; 5個元素的Int64陣列: [1,2,3,4,5]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ranges也可以拿來做為索引之用</span></span><br><span class="line">a[<span class="number">1</span>:<span class="number">3</span>] <span class="comment"># =&gt; [1, 2, 3]</span></span><br><span class="line">a[<span class="number">2</span>:<span class="keyword">end</span>] <span class="comment"># =&gt; [2, 3, 4, 5]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用`splice!`函數以索引移除掉陣列中對應的元素index with splice!</span></span><br><span class="line">arr = [<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">splice!(arr,<span class="number">2</span>) <span class="comment"># =&gt; 4 ; arr現在變成 [3,5]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用`append!`來連接陣列</span></span><br><span class="line">b = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">append!(a,b) <span class="comment"># 現在a變成 [1, 2, 3, 4, 5, 1, 2, 3]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看陣列中的元素是否有對應的值</span></span><br><span class="line"><span class="keyword">in</span>(<span class="number">1</span>, a) <span class="comment"># =&gt; true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用`length`函數來查看陣列長度</span></span><br><span class="line">length(a) <span class="comment"># =&gt; 8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 元組(Tuple)這個型別是不能擴充的</span></span><br><span class="line">tup = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>) <span class="comment"># =&gt; (1,2,3) # 一個 (Int64,Int64,Int64) 的元組</span></span><br><span class="line">tup[<span class="number">1</span>] <span class="comment"># =&gt; 1</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    tup[<span class="number">1</span>] = <span class="number">3</span> <span class="comment"># =&gt; ERROR: no method setindex!((Int64,Int64,Int64),Int64,Int64)</span></span><br><span class="line">    <span class="comment"># 元組不能修改元素</span></span><br><span class="line"><span class="keyword">catch</span> <span class="literal">e</span></span><br><span class="line">    println(<span class="literal">e</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 多數陣列的函數都可以用在元組上</span></span><br><span class="line">length(tup) <span class="comment"># =&gt; 3</span></span><br><span class="line">tup[<span class="number">1</span>:<span class="number">2</span>] <span class="comment"># =&gt; (1,2)</span></span><br><span class="line"><span class="keyword">in</span>(<span class="number">2</span>, tup) <span class="comment"># =&gt; true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以將元組拆分為變數</span></span><br><span class="line">a, b, c = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>) <span class="comment"># =&gt; (1,2,3)  # a是1，b是2，以及c是3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 元組可以不用括號建立</span></span><br><span class="line">d, <span class="literal">e</span>, f = <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span> <span class="comment"># =&gt; (4,5,6)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1個元素的元組和常數是不同的</span></span><br><span class="line">(<span class="number">1</span>,) == <span class="number">1</span> <span class="comment"># =&gt; false</span></span><br><span class="line">(<span class="number">1</span>) == <span class="number">1</span> <span class="comment"># =&gt; true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 下面是一個簡單方式去交換兩個變數的值</span></span><br><span class="line"><span class="literal">e</span>, d = d, <span class="literal">e</span>  <span class="comment"># =&gt; (5,4) # d變成5而且e變成4</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 字典(Dict)這個型別可以用來儲存映射關係</span></span><br><span class="line">empty_dict = <span class="built_in">Dict</span>() <span class="comment"># =&gt; Dict&#123;Any,Any&#125;()</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用下面方式來建立字典變數</span></span><br><span class="line">filled_dict = <span class="built_in">Dict</span>(<span class="string">"one"</span>=&gt; <span class="number">1</span>, <span class="string">"two"</span>=&gt; <span class="number">2</span>, <span class="string">"three"</span>=&gt; <span class="number">3</span>)</span><br><span class="line"><span class="comment"># =&gt; Dict&#123;ASCIIString,Int64&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以使用[]來查詢映射的值</span></span><br><span class="line">filled_dict[<span class="string">"one"</span>] <span class="comment"># =&gt; 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 取得所有的鍵值</span></span><br><span class="line">keys(filled_dict)</span><br><span class="line"><span class="comment"># =&gt; KeyIterator&#123;Dict&#123;ASCIIString,Int64&#125;&#125;(["three"=&gt;3,"one"=&gt;1,"two"=&gt;2])</span></span><br><span class="line"><span class="comment"># 註記：字典的鍵值並非有序的</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 取得所有的映射值</span></span><br><span class="line">values(filled_dict)</span><br><span class="line"><span class="comment"># =&gt; ValueIterator&#123;Dict&#123;ASCIIString,Int64&#125;&#125;(["three"=&gt;3,"one"=&gt;1,"two"=&gt;2])</span></span><br><span class="line"><span class="comment"># 註記：同上，映射值也是無序的</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以用`in`來查看字典中是否有查詢的映射關係</span></span><br><span class="line"><span class="comment"># 而鍵值可以使用`haskey`來查看字典是否有查詢的鍵值</span></span><br><span class="line"><span class="keyword">in</span>((<span class="string">"one"</span> =&gt; <span class="number">1</span>), filled_dict) <span class="comment"># =&gt; true</span></span><br><span class="line"><span class="keyword">in</span>((<span class="string">"two"</span> =&gt; <span class="number">3</span>), filled_dict) <span class="comment"># =&gt; false</span></span><br><span class="line">haskey(filled_dict, <span class="string">"one"</span>) <span class="comment"># =&gt; true</span></span><br><span class="line">haskey(filled_dict, <span class="number">1</span>) <span class="comment"># =&gt; false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 我們來試試看查詢一個不存在的鍵值，若這樣做會報出錯誤</span></span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">    filled_dict[<span class="string">"four"</span>] <span class="comment"># =&gt; ERROR: key not found: four in getindex at dict.jl:489</span></span><br><span class="line">    <span class="comment"># 未找到對應的鍵值</span></span><br><span class="line"><span class="keyword">catch</span> <span class="literal">e</span></span><br><span class="line">    println(<span class="literal">e</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用`get`函數可以避免上述錯誤的發生，並提供預設值</span></span><br><span class="line"><span class="comment"># 用法: get(dictionary,key,default_value)</span></span><br><span class="line">get(filled_dict,<span class="string">"one"</span>,<span class="number">4</span>) <span class="comment"># =&gt; 1</span></span><br><span class="line">get(filled_dict,<span class="string">"four"</span>,<span class="number">4</span>) <span class="comment"># =&gt; 4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 集合(Set)這個型別表示一個無序並值是唯一的集合</span></span><br><span class="line">empty_set = <span class="built_in">Set</span>() <span class="comment"># =&gt; Set&#123;Any&#125;()</span></span><br><span class="line"><span class="comment"># Initialize a set with values</span></span><br><span class="line">filled_set = <span class="built_in">Set</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]) <span class="comment"># =&gt; Set&#123;Int64&#125;(1,2,3,4)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加更多的值到集合</span></span><br><span class="line">push!(filled_set,<span class="number">5</span>) <span class="comment"># =&gt; Set&#123;Int64&#125;(5,4,2,3,1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用`in`函數可以查看查詢的值是否在集合中</span></span><br><span class="line"><span class="keyword">in</span>(<span class="number">2</span>, filled_set) <span class="comment"># =&gt; true</span></span><br><span class="line"><span class="keyword">in</span>(<span class="number">10</span>, filled_set) <span class="comment"># =&gt; false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 下面有幾個函數可以用來計算集合的交集、聯集跟差集</span></span><br><span class="line">other_set = <span class="built_in">Set</span>([<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]) <span class="comment"># =&gt; Set&#123;Int64&#125;(6,4,5,3)</span></span><br><span class="line">intersect(filled_set, other_set) <span class="comment"># =&gt; Set&#123;Int64&#125;(3,4,5)</span></span><br><span class="line">union(filled_set, other_set) <span class="comment"># =&gt; Set&#123;Int64&#125;(1,2,3,4,5,6)</span></span><br><span class="line">setdiff(<span class="built_in">Set</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]),<span class="built_in">Set</span>([<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>])) <span class="comment"># =&gt; Set&#123;Int64&#125;(1,4)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">####################################################</span></span><br><span class="line"><span class="comment">## 3. 控制流程</span></span><br><span class="line"><span class="comment">####################################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 設立一個變數，讓some_var為5</span></span><br><span class="line">some_var = <span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 這是一個if陳述式，縮排在Julia中是無特殊意義的</span></span><br><span class="line"><span class="keyword">if</span> some_var &gt; <span class="number">10</span></span><br><span class="line">    println(<span class="string">"some_var is totally bigger than 10."</span>)</span><br><span class="line"><span class="keyword">elseif</span> some_var &lt; <span class="number">10</span>    <span class="comment"># elseif是可選擇性給的</span></span><br><span class="line">    println(<span class="string">"some_var is smaller than 10."</span>)</span><br><span class="line"><span class="keyword">else</span>                    <span class="comment"># else也是選擇性的</span></span><br><span class="line">    println(<span class="string">"some_var is indeed 10."</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment"># =&gt; 會印出 "some var is smaller than 10"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># For迴圈會把會將可疊代的物件一一疊代</span></span><br><span class="line"><span class="comment"># 可疊代的型別包含範圍(Range)、陣列(Array)、集合(Set)、</span></span><br><span class="line"><span class="comment"># 字典(Dict)跟虛擬字串(AbstractString)</span></span><br><span class="line"><span class="keyword">for</span> animal=[<span class="string">"dog"</span>, <span class="string">"cat"</span>, <span class="string">"mouse"</span>]</span><br><span class="line">    println(<span class="string">"<span class="variable">$animal</span> is a mammal"</span>)</span><br><span class="line">    <span class="comment"># 你可以使用$這個符號於字串中來代表變數或是表示式</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment"># 會印出:</span></span><br><span class="line"><span class="comment">#    dog is a mammal</span></span><br><span class="line"><span class="comment">#    cat is a mammal</span></span><br><span class="line"><span class="comment">#    mouse is a mammal</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 你可以用`in`來取代`=`</span></span><br><span class="line"><span class="keyword">for</span> animal <span class="keyword">in</span> [<span class="string">"dog"</span>, <span class="string">"cat"</span>, <span class="string">"mouse"</span>]</span><br><span class="line">    println(<span class="string">"<span class="variable">$animal</span> is a mammal"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment"># 會印出:</span></span><br><span class="line"><span class="comment">#    dog is a mammal</span></span><br><span class="line"><span class="comment">#    cat is a mammal</span></span><br><span class="line"><span class="comment">#    mouse is a mammal</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> <span class="built_in">Dict</span>(<span class="string">"dog"</span>=&gt;<span class="string">"mammal"</span>,<span class="string">"cat"</span>=&gt;<span class="string">"mammal"</span>,<span class="string">"mouse"</span>=&gt;<span class="string">"mammal"</span>)</span><br><span class="line">    println(<span class="string">"<span class="subst">$(a[<span class="number">1</span>])</span> is a <span class="subst">$(a[<span class="number">2</span>])</span>"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment"># 會印出:</span></span><br><span class="line"><span class="comment">#    dog is a mammal</span></span><br><span class="line"><span class="comment">#    cat is a mammal</span></span><br><span class="line"><span class="comment">#    mouse is a mammal</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (k,v) <span class="keyword">in</span> <span class="built_in">Dict</span>(<span class="string">"dog"</span>=&gt;<span class="string">"mammal"</span>,<span class="string">"cat"</span>=&gt;<span class="string">"mammal"</span>,<span class="string">"mouse"</span>=&gt;<span class="string">"mammal"</span>)</span><br><span class="line">    println(<span class="string">"<span class="variable">$k</span> is a <span class="variable">$v</span>"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment"># 會印出:</span></span><br><span class="line"><span class="comment">#    dog is a mammal</span></span><br><span class="line"><span class="comment">#    cat is a mammal</span></span><br><span class="line"><span class="comment">#    mouse is a mammal</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># while會重複到條件為真時</span></span><br><span class="line">x = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> x &lt; <span class="number">4</span></span><br><span class="line">    println(x)</span><br><span class="line">    x += <span class="number">1</span>  <span class="comment"># Shorthand for x = x + 1</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment"># 會印出:</span></span><br><span class="line"><span class="comment">#   0</span></span><br><span class="line"><span class="comment">#   1</span></span><br><span class="line"><span class="comment">#   2</span></span><br><span class="line"><span class="comment">#   3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以使用try/catch來處理例外情況</span></span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">   error(<span class="string">"help"</span>)</span><br><span class="line"><span class="keyword">catch</span> <span class="literal">e</span></span><br><span class="line">   println(<span class="string">"caught it <span class="variable">$e</span>"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment"># =&gt; 抓到ErrorException("help")</span></span><br><span class="line"></span><br><span class="line"><span class="comment">####################################################</span></span><br><span class="line"><span class="comment">## 4. 函數</span></span><br><span class="line"><span class="comment">####################################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 關鍵字'function'是用來創造新函數用的，用法為：</span></span><br><span class="line"><span class="comment"># function 函數名稱(參數)</span></span><br><span class="line"><span class="comment">#   函數本體</span></span><br><span class="line"><span class="comment"># end # 函數結束</span></span><br><span class="line"><span class="keyword">function</span> add(x, y)</span><br><span class="line">    println(<span class="string">"x is <span class="variable">$x</span> and y is <span class="variable">$y</span>"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 函數會返回最後一列程式</span></span><br><span class="line">    x + y</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">add(<span class="number">5</span>, <span class="number">6</span>) <span class="comment"># =&gt; 先印出"x is 5 and y is 6"，然後會再出現11</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 簡化的函數宣告方式</span></span><br><span class="line">f_add(x, y) = x + y</span><br><span class="line">f_add(<span class="number">3</span>, <span class="number">4</span>) <span class="comment"># =&gt; 7</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 函數可以利用tuple來回傳多個值</span></span><br><span class="line">f(x, y) = x + y, x - y</span><br><span class="line">f(<span class="number">3</span>, <span class="number">4</span>) <span class="comment"># =&gt; (7, -1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 你可以用定義函數  You can define functions that take a variable number of</span></span><br><span class="line"><span class="comment"># positional arguments</span></span><br><span class="line"><span class="keyword">function</span> varargs(args...)</span><br><span class="line">    <span class="keyword">return</span> args</span><br><span class="line">    <span class="comment"># use the keyword return to return anywhere in the function</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment"># =&gt; varargs (generic function with 1 method)</span></span><br><span class="line"></span><br><span class="line">varargs(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>) <span class="comment"># =&gt; (1,2,3)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The ... is called a splat.</span></span><br><span class="line"><span class="comment"># We just used it in a function definition.</span></span><br><span class="line"><span class="comment"># It can also be used in a function call,</span></span><br><span class="line"><span class="comment"># where it will splat an Array or Tuple's contents into the argument list.</span></span><br><span class="line">add([<span class="number">5</span>,<span class="number">6</span>]...) <span class="comment"># this is equivalent to add(5,6)</span></span><br><span class="line"></span><br><span class="line">x = (<span class="number">5</span>,<span class="number">6</span>)     <span class="comment"># =&gt; (5,6)</span></span><br><span class="line">add(x...)     <span class="comment"># this is equivalent to add(5,6)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># You can define functions with optional positional arguments</span></span><br><span class="line"><span class="keyword">function</span> defaults(a,b,x=<span class="number">5</span>,y=<span class="number">6</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"<span class="variable">$a</span> <span class="variable">$b</span> and <span class="variable">$x</span> <span class="variable">$y</span>"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">defaults(<span class="string">'h'</span>,<span class="string">'g'</span>) <span class="comment"># =&gt; "h g and 5 6"</span></span><br><span class="line">defaults(<span class="string">'h'</span>,<span class="string">'g'</span>,<span class="string">'j'</span>) <span class="comment"># =&gt; "h g and j 6"</span></span><br><span class="line">defaults(<span class="string">'h'</span>,<span class="string">'g'</span>,<span class="string">'j'</span>,<span class="string">'k'</span>) <span class="comment"># =&gt; "h g and j k"</span></span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">    defaults(<span class="string">'h'</span>) <span class="comment"># =&gt; ERROR: no method defaults(Char,)</span></span><br><span class="line">    defaults() <span class="comment"># =&gt; ERROR: no methods defaults()</span></span><br><span class="line"><span class="keyword">catch</span> <span class="literal">e</span></span><br><span class="line">    println(<span class="literal">e</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># You can define functions that take keyword arguments</span></span><br><span class="line"><span class="keyword">function</span> keyword_args(;k1=<span class="number">4</span>,name2=<span class="string">"hello"</span>) <span class="comment"># note the ;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Dict</span>(<span class="string">"k1"</span>=&gt;k1,<span class="string">"name2"</span>=&gt;name2)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">keyword_args(name2=<span class="string">"ness"</span>) <span class="comment"># =&gt; ["name2"=&gt;"ness","k1"=&gt;4]</span></span><br><span class="line">keyword_args(k1=<span class="string">"mine"</span>) <span class="comment"># =&gt; ["k1"=&gt;"mine","name2"=&gt;"hello"]</span></span><br><span class="line">keyword_args() <span class="comment"># =&gt; ["name2"=&gt;"hello","k1"=&gt;4]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># You can combine all kinds of arguments in the same function</span></span><br><span class="line"><span class="keyword">function</span> all_the_args(normal_arg, optional_positional_arg=<span class="number">2</span>; keyword_arg=<span class="string">"foo"</span>)</span><br><span class="line">    println(<span class="string">"normal arg: <span class="variable">$normal_arg</span>"</span>)</span><br><span class="line">    println(<span class="string">"optional arg: <span class="variable">$optional_positional_arg</span>"</span>)</span><br><span class="line">    println(<span class="string">"keyword arg: <span class="variable">$keyword_arg</span>"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">all_the_args(<span class="number">1</span>, <span class="number">3</span>, keyword_arg=<span class="number">4</span>)</span><br><span class="line"><span class="comment"># prints:</span></span><br><span class="line"><span class="comment">#   normal arg: 1</span></span><br><span class="line"><span class="comment">#   optional arg: 3</span></span><br><span class="line"><span class="comment">#   keyword arg: 4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Julia has first class functions</span></span><br><span class="line"><span class="keyword">function</span> create_adder(x)</span><br><span class="line">    adder = <span class="keyword">function</span> (y)</span><br><span class="line">        <span class="keyword">return</span> x + y</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">return</span> adder</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This is "stabby lambda syntax" for creating anonymous functions</span></span><br><span class="line">(x -&gt; x &gt; <span class="number">2</span>)(<span class="number">3</span>) <span class="comment"># =&gt; true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This function is identical to create_adder implementation above.</span></span><br><span class="line"><span class="keyword">function</span> create_adder(x)</span><br><span class="line">    y -&gt; x + y</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># You can also name the internal function, if you want</span></span><br><span class="line"><span class="keyword">function</span> create_adder(x)</span><br><span class="line">    <span class="keyword">function</span> adder(y)</span><br><span class="line">        x + y</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    adder</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">add_10 = create_adder(<span class="number">10</span>)</span><br><span class="line">add_10(<span class="number">3</span>) <span class="comment"># =&gt; 13</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># There are built-in higher order functions</span></span><br><span class="line">map(add_10, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]) <span class="comment"># =&gt; [11, 12, 13]</span></span><br><span class="line">filter(x -&gt; x &gt; <span class="number">5</span>, [<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]) <span class="comment"># =&gt; [6, 7]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># We can use list comprehensions for nicer maps</span></span><br><span class="line">[add_10(i) <span class="keyword">for</span> i=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]] <span class="comment"># =&gt; [11, 12, 13]</span></span><br><span class="line">[add_10(i) <span class="keyword">for</span> i <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]] <span class="comment"># =&gt; [11, 12, 13]</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Julia/" rel="tag"># Julia</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+          <div class="social-like">
+            
+
+            
+              <div class="fb_like">
+                <div class="fb-like" data-layout="button_count" data-share="true"></div>
+              </div>
+            
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/201803/2016-09-09-sparkr.html" rel="next" title="SparkR初探">
+                <i class="fa fa-chevron-left"></i> SparkR初探
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="fb-comments"
+           data-href="http://chingchuan-chen.github.io/posts/201803/2018-03-15-translation-of-learning-julia-in-y-minutes.html"
+           data-numposts="10"
+           data-width="100%"
+           data-colorscheme="light">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Ching-Chuan Chen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">124</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ChingChuan-Chen" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zw12356@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/u/0/110171317328627391486" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/celestial0230" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-thumbs-up"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ching-Chuan Chen</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('10');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("H7MfFf5lhyq2111iytpoFtIz-gzGzoHsz", "tGTKdvBYYQCIIlvxXJGJM2cc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

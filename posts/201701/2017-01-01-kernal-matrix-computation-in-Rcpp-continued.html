@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/earlyaccess//css?family=Noto Sans TC:300,300italic,400,400italic,700,700italic|Noto Sans TC:300,300italic,400,400italic,700,700italic|Inconsolata:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="R,Rcpp,RcppArmadillo,RcppParallel,RcppEigen,Kernel Matrix," />
+
+
+
+
+
+
+
+
+  <meta property="fb:admins" content="celestial0230" />
+  <meta property="fb:app_id" content="418813441900729" />
+
+
+
+<meta name="description" content="kernal matrix computation這個主題不只被我用了一次 其實我在PTT分享RcppParallel也是用了這個當例子，文章連結 那這裡就延續上篇的程式把RcppParallel一起拉進來比較一下吧 因為我已經知道p大的時候，我每一個都逐一算其實很慢 那我這裡的RcppParallel就改變一下做法 讓RcppParallel不會因為p改變而使得計算效率改變">
+<meta name="keywords" content="R,Rcpp,RcppArmadillo,RcppParallel,RcppEigen,Kernel Matrix">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kernal matrix computation in Rcpp (continued)">
+<meta property="og:url" content="http://chingchuan-chen.github.io/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp-continued.html">
+<meta property="og:site_name" content="Celestial">
+<meta property="og:description" content="kernal matrix computation這個主題不只被我用了一次 其實我在PTT分享RcppParallel也是用了這個當例子，文章連結 那這裡就延續上篇的程式把RcppParallel一起拉進來比較一下吧 因為我已經知道p大的時候，我每一個都逐一算其實很慢 那我這裡的RcppParallel就改變一下做法 讓RcppParallel不會因為p改變而使得計算效率改變">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:updated_time" content="2018-03-14T16:30:19.975Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kernal matrix computation in Rcpp (continued)">
+<meta name="twitter:description" content="kernal matrix computation這個主題不只被我用了一次 其實我在PTT分享RcppParallel也是用了這個當例子，文章連結 那這裡就延續上篇的程式把RcppParallel一起拉進來比較一下吧 因為我已經知道p大的時候，我每一個都逐一算其實很慢 那我這裡的RcppParallel就改變一下做法 讓RcppParallel不會因為p改變而使得計算效率改變">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp-continued.html"/>
+
+
+
+
+
+  <title>kernal matrix computation in Rcpp (continued) | Celestial</title>
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '418813441900729',
+      xfbml      : true,
+      version    : 'v2.10'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-72564040-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Celestial</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站點地圖
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp-continued.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">kernal matrix computation in Rcpp (continued)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-01-01T00:00:00+08:00">
+                2017-01-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/R/" itemprop="url" rel="index">
+                    <span itemprop="name">R</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp-continued.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp-continued.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp-continued.html" class="leancloud_visitors" data-flag-title="kernal matrix computation in Rcpp (continued)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  1,344
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>kernal matrix computation這個主題不只被我用了一次</p>
+<p>其實我在PTT分享RcppParallel也是用了這個當例子，<a href="https://www.ptt.cc/bbs/R_Language/M.1438914924.A.0B0.html" target="_blank" rel="noopener">文章連結</a></p>
+<p>那這裡就延續上篇的程式把RcppParallel一起拉進來比較一下吧</p>
+<p>因為我已經知道p大的時候，我每一個都逐一算其實很慢</p>
+<p>那我這裡的RcppParallel就改變一下做法</p>
+<p>讓RcppParallel不會因為p改變而使得計算效率改變</p>
+<a id="more"></a>
+<p>這裡新增三個cpp檔案，分別是：RcppArmadillo</p>
+<p>1.RcppArmadillo with RcppParallel</p>
+<ol>
+<li>RcppEigen with RcppParallel</li>
+<li>RcppEigen and OpenMP with RcppParallel</li>
+</ol>
+<p>其他三個就在前一篇都有了，這裡就不重複貼了</p>
+<p>R code:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(kernlab)</span><br><span class="line">Rcpp::sourceCpp(<span class="string">"kernel_matrix_arma.cpp"</span>)</span><br><span class="line">Rcpp::sourceCpp(<span class="string">"kernel_matrix_eigen1.cpp"</span>)</span><br><span class="line">Rcpp::sourceCpp(<span class="string">"kernel_matrix_eigen2.cpp"</span>)</span><br><span class="line">Rcpp::sourceCpp(<span class="string">"kernel_matrix_arma_para.cpp"</span>)</span><br><span class="line">Rcpp::sourceCpp(<span class="string">"kernel_matrix_eigen_para1.cpp"</span>)</span><br><span class="line">Rcpp::sourceCpp(<span class="string">"kernel_matrix_eigen_para2.cpp"</span>)</span><br><span class="line"> </span><br><span class="line">N &lt;- <span class="number">5000L</span></span><br><span class="line">p &lt;- <span class="number">1000L</span></span><br><span class="line">b &lt;- <span class="number">500L</span></span><br><span class="line">X &lt;- matrix(rnorm(N*p), ncol = p)</span><br><span class="line">center &lt;- X[sample(N, b),]</span><br><span class="line">sigma &lt;- <span class="number">2.5</span></span><br><span class="line"></span><br><span class="line">kernelMatrix_R &lt;- <span class="keyword">function</span>(X, center, sigma)&#123;</span><br><span class="line">  exp(sweep(sweep(X %*% t(center), <span class="number">1</span>,</span><br><span class="line">                  rowSums(X**<span class="number">2</span>)/<span class="number">2</span>), <span class="number">2</span>, rowSums(center**<span class="number">2</span>)/<span class="number">2</span>) / (sigma**<span class="number">2</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">res_kernlab &lt;- kernelMatrix(rbfdot(sigma=<span class="number">1</span>/(<span class="number">2</span>*sigma^<span class="number">2</span>)), X, center)@.Data</span><br><span class="line"></span><br><span class="line"><span class="comment"># check results with kernlab::kernelMatrix</span></span><br><span class="line">all.equal(kernelMatrix_R(X, center, sigma), res_kernlab)             <span class="comment"># TRUE</span></span><br><span class="line">all.equal(kernelMatrix_arma_cpp(X, center, sigma), res_kernlab)      <span class="comment"># TRUE</span></span><br><span class="line">all.equal(kernelMatrix_eigen_cpp(X, center, sigma), res_kernlab)     <span class="comment"># TRUE</span></span><br><span class="line">all.equal(kernelMatrix_eigen_omp_cpp(X, center, sigma), res_kernlab) <span class="comment"># TRUE</span></span><br><span class="line">all.equal(kernelMatrix_arma_para_cpp(X, center, sigma), res_kernlab) <span class="comment"># TRUE</span></span><br><span class="line">all.equal(kernelMatrix_eigen_para_cpp(X, center, sigma), res_kernlab) <span class="comment"># TRUE</span></span><br><span class="line">all.equal(kernelMatrix_eigen_para_omp_cpp(X, center, sigma), res_kernlab) <span class="comment"># TRUE</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">library</span>(microbenchmark)</span><br><span class="line">microbenchmark(</span><br><span class="line">  Rfun = kernelMatrix_R(X, center, sigma),</span><br><span class="line">  kernlab = kernelMatrix(rbfdot(sigma=<span class="number">1</span>/(<span class="number">2</span>*sigma^<span class="number">2</span>)), X, center),</span><br><span class="line">  RcppArmadillo = kernelMatrix_arma_cpp(X, center, sigma),</span><br><span class="line">  RcppEigen = kernelMatrix_eigen_cpp(X, center, sigma),</span><br><span class="line">  RcppEigen_Openmp = kernelMatrix_eigen_omp_cpp(X, center, sigma),</span><br><span class="line">  RcppArmadillo_RcppParallel = kernelMatrix_arma_cpp(X, center, sigma),</span><br><span class="line">  RcppEigen_RcppParallel = kernelMatrix_eigen_para_cpp(X, center, sigma),</span><br><span class="line">  RcppEigen_RcppParallel_Openmp = kernelMatrix_eigen_para_omp_cpp(X, center, sigma),</span><br><span class="line">  times = <span class="number">30L</span></span><br><span class="line">)</span><br><span class="line"><span class="comment"># Unit: milliseconds</span></span><br><span class="line"><span class="comment">#                           expr      min       lq     mean   median       uq      max neval</span></span><br><span class="line"><span class="comment">#                           Rfun 238.5369 255.9128 273.9832 268.1477 284.9538 348.0322    30</span></span><br><span class="line"><span class="comment">#                        kernlab 226.1284 248.5015 267.4762 261.4748 275.2627 372.2815    30</span></span><br><span class="line"><span class="comment">#                  RcppArmadillo 173.2054 188.7308 199.1266 193.7259 207.7513 284.9052    30</span></span><br><span class="line"><span class="comment">#                      RcppEigen 416.1434 419.6085 425.7891 422.5549 429.4397 456.2896    30</span></span><br><span class="line"><span class="comment">#               RcppEigen_Openmp 204.2332 210.2853 225.0568 214.8849 224.6437 324.5009    30</span></span><br><span class="line"><span class="comment">#     RcppArmadillo_RcppParallel 170.5573 196.8640 204.4135 207.8597 212.0638 224.6665    30</span></span><br><span class="line"><span class="comment">#         RcppEigen_RcppParallel 411.3365 416.3367 425.0875 419.2989 429.4684 459.8628    30</span></span><br><span class="line"><span class="comment">#  RcppEigen_RcppParallel_Openmp 203.5772 211.5603 246.5694 224.0399 277.4804 377.0851    30</span></span><br></pre></td></tr></table></figure>
+<p>kernel_matrix_arma_para.cpp:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// [[Rcpp::depends(RcppArmadillo, RcppParallel)]]</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;RcppArmadillo.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;RcppParallel.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> arma::mat;</span><br><span class="line"><span class="keyword">using</span> arma::vec;</span><br><span class="line"><span class="keyword">using</span> arma::rowvec;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">KernelComputeWorker</span>:</span> <span class="keyword">public</span> RcppParallel::Worker &#123;</span><br><span class="line">  <span class="keyword">const</span> vec&amp; x_square_sum;</span><br><span class="line">  <span class="keyword">const</span> rowvec&amp; center_square_sum;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">double</span>&amp; sigma2;</span><br><span class="line">  mat&amp; kernelMat;</span><br><span class="line">  </span><br><span class="line">  KernelComputeWorker(<span class="keyword">const</span> vec&amp; x_square_sum, <span class="keyword">const</span> rowvec&amp; center_square_sum, </span><br><span class="line">                      <span class="keyword">const</span> <span class="keyword">double</span>&amp; sigma2, mat&amp; kernelMat):</span><br><span class="line">    x_square_sum(x_square_sum), center_square_sum(center_square_sum), </span><br><span class="line">    sigma2(sigma2), kernelMat(kernelMat) &#123;&#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="built_in">std</span>::<span class="keyword">size_t</span> begin, <span class="built_in">std</span>::<span class="keyword">size_t</span> end)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> k = (<span class="keyword">int</span>) begin; k &lt; (<span class="keyword">int</span>) end; ++k) &#123;</span><br><span class="line">      <span class="keyword">int</span> j = k / kernelMat.n_rows;</span><br><span class="line">      <span class="keyword">int</span> i = k - j * kernelMat.n_rows;</span><br><span class="line">      kernelMat(i, j) -= (x_square_sum(i) + center_square_sum(j));</span><br><span class="line">      kernelMat(i, j) = <span class="built_in">exp</span>(kernelMat(i, j) / sigma2);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// [[Rcpp::export]]</span></span><br><span class="line"><span class="function">mat <span class="title">kernelMatrix_arma_para_cpp</span><span class="params">(mat x, mat center, <span class="keyword">double</span> sigma)</span> </span>&#123;</span><br><span class="line">  mat kernelMat(x * center.t());</span><br><span class="line">  vec x_square_sum = sum(square(x), <span class="number">1</span>) / <span class="number">2.0</span>;</span><br><span class="line">  rowvec center_square_sum = (sum(square(center), <span class="number">1</span>)).t() / <span class="number">2.0</span>;</span><br><span class="line">  <span class="keyword">double</span> sigma2 = <span class="built_in">pow</span>(sigma, <span class="number">2.0</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="function">KernelComputeWorker <span class="title">worker_kc</span><span class="params">(x_square_sum, center_square_sum, sigma2, kernelMat)</span></span>;</span><br><span class="line">  RcppParallel::parallelFor(<span class="number">0</span>, kernelMat.n_elem, worker_kc);</span><br><span class="line">  <span class="keyword">return</span> kernelMat;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>kernel_matrix_eigen_para1.cpp:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// [[Rcpp::depends(RcppEigen, RcppParallel)]]</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;RcppEigen.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;RcppParallel.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> Eigen::MatrixXd;</span><br><span class="line"><span class="keyword">using</span> Eigen::VectorXd;</span><br><span class="line"><span class="keyword">using</span> Eigen::VectorXi;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">KernelComputeWorker</span>:</span> <span class="keyword">public</span> RcppParallel::Worker &#123;</span><br><span class="line">  <span class="keyword">const</span> VectorXd&amp; x_square_sum;</span><br><span class="line">  <span class="keyword">const</span> VectorXd&amp; center_square_sum;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">double</span>&amp; sigma2;</span><br><span class="line">  MatrixXd&amp; kernelMat;</span><br><span class="line">  </span><br><span class="line">  KernelComputeWorker(<span class="keyword">const</span> VectorXd&amp; x_square_sum, <span class="keyword">const</span> VectorXd&amp; center_square_sum, </span><br><span class="line">                      <span class="keyword">const</span> <span class="keyword">double</span>&amp; sigma2, MatrixXd&amp; kernelMat):</span><br><span class="line">    x_square_sum(x_square_sum), center_square_sum(center_square_sum), </span><br><span class="line">    sigma2(sigma2), kernelMat(kernelMat) &#123;&#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="built_in">std</span>::<span class="keyword">size_t</span> begin, <span class="built_in">std</span>::<span class="keyword">size_t</span> end)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> k = (<span class="keyword">int</span>) begin; k &lt; (<span class="keyword">int</span>) end; ++k) &#123;</span><br><span class="line">      <span class="keyword">int</span> j = k / kernelMat.rows();</span><br><span class="line">      <span class="keyword">int</span> i = k - j * kernelMat.rows();</span><br><span class="line">      kernelMat(i, j) -= (x_square_sum(i) + center_square_sum(j));</span><br><span class="line">      kernelMat(i, j) = <span class="built_in">exp</span>(kernelMat(i, j) / sigma2);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// [[Rcpp::export]]</span></span><br><span class="line"><span class="function">MatrixXd <span class="title">kernelMatrix_eigen_para_cpp</span><span class="params">(MatrixXd x, MatrixXd center, <span class="keyword">double</span> sigma)</span> </span>&#123;</span><br><span class="line">  MatrixXd kernelMat = x * center.transpose();</span><br><span class="line">  VectorXd x_square_sum = x.<span class="built_in">array</span>().<span class="built_in">pow</span>(<span class="number">2.0</span>).rowwise().sum() / <span class="number">2.0</span>;</span><br><span class="line">  VectorXd center_square_sum = center.<span class="built_in">array</span>().<span class="built_in">pow</span>(<span class="number">2.0</span>).rowwise().sum()  / <span class="number">2.0</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">double</span> sigma2 = <span class="built_in">pow</span>(sigma, <span class="number">2.0</span>);</span><br><span class="line">  <span class="function">KernelComputeWorker <span class="title">worker_kc</span><span class="params">(x_square_sum, center_square_sum, sigma2, kernelMat)</span></span>;</span><br><span class="line">  RcppParallel::parallelFor(<span class="number">0</span>, kernelMat.size(), worker_kc);</span><br><span class="line">  <span class="keyword">return</span> kernelMat;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>kernel_matrix_eigen_para2.cpp:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// [[Rcpp::depends(RcppEigen, RcppParallel)]]</span></span><br><span class="line"><span class="comment">// [[Rcpp::plugins(openmp)]]</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;RcppEigen.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;omp.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;RcppParallel.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> Eigen::MatrixXd;</span><br><span class="line"><span class="keyword">using</span> Eigen::VectorXd;</span><br><span class="line"><span class="keyword">using</span> Eigen::VectorXi;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">KernelComputeWorker</span>:</span> <span class="keyword">public</span> RcppParallel::Worker &#123;</span><br><span class="line">  <span class="keyword">const</span> VectorXd&amp; x_square_sum;</span><br><span class="line">  <span class="keyword">const</span> VectorXd&amp; center_square_sum;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">double</span>&amp; sigma2;</span><br><span class="line">  MatrixXd&amp; kernelMat;</span><br><span class="line">  </span><br><span class="line">  KernelComputeWorker(<span class="keyword">const</span> VectorXd&amp; x_square_sum, <span class="keyword">const</span> VectorXd&amp; center_square_sum, </span><br><span class="line">                      <span class="keyword">const</span> <span class="keyword">double</span>&amp; sigma2, MatrixXd&amp; kernelMat):</span><br><span class="line">    x_square_sum(x_square_sum), center_square_sum(center_square_sum), </span><br><span class="line">    sigma2(sigma2), kernelMat(kernelMat) &#123;&#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="built_in">std</span>::<span class="keyword">size_t</span> begin, <span class="built_in">std</span>::<span class="keyword">size_t</span> end)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> k = (<span class="keyword">int</span>) begin; k &lt; (<span class="keyword">int</span>) end; ++k) &#123;</span><br><span class="line">      <span class="keyword">int</span> j = k / kernelMat.rows();</span><br><span class="line">      <span class="keyword">int</span> i = k - j * kernelMat.rows();</span><br><span class="line">      kernelMat(i, j) -= (x_square_sum(i) + center_square_sum(j));</span><br><span class="line">      kernelMat(i, j) = <span class="built_in">exp</span>(kernelMat(i, j) / sigma2);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// [[Rcpp::export]]</span></span><br><span class="line"><span class="function">MatrixXd <span class="title">kernelMatrix_eigen_para_omp_cpp</span><span class="params">(MatrixXd x, MatrixXd center, <span class="keyword">double</span> sigma)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> n = omp_get_max_threads();</span><br><span class="line">  omp_set_num_threads(n);</span><br><span class="line">  Eigen::setNbThreads(n);</span><br><span class="line">  Eigen::initParallel();</span><br><span class="line">  MatrixXd kernelMat = x * center.transpose();</span><br><span class="line">  VectorXd x_square_sum = x.<span class="built_in">array</span>().<span class="built_in">pow</span>(<span class="number">2.0</span>).rowwise().sum() / <span class="number">2.0</span>;</span><br><span class="line">  VectorXd center_square_sum = center.<span class="built_in">array</span>().<span class="built_in">pow</span>(<span class="number">2.0</span>).rowwise().sum()  / <span class="number">2.0</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">double</span> sigma2 = <span class="built_in">pow</span>(sigma, <span class="number">2.0</span>);</span><br><span class="line">  <span class="function">KernelComputeWorker <span class="title">worker_kc</span><span class="params">(x_square_sum, center_square_sum, sigma2, kernelMat)</span></span>;</span><br><span class="line">  RcppParallel::parallelFor(<span class="number">0</span>, kernelMat.size(), worker_kc);</span><br><span class="line">  <span class="keyword">return</span> kernelMat;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這個結果可以看出幾件事情：</p>
+<ol>
+<li>直接用Multi-threaded BLAS的RcppArmadillo在這個問題上，用了RcppParallel還是略輸一籌，BLAS還是比較強大XD</li>
+<li>相較RcppEigen_RcppParallel跟RcppEigen_RcppParallel_Openmp來看，因為沒平行的部分只剩下一開始計算<code>kernelMat</code>、<code>x_square_sum</code>以及<code>center_square_sum</code>，所以這裡RcppEigen用它本身的BLAS庫來做乘除就慢上了不少，而後面的計算其實也是用colwise, rowwise以及element-wise的操作，那邊已經被平行做掉了，還是跟只單用RcppEigen差不多快，所以其實element-wise, colwise以及rowwise這幾個操作應該不至於造成瓶頸，因此，最大的瓶頸是在大矩陣的乘法，需要openmp使用multi-thread來加速</li>
+<li>RcppEigen_RcppParallel_Openmp還是比RcppEigen_Openmp比，所以其實後段的處理是白費的，用原本的方法比較快 (RcppArmadillo的部分同理)</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/R/" rel="tag"># R</a>
+          
+            <a href="/tags/Rcpp/" rel="tag"># Rcpp</a>
+          
+            <a href="/tags/RcppArmadillo/" rel="tag"># RcppArmadillo</a>
+          
+            <a href="/tags/RcppParallel/" rel="tag"># RcppParallel</a>
+          
+            <a href="/tags/RcppEigen/" rel="tag"># RcppEigen</a>
+          
+            <a href="/tags/Kernel-Matrix/" rel="tag"># Kernel Matrix</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+          <div class="social-like">
+            
+
+            
+              <div class="fb_like">
+                <div class="fb-like" data-layout="button_count" data-share="true"></div>
+              </div>
+            
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/201612/2016-12-31-weighted-least-square-algorithm.html" rel="next" title="Weighted Least-Square Algorithm">
+                <i class="fa fa-chevron-left"></i> Weighted Least-Square Algorithm
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack-continued.html" rel="prev" title="Rcpp call F77 blas/lapack (continued)">
+                Rcpp call F77 blas/lapack (continued) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="fb-comments"
+           data-href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp-continued.html"
+           data-numposts="10"
+           data-width="100%"
+           data-colorscheme="light">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Ching-Chuan Chen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">136</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ChingChuan-Chen" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zw12356@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/u/0/110171317328627391486" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/celestial0230" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-thumbs-up"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ching-Chuan Chen</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('10');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("H7MfFf5lhyq2111iytpoFtIz-gzGzoHsz", "tGTKdvBYYQCIIlvxXJGJM2cc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/earlyaccess//css?family=Noto Sans TC:300,300italic,400,400italic,700,700italic|Noto Sans TC:300,300italic,400,400italic,700,700italic|Inconsolata:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="BigData,Hadoop," />
+
+
+
+
+
+
+
+
+  <meta property="fb:admins" content="celestial0230" />
+  <meta property="fb:app_id" content="418813441900729" />
+
+
+
+<meta name="description" content="用完Cassandra的primary key跟secondary index之後 覺得Cassandra適合表格有固定query pattern做使用才方便 primary key中的partition key在query時都要用到 clustering key要照順序使用，secondary index不能做複合查詢 更不用提ALLOW FILTERING的功能帶來的崩潰效能">
+<meta name="keywords" content="BigData,Hadoop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重返Hadoop Architecture (設定HA群集)">
+<meta property="og:url" content="http://chingchuan-chen.github.io/posts/201609/2016-09-19-return-hadoop-architecture.html">
+<meta property="og:site_name" content="Celestial">
+<meta property="og:description" content="用完Cassandra的primary key跟secondary index之後 覺得Cassandra適合表格有固定query pattern做使用才方便 primary key中的partition key在query時都要用到 clustering key要照順序使用，secondary index不能做複合查詢 更不用提ALLOW FILTERING的功能帶來的崩潰效能">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:updated_time" content="2018-03-14T16:45:39.497Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="重返Hadoop Architecture (設定HA群集)">
+<meta name="twitter:description" content="用完Cassandra的primary key跟secondary index之後 覺得Cassandra適合表格有固定query pattern做使用才方便 primary key中的partition key在query時都要用到 clustering key要照順序使用，secondary index不能做複合查詢 更不用提ALLOW FILTERING的功能帶來的崩潰效能">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chingchuan-chen.github.io/posts/201609/2016-09-19-return-hadoop-architecture.html"/>
+
+
+
+
+
+  <title>重返Hadoop Architecture (設定HA群集) | Celestial</title>
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '418813441900729',
+      xfbml      : true,
+      version    : 'v2.10'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-72564040-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Celestial</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站點地圖
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201609/2016-09-19-return-hadoop-architecture.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">重返Hadoop Architecture (設定HA群集)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-09-19T00:00:00+08:00">
+                2016-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/BigData/" itemprop="url" rel="index">
+                    <span itemprop="name">BigData</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201609/2016-09-19-return-hadoop-architecture.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201609/2016-09-19-return-hadoop-architecture.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201609/2016-09-19-return-hadoop-architecture.html" class="leancloud_visitors" data-flag-title="重返Hadoop Architecture (設定HA群集)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  3,821
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>用完Cassandra的primary key跟secondary index之後</p>
+<p>覺得Cassandra適合表格有固定query pattern做使用才方便</p>
+<p>primary key中的partition key在query時都要用到</p>
+<p>clustering key要照順序使用，secondary index不能做複合查詢</p>
+<p>更不用提ALLOW FILTERING的功能帶來的崩潰效能</p>
+<a id="more"></a>
+<p>我的用途真的很難用Cassandra去滿足，也不願意透過Spark SQL去使用</p>
+<p>(畢竟Spark SQL要吃的資源也不少)</p>
+<p>因此，我就survey了SQL on Hadoop的solutions…</p>
+<p>而這一篇會先forcus在Hadoop的群集建立</p>
+<p>SQL on Hadoop將會在下一篇介紹</p>
+<p>這一篇會非常的長，因為Hadoop之前沒有完全的建好 (讓它能夠開機自動啟動，並且有HA的能力)</p>
+<p>這一篇斷斷續續寫了三週，一直提不太起勁一口氣完成他</p>
+<p>廢話不多說，下面是本文</p>
+<p>配置架構：</p>
+<ol>
+<li>Hadoop的HA只有兩台電腦、YARN也是同理，並且配置hdfs HA的電腦要啟動zkfc的服務</li>
+<li>每一台都要配置Journal node去讓資料同步、並且在Hadoop Master當機時能夠做自動切換</li>
+<li>Zookeeper要設定成奇數台</li>
+</ol>
+<p>重新佈署：</p>
+<ol>
+<li>部署之前的環境設定</li>
+</ol>
+<p>ssh部分要實現全部都能互相連接，不能只有master能夠連到slaves</p>
+<p>因此，這裡給一個簡單的script去做key的傳遞</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 每一台都執行完下面兩個指令後</span></span><br><span class="line">ssh-keygen -t rsa -P <span class="string">""</span></span><br><span class="line">cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br><span class="line"><span class="comment"># 在master上跑</span></span><br><span class="line"></span><br><span class="line">tee ~/all_hosts &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line">cassSpark1</span><br><span class="line">cassSpark2</span><br><span class="line">cassSpark3</span><br><span class="line">EOF</span><br><span class="line">scp ~/all_hosts tester@cassSpark2:~/</span><br><span class="line">scp ~/all_hosts tester@cassSpark2:~/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然後在每一台都跑下面這個指令(要打很多次密碼)</span></span><br><span class="line"><span class="keyword">for</span> hostname <span class="keyword">in</span> `cat all_hosts`; <span class="keyword">do</span></span><br><span class="line">  ssh-copy-id -i ~/.ssh/id_rsa.pub <span class="variable">$hostname</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>下載檔案</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 建立放置資料夾</span></span><br><span class="line">sudo mkdir /usr/<span class="built_in">local</span>/bigdata</span><br><span class="line">sudo chown -R tester /usr/<span class="built_in">local</span>/bigdata</span><br><span class="line"><span class="comment"># 下載並安裝java</span></span><br><span class="line">curl -v -j -k -L -H <span class="string">"Cookie: oraclelicense=accept-securebackup-cookie"</span> http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-x64.rpm -o jdk-8u101-linux-x64.rpm</span><br><span class="line">sudo yum install -y jdk-8u101-linux-x64.rpm</span><br><span class="line"><span class="comment"># 下載並部署Hadoop</span></span><br><span class="line">curl -v -j -k -L http://apache.stu.edu.tw/hadoop/common/hadoop-2.7.3/hadoop-2.7.3.tar.gz -o hadoop-2.7.3.tar.gz</span><br><span class="line">tar -zxvf hadoop-2.7.3.tar.gz</span><br><span class="line">mv hadoop-2.7.3 /usr/<span class="built_in">local</span>/bigdata/hadoop</span><br><span class="line"><span class="comment"># 下載並部署zookeeper</span></span><br><span class="line">curl -v -j -k -L http://apache.stu.edu.tw/zookeeper/zookeeper-3.4.8/zookeeper-3.4.8.tar.gz -o zookeeper-3.4.8.tar.gz</span><br><span class="line">tar -zxvf zookeeper-3.4.8.tar.gz</span><br><span class="line">mv zookeeper-3.4.8 /usr/<span class="built_in">local</span>/bigdata/zookeeper</span><br><span class="line"><span class="comment"># 下載並部署HBase</span></span><br><span class="line">curl -v -j -k -L http://apache.stu.edu.tw/hbase/stable/hbase-1.2.2-bin.tar.gz -o hbase-1.2.2-bin.tar.gz</span><br><span class="line">tar -zxvf hbase-1.2.2-bin.tar.gz</span><br><span class="line">mv hbase-1.2.2 /usr/<span class="built_in">local</span>/bigdata/hbase</span><br><span class="line"><span class="comment"># 下載並部署mesos</span></span><br><span class="line">curl -v -j -k -L http://repos.mesosphere.com/el/7/x86_64/RPMS/mesos-1.0.0-2.0.89.centos701406.x86_64.rpm -o mesos-1.0.0-2.0.89.centos701406.x86_64.rpm</span><br><span class="line">sudo yum install mesos-1.0.0-2.0.89.centos701406.x86_64.rpm</span><br><span class="line"><span class="comment"># 下載並部署scala</span></span><br><span class="line">curl -v -j -k -L http://downloads.lightbend.com/scala/2.11.8/scala-2.11.8.tgz -o scala-2.11.8.tgz</span><br><span class="line">tar -zxvf scala-2.11.8.tgz</span><br><span class="line">mv scala-2.11.8 /usr/<span class="built_in">local</span>/bigdata/scala</span><br><span class="line"><span class="comment"># 下載並部署spark</span></span><br><span class="line">curl -v -j -k -L http://apache.stu.edu.tw/spark/spark-2.0.0/spark-2.0.0-bin-hadoop2.7.tgz -o spark-2.0.0-bin-hadoop2.7.tgz</span><br><span class="line">tar -zxvf spark-2.0.0-bin-hadoop2.7.tgz</span><br><span class="line">mv spark-2.0.0-bin-hadoop2.7 /usr/<span class="built_in">local</span>/bigdata/spark</span><br></pre></td></tr></table></figure>
+<ol>
+<li>環境變數設置：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">sudo tee -a /etc/bashrc &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line"><span class="comment"># JAVA</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/java/jdk1.8.0_101</span><br><span class="line"><span class="comment"># HADOOP</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_HOME=/usr/<span class="built_in">local</span>/bigdata/hadoop</span><br><span class="line"><span class="built_in">export</span> HADOOP_COMMON_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_CONF_DIR=<span class="variable">$HADOOP_HOME</span>/etc/hadoop</span><br><span class="line"><span class="built_in">export</span> HADOOP_COMMON_LIB_NATIVE_DIR=<span class="variable">$HADOOP_HOME</span>/lib/native</span><br><span class="line"><span class="built_in">export</span> HADOOP_OPTS=<span class="string">"<span class="variable">$HADOOP_OPTS</span> -Djava.library.path=<span class="variable">$HADOOP_HOME</span>/lib/native"</span></span><br><span class="line"><span class="comment"># ZOOKEEPER</span></span><br><span class="line"><span class="built_in">export</span> ZOOKEEPER_HOME=/usr/<span class="built_in">local</span>/bigdata/zookeeper</span><br><span class="line"><span class="comment"># HBASE</span></span><br><span class="line"><span class="built_in">export</span> HBASE_HOME=/usr/<span class="built_in">local</span>/bigdata/hbase</span><br><span class="line"><span class="built_in">export</span> HBASE_MANAGES_ZK=<span class="literal">false</span></span><br><span class="line"><span class="built_in">export</span> HBASE_CLASSPATH=<span class="variable">$HBASE_CLASSPATH</span>:<span class="variable">$HADOOP_CONF_DIR</span></span><br><span class="line"><span class="built_in">export</span> HBASE_CONF_DIR=<span class="variable">$HBASE_HOME</span>/conf</span><br><span class="line"><span class="comment"># SCALA</span></span><br><span class="line"><span class="built_in">export</span> SCALA_HOME=/usr/<span class="built_in">local</span>/bigdata/scala</span><br><span class="line"><span class="comment"># SPARK</span></span><br><span class="line"><span class="built_in">export</span> SPARK_HOME=/usr/<span class="built_in">local</span>/bigdata/spark</span><br><span class="line"><span class="comment"># PATH</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>:<span class="variable">$ZOOKEEPER_HOME</span>/bin:<span class="variable">$HADOOP_HOME</span>/bin:<span class="variable">$HBASE_HOME</span>/bin:<span class="variable">$SCALA_HOME</span>/bin:<span class="variable">$SPARK_HOME</span>/bin</span><br><span class="line">EOF</span><br><span class="line"><span class="built_in">source</span> /etc/bashrc</span><br></pre></td></tr></table></figure>
+<ol>
+<li>開始設定</li>
+</ol>
+<p>a. Zookeeper, Mesos設定</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## Zookeeper</span></span><br><span class="line"><span class="comment"># 複製zoo.cfg</span></span><br><span class="line">cp <span class="variable">$ZOOKEEPER_HOME</span>/conf/zoo_sample.cfg <span class="variable">$ZOOKEEPER_HOME</span>/conf/zoo.cfg</span><br><span class="line"><span class="comment"># 傳入設定</span></span><br><span class="line">tee <span class="variable">$ZOOKEEPER_HOME</span>/conf/zoo.cfg &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line">dataDir=/usr/<span class="built_in">local</span>/bigdata/zookeeper/data</span><br><span class="line">server.1=cassSpark1:2888:3888</span><br><span class="line">server.2=cassSpark2:2888:3888</span><br><span class="line">server.3=cassSpark3:2888:3888</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 接著創立需要的資料夾，並新增檔案</span></span><br><span class="line">mkdir <span class="variable">$ZOOKEEPER_HOME</span>/data</span><br><span class="line">tee <span class="variable">$ZOOKEEPER_HOME</span>/data/myid &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line">1</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 佈置到其他台</span></span><br><span class="line">scp -r /usr/<span class="built_in">local</span>/bigdata/zookeeper tester@cassSpark2:/usr/<span class="built_in">local</span>/bigdata</span><br><span class="line">scp -r /usr/<span class="built_in">local</span>/bigdata/zookeeper tester@cassSpark3:/usr/<span class="built_in">local</span>/bigdata</span><br><span class="line">ssh tester@cassSpark2 <span class="string">"sed -i -e 's/1/2/g' <span class="variable">$ZOOKEEPER_HOME</span>/data/myid"</span></span><br><span class="line">ssh tester@cassSpark2 <span class="string">"sed -i -e 's/1/3/g' <span class="variable">$ZOOKEEPER_HOME</span>/data/myid"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## Mesos</span></span><br><span class="line"><span class="comment"># 修改zookeeper</span></span><br><span class="line">sudo tee /etc/mesos/zk &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line">zk://192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181/mesos</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置quorum</span></span><br><span class="line">sudo tee /etc/mesos-master/quorum &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line">2</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>b. Hadoop設定</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># slaves</span></span><br><span class="line">tee <span class="variable">$HADOOP_CONF_DIR</span>/slaves &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line">cassSpark1</span><br><span class="line">cassSpark2</span><br><span class="line">cassSpark3</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># core-site.xml</span></span><br><span class="line">sed -i -e <span class="string">'s/&lt;\/configuration&gt;//g'</span> <span class="variable">$HADOOP_CONF_DIR</span>/core-site.xml</span><br><span class="line">tee -a <span class="variable">$HADOOP_CONF_DIR</span>/core-site.xml &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hdfs://hc1&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;/usr/<span class="built_in">local</span>/bigdata/hadoop/tmp&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;ha.zookeeper.quorum&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">mkdir -p <span class="variable">$HADOOP_HOME</span>/tmp</span><br><span class="line"></span><br><span class="line"><span class="comment"># hdfs-site.xml</span></span><br><span class="line">sed -i -e <span class="string">'s/&lt;\/configuration&gt;//g'</span> <span class="variable">$HADOOP_CONF_DIR</span>/hdfs-site.xml</span><br><span class="line">tee -a <span class="variable">$HADOOP_CONF_DIR</span>/hdfs-site.xml &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;3&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.permissions&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;<span class="literal">false</span>&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.webhdfs.enabled&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;<span class="literal">true</span>&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.name.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;file:///usr/<span class="built_in">local</span>/bigdata/hadoop/tmp/name&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.data.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;file:///usr/<span class="built_in">local</span>/bigdata/hadoop/tmp/data&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.namenode.checkpoint.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;file:///usr/<span class="built_in">local</span>/bigdata/hadoop/tmp/name/chkpt&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.nameservices&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hc1&lt;/value&gt;     </span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.namenode.shared.edits.dir&lt;/name&gt;    </span><br><span class="line">    &lt;value&gt;qjournal://192.168.0.121:8485;192.168.0.122:8485;192.168.0.123:8485/hc1&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.journalnode.edits.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;/usr/<span class="built_in">local</span>/bigdata/hadoop/tmp/journal&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.ha.namenodes.hc1&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;nn1,nn2&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.namenode.rpc-address.hc1.nn1&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;192.168.0.121:9000&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.namenode.rpc-address.hc1.nn2&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;192.168.0.122:9000&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.namenode.http-address.hc1.nn1&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;192.168.0.121:50070&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.namenode.http-address.hc1.nn2&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;192.168.0.122:50070&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.namenode.shared.edits.dir&lt;/name&gt;    </span><br><span class="line">    &lt;value&gt;file:///usr/<span class="built_in">local</span>/bigdata/hadoop/tmp/ha-name-dir-shared&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.client.failover.proxy.provider.hc1&lt;/name&gt; </span><br><span class="line">    &lt;value&gt;org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.ha.fencing.methods&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;sshfence(tester)&lt;/value&gt;</span><br><span class="line">    &lt;-- 如果不能用root權限登入ssh，記得加上能登入ssh的username --&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.ha.fencing.ssh.private-key-files&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;/home/tester/.ssh/id_rsa&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.ha.automatic-failover.enabled&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;<span class="literal">true</span>&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">mkdir -p <span class="variable">$HADOOP_HOME</span>/tmp/data</span><br><span class="line">mkdir -p <span class="variable">$HADOOP_HOME</span>/tmp/name</span><br><span class="line">mkdir -p <span class="variable">$HADOOP_HOME</span>/tmp/journal</span><br><span class="line">mkdir -p <span class="variable">$HADOOP_HOME</span>/tmp/name/chkpt</span><br><span class="line">mkdir -p <span class="variable">$HADOOP_HOME</span>/tmp/ha-name-dir-shared</span><br><span class="line"></span><br><span class="line"><span class="comment"># mapred-site.xml</span></span><br><span class="line">cp <span class="variable">$HADOOP_CONF_DIR</span>/mapred-site.xml.template <span class="variable">$HADOOP_CONF_DIR</span>/mapred-site.xml</span><br><span class="line">sed -i -e <span class="string">'s/&lt;\/configuration&gt;//g'</span> <span class="variable">$HADOOP_CONF_DIR</span>/mapred-site.xml</span><br><span class="line">tee -a <span class="variable">$HADOOP_CONF_DIR</span>/mapred-site.xml &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># yarn-site.xml</span></span><br><span class="line">sed -i -e <span class="string">'s/&lt;\/configuration&gt;//g'</span> <span class="variable">$HADOOP_CONF_DIR</span>/yarn-site.xml</span><br><span class="line">tee -a <span class="variable">$HADOOP_CONF_DIR</span>/yarn-site.xml &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.nodemanager.aux-services.mapreduce.shuffle.class&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.resourcemanager.zk-address&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;192.168.0.121:2181,192.168.0.122:2181,192.168.0.123:2181&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.resourcemanager.cluster-id&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;yarn-ha&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.resourcemanager.ha.enabled&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;<span class="literal">true</span>&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.resourcemanager.ha.rm-ids&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;rm1,rm2&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.resourcemanager.hostname.rm1&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;cassSpark1&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.resourcemanager.hostname.rm2&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;cassSpark2&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.resourcemanager.recovery.enabled&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;<span class="literal">true</span>&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.resourcemanager.ha.automatic-failover.enabled&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;<span class="literal">true</span>&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.client.failover-proxy-provider&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;org.apache.hadoop.yarn.client.ConfiguredRMFailoverProxyProvider&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.resourcemanager.store.class&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 複製到各台</span></span><br><span class="line">scp -r /usr/<span class="built_in">local</span>/bigdata/hadoop tester@cassSpark2:/usr/<span class="built_in">local</span>/bigdata</span><br><span class="line">scp -r /usr/<span class="built_in">local</span>/bigdata/hadoop tester@cassSpark3:/usr/<span class="built_in">local</span>/bigdata</span><br></pre></td></tr></table></figure>
+<p>c. HBase設定</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">sed -i -e <span class="string">'s/&lt;\/configuration&gt;//g'</span> <span class="variable">$HBASE_HOME</span>/conf/hbase-site.xml</span><br><span class="line">tee -a <span class="variable">$HBASE_HOME</span>/conf/hbase-site.xml &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;hbase.rootdir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hdfs://hc1/hbase&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;hbase.cluster.distributed&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;<span class="literal">true</span>&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;3&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;192.168.0.121,192.168.0.122,192.168.0.123&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;hbase.zookeeper.property.clientPort&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;2181&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;hbase.zookeeper.property.dataDir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;file:///usr/<span class="built_in">local</span>/bigdata/zookeeper/data&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;hbase.master.port&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;60000&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 複製slaves</span></span><br><span class="line">cp <span class="variable">$HADOOP_CONF_DIR</span>/slaves <span class="variable">$HBASE_HOME</span>/conf/regionservers</span><br><span class="line"></span><br><span class="line"><span class="comment"># 複製到各台</span></span><br><span class="line">scp -r /usr/<span class="built_in">local</span>/bigdata/hbase tester@cassSpark2:/usr/<span class="built_in">local</span>/bigdata</span><br><span class="line">scp -r /usr/<span class="built_in">local</span>/bigdata/hbase tester@cassSpark3:/usr/<span class="built_in">local</span>/bigdata</span><br></pre></td></tr></table></figure>
+<ol>
+<li>啟動</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 啟動zookeeper server (設定自動啟動可以跳過)</span></span><br><span class="line">zkServer.sh start</span><br><span class="line">ssh tester@cassSpark2 <span class="string">"zkServer.sh start"</span></span><br><span class="line">ssh tester@cassSpark3 <span class="string">"zkServer.sh start"</span></span><br><span class="line"><span class="comment"># 格式化zkfc</span></span><br><span class="line">hdfs zkfc -formatZK</span><br><span class="line">ssh tester@cassSpark2 <span class="string">"hdfs zkfc -formatZK"</span></span><br><span class="line"><span class="comment"># 開啟journalnode</span></span><br><span class="line"><span class="variable">$HADOOP_HOME</span>/sbin/hadoop-daemon.sh start journalnode</span><br><span class="line">ssh tester@cassSpark2 <span class="string">"<span class="variable">$HADOOP_HOME</span>/sbin/hadoop-daemon.sh start journalnode"</span></span><br><span class="line">ssh tester@cassSpark3 <span class="string">"<span class="variable">$HADOOP_HOME</span>/sbin/hadoop-daemon.sh start journalnode"</span></span><br><span class="line"><span class="comment"># 格式化namenode，並啟動namenode (nn1)</span></span><br><span class="line">hadoop namenode -format hc1</span><br><span class="line"><span class="variable">$HADOOP_HOME</span>/sbin/hadoop-daemon.sh start namenode</span><br><span class="line"><span class="comment"># 備用namenode啟動 (nn2)</span></span><br><span class="line">ssh tester@cassSpark2 <span class="string">"hadoop namenode -format hc1"</span></span><br><span class="line">ssh tester@cassSpark2 <span class="string">"hdfs namenode -bootstrapStandby"</span></span><br><span class="line">ssh tester@cassSpark2 <span class="string">"<span class="variable">$HADOOP_HOME</span>/sbin/hadoop-daemon.sh start namenode"</span></span><br><span class="line"><span class="comment"># 啟動zkfc</span></span><br><span class="line"><span class="variable">$HADOOP_HOME</span>/sbin/hadoop-daemon.sh start zkfc</span><br><span class="line">ssh tester@cassSpark2 <span class="string">"<span class="variable">$HADOOP_HOME</span>/sbin/hadoop-daemon.sh start zkfc"</span></span><br><span class="line"><span class="comment"># 啟動datanode</span></span><br><span class="line"><span class="variable">$HADOOP_HOME</span>/sbin/hadoop-daemon.sh start datanode</span><br><span class="line">ssh tester@cassSpark2 <span class="string">"<span class="variable">$HADOOP_HOME</span>/sbin/hadoop-daemon.sh start datanode"</span></span><br><span class="line">ssh tester@cassSpark3 <span class="string">"<span class="variable">$HADOOP_HOME</span>/sbin/hadoop-daemon.sh start datanode"</span></span><br><span class="line"><span class="comment"># 啟動yarn</span></span><br><span class="line"><span class="variable">$HADOOP_HOME</span>/sbin/yarn-daemon.sh start resourcemanager</span><br><span class="line"><span class="variable">$HADOOP_HOME</span>/sbin/yarn-daemon.sh start nodemanager</span><br><span class="line">ssh tester@cassSpark2 <span class="string">"<span class="variable">$HADOOP_HOME</span>/sbin/yarn-daemon.sh start resourcemanager"</span></span><br><span class="line">ssh tester@cassSpark2 <span class="string">"<span class="variable">$HADOOP_HOME</span>/sbin/yarn-daemon.sh start nodemanager"</span></span><br><span class="line">ssh tester@cassSpark3 <span class="string">"<span class="variable">$HADOOP_HOME</span>/sbin/yarn-daemon.sh start nodemanager"</span></span><br><span class="line"><span class="comment"># 啟動HBase</span></span><br><span class="line">hbase-daemon.sh start master</span><br><span class="line">hbase-daemon.sh start regionserver</span><br><span class="line">ssh tester@cassSpark2 <span class="string">"hbase-daemon.sh start master"</span></span><br><span class="line">ssh tester@cassSpark2 <span class="string">"hbase-daemon.sh start regionserver"</span></span><br><span class="line">ssh tester@cassSpark3 <span class="string">"hbase-daemon.sh start master"</span></span><br><span class="line">ssh tester@cassSpark3 <span class="string">"hbase-daemon.sh start regionserver"</span></span><br></pre></td></tr></table></figure>
+<p>開啟之後就可以用jps去看各台開啟狀況，如果確定都沒問題之後</p>
+<p>接下來就可以往下去設定自動啟動的部分了，也可以先往下跳去測試部分</p>
+<p>這裡採用python的supervisord去協助監控service的進程，並做自動啟動的動作</p>
+<p>先安裝supervisor:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install python-setuptools</span><br><span class="line">sudo easy_install pip</span><br><span class="line">sudo pip install supervisor</span><br><span class="line"><span class="comment"># echo default config</span></span><br><span class="line">sudo mkdir /etc/supervisor</span><br><span class="line">sudo bash -c <span class="string">'echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf'</span></span><br></pre></td></tr></table></figure>
+<p>使用<code>sudo vi /etc/supervisor/supervisord.conf</code>編輯，更動下面的設定：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[inet_http_server]         ; inet (TCP) server disabled by default</span><br><span class="line">port=192.168.0.121:10088   ; (ip_address:port specifier, *:port for all iface)</span><br><span class="line">username=tester            ; (default is no username (open server))</span><br><span class="line">password=qscf12356         ; (default is no password (open server))</span><br><span class="line"></span><br><span class="line">[supervisorctl]</span><br><span class="line">serverurl=unix:///tmp/supervisor.sock ; use a unix:// URL  for a unix socket</span><br><span class="line">serverurl=http://192.168.0.121:10088 ; use an http:// url to specify an inet socket</span><br><span class="line">username=tester              ; should be same as http_username if set</span><br><span class="line">password=qscf12356          ; should be same as http_password if set</span><br><span class="line"></span><br><span class="line">[supervisord]</span><br><span class="line">environment=</span><br><span class="line">  JAVA_HOME=/usr/java/jdk1.8.0_101,</span><br><span class="line">  SCALA_HOME=/usr/local/scala/scala-2.11,</span><br><span class="line">  SPARK_HOME=/usr/local/bigdata/spark,</span><br><span class="line">  CASSANDRA_HOME=/usr/local/bigdata/cassandra,</span><br><span class="line">  ZOOKEEPER_HOME=/usr/local/bigdata/zookeeper,</span><br><span class="line">  HADOOP_HOME=/usr/local/bigdata/hadoop,</span><br><span class="line">  HADOOP_COMMON_HOME=/usr/local/bigdata/hadoop,</span><br><span class="line">  HADOOP_CONF_DIR=/usr/local/bigdata/hadoop/etc/hadoop,</span><br><span class="line">  HADOOP_COMMON_LIB_NATIVE_DIR=/usr/local/bigdata/hadoop/lib/native,</span><br><span class="line">  HADOOP_OPTS=&quot;-Djava.library.path=/usr/local/bigdata/hadoop/lib/native&quot;,</span><br><span class="line">  HBASE_HOME=/usr/local/bigdata/hbase,</span><br><span class="line">  HBASE_MANAGES_ZK=&quot;false&quot;,</span><br><span class="line">  HBASE_CLASSPATH=/usr/local/bigdata/hadoop/etc/hadoop,</span><br><span class="line">  HBASE_CONF_DIR=/usr/local/bigdata/hbase/conf</span><br></pre></td></tr></table></figure>
+<p>然後用下面的指令在設定後面追加下面的設定</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line">sudo tee -a /etc/supervisor/supervisord.conf &lt;&lt; &quot;EOF&quot;</span><br><span class="line"></span><br><span class="line">; 全部都要配置的服務</span><br><span class="line">[program:hadoop-hdfs-journalnode]</span><br><span class="line">command=/bin/bash -c &quot;$HADOOP_HOME/bin/hdfs journalnode&quot;</span><br><span class="line">stdout_logfile=/var/log/supervisor/hadoop-hdfs-journalnode-stdout.out</span><br><span class="line">stderr_logfile=/var/log/supervisor/hadoop-hdfs-journalnode-stderr.out</span><br><span class="line">autostart=true</span><br><span class="line">startsecs=5</span><br><span class="line">priority=60</span><br><span class="line"></span><br><span class="line">[program:mesos-slave]</span><br><span class="line">command=/bin/bash -c &quot;/usr/bin/mesos-init-wrapper slave&quot;</span><br><span class="line">stdout_logfile=/var/log/supervisor/mesos-slave-stdout.out</span><br><span class="line">stderr_logfile=/var/log/supervisor/mesos-slave-stderr.out</span><br><span class="line">autostart=true</span><br><span class="line">startsecs=5</span><br><span class="line">priority=80</span><br><span class="line"></span><br><span class="line">[program:hadoop-hdfs-datanode]</span><br><span class="line">command=/bin/bash -c &quot;$HADOOP_HOME/bin/hdfs datanode&quot;</span><br><span class="line">stdout_logfile=/var/log/supervisor/hadoop-hdfs-datanode-stdout.out</span><br><span class="line">stderr_logfile=/var/log/supervisor/hadoop-hdfs-datanode-stderr.out</span><br><span class="line">autostart=true</span><br><span class="line">startsecs=5</span><br><span class="line">priority=80</span><br><span class="line"></span><br><span class="line">[program:hadoop-yarn-nodemanager]</span><br><span class="line">command=/bin/bash -c &quot;$HADOOP_HOME/bin/yarn nodemanager&quot;</span><br><span class="line">stdout_logfile=/var/log/supervisor/hadoop-yarn-nodemanager-stdout.out</span><br><span class="line">stderr_logfile=/var/log/supervisor/hadoop-yarn-nodemanager-stderr.out</span><br><span class="line">autostart=true</span><br><span class="line">startsecs=5</span><br><span class="line">priority=85</span><br><span class="line"></span><br><span class="line">[program:spark-mesos-shuffle]</span><br><span class="line">command=/bin/bash -c &quot;$SPARK_HOME/bin/spark-submit --class org.apache.spark.deploy.mesos.MesosExternalShuffleService 1&quot;</span><br><span class="line">stdout_logfile=/var/log/supervisor/spark-mesos-shuffle-stdout.out</span><br><span class="line">stderr_logfile=/var/log/supervisor/spark-mesos-shuffle-stderr.out</span><br><span class="line">autostart=true</span><br><span class="line">startsecs=5</span><br><span class="line">priority=90</span><br><span class="line"></span><br><span class="line">[program:hbase-regionserver]</span><br><span class="line">command=/bin/bash -c &quot;$HBASE_HOME/bin/hbase regionserver start&quot;</span><br><span class="line">stdout_logfile=/var/log/supervisor/hbase-regionserver-stdout.out</span><br><span class="line">stderr_logfile=/var/log/supervisor/hbase-regionserver-stderr.out</span><br><span class="line">autostart=true</span><br><span class="line">startsecs=5</span><br><span class="line">priority=95</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">; 下面只有需要的node才要配置</span><br><span class="line">; zookeeper只需要配置在三台有zookeeper的電腦上</span><br><span class="line">; namenode, zkfc跟hadoop-yarn-resourcemanager只需要配置在要hdfs, yarn做HA的那兩台上面</span><br><span class="line">; mesos-master跟hbase-master只需要配置在有zookeeper的電腦上</span><br><span class="line">[program:zookeeper]</span><br><span class="line">command=/bin/bash -c &quot;$ZOOKEEPER_HOME/bin/zkServer.sh start-foreground&quot;</span><br><span class="line">stdout_logfile=/var/log/supervisor/zookeeper-stdout.out</span><br><span class="line">stderr_logfile=/var/log/supervisor/zookeeper-stderr.out</span><br><span class="line">autostart=true</span><br><span class="line">startsecs=10</span><br><span class="line">priority=50</span><br><span class="line"></span><br><span class="line">[program:mesos-master]</span><br><span class="line">command=/bin/bash -c &quot;/usr/bin/mesos-init-wrapper master&quot;</span><br><span class="line">stdout_logfile=/var/log/supervisor/mesos-master-stdout.out</span><br><span class="line">stderr_logfile=/var/log/supervisor/mesos-master-stderr.out</span><br><span class="line">autostart=true</span><br><span class="line">startsecs=5</span><br><span class="line">priority=60</span><br><span class="line"></span><br><span class="line">[program:hadoop-hdfs-namenode]</span><br><span class="line">command=/bin/bash -c &quot;$HADOOP_HOME/bin/hdfs namenode&quot;</span><br><span class="line">stdout_logfile=/var/log/supervisor/hadoop-hdfs-namenode-stdout.out</span><br><span class="line">stderr_logfile=/var/log/supervisor/hadoop-hdfs-namenode-stderr.out</span><br><span class="line">autostart=true</span><br><span class="line">startsecs=5</span><br><span class="line">priority=70</span><br><span class="line"></span><br><span class="line">[program:hadoop-hdfs-zkfc]</span><br><span class="line">command=/bin/bash -c &quot;$HADOOP_HOME/bin/hdfs zkfc&quot;</span><br><span class="line">stdout_logfile=/var/log/supervisor/hadoop-hdfs-zkfc-stdout.out</span><br><span class="line">stderr_logfile=/var/log/supervisor/hadoop-hdfs-zkfc-stderr.out</span><br><span class="line">autostart=true</span><br><span class="line">startsecs=5</span><br><span class="line">priority=75</span><br><span class="line"></span><br><span class="line">[program:hadoop-yarn-resourcemanager]</span><br><span class="line">command=/bin/bash -c &quot;$HADOOP_HOME/bin/yarn resourcemanager&quot;</span><br><span class="line">stdout_logfile=/var/log/supervisor/hadoop-yarn-resourcemanager-stdout.out</span><br><span class="line">stderr_logfile=/var/log/supervisor/hadoop-yarn-resourcemanager-stderr.out</span><br><span class="line">autostart=true</span><br><span class="line">startsecs=5</span><br><span class="line">priority=80</span><br><span class="line"></span><br><span class="line">[program:hbase-master]</span><br><span class="line">command=/bin/bash -c &quot;$HBASE_HOME/bin/hbase master start&quot;</span><br><span class="line">stdout_logfile=/var/log/supervisor/hbase-master-stdout.out</span><br><span class="line">stderr_logfile=/var/log/supervisor/hbase-master-stderr.out</span><br><span class="line">autostart=true</span><br><span class="line">startsecs=5</span><br><span class="line">priority=90</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">sudo systemctl restart supervisor.service</span><br></pre></td></tr></table></figure>
+<ol>
+<li>測試</li>
+</ol>
+<p>用網頁連到cassSpark1:50070跟cassSpark2:50070</p>
+<p>cassSpark1:50070應該會顯示是active node (或是用 <code>hdfs haadmin -getServiceState nn1</code>)</p>
+<p>cassSpark2:50070則會顯示是standby node (或是用 <code>hdfs haadmin -getServiceState nn2</code>)</p>
+<p>(根據啟動順序不同，active的node不一定就是cassSpark1)</p>
+<p>在active node上，輸入<code>sudo service hadoop-hdfs-namenode stop</code>停掉Hadoop namenode試試看</p>
+<p>(如果安裝了自動啟動，就直接在supervisor的web UI直接操作即可)</p>
+<p>等一下下，就可以看到cassSpark2:50070會變成active node，這樣hadoop的HA就完成了</p>
+<p>至於YARN的HA就連到8081去看就好(或是用 <code>yarn rmadmin -getServiceState rm1</code>, <code>yarn rmadmin -getServiceState rm2</code>)</p>
+<p>HBase則是16010，用一樣方式都可以測試到HA是否有成功</p>
+<p>至於zookeeper, hadoop其他測試就看我之前發的那篇文章即可<a href="http://chingchuan-chen.github.io/hadoop/2016/07/23/deployment-spark-phoenix-hbase-yarn-zookeeper-hadoop.html">點這</a>就好</p>
+<p>備註：版本記得改成這裡的2.7.3即可，一定要測試，不然後面出問題很難抓</p>
+<p>而且記得要重開，看看是否全部服務都如同預期一樣啟動了</p>
+<p>Reference:</p>
+<ol>
+<li><a href="http://debugo.com/yarn-rm-ha/" target="_blank" rel="noopener">http://debugo.com/yarn-rm-ha/</a></li>
+<li><a href="http://www.cnblogs.com/junrong624/p/3580477.html" target="_blank" rel="noopener">http://www.cnblogs.com/junrong624/p/3580477.html</a></li>
+<li><a href="http://www.cnblogs.com/captainlucky/p/4710642.html" target="_blank" rel="noopener">http://www.cnblogs.com/captainlucky/p/4710642.html</a></li>
+<li><a href="https://phoenix.apache.org/server.html" target="_blank" rel="noopener">https://phoenix.apache.org/server.html</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/BigData/" rel="tag"># BigData</a>
+          
+            <a href="/tags/Hadoop/" rel="tag"># Hadoop</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+          <div class="social-like">
+            
+
+            
+              <div class="fb_like">
+                <div class="fb-like" data-layout="button_count" data-share="true"></div>
+              </div>
+            
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/201609/2016-09-15-spark-assembly.html" rel="next" title="Spark assembly">
+                <i class="fa fa-chevron-left"></i> Spark assembly
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/201609/2016-09-20-apache-drill.html" rel="prev" title="Apache Drill">
+                Apache Drill <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="fb-comments"
+           data-href="http://chingchuan-chen.github.io/posts/201609/2016-09-19-return-hadoop-architecture.html"
+           data-numposts="10"
+           data-width="100%"
+           data-colorscheme="light">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Ching-Chuan Chen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">136</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ChingChuan-Chen" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zw12356@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/u/0/110171317328627391486" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/celestial0230" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-thumbs-up"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ching-Chuan Chen</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('10');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("H7MfFf5lhyq2111iytpoFtIz-gzGzoHsz", "tGTKdvBYYQCIIlvxXJGJM2cc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

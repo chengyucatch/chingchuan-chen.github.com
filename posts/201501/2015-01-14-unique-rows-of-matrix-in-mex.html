@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/earlyaccess//css?family=Noto Sans TC:300,300italic,400,400italic,700,700italic|Noto Sans TC:300,300italic,400,400italic,700,700italic|Inconsolata:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Intel C++,MatLab,mex,unique row," />
+
+
+
+
+
+
+
+
+  <meta property="fb:admins" content="celestial0230" />
+  <meta property="fb:app_id" content="418813441900729" />
+
+
+
+<meta name="description" content="This code is to find the unique rows of a matrix. It is based on the quick sort algorithm. Thanks to this, I can use MatLab to implement faster sorting of rows. I compiled this code with Microsoft Vis">
+<meta name="keywords" content="Intel C++,MatLab,mex,unique row">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Finding unique rows of a matrix in mex">
+<meta property="og:url" content="http://chingchuan-chen.github.io/posts/201501/2015-01-14-unique-rows-of-matrix-in-mex.html">
+<meta property="og:site_name" content="Celestial">
+<meta property="og:description" content="This code is to find the unique rows of a matrix. It is based on the quick sort algorithm. Thanks to this, I can use MatLab to implement faster sorting of rows. I compiled this code with Microsoft Vis">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:updated_time" content="2018-03-14T17:08:13.025Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Finding unique rows of a matrix in mex">
+<meta name="twitter:description" content="This code is to find the unique rows of a matrix. It is based on the quick sort algorithm. Thanks to this, I can use MatLab to implement faster sorting of rows. I compiled this code with Microsoft Vis">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chingchuan-chen.github.io/posts/201501/2015-01-14-unique-rows-of-matrix-in-mex.html"/>
+
+
+
+
+
+  <title>Finding unique rows of a matrix in mex | Celestial</title>
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '418813441900729',
+      xfbml      : true,
+      version    : 'v2.10'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-72564040-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Celestial</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站點地圖
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201501/2015-01-14-unique-rows-of-matrix-in-mex.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Finding unique rows of a matrix in mex</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-01-14T00:00:00+08:00">
+                2015-01-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MatLab/" itemprop="url" rel="index">
+                    <span itemprop="name">MatLab</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201501/2015-01-14-unique-rows-of-matrix-in-mex.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201501/2015-01-14-unique-rows-of-matrix-in-mex.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201501/2015-01-14-unique-rows-of-matrix-in-mex.html" class="leancloud_visitors" data-flag-title="Finding unique rows of a matrix in mex">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  1,263
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>This code is to find the unique rows of a matrix. It is based on the quick sort algorithm. Thanks to this, I can use MatLab to implement faster sorting of rows.</p>
+<p>I compiled this code with Microsoft Visual Studio 2015 and Intel Parallel Studio XE 2017 and linking to armadillo library.</p>
+<a id="more"></a>
+<p>I put files in my github (<a href="https://github.com/ChingChuan-Chen/fast-unqiue-rows" target="_blank" rel="noopener">Link</a>).</p>
+<p>My version of MatLab is 2016a. The test script:</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">A = [<span class="number">9</span> <span class="number">2</span> <span class="number">9</span> <span class="number">5</span>; <span class="number">9</span> <span class="number">2</span> <span class="number">9</span> <span class="number">0</span>; <span class="number">9</span> <span class="number">2</span> <span class="number">9</span> <span class="number">5</span>; <span class="number">9</span> <span class="number">2</span> <span class="number">9</span> <span class="number">0</span>; <span class="number">9</span> <span class="number">2</span> <span class="number">9</span> <span class="number">5</span>];</span><br><span class="line">unique_rows(A)</span><br><span class="line"><span class="comment">%      9     2     9     0</span></span><br><span class="line"><span class="comment">%      9     2     9     5</span></span><br><span class="line"></span><br><span class="line">unique(A, <span class="string">'rows'</span>)</span><br><span class="line"><span class="comment">%      9     2     9     0</span></span><br><span class="line"><span class="comment">%      9     2     9     5</span></span><br></pre></td></tr></table></figure>
+<p>The compile script:</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">MKLROOT = <span class="string">'C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2017.1.143\windows\mkl'</span>;</span><br><span class="line">ICLLIB = <span class="string">'C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2017.1.143\windows\compiler\lib\intel64_win'</span>;</span><br><span class="line">OPTIMFLAGS = <span class="string">'OPTIMFLAGS= /O3 /DNDEBUG /QxHost /Qparallel /Qopenmp /Qprec-div- /Qipo /Qinline-calloc'</span>;</span><br><span class="line">LINKER = <span class="string">'LINKER=xilink'</span>;</span><br><span class="line">mex(<span class="string">'-f'</span>, <span class="string">'intel_cpp_17_vs2015.xml'</span>, <span class="string">'-v'</span>, <span class="string">'-largeArrayDims'</span>, <span class="string">'-IC:\armadillo-7.800.2\include'</span>, ...</span><br><span class="line">    [<span class="string">'-I'</span>, MKLROOT, <span class="string">'\include'</span>], [<span class="string">'-L'</span>, MKLROOT, <span class="string">'\lib\intel64'</span>], [<span class="string">'-L'</span>, ICLLIB], ...</span><br><span class="line">    <span class="string">'test_mkl_blas.cpp'</span>, OPTIMFLAGS, LINKER, <span class="string">'-lmkl_intel_lp64'</span>, <span class="string">'-lmkl_intel_thread'</span>, ...</span><br><span class="line">    <span class="string">'-lmkl_core'</span>, <span class="string">'-llibiomp5md'</span>)</span><br></pre></td></tr></table></figure>
+<p>My mex setup file (intel_cpp_17_vs2015.xml):</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">config</span></span></span><br><span class="line"><span class="tag">    <span class="attr">Name</span>=<span class="string">"Intel C++ Composer XE 2017 with Microsoft Visual Studio 2015"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">ShortName</span>=<span class="string">"IntelCPP15MSVCPP140"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">Manufacturer</span>=<span class="string">"Intel"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">Version</span>=<span class="string">"17.0"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">Language</span>=<span class="string">"C++"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">Priority</span>=<span class="string">"A"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">Location</span>=<span class="string">"$CPPROOT"</span> &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Details</span></span></span><br><span class="line"><span class="tag">        <span class="attr">CompilerExecutable</span>=<span class="string">"$COMPILER"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">CompilerDefines</span>=<span class="string">"$COMPDEFINES"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">CompilerFlags</span>=<span class="string">"$COMPFLAGS"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">OptimizationFlags</span>=<span class="string">"$OPTIMFLAGS"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">DebugFlags</span>=<span class="string">"$DEBUGFLAGS"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">IncludeFlags</span>=<span class="string">"$INCLUDE"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">LinkerExecutable</span>=<span class="string">"$LINKER"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">LinkerFlags</span>=<span class="string">"$LINKFLAGS"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">LinkerLibraries</span>=<span class="string">"$LINKLIBS"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">LinkerDebugFlags</span>=<span class="string">"$LINKDEBUGFLAGS"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">LinkerOptimizationFlags</span>=<span class="string">"$LINKOPTIMFLAGS"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">CommandLineShell</span>=<span class="string">"$CPPROOT\bin\iclvars.bat "</span></span></span><br><span class="line"><span class="tag">        <span class="attr">CommandLineShellArg</span>=<span class="string">"intel64 vs2015"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">CompilerDefineFormatter</span>=<span class="string">"/D%s"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">LinkerLibrarySwitchFormatter</span>=<span class="string">"lib%s.lib;%s.lib"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">LinkerPathFormatter</span>=<span class="string">"/LIBPATH:%s"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">LibrarySearchPath</span>=<span class="string">"$$LIB;$$LIBPATH;$$PATH;$$INCLUDE;$MATLABROOT\extern\lib\$ARCH\microsoft"</span></span></span><br><span class="line"><span class="tag">    /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Switch guide: http://msdn.microsoft.com/en-us/library/fwkeyyhe(v=vs.71).aspx --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">vars</span></span></span><br><span class="line"><span class="tag">          <span class="attr">CMDLINE100</span>=<span class="string">"$COMPILER /c $COMPFLAGS $OPTIM $COMPDEFINES $INCLUDE $SRC /Fo$OBJ"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">CMDLINE200</span>=<span class="string">"$LINKER $LINKFLAGS $LINKTYPE $LINKOPTIM $LINKEXPORT $OBJS $LINKLIBS /out:$EXE"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">CMDLINE250</span>=<span class="string">"mt -outputresource:$EXE;2 -manifest $MANIFEST"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">CMDLINE300</span>=<span class="string">"del $EXP $LIB $MANIFEST $ILK"</span></span></span><br><span class="line"><span class="tag"> </span></span><br><span class="line"><span class="tag">          <span class="attr">COMPILER</span>=<span class="string">"icl"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">COMPFLAGS</span>=<span class="string">"/Zp8 /GR /W3 /EHs /nologo /MD"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">COMPDEFINES</span>=<span class="string">"/D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0 $MATLABMEX"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">MATLABMEX</span>=<span class="string">" /DMATLAB_MEX_FILE"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">OPTIMFLAGS</span>=<span class="string">"/O2 /DNDEBUG"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">INCLUDE</span>=<span class="string">"-I&amp;quot;$MATLABROOT\extern\include&amp;quot; -I&amp;quot;$MATLABROOT\simulink\include&amp;quot;"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">DEBUGFLAGS</span>=<span class="string">"/Z7"</span></span></span><br><span class="line"><span class="tag"> </span></span><br><span class="line"><span class="tag">          <span class="attr">LINKER</span>=<span class="string">"link"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">LINKFLAGS</span>=<span class="string">"/nologo /manifest "</span></span></span><br><span class="line"><span class="tag">          <span class="attr">LINKTYPE</span>=<span class="string">"/DLL"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">LINKEXPORT</span>=<span class="string">"/EXPORT:mexFunction"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">LINKLIBS</span>=<span class="string">"/LIBPATH:&amp;quot;$MATLABROOT\extern\lib\$ARCH\microsoft&amp;quot; libmx.lib libmex.lib libmat.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">LINKDEBUGFLAGS</span>=<span class="string">"/debug /PDB:&amp;quot;$TEMPNAME$LDEXT.pdb&amp;quot;"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">LINKOPTIMFLAGS</span>=<span class="string">""</span></span></span><br><span class="line"><span class="tag"> </span></span><br><span class="line"><span class="tag">          <span class="attr">OBJEXT</span>=<span class="string">".obj"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">LDEXT</span>=<span class="string">".mexw64"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">SETENV</span>=<span class="string">"set COMPILER=$COMPILER</span></span></span><br><span class="line"><span class="tag"><span class="string">                set COMPFLAGS=/c $COMPFLAGS $COMPDEFINES $MATLABMEX</span></span></span><br><span class="line"><span class="tag"><span class="string">                set OPTIMFLAGS=$OPTIMFLAGS</span></span></span><br><span class="line"><span class="tag"><span class="string">                set DEBUGFLAGS=$DEBUGFLAGS</span></span></span><br><span class="line"><span class="tag"><span class="string">                set LINKER=$LINKER</span></span></span><br><span class="line"><span class="tag"><span class="string">                set LINKFLAGS=$LINKFLAGS /export:%ENTRYPOINT% $LINKTYPE $LINKLIBS $LINKEXPORT</span></span></span><br><span class="line"><span class="tag"><span class="string">                set LINKDEBUGFLAGS=/debug /PDB:&amp;quot;%OUTDIR%%MEX_NAME%$LDEXT.pdb&amp;quot;</span></span></span><br><span class="line"><span class="tag"><span class="string">                set NAME_OUTPUT=/out:&amp;quot;%OUTDIR%%MEX_NAME%%MEX_EXT%&amp;quot;"</span></span></span><br><span class="line"><span class="tag">    /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">client</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">engine</span></span></span><br><span class="line"><span class="tag">          <span class="attr">LINKLIBS</span>=<span class="string">"$LINKLIBS libeng.lib"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">LINKEXPORT</span>=<span class="string">""</span></span></span><br><span class="line"><span class="tag">          <span class="attr">LDEXT</span>=<span class="string">".exe"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">LINKTYPE</span>=<span class="string">""</span></span></span><br><span class="line"><span class="tag">          <span class="attr">MATLABMEX</span>=<span class="string">""</span></span></span><br><span class="line"><span class="tag">        /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">client</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">locationFinder</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- CPPROOT=C:\Program Files (x86)\IntelSWTools\compilers_and_libraries\windows\ --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">CPPROOT</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">and</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">envVarExists</span> <span class="attr">name</span>=<span class="string">"ICPP_COMPILER17"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">fileExists</span> <span class="attr">name</span>=<span class="string">"$$\Bin\intel64\icl.exe"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dirExists</span> <span class="attr">name</span>=<span class="string">"$$\..\.."</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">and</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">CPPROOT</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- VCROOT=C:\Program Files (x86)\Microsoft Visual Studio 14.0\ --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">VCROOT</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">and</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">or</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">hklmExists</span> <span class="attr">path</span>=<span class="string">"SOFTWARE\Microsoft\VisualStudio\SxS\VC7"</span> <span class="attr">name</span>=<span class="string">"14.0"</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">hkcuExists</span> <span class="attr">path</span>=<span class="string">"SOFTWARE\Microsoft\VisualStudio\SxS\VC7"</span> <span class="attr">name</span>=<span class="string">"14.0"</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">hklmExists</span> <span class="attr">path</span>=<span class="string">"SOFTWARE\Wow6432Node\Microsoft\VisualStudio\SxS\VC7"</span> <span class="attr">name</span>=<span class="string">"14.0"</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">hkcuExists</span> <span class="attr">path</span>=<span class="string">"SOFTWARE\Wow6432Node\Microsoft\VisualStudio\SxS\VC7"</span> <span class="attr">name</span>=<span class="string">"14.0"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">or</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">fileExists</span> <span class="attr">name</span>=<span class="string">"$$\bin\amd64\cl.exe"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dirExists</span> <span class="attr">name</span>=<span class="string">"$$\..\.."</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">and</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">VCROOT</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- SDKROOT=C:\Program Files (x86)\Windows Kits\8.1\ --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">SDKROOT</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">or</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">hklmExists</span> <span class="attr">path</span>=<span class="string">"SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.1"</span> <span class="attr">name</span>=<span class="string">"InstallationFolder"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">hkcuExists</span> <span class="attr">path</span>=<span class="string">"SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.1"</span> <span class="attr">name</span>=<span class="string">"InstallationFolder"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">hklmExists</span> <span class="attr">path</span>=<span class="string">"SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v8.1"</span> <span class="attr">name</span>=<span class="string">"InstallationFolder"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">hkcuExists</span> <span class="attr">path</span>=<span class="string">"SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v8.1"</span> <span class="attr">name</span>=<span class="string">"InstallationFolder"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">or</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">SDKROOT</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- KITSROOT=C:\Program Files (x86)\Windows Kits\10 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">KITSROOT</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">or</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">hklmExists</span> <span class="attr">path</span>=<span class="string">"SOFTWARE\Microsoft\Windows Kits\Installed Roots"</span> <span class="attr">name</span>=<span class="string">"KitsRoot10"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">hkcuExists</span> <span class="attr">path</span>=<span class="string">"SOFTWARE\Microsoft\Windows Kits\Installed Roots"</span> <span class="attr">name</span>=<span class="string">"KitsRoot10"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">hklmExists</span> <span class="attr">path</span>=<span class="string">"SOFTWARE\Wow6432Node\Microsoft\Windows Kits\Installed Roots"</span> <span class="attr">name</span>=<span class="string">"KitsRoot10"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">hkcuExists</span> <span class="attr">path</span>=<span class="string">"SOFTWARE\Wow6432Node\Microsoft\Windows Kits\Installed Roots"</span> <span class="attr">name</span>=<span class="string">"KitsRoot10"</span> /&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">or</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">KITSROOT</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">locationFinder</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">env</span></span></span><br><span class="line"><span class="tag">        <span class="attr">PATH</span>=<span class="string">"$CPPROOT\bin\intel64;$VCROOT\bin\amd64;$VCROOT\vcpackages;$VCROOT\..\Common7\IDE;$VCROOT\..\Common7\Tools;$SDKROOT\bin\x64;"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">INCLUDE</span>=<span class="string">"$CPPROOT\compiler\include;$VCROOT\include;$VCROOT\ATLMFC\INCLUDE;$KITSROOT\include\10.0.10240.0\ucrt;$SDKROOT\Include\shared;$SDKROOT\Include\um;$SDKROOT\Include\winrt;$MATLABROOT\extern\include;"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">LIB</span>=<span class="string">"$CPPROOT\compiler\lib\intel64;$VCROOT\lib\amd64;$VCROOT\ATLMFC\Lib\amd64;$KITSROOT\Lib\10.0.10240.0\ucrt\x64;$SDKROOT\Lib\winv6.3\um\x64;$MATLABROOT\lib\win64;"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">LIBPATH</span>=<span class="string">"$CPPROOT\compiler\lib\intel64;$VCROOT\lib\amd64;$VCROOT\atlmfc\lib\amd64;$SDKROOT\Lib\winv6.3\um\x64;$MATLABROOT\extern\lib\win64;"</span></span></span><br><span class="line"><span class="tag">    /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// import header files</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;omp.h&gt;</span></span></span><br><span class="line"><span class="comment">// use armadillo</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ARMA_USE_MKL_ALLOC</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;armadillo&gt;</span></span></span><br><span class="line"><span class="comment">// include matlab mex header files</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"mex.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"matrix.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> arma;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">armaSetPr</span><span class="params">(mxArray *matlabMatrix, <span class="keyword">const</span> Mat&lt;<span class="keyword">double</span>&gt;&amp; armaMatrix)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> *dst_pointer = mxGetPr(matlabMatrix);</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> *src_pointer = armaMatrix.memptr();</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">memcpy</span>(dst_pointer, src_pointer, <span class="keyword">sizeof</span>(<span class="keyword">double</span>)*armaMatrix.n_elem);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">compare_vec</span><span class="params">(<span class="keyword">const</span> rowvec&amp; mat_row, <span class="keyword">const</span> rowvec&amp; pivot_row)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> v = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (uword i = <span class="number">0</span>; i &lt; mat_row.n_elem; i++)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> (mat_row(i) &lt; pivot_row(i))</span><br><span class="line">      v = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (mat_row(i) &gt; pivot_row(i))</span><br><span class="line">      v = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">if</span> (v != <span class="number">0</span>)</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> v;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sortrows_f</span><span class="params">(mat&amp; M, <span class="keyword">const</span> <span class="keyword">int</span> left, <span class="keyword">const</span> <span class="keyword">int</span> right)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (left &lt; right)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">int</span> i = left, j = right;</span><br><span class="line">    uword mid_loc = (uword) (left+right)/<span class="number">2</span>, pivot_loc = mid_loc;</span><br><span class="line">    <span class="keyword">if</span> (right - left &gt; <span class="number">5</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      uvec sortIndex = stable_sort_index(M.col(<span class="number">0</span>).subvec(mid_loc<span class="number">-2</span>, mid_loc+<span class="number">2</span>));</span><br><span class="line">      pivot_loc = as_scalar(find(sortIndex == <span class="number">2</span>)) + mid_loc - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    rowvec pivot_row = M.row(pivot_loc);</span><br><span class="line">    <span class="keyword">while</span> (i &lt;= j)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">while</span> (compare_vec(M.row( (uword) i), pivot_row) == <span class="number">1</span>)</span><br><span class="line">        i++;</span><br><span class="line">      <span class="keyword">while</span> (compare_vec(M.row( (uword) j), pivot_row) == <span class="number">-1</span>)</span><br><span class="line">        j--;</span><br><span class="line">      <span class="keyword">if</span> (i &lt;= j)</span><br><span class="line">      &#123;</span><br><span class="line">        M.swap_rows((uword) i, (uword) j);</span><br><span class="line">        i++;</span><br><span class="line">        j--;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (j &gt; <span class="number">0</span>)</span><br><span class="line">      sortrows_f(M, left, j);</span><br><span class="line">    <span class="keyword">if</span> (i &lt; (<span class="keyword">int</span>) M.n_rows - <span class="number">1</span>)</span><br><span class="line">      sortrows_f(M, i, right);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mexFunction</span><span class="params">(<span class="keyword">int</span> nlhs, mxArray *plhs[], <span class="keyword">int</span> nrhs, <span class="keyword">const</span> mxArray *prhs[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    arma_rng::set_seed_random();</span><br><span class="line">    <span class="keyword">int</span> max_threads_mkl = mkl_get_max_threads();</span><br><span class="line">    mkl_set_num_threads(max_threads_mkl);</span><br><span class="line"></span><br><span class="line">    mat x = Mat&lt;<span class="keyword">double</span>&gt;(mxGetPr(prhs[<span class="number">0</span>]), (uword) mxGetM(prhs[<span class="number">0</span>]), (uword) mxGetN(prhs[<span class="number">0</span>]), <span class="literal">false</span>, <span class="literal">true</span>);</span><br><span class="line">    sortrows_f(x, <span class="number">0</span>, x.n_rows - <span class="number">1</span>);</span><br><span class="line">    </span><br><span class="line">    uvec unique_v = join_cols(ones&lt;uvec&gt;(<span class="number">1</span>), any(x.rows(<span class="number">0</span>, x.n_rows<span class="number">-2</span>) != x.rows(<span class="number">1</span>, x.n_rows<span class="number">-1</span>), <span class="number">1</span>));</span><br><span class="line">    mat output = x.rows(find(unique_v));</span><br><span class="line">    plhs[<span class="number">0</span>] = mxCreateDoubleMatrix(output.n_rows, output.n_cols, mxREAL);</span><br><span class="line">    armaSetPr(plhs[<span class="number">0</span>], output);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Intel-C/" rel="tag"># Intel C++</a>
+          
+            <a href="/tags/MatLab/" rel="tag"># MatLab</a>
+          
+            <a href="/tags/mex/" rel="tag"># mex</a>
+          
+            <a href="/tags/unique-row/" rel="tag"># unique row</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+          <div class="social-like">
+            
+
+            
+              <div class="fb_like">
+                <div class="fb-like" data-layout="button_count" data-share="true"></div>
+              </div>
+            
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/201408/2014-08-20-tables-combining.html" rel="next" title="Tables combining">
+                <i class="fa fa-chevron-left"></i> Tables combining
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/201501/2015-01-18-Implementation-for-summing-a-list-of-matrices.html" rel="prev" title="Implementation for summing a list of matrices">
+                Implementation for summing a list of matrices <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="fb-comments"
+           data-href="http://chingchuan-chen.github.io/posts/201501/2015-01-14-unique-rows-of-matrix-in-mex.html"
+           data-numposts="10"
+           data-width="100%"
+           data-colorscheme="light">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Ching-Chuan Chen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">136</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ChingChuan-Chen" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zw12356@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/u/0/110171317328627391486" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/celestial0230" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-thumbs-up"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ching-Chuan Chen</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('10');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("H7MfFf5lhyq2111iytpoFtIz-gzGzoHsz", "tGTKdvBYYQCIIlvxXJGJM2cc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

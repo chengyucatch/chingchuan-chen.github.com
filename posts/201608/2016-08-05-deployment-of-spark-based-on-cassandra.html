@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/earlyaccess//css?family=Noto Sans TC:300,300italic,400,400italic,700,700italic|Noto Sans TC:300,300italic,400,400italic,700,700italic|Inconsolata:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="BigData,Spark,Cassandra," />
+
+
+
+
+
+
+
+
+  <meta property="fb:admins" content="celestial0230" />
+  <meta property="fb:app_id" content="418813441900729" />
+
+
+
+<meta name="description" content="之前的部屬是base on hadoop所建立的spark環境 這一篇會從頭建立基於cassandra的spark環境">
+<meta name="keywords" content="BigData,Spark,Cassandra">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基於Cassandra的spark環境部署">
+<meta property="og:url" content="http://chingchuan-chen.github.io/posts/201608/2016-08-05-deployment-of-spark-based-on-cassandra.html">
+<meta property="og:site_name" content="Celestial">
+<meta property="og:description" content="之前的部屬是base on hadoop所建立的spark環境 這一篇會從頭建立基於cassandra的spark環境">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:updated_time" content="2018-03-14T16:55:37.472Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基於Cassandra的spark環境部署">
+<meta name="twitter:description" content="之前的部屬是base on hadoop所建立的spark環境 這一篇會從頭建立基於cassandra的spark環境">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chingchuan-chen.github.io/posts/201608/2016-08-05-deployment-of-spark-based-on-cassandra.html"/>
+
+
+
+
+
+  <title>基於Cassandra的spark環境部署 | Celestial</title>
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '418813441900729',
+      xfbml      : true,
+      version    : 'v2.10'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-72564040-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Celestial</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站點地圖
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201608/2016-08-05-deployment-of-spark-based-on-cassandra.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">基於Cassandra的spark環境部署</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-08-05T00:00:00+08:00">
+                2016-08-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/BigData/" itemprop="url" rel="index">
+                    <span itemprop="name">BigData</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201608/2016-08-05-deployment-of-spark-based-on-cassandra.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201608/2016-08-05-deployment-of-spark-based-on-cassandra.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201608/2016-08-05-deployment-of-spark-based-on-cassandra.html" class="leancloud_visitors" data-flag-title="基於Cassandra的spark環境部署">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  2,653
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>之前的部屬是base on hadoop所建立的spark環境</p>
+<p>這一篇會從頭建立基於cassandra的spark環境</p>
+<a id="more"></a>
+<p>一樣是透過VM安裝minimal system of centos</p>
+<p>再部署好其中一台做為spark的master，將該台的映像檔做clone，變成slaves</p>
+<p>Cassandra則部署到全部的節點上</p>
+<ol>
+<li><p>準備工作</p>
+<ol>
+<li>安裝好VMware，然後新增一台VM (網路連接方式使用bridged即可)，引進centos 7.2安裝映像檔</li>
+<li>安裝centos的時候先將一些設定configure好，之後就不需要用小黑框慢慢config了</li>
+<li>先設置網路，第一個分頁的自動連線打勾、第四頁的IPv4選Manual，填上IP、Net mask、Gateway跟DNS，接著點進硬碟確定配置，然後設定時區(你可以不設定，就用美國紐約)</li>
+<li>按下一步安裝，此時可以新增使用者跟設置root密碼，我這裡新增一個使用者tester</li>
+</ol>
+</li>
+</ol>
+<p>安裝後重開機後，先幫你自己的使用者帳號開權限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">su <span class="comment"># 切換到root</span></span><br><span class="line">visudo <span class="comment"># 打開設定檔</span></span><br><span class="line"><span class="comment"># 打/root\tALL找到這行 root ALL=(ALL) ALL</span></span><br><span class="line"><span class="comment"># 在下面新增 tester ALL=(ALL) ALL</span></span><br></pre></td></tr></table></figure>
+<p>而ssh已經有了，就不用安裝了，直接產生key：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 產生SSH Key</span></span><br><span class="line">ssh-keygen -t rsa -P <span class="string">""</span></span><br><span class="line"><span class="comment"># 授權SSH Key</span></span><br><span class="line">cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 設定.ssh的權限</span></span><br><span class="line">sudo chmod 700 /home/tester</span><br><span class="line">sudo chmod 700 /home/tester/.ssh</span><br><span class="line">sudo chmod 644 /home/tester/.ssh/authorized_keys</span><br><span class="line">sudo chmod 600 /home/tester/.ssh/id_rsa</span><br><span class="line">sudo service sshd restart</span><br></pre></td></tr></table></figure>
+<p>再來是讓電腦認得自己，並讓其他電腦認得自己</p>
+<p><code>echo &quot;cassSpark1&quot; | sudo tee /etc/hostname</code> (每台電腦用不同名字)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo tee -a /etc/hosts &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line">192.168.0.121 cassSpark1</span><br><span class="line">192.168.0.122 cassSpark2</span><br><span class="line">192.168.0.123 cassSpark3</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>最後是斷掉防火牆</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop firewalld</span><br><span class="line">sudo systemctl <span class="built_in">disable</span> firewalld</span><br></pre></td></tr></table></figure>
+<p>然後用<code>sudo reboot</code>重開機</p>
+<ol>
+<li>開始部署</li>
+</ol>
+<p>Note: spark-cassandra-connector 1.6是用spark 1.6.1, scala 2.10.5編譯出來的</p>
+<p>所以我這版本就用一樣的，避免版本不同，沒有align情況下出現methodNotFound的exception</p>
+<p>i. 下載檔案並移到適當位置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir /usr/<span class="built_in">local</span>/bigdata</span><br><span class="line">sudo chown -R tester /usr/<span class="built_in">local</span>/bigdata</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下載並安裝java</span></span><br><span class="line">curl -v -j -k -L -H <span class="string">"Cookie: oraclelicense=accept-securebackup-cookie"</span> http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-x64.rpm -o jdk-8u101-linux-x64.rpm</span><br><span class="line">sudo yum install -y jdk-8u101-linux-x64.rpm</span><br><span class="line"><span class="comment"># 下載並部署scala</span></span><br><span class="line">curl -v -j -k -L http://downloads.lightbend.com/scala/2.10.5/scala-2.10.5.tgz -o scala-2.10.5.tgz</span><br><span class="line">tar -zxvf scala-2.10.5.tgz</span><br><span class="line">sudo mkdir /usr/<span class="built_in">local</span>/scala</span><br><span class="line">sudo mv scala-2.10.5 /usr/<span class="built_in">local</span>/scala/scala-2.10</span><br><span class="line"><span class="comment"># 下載並部署spark</span></span><br><span class="line">curl -v -j -k -L http://d3kbcqa49mib13.cloudfront.net/spark-1.6.1-bin-hadoop2.6.tgz -o spark-1.6.1-bin-hadoop2.6.tgz</span><br><span class="line">tar -zxvf spark-1.6.1-bin-hadoop2.6.tgz</span><br><span class="line">mv spark-1.6.1-bin-hadoop2.6 /usr/<span class="built_in">local</span>/bigdata/spark</span><br><span class="line"><span class="comment"># 下載並部署cassandra</span></span><br><span class="line">curl -v -j -k -L http://apache.stu.edu.tw/cassandra/2.2.7/apache-cassandra-2.2.7-bin.tar.gz -o apache-cassandra-2.2.7-bin.tar.gz</span><br><span class="line">tar -zxvf apache-cassandra-2.2.7-bin.tar.gz</span><br><span class="line">mv apache-cassandra-2.2.7 /usr/<span class="built_in">local</span>/bigdata/cassandra</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果不是VM，實體可以一台下載之後用scp</span></span><br><span class="line"><span class="comment"># scp -r /usr/local/bigdata/* tester@cassSpark2:/usr/local/bigdata</span></span><br><span class="line"><span class="comment"># scp -r /usr/local/bigdata/* tester@cassSpark3:/usr/local/bigdata</span></span><br></pre></td></tr></table></figure>
+<p>ii. 環境變數設置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo tee -a /etc/bashrc &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line"><span class="comment"># JAVA</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/java/jdk1.8.0_101</span><br><span class="line"><span class="comment"># SCALA</span></span><br><span class="line"><span class="built_in">export</span> SCALA_HOME=/usr/<span class="built_in">local</span>/scala/scala-2.10</span><br><span class="line"><span class="comment"># SPARK</span></span><br><span class="line"><span class="built_in">export</span> SPARK_HOME=/usr/<span class="built_in">local</span>/bigdata/spark</span><br><span class="line"><span class="comment"># CASSANDRA</span></span><br><span class="line"><span class="built_in">export</span> CASSANDRA_HOME=/usr/<span class="built_in">local</span>/bigdata/cassandra</span><br><span class="line"><span class="comment"># PATH</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>:<span class="variable">$SPARK_HOME</span>/bin:<span class="variable">$SPARK_HOME</span>/sbin:<span class="variable">$CASSANDRA_HOME</span>/bin</span><br><span class="line">EOF</span><br><span class="line"><span class="built_in">source</span> /etc/bashrc</span><br></pre></td></tr></table></figure>
+<p>iii. 配置scala and spark</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 複製hadoop的slaves</span></span><br><span class="line">tee <span class="variable">$SPARK_HOME</span>/conf/slaves &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line">cassSpark1</span><br><span class="line">cassSpark2</span><br><span class="line">cassSpark3</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 複製檔案</span></span><br><span class="line">cp <span class="variable">$SPARK_HOME</span>/conf/spark-env.sh.template <span class="variable">$SPARK_HOME</span>/conf/spark-env.sh</span><br><span class="line">cp <span class="variable">$SPARK_HOME</span>/conf/log4j.properties.template <span class="variable">$SPARK_HOME</span>/conf/log4j.properties</span><br><span class="line">cp <span class="variable">$SPARK_HOME</span>/conf/spark-defaults.conf.template <span class="variable">$SPARK_HOME</span>/conf/spark-defaults.conf</span><br><span class="line"><span class="comment"># 傳入設定</span></span><br><span class="line">tee -a <span class="variable">$SPARK_HOME</span>/conf/spark-env.sh &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line">SPARK_MASTER_IP=cassSpark1</span><br><span class="line">SPARK_LOCAL_DIRS=/usr/<span class="built_in">local</span>/bigdata/spark</span><br><span class="line">SPARK_DRIVER_MEMORY=3G</span><br><span class="line">SPARK_WORKER_CORES=2</span><br><span class="line">SPARK_WORKER_MEMORY=3g</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># download dependencies of spark-cassandra-connector</span></span><br><span class="line">mkdir <span class="variable">$SPARK_HOME</span>/extraClass</span><br><span class="line"></span><br><span class="line">curl -v -j -k -L http://search.maven.org/remotecontent?filepath=org/apache/ivy/ivy/2.4.0/ivy-2.4.0.jar -o ivy-2.4.0.jar</span><br><span class="line">curl -v -j -k -L http://search.maven.org/remotecontent?filepath=org/apache/ivy/ivy/2.4.0/ivy-2.4.0.jar -o ivy-2.4.0.jar</span><br><span class="line">curl -v -j -k -L http://search.maven.org/remotecontent?filepath=com/datastax/spark/spark-cassandra-connector_2.10/1.6.0/spark-cassandra-connector_2.10-1.6.0.jar  -o spark-cassandra-connector_2.10-1.6.0.jar</span><br><span class="line"><span class="comment"># remove spark-related jar</span></span><br><span class="line">rm spark-catalyst_2.10-1.6.1.jar</span><br><span class="line">rm spark-core_2.10-1.6.1.jar</span><br><span class="line">rm spark-hive_2.10-1.6.1.jar</span><br><span class="line">rm spark-launcher_2.10-1.6.1.jar</span><br><span class="line">rm spark-network-common_2.10-1.6.1.jar</span><br><span class="line">rm spark-network-shuffle_2.10-1.6.1.jar</span><br><span class="line">rm spark-sql_2.10-1.6.1.jar</span><br><span class="line">rm spark-streaming_2.10-1.6.1.jar</span><br><span class="line">rm spark-unsafe_2.10-1.6.1.jar</span><br><span class="line">rm datanucleus-*</span><br><span class="line"></span><br><span class="line">java -jar ivy-2.3.0.jar -dependency com.datastax.cassandra spark-cassandra-connector_2.10 1.6.0 -retrieve <span class="string">"[artifact]-[revision](-[classifier]).[ext]"</span></span><br><span class="line">rm -f *-&#123;sources,javadoc&#125;.jar</span><br><span class="line"></span><br><span class="line"><span class="comment"># add jars to spark-defaults.conf</span></span><br><span class="line">jarsToImport=$(<span class="built_in">echo</span> <span class="variable">$SPARK_HOME</span>/extraClass/*.jar | sed <span class="string">'s/ /:/g'</span>)</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"spark.executor.extraClassPath <span class="variable">$jarsToImport</span>"</span> &gt;&gt; <span class="variable">$SPARK_HOME</span>/conf/spark-defaults.conf</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"spark.driver.extraClassPath <span class="variable">$jarsToImport</span>"</span> &gt;&gt; <span class="variable">$SPARK_HOME</span>/conf/spark-defaults.conf</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"spark.driver.extraLibraryPath <span class="variable">$SPARK_HOME</span>/extraClass"</span> &gt;&gt; <span class="variable">$SPARK_HOME</span>/conf/spark-defaults.conf</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"spark.executor.extraLibraryPath <span class="variable">$SPARK_HOME</span>/extraClass"</span> &gt;&gt; <span class="variable">$SPARK_HOME</span>/conf/spark-defaults.conf</span><br><span class="line">jarsToImport2=$(<span class="built_in">echo</span> <span class="variable">$SPARK_HOME</span>/extraClass/*.jar | sed <span class="string">'s/ /,/g'</span>)</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"spark.jars <span class="variable">$jarsToImport2</span>"</span> &gt;&gt; <span class="variable">$SPARK_HOME</span>/conf/spark-defaults.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 複製到各台</span></span><br><span class="line">scp -r /usr/<span class="built_in">local</span>/bigdata/spark tester@cassSpark2:/usr/<span class="built_in">local</span>/bigdata</span><br><span class="line">scp -r /usr/<span class="built_in">local</span>/bigdata/spark tester@cassSpark3:/usr/<span class="built_in">local</span>/bigdata</span><br></pre></td></tr></table></figure>
+<p>iv. slaves的部署</p>
+<p>因為是VM，所以剩下的就是把映像檔clone複製成各個nodes，然後針對需要個別配置的地方做配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 改hostname</span></span><br><span class="line">sudo vi /etc/hostname</span><br><span class="line"><span class="comment"># 改網路設定</span></span><br><span class="line">sudo vi /etc/sysconfig/network-scripts/ifcfg-eno16777736</span><br><span class="line"><span class="comment"># 配置玩各台電腦，並透過`sudo service network restart`重啟網路服務後</span></span><br><span class="line"><span class="comment"># 生成新的SSH key</span></span><br><span class="line">ssh-keygen -t rsa -P <span class="string">""</span></span><br><span class="line"><span class="comment"># 在sparkServer0，把他的ssh key傳到各台電腦去</span></span><br><span class="line">tee run.sh &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="keyword">for</span> hostname <span class="keyword">in</span> `cat <span class="variable">$SPARK_HOME</span>/conf/slaves`; <span class="keyword">do</span></span><br><span class="line">  ssh-copy-id -i ~/.ssh/id_rsa.pub <span class="variable">$hostname</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">EOF</span><br><span class="line">bash ./run.sh</span><br></pre></td></tr></table></figure>
+<p>v. 設置Cassandra</p>
+<p>使用<code>vi $CASSANDRA_HOME/conf/cassandra.yaml</code>去改設定檔，改的部分如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># first place:</span></span><br><span class="line"><span class="attr">cluster_name:</span> <span class="string">'cassSparkServer'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># second place:</span></span><br><span class="line"><span class="attr">seed_provider:</span></span><br><span class="line"><span class="attr">    - class_name:</span> <span class="string">org.apache.cassandra.locator.SimpleSeedProvider</span></span><br><span class="line"><span class="attr">      parameters:</span></span><br><span class="line"><span class="attr">          - seeds:</span> <span class="string">"192.168.0.121,192.168.0.122,192.168.0.123"</span></span><br><span class="line">          </span><br><span class="line"><span class="comment"># third place:</span></span><br><span class="line"><span class="attr">listen_address:</span> <span class="number">192.168</span><span class="number">.0</span><span class="number">.121</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># fourth place:</span></span><br><span class="line"><span class="attr">rpc_address:</span> <span class="number">192.168</span><span class="number">.0</span><span class="number">.121</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># fifth place:</span></span><br><span class="line"><span class="attr">endpoint_snitch:</span> <span class="string">GossipingPropertyFileSnitch</span></span><br></pre></td></tr></table></figure>
+<p>設置多台的做法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">scp -rp $CASSANDRA_HOME/* tester@cassSpark2:/usr/local/bigdata/cassandra</span><br><span class="line">scp -rp $CASSANDRA_HOME/* tester@cassSpark3:/usr/local/bigdata/cassandra</span><br><span class="line">ssh tester@cassSpark2 &quot;sed -i -e &apos;s/: 192.168.0.121/: 192.168.0.122/g&apos; /usr/local/bigdata/cassandra/conf/cassandra.yaml&quot;</span><br><span class="line">ssh tester@cassSpark3 &quot;sed -i -e &apos;s/: 192.168.0.121/: 192.168.0.123/g&apos; /usr/local/bigdata/cassandra/conf/cassandra.yaml&quot;</span><br></pre></td></tr></table></figure>
+<p>vi. 設置Cassandra自動開機啟動</p>
+<p>開機自動啟動Cassandra的script(用<code>sudo vi /etc/init.d/cassandra</code>去create)：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># chkconfig: - 79 01</span></span><br><span class="line"><span class="comment"># description: Cassandra</span></span><br><span class="line"></span><br><span class="line">. /etc/rc.d/init.d/<span class="built_in">functions</span></span><br><span class="line"></span><br><span class="line">CASSANDRA_HOME=/usr/<span class="built_in">local</span>/bigdata/cassandra</span><br><span class="line">CASSANDRA_BIN=<span class="variable">$CASSANDRA_HOME</span>/bin/cassandra</span><br><span class="line">CASSANDRA_NODETOOL=<span class="variable">$CASSANDRA_HOME</span>/bin/nodetool</span><br><span class="line">CASSANDRA_LOG=<span class="variable">$CASSANDRA_HOME</span>/logs/cassandra.log</span><br><span class="line">CASSANDRA_PID=/var/run/cassandra.pid</span><br><span class="line">CASSANDRA_LOCK=/var/lock/subsys/cassandra</span><br><span class="line">PROGRAM=<span class="string">"cassandra"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ ! -f <span class="variable">$CASSANDRA_BIN</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">"File not found: <span class="variable">$CASSANDRA_BIN</span>"</span></span><br><span class="line">  <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">RETVAL=0</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">start</span></span>() &#123;</span><br><span class="line">  <span class="keyword">if</span> [ -f <span class="variable">$CASSANDRA_PID</span> ] &amp;&amp; checkpid `cat <span class="variable">$CASSANDRA_PID</span>`; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Cassandra is already running."</span></span><br><span class="line">    <span class="built_in">exit</span> 0</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="built_in">echo</span> -n $<span class="string">"Starting <span class="variable">$PROGRAM</span>: "</span></span><br><span class="line">  daemon <span class="variable">$CASSANDRA_BIN</span> -p <span class="variable">$CASSANDRA_PID</span> &gt;&gt; <span class="variable">$CASSANDRA_LOG</span> 2&gt;&amp;1</span><br><span class="line">  usleep 500000</span><br><span class="line">  RETVAL=$?</span><br><span class="line">  <span class="keyword">if</span> [ <span class="variable">$RETVAL</span> -eq 0 ]; <span class="keyword">then</span></span><br><span class="line">    touch <span class="variable">$CASSANDRA_LOCK</span></span><br><span class="line">    echo_success</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    echo_failure</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="built_in">echo</span></span><br><span class="line">  <span class="built_in">return</span> <span class="variable">$RETVAL</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">stop</span></span>() &#123;</span><br><span class="line">  <span class="keyword">if</span> [ ! -f <span class="variable">$CASSANDRA_PID</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Cassandra is already stopped."</span></span><br><span class="line">    <span class="built_in">exit</span> 0</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="built_in">echo</span> -n $<span class="string">"Stopping <span class="variable">$PROGRAM</span>: "</span></span><br><span class="line">  <span class="variable">$CASSANDRA_NODETOOL</span> -h 127.0.0.1 decommission</span><br><span class="line">  <span class="keyword">if</span> <span class="built_in">kill</span> `cat <span class="variable">$CASSANDRA_PID</span>`; <span class="keyword">then</span></span><br><span class="line">    RETVAL=0</span><br><span class="line">    rm -f <span class="variable">$CASSANDRA_LOCK</span></span><br><span class="line">    echo_success</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    RETVAL=1</span><br><span class="line">    echo_failure</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  <span class="built_in">echo</span></span><br><span class="line">  [ <span class="variable">$RETVAL</span> = 0 ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">status_fn</span></span>() &#123;</span><br><span class="line">  <span class="keyword">if</span> [ -f <span class="variable">$CASSANDRA_PID</span> ] &amp;&amp; checkpid `cat <span class="variable">$CASSANDRA_PID</span>`; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Cassandra is running."</span></span><br><span class="line">    <span class="built_in">exit</span> 0</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Cassandra is stopped."</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></span><br><span class="line">  start)</span><br><span class="line">    start</span><br><span class="line">    ;;</span><br><span class="line">  stop)</span><br><span class="line">    stop</span><br><span class="line">    ;;</span><br><span class="line">  status)</span><br><span class="line">    status_fn</span><br><span class="line">    ;;</span><br><span class="line">  restart)</span><br><span class="line">    stop</span><br><span class="line">    start</span><br><span class="line">    ;;</span><br><span class="line">  *)</span><br><span class="line">    <span class="built_in">echo</span> $<span class="string">"Usage: <span class="variable">$PROGRAM</span> &#123;start|stop|restart|status&#125;"</span></span><br><span class="line">    RETVAL=3</span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> <span class="variable">$RETVAL</span></span><br></pre></td></tr></table></figure>
+<p>然後使用下面指令讓這個script能夠自動跑：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x /etc/init.d/cassandra</span><br><span class="line">sudo chkconfig --add cassandra</span><br><span class="line">sudo service cassandra start</span><br></pre></td></tr></table></figure>
+<p>接著用<code>nodetool status</code>可以確定一下是不是都有跑起來，顯示資訊如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">nodetool status</span><br><span class="line"><span class="comment"># Datacenter: dc1</span></span><br><span class="line"><span class="comment"># ===============</span></span><br><span class="line"><span class="comment"># Status=Up/Down</span></span><br><span class="line"><span class="comment"># |/ State=Normal/Leaving/Joining/Moving</span></span><br><span class="line"><span class="comment"># --  Address        Load       Tokens       Owns (effective)  Host ID                               Rack</span></span><br><span class="line"><span class="comment"># UN  192.168.0.121  202.17 KB  256          66.7%             265daa7e-8039-46f4-842e-4255ec18be19  rack1</span></span><br><span class="line"><span class="comment"># UN  192.168.0.122  185.65 KB  256          66.4%             0fed9978-0097-417c-b0a8-dcd7be2b2c10  rack1</span></span><br><span class="line"><span class="comment"># UN  192.168.0.123  207.79 KB  256          66.9%             cf7b47b3-5d50-444e-99b4-843f9a5dadb2  rack1</span></span><br></pre></td></tr></table></figure>
+<p>vii. 設置spark自動開機</p>
+<p>在spark的master (你的User跟Group那裏記得要修改):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">sudo tee -a /etc/systemd/system/multi-user.target.wants/spark-master.service &lt;&lt; &quot;EOF&quot;</span><br><span class="line">[Unit]</span><br><span class="line">Description=Spark Master</span><br><span class="line">After=network.target</span><br><span class="line"> </span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">User=tester</span><br><span class="line">Group=tester</span><br><span class="line">ExecStart=/usr/local/bigdata/spark/sbin/start-master.sh</span><br><span class="line">StandardOutput=journal</span><br><span class="line">StandardError=journal</span><br><span class="line">LimitNOFILE=infinity</span><br><span class="line">LimitMEMLOCK=infinity</span><br><span class="line">LimitNPROC=infinity</span><br><span class="line">LimitAS=infinity</span><br><span class="line"> </span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>在spark的master跟slaves:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">sudo tee -a /etc/systemd/system/multi-user.target.wants/spark-slave.service &lt;&lt; &quot;EOF&quot;</span><br><span class="line">[Unit]</span><br><span class="line">Description=Spark Slave</span><br><span class="line">After=network.target</span><br><span class="line"> </span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">User=tester</span><br><span class="line">Group=tester</span><br><span class="line">ExecStart=/usr/local/bigdata/spark/sbin/start-slave.sh spark://cassSpark1:7077</span><br><span class="line">StandardOutput=journal</span><br><span class="line">StandardError=journal</span><br><span class="line">LimitNOFILE=infinity</span><br><span class="line">LimitMEMLOCK=infinity</span><br><span class="line">LimitNPROC=infinity</span><br><span class="line">LimitAS=infinity</span><br><span class="line">CPUAccounting=true</span><br><span class="line">CPUShares=100</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>然後全部node執行<code>sudo systemctl daemon-reload</code></p>
+<p>master執行<code>sudo systemctl start spark-master.service</code></p>
+<p>master跟slave都執行<code>sudo systemctl start spark-slave.service</code></p>
+<ol>
+<li>測試</li>
+</ol>
+<p>用<code>cqlsh cassSpark1</code>登入CQL介面</p>
+<p>用下面指令去創測試資料：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> KEYSPACE <span class="keyword">test</span> <span class="keyword">WITH</span> <span class="keyword">replication</span> = &#123;<span class="string">'class'</span>: <span class="string">'SimpleStrategy'</span>, <span class="string">'replication_factor'</span>: <span class="number">3</span> &#125;;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> test.kv(<span class="keyword">key</span> <span class="built_in">text</span> PRIMARY <span class="keyword">KEY</span>, <span class="keyword">value</span> <span class="built_in">int</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> test.kv(<span class="keyword">key</span>, <span class="keyword">value</span>) <span class="keyword">VALUES</span> (<span class="string">'key1'</span>, <span class="number">1</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> test.kv(<span class="keyword">key</span>, <span class="keyword">value</span>) <span class="keyword">VALUES</span> (<span class="string">'key2'</span>, <span class="number">2</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> test.kv(<span class="keyword">key</span>, <span class="keyword">value</span>) <span class="keyword">VALUES</span> (<span class="string">'key3'</span>, <span class="number">11</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> test.kv(<span class="keyword">key</span>, <span class="keyword">value</span>) <span class="keyword">VALUES</span> (<span class="string">'key4'</span>, <span class="number">25</span>);</span><br></pre></td></tr></table></figure>
+<p>然後用<code>spark-shell</code>打開spark的shell</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sc.stop()</span><br><span class="line"><span class="keyword">import</span> com.datastax.spark.connector._, org.apache.spark.<span class="type">SparkContext</span>, org.apache.spark.<span class="type">SparkContext</span>._, org.apache.spark.<span class="type">SparkConf</span></span><br><span class="line"><span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>(<span class="literal">true</span>).set(<span class="string">"spark.cassandra.connection.host"</span>, <span class="string">"192.168.0.121"</span>)</span><br><span class="line"><span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(conf)</span><br><span class="line"><span class="keyword">val</span> rdd = sc.cassandraTable(<span class="string">"test"</span>, <span class="string">"kv"</span>)</span><br><span class="line">println(rdd.first)</span><br><span class="line"><span class="comment">// CassandraRow&#123;key: key4, value: 25&#125;</span></span><br><span class="line">println(rdd.map(_.getInt(<span class="string">"value"</span>)).sum) <span class="comment">// 39.0</span></span><br><span class="line"><span class="keyword">val</span> collection = sc.parallelize(<span class="type">Seq</span>((<span class="string">"key5"</span>, <span class="number">38</span>), (<span class="string">"key6"</span>, <span class="number">5</span>)))</span><br><span class="line"><span class="comment">// save new data into cassandra</span></span><br><span class="line">collection.saveToCassandra(<span class="string">"test"</span>, <span class="string">"kv"</span>, <span class="type">SomeColumns</span>(<span class="string">"key"</span>, <span class="string">"value"</span>))</span><br><span class="line">sc.stop()</span><br><span class="line">:quit</span><br></pre></td></tr></table></figure>
+<p>用<code>cqlsh cassSpark1</code>登入CQL，去看剛剛塞進去的資料</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> <span class="keyword">test</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> kv;</span><br><span class="line">#  key   | value</span><br><span class="line"># -------+-------</span><br><span class="line">#   key5 |    38</span><br><span class="line">#   key6 |     5</span><br><span class="line">#   key1 |     1</span><br><span class="line">#   key4 |    25</span><br><span class="line">#   key3 |    11</span><br><span class="line">#   key2 |     2</span><br></pre></td></tr></table></figure>
+<p>根據我自己的測試，要用spark-submit才能在remote cluster上run</p>
+<p>Intellij的application不能直接跑，所以先用intellij的SBT Task: package</p>
+<p>會在專案目錄/target/scala-2.10下面產生一個jar檔，我這裡是<code>test_cassspark_2.10-1.0.jar</code></p>
+<p>把這個jar上傳到cluster上，然後用下面指令就可以成功運行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spark-submit --class cassSpark test_cassspark_2.10-1.0.jar --master spark://192.168.0.121:7077</span><br></pre></td></tr></table></figure>
+<ol>
+<li>Ref<ol>
+<li><a href="https://github.com/datastax/spark-cassandra-connector/blob/master/doc/0_quick_start.md" target="_blank" rel="noopener">https://github.com/datastax/spark-cassandra-connector/blob/master/doc/0_quick_start.md</a></li>
+<li><a href="https://tobert.github.io/post/2014-07-15-installing-cassandra-spark-stack.html" target="_blank" rel="noopener">https://tobert.github.io/post/2014-07-15-installing-cassandra-spark-stack.html</a></li>
+</ol>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/BigData/" rel="tag"># BigData</a>
+          
+            <a href="/tags/Spark/" rel="tag"># Spark</a>
+          
+            <a href="/tags/Cassandra/" rel="tag"># Cassandra</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+          <div class="social-like">
+            
+
+            
+              <div class="fb_like">
+                <div class="fb-like" data-layout="button_count" data-share="true"></div>
+              </div>
+            
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/201608/2016-08-01-export-oracle-data-to-cassandra-using-python.html" rel="next" title="用Python將Oracle DB的資料匯出到Cassandra">
+                <i class="fa fa-chevron-left"></i> 用Python將Oracle DB的資料匯出到Cassandra
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/201608/2016-08-10-nexus-local-maven-repository.html" rel="prev" title="用Nexus建立本地maven倉庫">
+                用Nexus建立本地maven倉庫 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="fb-comments"
+           data-href="http://chingchuan-chen.github.io/posts/201608/2016-08-05-deployment-of-spark-based-on-cassandra.html"
+           data-numposts="10"
+           data-width="100%"
+           data-colorscheme="light">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Ching-Chuan Chen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">136</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ChingChuan-Chen" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zw12356@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/u/0/110171317328627391486" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/celestial0230" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-thumbs-up"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ching-Chuan Chen</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('10');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("H7MfFf5lhyq2111iytpoFtIz-gzGzoHsz", "tGTKdvBYYQCIIlvxXJGJM2cc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
