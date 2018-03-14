@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://chingchuan-chen.github.io/about/index.html</loc>
+    
+    <lastmod>2018-03-14T17:58:47.781Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://chingchuan-chen.github.io/posts/201504/2015-04-20-shiny-app-for-ising-model.html</loc>
     
     <lastmod>2018-03-14T17:17:25.191Z</lastmod>
@@ -873,13 +880,6 @@
     <loc>http://chingchuan-chen.github.io/tags/index.html</loc>
     
     <lastmod>2018-03-14T16:04:57.610Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://chingchuan-chen.github.io/about/index.html</loc>
-    
-    <lastmod>2018-03-14T15:48:48.186Z</lastmod>
     
   </url>
   
