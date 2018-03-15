@@ -371,6 +371,201 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201405/2014-05-19-syntax-highlight-in-jekyll.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/201405/2014-05-19-syntax-highlight-in-jekyll.html" itemprop="url">Syntax highlight in Jekyll</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-05-19T00:00:00+08:00">
+                2014-05-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Jekyll/" itemprop="url" rel="index">
+                    <span itemprop="name">Jekyll</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201405/2014-05-19-syntax-highlight-in-jekyll.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201405/2014-05-19-syntax-highlight-in-jekyll.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201405/2014-05-19-syntax-highlight-in-jekyll.html" class="leancloud_visitors" data-flag-title="Syntax highlight in Jekyll">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  213
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>從上週就一直在嘗試如何把我部落格的程式碼都上色，弄了好多天才發現主要的癥結。中間參考太多網站，列幾個重要的。參考網站如下：</p>
+<ol>
+<li><p><a href="http://stackoverflow.com/questions/9652490/do-i-need-to-generate-a-css-file-from-pygments-for-my-jekyll-blog-to-enable-col" target="_blank" rel="noopener">Do I need to generate a css file …</a></p>
+</li>
+<li><p><a href="https://github.com/pudgecon/blog-repository/blob/master/_posts/2012-09-03-add-code-highlight-with-pygments.md" target="_blank" rel="noopener">Add code highlight with Pygments</a></p>
+</li>
+</ol>
+<p>你要有syntax highlight的功能，要先安裝幾個重要的工具，第一個是要有Python，並且安裝其套件Pygments，Ruby要安裝Pygments.rb，版本0.5.4可能會出錯，我裝的是0.5.0，這個版本大多人都可以成功。接著需要調整_config.yml中的選項：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">highlighter: pygments</span><br></pre></td></tr></table></figure>
+<p>另外，還有要生成highlight所需的css檔案，於cmd中鍵入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pygmentize -S default -f html &gt; pygments.css</span><br></pre></td></tr></table></figure>
+<p>然後在themes中的default.html中加上下面這一行：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">type</span>=<span class="string">"text/css"</span> <span class="attr">href</span>=<span class="string">"/path/to/pygments.css"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>這樣就成功了。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201405/2014-05-18-sublime-text-in-linux.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1052,7 +1247,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-count">124</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
