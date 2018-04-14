@@ -122,7 +122,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Celestial">
-<meta property="og:url" content="http://chingchuan-chen.github.io/tags/Deep-Learning/index.html">
+<meta property="og:url" content="http://chingchuan-chen.github.io/tags/deep-learning/index.html">
 <meta property="og:site_name" content="Celestial">
 <meta property="og:locale" content="zh-tw">
 <meta name="twitter:card" content="summary">
@@ -156,13 +156,13 @@
 
 
 
-  <link rel="canonical" href="http://chingchuan-chen.github.io/tags/Deep-Learning/"/>
+  <link rel="canonical" href="http://chingchuan-chen.github.io/tags/deep-learning/"/>
 
 
 
 
 
-  <title>標籤: Deep Learning | Celestial</title>
+  <title>標籤: deep learning | Celestial</title>
   
 <script>
   window.fbAsyncInit = function() {
@@ -363,7 +363,7 @@
 
     <div id="posts" class="posts-collapse">
       <div class="collection-title">
-        <h1>Deep Learning<small>標籤</small>
+        <h1>deep learning<small>標籤</small>
         </h1>
       </div>
 
@@ -375,37 +375,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/posts/201711/2017-11-19-Swish-Beta-Function-In-Keras.html" itemprop="url">
+            <a class="post-title-link" href="/posts/201804/2018-04-14-Python-installation.html" itemprop="url">
               
-                <span itemprop="name">Swish Beta Function In Keras</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-11-19T00:00:00+08:00"
-              content="2017-11-19" >
-          11-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/posts/201704/2017-04-24-building-gpu-version-of-mxnet-in-windows.html" itemprop="url">
-              
-                <span itemprop="name">在Windows環境下編譯GPU版本的mxnet</span>
+                <span itemprop="name">Installations of Python</span>
               
             </a>
         
@@ -413,65 +385,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-24T00:00:00+08:00"
-              content="2017-04-24" >
-          04-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/posts/201704/2017-04-16-mxnet-io-csviter.html" itemprop="url">
-              
-                <span itemprop="name">MxNet所提供的csv data iterator</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-16T00:00:00+08:00"
-              content="2017-04-16" >
-          04-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/posts/201703/2017-03-11-installation-mxnet-gpu-version-in-windows.html" itemprop="url">
-              
-                <span itemprop="name">在Windows環境下安裝GPU版本的mxnet</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-11T00:00:00+08:00"
-              content="2017-03-11" >
-          03-11
+              datetime="2018-04-14T00:00:00+08:00"
+              content="2018-04-14" >
+          04-14
         </time>
       </div>
 
@@ -533,7 +449,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">124</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -555,7 +471,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">138</span>
+                  <span class="site-state-item-count">142</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
@@ -1164,6 +1080,86 @@
         .fail(function (object, error) {
           console.log("Error: " + error.code + " " + error.message);
         });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+
     }
 
     function addCount(Counter) {
