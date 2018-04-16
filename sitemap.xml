@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-16-kivy.html</loc>
+    
+    <lastmod>2018-04-16T16:43:07.796Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-15-PyCharm-and-Cython.html</loc>
+    
+    <lastmod>2018-04-16T16:32:41.728Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-16-python-call-go.html</loc>
+    
+    <lastmod>2018-04-16T16:10:46.817Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-14-Python-installation.html</loc>
     
     <lastmod>2018-04-14T16:04:55.169Z</lastmod>
