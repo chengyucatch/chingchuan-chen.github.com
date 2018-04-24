@@ -128,7 +128,7 @@
 <meta property="og:site_name" content="Celestial">
 <meta property="og:description" content="Golang的速度極快，而且Go可以直接編譯成shared library 直接就譨讓Python使用ctypes載入，就能使用了">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:updated_time" content="2018-04-16T16:10:46.817Z">
+<meta property="og:updated_time" content="2018-04-17T11:02:31.957Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python Call Golang">
 <meta name="twitter:description" content="Golang的速度極快，而且Go可以直接編譯成shared library 直接就譨讓Python使用ctypes載入，就能使用了">
@@ -484,7 +484,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  197
+                  203
                 </span>
               
 
@@ -516,7 +516,7 @@
 <ol>
 <li>安裝好Go (版本&gt;=1.5)，而且Go要在環境變數裡(執行<code>go -v</code>要有東西XD)</li>
 </ol>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"C"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 匯出printBye method</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">printBye</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"From DLL: Bye!"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 匯出 sum method</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sum</span><span class="params">(a <span class="keyword">int</span>, b <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;&#125; <span class="comment">// 一定要有</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"C"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 匯出printBye method</span></span><br><span class="line"><span class="comment">//Export printBye</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">printBye</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"From DLL: Bye!"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 匯出 sum method</span></span><br><span class="line"><span class="comment">//Export sum</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sum</span><span class="params">(a <span class="keyword">int</span>, b <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;&#125; <span class="comment">// 一定要有</span></span><br></pre></td></tr></table></figure>
 <p>然後就可以執行下面兩行Python來編譯成shared library檔案</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.system(<span class="string">"go build -buildmode=c-shared -o libtest.dll test.go"</span>)</span><br></pre></td></tr></table></figure>
 <p>就可以在你的目錄下看到<code>libtest.dll</code>了，就載入後，就能使用裡面的method了</p>
@@ -573,8 +573,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/posts/201804/2018-04-16-kivy.html" rel="next" title="Kivy">
-                <i class="fa fa-chevron-left"></i> Kivy
+              <a href="/posts/201804/2018-04-15-PyCharm-and-Cython.html" rel="next" title="PyCharm and Cython">
+                <i class="fa fa-chevron-left"></i> PyCharm and Cython
               </a>
             
           </div>
@@ -582,6 +582,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/201804/2018-04-16-kivy.html" rel="prev" title="Kivy">
+                Kivy <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -661,7 +665,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">128</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
