@@ -106,7 +106,7 @@
 
 
 
-  <meta name="keywords" content="MKL,Python,PyTorch,Keras,Tensorflow,Intel,deep learning," />
+  <meta name="keywords" content="MKL,Python,Keras,PyTorch,Tensorflow,Intel,deep learning," />
 
 
 
@@ -121,14 +121,14 @@
 
 
 <meta name="description" content="簡單記錄一些安裝命令，以及安裝Tensorflow、PyTorch，跟編譯PyTorch等">
-<meta name="keywords" content="MKL,Python,PyTorch,Keras,Tensorflow,Intel,deep learning">
+<meta name="keywords" content="MKL,Python,Keras,PyTorch,Tensorflow,Intel,deep learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Installations of Python">
 <meta property="og:url" content="http://chingchuan-chen.github.io/posts/201804/2018-04-14-Python-installation.html">
 <meta property="og:site_name" content="Celestial">
 <meta property="og:description" content="簡單記錄一些安裝命令，以及安裝Tensorflow、PyTorch，跟編譯PyTorch等">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:updated_time" content="2018-04-17T15:46:28.382Z">
+<meta property="og:updated_time" content="2018-04-26T15:25:44.900Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Installations of Python">
 <meta name="twitter:description" content="簡單記錄一些安裝命令，以及安裝Tensorflow、PyTorch，跟編譯PyTorch等">
@@ -484,7 +484,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  266
+                  281
                 </span>
               
 
@@ -509,21 +509,22 @@
       
 
       
-        <p>簡單記錄一些安裝命令，以及安裝Tensorflow、PyTorch，跟編譯PyTorch等</p>
+        <p>簡單記錄一些安裝命令，以及安裝<code>Tensorflow</code>、<code>PyTorch</code>，跟編譯<code>PyTorch</code>等</p>
 <a id="more"></a>
-<h2 id="Intel-Distributed-Python"><a href="#Intel-Distributed-Python" class="headerlink" title="Intel Distributed Python"></a>Intel Distributed Python</h2><p>稍微記錄一下怎麼用Anacoda建置虛擬環境，安裝Intel發行的python</p>
-<p>安裝miniconda之後，用下面指令可以載入Python的環境</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\ProgramData\Miniconda3\Scripts\activate.bat</span><br></pre></td></tr></table></figure>
+<h2 id="Intel-Distributed-Python"><a href="#Intel-Distributed-Python" class="headerlink" title="Intel Distributed Python"></a>Intel Distributed Python</h2><p>稍微記錄一下怎麼用<code>Anaconda</code>建置虛擬環境，安裝<code>Intel</code>發行的<code>Python</code></p>
+<p>安裝<code>miniconda</code>之後，用下面指令可以載入Python的環境</p>
+<p>(建議安裝all-user，並安裝到<code>C:\Miniconda3</code>，可以避免一些問題)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Miniconda3\Scripts\activate.bat</span><br></pre></td></tr></table></figure>
 <p>引入Intel channel，安裝intel發行的Python</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda config --add channels intel</span><br><span class="line">conda create -n idp intelpython3_full python=3</span><br></pre></td></tr></table></figure>
 <p>安裝之後，啟用idp這個環境</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">activate idp</span><br></pre></td></tr></table></figure>
-<h2 id="Tensorflow-Keras安裝方法"><a href="#Tensorflow-Keras安裝方法" class="headerlink" title="Tensorflow, Keras安裝方法"></a>Tensorflow, Keras安裝方法</h2><p>建議不要更新html5lib，避免conda出現錯誤，無法再使用</p>
+<h2 id="Tensorflow-Keras安裝方法"><a href="#Tensorflow-Keras安裝方法" class="headerlink" title="Tensorflow, Keras安裝方法"></a>Tensorflow, Keras安裝方法</h2><p>建議不要更新<code>html5lib</code>，避免conda出現錯誤，無法再使用</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install tensorflow-gpu -I --no-update-deps</span><br></pre></td></tr></table></figure>
-<h2 id="PyTorch安裝方法"><a href="#PyTorch安裝方法" class="headerlink" title="PyTorch安裝方法"></a>PyTorch安裝方法</h2><h3 id="直接利用conda安裝"><a href="#直接利用conda安裝" class="headerlink" title="直接利用conda安裝"></a>直接利用conda安裝</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\ProgramData\Miniconda3\Scripts\activate.bat idp</span><br><span class="line">C:\ProgramData\Miniconda3\Scripts\conda install -c peterjc123 pytorch cuda90</span><br></pre></td></tr></table></figure>
+<h2 id="PyTorch安裝方法"><a href="#PyTorch安裝方法" class="headerlink" title="PyTorch安裝方法"></a>PyTorch安裝方法</h2><h3 id="直接利用conda安裝"><a href="#直接利用conda安裝" class="headerlink" title="直接利用conda安裝"></a>直接利用conda安裝</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Miniconda3\Scripts\activate.bat idp</span><br><span class="line">C:\Miniconda3\Scripts\conda install -c peterjc123 pytorch cuda90</span><br></pre></td></tr></table></figure>
 <h3 id="自行編譯"><a href="#自行編譯" class="headerlink" title="自行編譯"></a>自行編譯</h3><p>安裝好VS2017, CUDA 9.0之後，執行下面</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/peterjc123/pytorch-scripts.git</span><br><span class="line">cd pytorch-scripts</span><br><span class="line">C:\ProgramData\Miniconda3\Scripts\activate.bat idp</span><br><span class="line">cuda90.bat</span><br></pre></td></tr></table></figure>
-<h3 id="編譯PyTorch延伸套件"><a href="#編譯PyTorch延伸套件" class="headerlink" title="編譯PyTorch延伸套件"></a>編譯PyTorch延伸套件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/pytorch/extension-ffi.git</span><br><span class="line">"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat"  x86_amd64</span><br><span class="line">C:\ProgramData\Miniconda3\Scripts\activate.bat idp</span><br><span class="line">cd extension-ffi/script</span><br><span class="line">python build.py</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/peterjc123/pytorch-scripts.git</span><br><span class="line">cd pytorch-scripts</span><br><span class="line">C:\Miniconda3\Scripts\activate.bat idp</span><br><span class="line">cuda90.bat</span><br></pre></td></tr></table></figure>
+<h3 id="編譯PyTorch延伸套件"><a href="#編譯PyTorch延伸套件" class="headerlink" title="編譯PyTorch延伸套件"></a>編譯PyTorch延伸套件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/pytorch/extension-ffi.git</span><br><span class="line">"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat"  x86_amd64</span><br><span class="line">C:\Miniconda3\Scripts\activate.bat idp</span><br><span class="line">cd extension-ffi/script</span><br><span class="line">python build.py</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -545,9 +546,9 @@
           
             <a href="/tags/Python/" rel="tag"># Python</a>
           
-            <a href="/tags/PyTorch/" rel="tag"># PyTorch</a>
-          
             <a href="/tags/Keras/" rel="tag"># Keras</a>
+          
+            <a href="/tags/PyTorch/" rel="tag"># PyTorch</a>
           
             <a href="/tags/Tensorflow/" rel="tag"># Tensorflow</a>
           
@@ -584,8 +585,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/posts/201803/2018-03-15-R-call-javascript.html" rel="next" title="R call javascript">
-                <i class="fa fa-chevron-left"></i> R call javascript
+              <a href="/posts/201804/2018-04-25-installation-of-python-3.5.5-in-centos-7.4.html" rel="next" title="Compilation of Python 3.5.5 in CentOS 7.4">
+                <i class="fa fa-chevron-left"></i> Compilation of Python 3.5.5 in CentOS 7.4
               </a>
             
           </div>
@@ -685,7 +686,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">132</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -696,7 +697,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分類</span>
                 </a>
               </div>
@@ -707,7 +708,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">146</span>
+                  <span class="site-state-item-count">148</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

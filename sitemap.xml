@@ -2,6 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-25-pyspark-with-mongodb.html</loc>
+    
+    <lastmod>2018-04-26T16:35:23.203Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-14-Python-installation.html</loc>
+    
+    <lastmod>2018-04-26T15:25:44.900Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-25-installation-of-python-3.5.5-in-centos-7.4.html</loc>
+    
+    <lastmod>2018-04-26T15:25:11.726Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-25-installation-of-go-1.10-in-centos-7.4.html</loc>
+    
+    <lastmod>2018-04-25T17:51:32.869Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-24-python-call-go-part2.html</loc>
     
     <lastmod>2018-04-24T14:56:11.182Z</lastmod>
@@ -26,13 +54,6 @@
     <loc>http://chingchuan-chen.github.io/posts/201607/2016-07-24-deployment-of-oracle-database.html</loc>
     
     <lastmod>2018-04-18T17:17:36.398Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-14-Python-installation.html</loc>
-    
-    <lastmod>2018-04-17T15:46:28.382Z</lastmod>
     
   </url>
   
