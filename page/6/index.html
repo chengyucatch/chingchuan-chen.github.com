@@ -371,375 +371,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201610/2016-10-04-library-R-packages-with-install-automatically.md.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ching-Chuan Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Celestial">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/201610/2016-10-04-library-R-packages-with-install-automatically.md.html" itemprop="url">library多個套件，並自動安裝沒安裝的套件</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-10-04T00:00:00+08:00">
-                2016-10-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/R/" itemprop="url" rel="index">
-                    <span itemprop="name">R</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/posts/201610/2016-10-04-library-R-packages-with-install-automatically.md.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201610/2016-10-04-library-R-packages-with-install-automatically.md.html" itemprop="commentCount">0</span> comments
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/posts/201610/2016-10-04-library-R-packages-with-install-automatically.md.html" class="leancloud_visitors" data-flag-title="library多個套件，並自動安裝沒安裝的套件">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">閱讀次數&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字數統計&#58;</span>
-                
-                <span title="字數統計">
-                  70
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>廢話不多說，直接上code</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(pipeR)</span><br><span class="line">library_mul &lt;- <span class="keyword">function</span>(<span class="keyword">...</span>, lib.loc = <span class="literal">NULL</span>, quietly = <span class="literal">FALSE</span>, warn.conflicts = <span class="literal">TRUE</span>)&#123;</span><br><span class="line">  pkgs &lt;- as.list(substitute(list(<span class="keyword">...</span>))) %&gt;&gt;% sapply(as.character) %&gt;&gt;% setdiff(<span class="string">"list"</span>)</span><br><span class="line">  <span class="keyword">if</span> (any(!pkgs %<span class="keyword">in</span>% installed.packages()))</span><br><span class="line">    install.packeges(pkgs[!pkgs %<span class="keyword">in</span>% installed.packages()])</span><br><span class="line">  sapply(pkgs, <span class="keyword">library</span>, character.only = <span class="literal">TRUE</span>, lib.loc = lib.loc, quietly = quietly) %&gt;&gt;% invisible</span><br><span class="line">&#125;</span><br><span class="line">library_mul(httr, pipeR, data.table)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201609/2016-09-26-spark-and-hive.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ching-Chuan Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Celestial">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/201609/2016-09-26-spark-and-hive.html" itemprop="url">Apache Spark and Apache Hive</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-09-26T00:00:00+08:00">
-                2016-09-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/BigData/" itemprop="url" rel="index">
-                    <span itemprop="name">BigData</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/posts/201609/2016-09-26-spark-and-hive.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201609/2016-09-26-spark-and-hive.html" itemprop="commentCount">0</span> comments
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/posts/201609/2016-09-26-spark-and-hive.html" class="leancloud_visitors" data-flag-title="Apache Spark and Apache Hive">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">閱讀次數&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字數統計&#58;</span>
-                
-                <span title="字數統計">
-                  481
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>關於Spark操作Hive資料庫的一些心得</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/201609/2016-09-26-spark-and-hive.html#more" rel="contents">
-              閱讀全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201609/2016-09-23-performance-benchmark-of-the-sql-tools-on-Hadoop.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -877,6 +508,195 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/posts/201609/2016-09-23-performance-benchmark-of-the-sql-tools-on-Hadoop.html#more" rel="contents">
+              閱讀全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201609/2016-09-22-spark-on-hive.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/201609/2016-09-22-spark-on-hive.html" itemprop="url">Apache Spark on Apache Hive</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-09-22T00:00:00+08:00">
+                2016-09-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/BigData/" itemprop="url" rel="index">
+                    <span itemprop="name">BigData</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201609/2016-09-22-spark-on-hive.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201609/2016-09-22-spark-on-hive.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201609/2016-09-22-spark-on-hive.html" class="leancloud_visitors" data-flag-title="Apache Spark on Apache Hive">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  429
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>這篇主要是用Spark去連接現存的Hive</p>
+<p>可能有人會先好奇說為什麼不用Spark本身的Thrift Server</p>
+<p>我稍微看了一下，Spark的Thrift Server只能跑Local</p>
+<p>也就是說你的資料只能在一台電腦上跑，因此，這樣是有風險的</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/201609/2016-09-22-spark-on-hive.html#more" rel="contents">
               閱讀全文 &raquo;
             </a>
           </div>
@@ -1071,195 +891,6 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/posts/201609/2016-09-21-apache-hive-ACID.html#more" rel="contents">
-              閱讀全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201609/2016-09-22-spark-on-hive.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ching-Chuan Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Celestial">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/201609/2016-09-22-spark-on-hive.html" itemprop="url">Apache Spark on Apache Hive</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-09-22T00:00:00+08:00">
-                2016-09-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/BigData/" itemprop="url" rel="index">
-                    <span itemprop="name">BigData</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/posts/201609/2016-09-22-spark-on-hive.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201609/2016-09-22-spark-on-hive.html" itemprop="commentCount">0</span> comments
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/posts/201609/2016-09-22-spark-on-hive.html" class="leancloud_visitors" data-flag-title="Apache Spark on Apache Hive">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">閱讀次數&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字數統計&#58;</span>
-                
-                <span title="字數統計">
-                  429
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>這篇主要是用Spark去連接現存的Hive</p>
-<p>可能有人會先好奇說為什麼不用Spark本身的Thrift Server</p>
-<p>我稍微看了一下，Spark的Thrift Server只能跑Local</p>
-<p>也就是說你的資料只能在一台電腦上跑，因此，這樣是有風險的</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/201609/2016-09-22-spark-on-hive.html#more" rel="contents">
               閱讀全文 &raquo;
             </a>
           </div>
@@ -2240,6 +1871,380 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201609/2016-09-10-sparkrlyr-extensions.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/201609/2016-09-10-sparkrlyr-extensions.html" itemprop="url">sparklyr extensions</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-09-10T00:00:00+08:00">
+                2016-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/R/" itemprop="url" rel="index">
+                    <span itemprop="name">R</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201609/2016-09-10-sparkrlyr-extensions.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201609/2016-09-10-sparkrlyr-extensions.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201609/2016-09-10-sparkrlyr-extensions.html" class="leancloud_visitors" data-flag-title="sparklyr extensions">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  409
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>稍微介紹一下sparklyr的extension寫法</p>
+<p>但是細節都還在研究，只是環境的配置跟使用官方的extension套件而已</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/201609/2016-09-10-sparkrlyr-extensions.html#more" rel="contents">
+              閱讀全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201609/2016-09-09-sparkr.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/201609/2016-09-09-sparkr.html" itemprop="url">SparkR初探</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-09-09T00:00:00+08:00">
+                2016-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/R/" itemprop="url" rel="index">
+                    <span itemprop="name">R</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201609/2016-09-09-sparkr.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201609/2016-09-09-sparkr.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201609/2016-09-09-sparkr.html" class="leancloud_visitors" data-flag-title="SparkR初探">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  179
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>雖然順序有點反了，先介紹了sparklyr</p>
+<p>這裡就簡單show一下怎麼用SparkR，並且去拉Cassandra的table</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/201609/2016-09-09-sparkr.html#more" rel="contents">
+              閱讀全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -2292,7 +2297,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">133</span>
+                  <span class="site-state-item-count">131</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
