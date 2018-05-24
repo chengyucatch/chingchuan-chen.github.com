@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-27-installation-of-juputeryhub-in-centos-7.4.html</loc>
+    
+    <lastmod>2018-04-26T17:44:49.686Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-27-pybind11-and-cppimport.html</loc>
+    
+    <lastmod>2018-04-26T16:57:00.664Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-25-installation-of-python-3.5.5-in-centos-7.4.html</loc>
+    
+    <lastmod>2018-04-26T16:53:43.794Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-25-pyspark-with-mongodb.html</loc>
     
     <lastmod>2018-04-26T16:35:23.203Z</lastmod>
@@ -12,13 +33,6 @@
     <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-14-Python-installation.html</loc>
     
     <lastmod>2018-04-26T15:25:44.900Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-25-installation-of-python-3.5.5-in-centos-7.4.html</loc>
-    
-    <lastmod>2018-04-26T15:25:11.726Z</lastmod>
     
   </url>
   
@@ -222,13 +236,6 @@
     <loc>http://chingchuan-chen.github.io/posts/201503/2015-03-04-Taking-average-%20every-k-periods.html</loc>
     
     <lastmod>2018-03-14T17:11:19.243Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://chingchuan-chen.github.io/posts/201503/2015-03-03-the-pipe-operator-in-R.html</loc>
-    
-    <lastmod>2018-03-14T17:10:49.364Z</lastmod>
     
   </url>
   

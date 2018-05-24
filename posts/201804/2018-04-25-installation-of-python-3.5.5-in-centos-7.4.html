@@ -128,7 +128,7 @@
 <meta property="og:site_name" content="Celestial">
 <meta property="og:description" content="簡單記錄一下在CentOS自行編譯Python 3.5.5的過程">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:updated_time" content="2018-04-26T15:25:11.726Z">
+<meta property="og:updated_time" content="2018-04-26T16:53:43.794Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Compilation of Python 3.5.5 in CentOS 7.4">
 <meta name="twitter:description" content="簡單記錄一下在CentOS自行編譯Python 3.5.5的過程">
@@ -511,7 +511,7 @@
       
         <p>簡單記錄一下在CentOS自行編譯Python 3.5.5的過程</p>
 <a id="more"></a>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">yum install gcc gcc-c++</span><br><span class="line">yum install -y zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel expat-devel</span><br><span class="line">yum install -y wget</span><br><span class="line">wget https://www.python.org/ftp/python/3.5.5/Python-3.5.5.tgz</span><br><span class="line">tar xzf Python-3.5.5.tgz</span><br><span class="line"><span class="built_in">cd</span> Python-3.5.5</span><br><span class="line"><span class="comment"># 極大可能會抓不到g++，先export</span></span><br><span class="line"><span class="built_in">export</span> CXX=g++</span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span> --<span class="built_in">enable</span>-shared --<span class="built_in">enable</span>-optimizations --<span class="built_in">enable</span>-profiling</span><br><span class="line">make -j4</span><br><span class="line">make altinstall</span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/lib/libpython3.5m.so.1.0 /usr/lib/libpython3.5m.so</span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/lib/libpython3.5m.so.1.0 /usr/lib/libpython3.5m.so.1.0</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">yum install gcc gcc-c++</span><br><span class="line">yum install -y zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel expat-devel</span><br><span class="line">yum install -y wget</span><br><span class="line">wget https://www.python.org/ftp/python/3.5.5/Python-3.5.5.tgz</span><br><span class="line">tar xzf Python-3.5.5.tgz</span><br><span class="line"><span class="built_in">cd</span> Python-3.5.5</span><br><span class="line"><span class="comment"># 極大可能會抓不到g++，先export</span></span><br><span class="line"><span class="built_in">export</span> CXX=g++</span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span> --<span class="built_in">enable</span>-shared --<span class="built_in">enable</span>-optimizations --<span class="built_in">enable</span>-profiling</span><br><span class="line">make -j4</span><br><span class="line">make altinstall</span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/lib/libpython3.5m.so.1.0 /usr/lib64/libpython3.5m.so</span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/lib/libpython3.5m.so.1.0 /usr/lib64/libpython3.5m.so.1.0</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 從Oracle官網下載Oracle Instant Client 12.2 basic, devel and sqlplus</span></span><br><span class="line">yum install oracle-instanclient12.2* -y</span><br><span class="line"></span><br><span class="line">tee -a /etc/profile &lt;&lt; <span class="string">"EOF"</span></span><br><span class="line"><span class="built_in">export</span> ORACLE_HOME=/usr/lib/oracle/12.2/client64</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=<span class="variable">$LD_LIBRARY_PATH</span>:<span class="variable">$ORACLE_HOME</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$ORACLE_HOME</span>/bin</span><br><span class="line">EOF</span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br><span class="line">pip3.5 install cx_Oracle</span><br></pre></td></tr></table></figure>
 
       
@@ -655,7 +655,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">132</span>
+                  <span class="site-state-item-count">133</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -677,7 +677,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">148</span>
+                  <span class="site-state-item-count">152</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
