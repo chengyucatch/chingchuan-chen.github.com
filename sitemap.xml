@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://chingchuan-chen.github.io/about/index.html</loc>
+    
+    <lastmod>2018-06-08T15:59:12.566Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-25-installation-of-python-3.5.5-in-centos-7.4.html</loc>
     
     <lastmod>2018-04-26T16:53:43.794Z</lastmod>
@@ -75,13 +82,6 @@
     <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-15-PyCharm-and-Cython.html</loc>
     
     <lastmod>2018-04-16T16:32:41.728Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://chingchuan-chen.github.io/about/index.html</loc>
-    
-    <lastmod>2018-04-14T16:01:13.566Z</lastmod>
     
   </url>
   
