@@ -2,6 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-14-compile-julia-in-windows.html</loc>
+    
+    <lastmod>2018-07-13T17:41:22.497Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-13-npm-mirror.html</loc>
+    
+    <lastmod>2018-07-13T17:31:39.876Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-13-extend-disk-space-centos-7-vm.html</loc>
+    
+    <lastmod>2018-07-13T14:44:43.489Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-25-pyspark-with-mongodb.html</loc>
+    
+    <lastmod>2018-07-06T13:35:53.984Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://chingchuan-chen.github.io/about/index.html</loc>
     
     <lastmod>2018-06-08T15:59:12.566Z</lastmod>
@@ -12,13 +40,6 @@
     <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-25-installation-of-python-3.5.5-in-centos-7.4.html</loc>
     
     <lastmod>2018-04-26T16:53:43.794Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-25-pyspark-with-mongodb.html</loc>
-    
-    <lastmod>2018-04-26T16:35:23.203Z</lastmod>
     
   </url>
   
