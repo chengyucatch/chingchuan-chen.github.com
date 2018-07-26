@@ -2,6 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-26-installation-of-slurm.html</loc>
+    
+    <lastmod>2018-07-26T17:40:48.948Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-27-installation-of-slurm.html</loc>
+    
+    <lastmod>2018-07-26T16:17:06.190Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-27-slurm-and-mpi-in-r-and-python.html</loc>
+    
+    <lastmod>2018-07-26T16:15:16.057Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-26-installation-of-vms.html</loc>
+    
+    <lastmod>2018-07-26T14:49:00.022Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-14-compile-julia-in-windows.html</loc>
     
     <lastmod>2018-07-13T17:41:22.497Z</lastmod>

@@ -371,6 +371,801 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201407/2014-07-19-Rcpp-Attributes.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/201407/2014-07-19-Rcpp-Attributes.html" itemprop="url">Rcpp Attributes</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-07-19T00:00:00+08:00">
+                2014-07-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/R/" itemprop="url" rel="index">
+                    <span itemprop="name">R</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201407/2014-07-19-Rcpp-Attributes.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201407/2014-07-19-Rcpp-Attributes.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201407/2014-07-19-Rcpp-Attributes.html" class="leancloud_visitors" data-flag-title="Rcpp Attributes">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  602
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Recently, I went to the 23th STSC, I got some information about the new API of <code>Rcpp</code>, <code>Rcpp attributes</code>. I had tried some examples and it worked well. Here I demonstrate some examples.</p>
+<p>First example: call the <code>pnorm</code> function in Rcpp:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span>(Rcpp)</span><br><span class="line">sourceCpp(code = <span class="string">'</span></span><br><span class="line"><span class="string">#include &lt;Rcpp.h&gt;</span></span><br><span class="line"><span class="string">using namespace Rcpp;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// [[Rcpp::export]]</span></span><br><span class="line"><span class="string">DataFrame mypnorm(NumericVector x)&#123;</span></span><br><span class="line"><span class="string">  int n = x.size();</span></span><br><span class="line"><span class="string">  NumericVector y1(n), y2(n), y3(n);</span></span><br><span class="line"><span class="string">  for (int i=0; i&lt;n; i++)&#123;</span></span><br><span class="line"><span class="string">    y1[i] = ::Rf_pnorm5(x[i], 0.0, 1.0, 1, 0);</span></span><br><span class="line"><span class="string">    y2[i] = R::pnorm(x[i], 0.0, 1.0, 1, 0);</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">  y3 = pnorm(x);</span></span><br><span class="line"><span class="string">  return DataFrame::create(</span></span><br><span class="line"><span class="string">    Named("R") = y1,</span></span><br><span class="line"><span class="string">    Named("Rf_") = y2,</span></span><br><span class="line"><span class="string">    Named("sugar") = y3);</span></span><br><span class="line"><span class="string">&#125;'</span>)</span><br><span class="line">mypnorm(runif(<span class="number">10</span>, -<span class="number">3</span>, <span class="number">3</span>))</span><br></pre></td></tr></table></figure>
+<p>Rcpp attributes allows user to write Rcpp in a simple way. User does not need to learn about how to write R extension. Just write a cpp script and add the line <code>// [[Rcpp::export]]</code>, then user can use the function in R.</p>
+<p>Next two example is about the two extension packages of Rcpp, RcppArmadillo and RcppEigen. The two packages provide Rcpp to link the C++ linear algebra libraries, armadillo and Eigen.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(Rcpp)</span><br><span class="line"><span class="keyword">library</span>(RcppArmadillo)</span><br><span class="line"><span class="keyword">library</span>(RcppEigen)</span><br><span class="line">sourceCpp(code = <span class="string">'</span></span><br><span class="line"><span class="string">// [[Rcpp::depends(RcppArmadillo)]]</span></span><br><span class="line"><span class="string">#include &lt;RcppArmadillo.h&gt;</span></span><br><span class="line"><span class="string">using namespace Rcpp;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// [[Rcpp::export]]</span></span><br><span class="line"><span class="string">List fastLm_RcppArma(NumericVector yr, NumericMatrix Xr) &#123;</span></span><br><span class="line"><span class="string">  int n = Xr.nrow(), k = Xr.ncol();</span></span><br><span class="line"><span class="string">  arma::mat X(Xr.begin(), n, k, false);</span></span><br><span class="line"><span class="string">  arma::colvec y(yr.begin(), yr.size(), false);</span></span><br><span class="line"><span class="string">  arma::colvec coef = arma::solve(X, y);</span></span><br><span class="line"><span class="string">  arma::colvec resid = y - X*coef;</span></span><br><span class="line"><span class="string">  double sig2 = arma::as_scalar(arma::trans(resid)*resid/(n-k));</span></span><br><span class="line"><span class="string">  arma::colvec stderrest = arma::sqrt(sig2 * arma::diagvec( arma::inv(arma::trans(X)*X)));</span></span><br><span class="line"><span class="string">  return List::create(</span></span><br><span class="line"><span class="string">    Named("coefficients") = coef,</span></span><br><span class="line"><span class="string">    Named("stderr") = stderrest);</span></span><br><span class="line"><span class="string">&#125;'</span>)</span><br><span class="line"></span><br><span class="line">sourceCpp(code = <span class="string">'</span></span><br><span class="line"><span class="string">// [[Rcpp::depends(RcppEigen)]]</span></span><br><span class="line"><span class="string">#include &lt;RcppEigen.h&gt;</span></span><br><span class="line"><span class="string">using namespace Rcpp;</span></span><br><span class="line"><span class="string">using Eigen::Map;</span></span><br><span class="line"><span class="string">using Eigen::MatrixXd;</span></span><br><span class="line"><span class="string">using Eigen::VectorXd;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// [[Rcpp::export]]</span></span><br><span class="line"><span class="string">List fastLm_RcppEigen(NumericVector yr, NumericMatrix Xr) &#123;</span></span><br><span class="line"><span class="string">  const Map&lt;MatrixXd&gt; X(as&lt;Map&lt;MatrixXd&gt; &gt;(Xr));</span></span><br><span class="line"><span class="string">  const Map&lt;VectorXd&gt; y(as&lt;Map&lt;VectorXd&gt; &gt;(yr));</span></span><br><span class="line"><span class="string">  int n = Xr.nrow(), k = Xr.ncol();</span></span><br><span class="line"><span class="string">  VectorXd coef = (X.transpose() * X).llt().solve(X.transpose() * y.col(0));</span></span><br><span class="line"><span class="string">  VectorXd resid = y - X*coef;</span></span><br><span class="line"><span class="string">  double sig2 = resid.squaredNorm() / (n - k);</span></span><br><span class="line"><span class="string">  VectorXd stderrest = (sig2 * ((X.transpose() * X).inverse()).diagonal()).array().sqrt();</span></span><br><span class="line"><span class="string">  return List::create(</span></span><br><span class="line"><span class="string">    Named("coefficients") = coef,</span></span><br><span class="line"><span class="string">    Named("stderr") = stderrest);</span></span><br><span class="line"><span class="string">&#125;'</span>)</span><br><span class="line">N = <span class="number">20000</span></span><br><span class="line">p = <span class="number">1000</span></span><br><span class="line">X = matrix(rnorm(N*p), ncol = p)</span><br><span class="line">y = X %*% <span class="number">10</span>**(sample(seq(-<span class="number">5</span>, <span class="number">3</span>, length = N+p), p)) + rnorm(N)</span><br><span class="line"></span><br><span class="line">system.time(fastLm_RcppArma(y, X))</span><br><span class="line"><span class="comment">#   user  system elapsed</span></span><br><span class="line"><span class="comment">#   5.49    0.06    1.46</span></span><br><span class="line">system.time(fastLm_RcppEigen(y, X))</span><br><span class="line"><span class="comment">#   user  system elapsed</span></span><br><span class="line"><span class="comment">#   9.32    0.06    8.96</span></span><br><span class="line">system.time(lm(y~X - <span class="number">1</span>))</span><br><span class="line"><span class="comment">#   user  system elapsed</span></span><br><span class="line"><span class="comment"># 145.13   14.76   91.84</span></span><br></pre></td></tr></table></figure>
+<p>The cpp functions are faster 63 times than R function <code>lm</code>. My environment is ubuntu 14.04, R 3.1.1 compiled by intel c++, fortran compiler with MKL. My CPU is <a href="mailto:3770K@4.3GHz" target="_blank" rel="noopener">3770K@4.3GHz</a>. I think that Rcpp is the package which is the worthiest to learn if you want to use R to do statistical computing or machine learning. Rcpp attributes had changed the way to source C++ code in R, it let <code>Rcpp</code> is more convenient and more powerful.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201407/2014-07-19-Rcpp-Attributes-with-lasso.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/201407/2014-07-19-Rcpp-Attributes-with-lasso.html" itemprop="url">Rcpp Attributes with lasso</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-07-19T00:00:00+08:00">
+                2014-07-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/R/" itemprop="url" rel="index">
+                    <span itemprop="name">R</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201407/2014-07-19-Rcpp-Attributes-with-lasso.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201407/2014-07-19-Rcpp-Attributes-with-lasso.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201407/2014-07-19-Rcpp-Attributes-with-lasso.html" class="leancloud_visitors" data-flag-title="Rcpp Attributes with lasso">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  403
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>I try to write a lasso algorithm by Rcpp attributes.</p>
+<p>Reference:<br>Friedman, J., Hastie, T. and Tibshirani, R. (2008) Regularization Paths for Generalized Linear Models via Coordinate Descent, <a href="http://www.stanford.edu/~hastie/Papers/glmnet.pdf" target="_blank" rel="noopener">http://www.stanford.edu/~hastie/Papers/glmnet.pdf</a>, Journal of Statistical Software, Vol. 33(1), 1-22 Feb 2010, <a href="http://www.jstatsoft.org/v33/i01/" target="_blank" rel="noopener">http://www.jstatsoft.org/v33/i01/</a></p>
+<p>Code:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(Rcpp)</span><br><span class="line"><span class="keyword">library</span>(RcppArmadillo)</span><br><span class="line">sourceCpp(code = <span class="string">'</span></span><br><span class="line"><span class="string">// [[Rcpp::depends(RcppArmadillo)]]</span></span><br><span class="line"><span class="string">#include &lt;RcppArmadillo.h&gt;</span></span><br><span class="line"><span class="string">#include &lt;ctime&gt;</span></span><br><span class="line"><span class="string">using namespace Rcpp;</span></span><br><span class="line"><span class="string">using namespace arma;</span></span><br><span class="line"><span class="string">// [[Rcpp::export]]</span></span><br><span class="line"><span class="string">List lasso_fit_f(NumericMatrix Xr, NumericVector yr, int n_penalty = 100)&#123;</span></span><br><span class="line"><span class="string">  int n = Xr.nrow(), p = Xr.ncol();</span></span><br><span class="line"><span class="string">  mat X(Xr.begin(), n, p, false);</span></span><br><span class="line"><span class="string">  colvec y(yr.begin(), n, false);</span></span><br><span class="line"><span class="string">  double z0 = mean(y), penalty;</span></span><br><span class="line"><span class="string">  colvec xydot = (y.t() * X).t();</span></span><br><span class="line"><span class="string">  mat xxdot(p, p);</span></span><br><span class="line"><span class="string">  xxdot = X.t() * X;</span></span><br><span class="line"><span class="string">  double penalty_max_log = log(max(xydot) / n);</span></span><br><span class="line"><span class="string">  colvec penalties = exp(linspace&lt;colvec&gt;(penalty_max_log, penalty_max_log+log(0.05), n_penalty));</span></span><br><span class="line"><span class="string">  mat coef_m(p, n_penalty);</span></span><br><span class="line"><span class="string">  int MaxIter = 1e5;</span></span><br><span class="line"><span class="string">  colvec coef(p), coef_new(p);</span></span><br><span class="line"><span class="string">  for(int k = 1; k &lt; n_penalty; k++)</span></span><br><span class="line"><span class="string">  &#123;</span></span><br><span class="line"><span class="string">    coef = coef_m.col(k-1);</span></span><br><span class="line"><span class="string">    penalty = penalties(k);</span></span><br><span class="line"><span class="string">    for(int i = 0; i &lt; MaxIter; i++)</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">      coef_new = (xydot - xxdot * coef) / n + coef;</span></span><br><span class="line"><span class="string">      coef_new(find(abs(coef_new) &lt; penalty)).zeros();</span></span><br><span class="line"><span class="string">      coef_new(find(coef_new &gt; penalty)) -= penalty;</span></span><br><span class="line"><span class="string">      coef_new(find(coef_new &lt; -penalty)) += penalty;</span></span><br><span class="line"><span class="string">      if( as_scalar((coef - coef_new).t() * (coef - coef_new)) / k &lt; 1e-7)</span></span><br><span class="line"><span class="string">        break;</span></span><br><span class="line"><span class="string">      coef = coef_new;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">    coef_m.col(k) = coef;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">  return List::create(Named("intercept") = z0,</span></span><br><span class="line"><span class="string">                      Named("coefficients") = coef_m,</span></span><br><span class="line"><span class="string">                      Named("penalties") = penalties);</span></span><br><span class="line"><span class="string">&#125;'</span>)</span><br><span class="line"></span><br><span class="line">d = <span class="number">1000</span>; N = <span class="number">10000</span></span><br><span class="line">x = matrix(rnorm(N*d), N)</span><br><span class="line">x[,<span class="number">3</span>] = x[,<span class="number">1</span>] - <span class="number">2</span>*x[,<span class="number">2</span>] + rnorm(N)</span><br><span class="line">x[,<span class="number">30</span>] = x[,<span class="number">10</span>] - <span class="number">2</span>*x[,<span class="number">20</span>] + rnorm(N)</span><br><span class="line">y = cbind(<span class="number">1</span>, x) %*% c(-<span class="number">1</span>, <span class="number">2</span>, -<span class="number">0.3</span>, <span class="number">0.7</span>, sample(<span class="number">10</span>**seq(-<span class="number">10</span>, <span class="number">1</span>, length = N), d-<span class="number">3</span>)) + rnorm(N, <span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">x = scale(x)</span><br><span class="line"></span><br><span class="line">t1 = Sys.time()</span><br><span class="line">a = lasso_fit_f(x, y)</span><br><span class="line">t_cpp = Sys.time() - t1</span><br><span class="line"></span><br><span class="line"><span class="keyword">library</span>(glmnet)</span><br><span class="line">t1 = Sys.time()</span><br><span class="line">fit = glmnet(x,y, lambda = a$penalties)</span><br><span class="line">t_glmnet = Sys.time() - t1</span><br><span class="line">c(t_glmnet, t_cpp)</span><br><span class="line"><span class="comment"># [1] 0.7171087 0.2032089</span></span><br></pre></td></tr></table></figure>
+<p>It works well!!</p>
+<p>My environment is ubuntu 14.04, R 3.1.1 compiled by intel c++, fortran compiler with MKL. My CPU is <a href="mailto:3770K@4.3GHz" target="_blank" rel="noopener">3770K@4.3GHz</a>.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201407/2014-07-10-Some-tips-on-linux.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/201407/2014-07-10-Some-tips-on-linux.html" itemprop="url">Some tips on Linux</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-07-10T00:00:00+08:00">
+                2014-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201407/2014-07-10-Some-tips-on-linux.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201407/2014-07-10-Some-tips-on-linux.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201407/2014-07-10-Some-tips-on-linux.html" class="leancloud_visitors" data-flag-title="Some tips on Linux">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  482
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>This post is used to record some tips I can’t categorize in ubuntu.</p>
+<p>i. automatically load some shell scripts<br>In my system ubuntu 14.04, I can find the file <code>.bashrc</code> in my home directory.<br>Since I want ubuntu to load intel complier and mkl parameter automatically, all I need to do is to add the two lines in the end of that file: (mint 17: <code>gedit /etc/bash.bashrc</code>)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /opt/intel/composer_xe_2015/mkl/bin/mklvars.sh intel64</span><br><span class="line"><span class="built_in">source</span> /opt/intel/composer_xe_2015/bin/compilervars.sh intel64</span><br></pre></td></tr></table></figure>
+<p>Then I success!!</p>
+<p>ii. cannot install ubuntu or Mint<br>With the options - acpi=off nolapic noapic, I finally install ubuntu successfully.</p>
+<p>iii. cannot boot without nolapic, however, it only recognize one cpu with nolapic<br>I solved this problem by <a href="http://ubuntuforums.org/showthread.php?t=1084622" target="_blank" rel="noopener">Dual core recognized as single core because of nolapic?</a>.<br>I edited the grub file with following commands:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo bash</span><br><span class="line">gedit /etc/default/grub</span><br></pre></td></tr></table></figure>
+<p>And replace <code>nolapic</code> with <code>pci=assign-busses apicmaintimer idle=poll reboot=cold,hard</code>, the grub file would be contain this two lines:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GRUB_CMDLINE_LINUX_DEFAULT=<span class="string">"quiet splash acpi_osi=linux"</span></span><br><span class="line">GRUB_CMDLINE_LINUX=<span class="string">"noapic pci=assign-busses apicmaintimer idle=poll reboot=cold,hard"</span></span><br></pre></td></tr></table></figure>
+<p>Then use following command to update grub. And the problem is fixed.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-grub</span><br></pre></td></tr></table></figure>
+<p>iv. to get the permission of ntfs disks, you can edit the fstab in /etc as following:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/fstab</span><br></pre></td></tr></table></figure>
+<p>And you can find the uuid by using the command <code>ls -l /dev/disk/by-uuid</code>. To add the disk and set the permission in the file fstab like this:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">UUID=1c712d26-7f9d-4efc-b796-65bee366c8aa / ext4    noatime,nodiratime,discard,errors=remount-ro 0       1</span><br><span class="line">UUID=9298D0AB98D08EDB /media/Windows ntfs defaults,uid=1000,gid=1000,<span class="built_in">umask</span>=002     0      0</span><br><span class="line">UUID=08C2997EC29970A4 /media/Download ntfs defaults,uid=1000,gid=1000,<span class="built_in">umask</span>=002      0      0</span><br><span class="line">UUID=01CD524F3352C990 /media/Files ntfs defaults,uid=1000,gid=1000,<span class="built_in">umask</span>=002      0      0</span><br></pre></td></tr></table></figure>
+<p>Then you can access your ntfs disk and set an alias for each disk.</p>
+<p>v. use grub comstomer to edit the boot order. Installation:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:danielrichter2007/grub-customizer</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install grub-customizer</span><br></pre></td></tr></table></figure>
+<p>vi. Install font <code>Inconsolata</code><a href="http://www.levien.com/type/myfonts/inconsolata.html" target="_blank" rel="noopener">Download Here</a> and unity tweak tool (<code>sudo apt-get install unity-tweak-tool</code>).</p>
+<p>vii. Install the chinese input <code>fcitx</code> and language <code>Chinese Traditional</code>.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install fcitx fcitx-chewing fcitx-config-gtk fcitx-frontend-all fcitx-module-cloudpinyin fcitx-ui-classic fcitx-frontend-qt4 fcitx-frontend-qt5 fcitx-frontend-gtk2 fcitx-frontend-gtk3</span><br></pre></td></tr></table></figure>
+<p>viii. Install ruby, jekyll and git.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install software-properties-common</span><br><span class="line">sudo apt-add-repository ppa:brightbox/ruby-ng</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install ruby2.2 ruby2.2-dev git python-pip python3-pip</span><br><span class="line">sudo gem install jekyll</span><br><span class="line">sudo pip install pygments</span><br></pre></td></tr></table></figure>
+<p>(To be continued.)</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201405/2014-05-20-how-to-build-numpy-and-scipy-with-MKL.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/201405/2014-05-20-how-to-build-numpy-and-scipy-with-MKL.html" itemprop="url">如何compile numpy and scipy with Intel C++ compiler and　Intel MKL</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-05-20T00:00:00+08:00">
+                2014-05-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201405/2014-05-20-how-to-build-numpy-and-scipy-with-MKL.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201405/2014-05-20-how-to-build-numpy-and-scipy-with-MKL.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201405/2014-05-20-how-to-build-numpy-and-scipy-with-MKL.html" class="leancloud_visitors" data-flag-title="如何compile numpy and scipy with Intel C++ compiler and　Intel MKL">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  790
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>這篇要來敘述怎麼在linux中，利用Intel C++ compiler以及Intel MKL編譯numpy以及scipy這兩個python的套件，以下是參考連結：</p>
+<ol>
+<li><a href="https://software.intel.com/en-us/articles/numpyscipy-with-intel-mkl" target="_blank" rel="noopener">https://software.intel.com/en-us/articles/numpyscipy-with-intel-mkl</a></li>
+<li><a href="http://songuke.blogspot.tw/2012/02/compile-numpy-and-scipy-with-intel-math.html" target="_blank" rel="noopener">http://songuke.blogspot.tw/2012/02/compile-numpy-and-scipy-with-intel-math.html</a></li>
+<li><a href="http://unifius.wordpress.com/2013/01/18/numpy%E4%BD%BF%E7%94%A8mkl%E5%BA%93/" target="_blank" rel="noopener">Numpy使用MKL库提升计算性能</a></li>
+<li><a href="http://stackoverflow.com/questions/13587136/numpy-fails-with-python-dbg-undefined-symbol-py-initmodule4-64" target="_blank" rel="noopener">Numpy fails with python-dbg</a></li>
+</ol>
+<p>首先，先取得編譯環境以及root權限以方便進行編譯的工作，另外還有一些需要的套件要安裝，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-setuptools python-pip python-dev cython</span><br><span class="line"><span class="comment"># python 3</span></span><br><span class="line">sudo apt-get install python3-setuptools python3-pip python3-dev cython3</span><br></pre></td></tr></table></figure>
+<p>接著切換到Downloads目錄(這你可以自己調整)並下載numpy以及scipy的原始碼，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>; <span class="built_in">cd</span> Downloads</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/numpy/numpy.git</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/scipy/scipy.git</span><br></pre></td></tr></table></figure>
+<p>接著在numpy資料夾中新增一個site.cfg的檔案(此處以sublime text做編輯器)，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo -s</span><br><span class="line"><span class="built_in">source</span> /opt/intel/composer_xe_2013_sp1.3.174/mkl/bin/mklvars.sh intel64</span><br><span class="line"><span class="built_in">source</span> /opt/intel/composer_xe_2013_sp1.3.174/bin/compilervars.sh intel64</span><br><span class="line"><span class="built_in">cd</span> numpy</span><br><span class="line"><span class="comment"># rm -rf build # if there is a build folder</span></span><br><span class="line">subl site.cfg</span><br></pre></td></tr></table></figure>
+<p>並且添加內容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[mkl]</span><br><span class="line">library_dirs = /opt/intel/composer_xe_2013_sp1.3.174/compiler/lib/intel64:/opt/intel/composer_xe_2013_sp1.3.174/mkl/lib/intel64</span><br><span class="line">include_dirs = /opt/intel/composer_xe_2013_sp1.3.174/compiler/include:/opt/intel/composer_xe_2013_sp1.3.174/mkl/include</span><br><span class="line">mkl_libs = mkl_def, mkl_intel_lp64, mkl_intel_thread, mkl_core</span><br><span class="line">lapack_libs = mkl_lapack95_lp64</span><br><span class="line">libraries = iomp5</span><br></pre></td></tr></table></figure>
+<p>接著修改編譯的參數，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subl numpy/distutils/intelccompiler.py</span><br></pre></td></tr></table></figure>
+<p>以下方文字分別取代取代文件中<code>self.cc_exe=&#39;icc -fPIC&#39;</code>以及<code>self.cc_exe=&#39;icc -m64 -fPIC&#39;</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.cc_exe = <span class="string">'icc -O3 -g -fPIC -fp-model strict -fomit-frame-pointer -openmp -xhost'</span></span><br><span class="line">self.cc_exe = <span class="string">'icc -m64 -O3 -g -fPIC -fp-model strict -fomit-frame-pointer -openmp -xhost'</span></span><br></pre></td></tr></table></figure>
+<p>最後運行這個指令就可以進行安裝了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python setup.py config --compiler=intelem build_clib --compiler=intelem build_ext --compiler=intelem install</span><br><span class="line"><span class="comment"># python 3</span></span><br><span class="line">python3 setup.py config --compiler=intelem build_clib --compiler=intelem build_ext --compiler=intelem install</span><br></pre></td></tr></table></figure>
+<p>如果出現<code>No module named msvc9compiler</code>，就把<code>numpy/distutil/intelccompiler.py</code>裡面有關msvc9compiler的code都註解掉就好了。</p>
+<p>請先測試numpy是否正常，先安裝nose這個套件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">easy_install nose</span><br><span class="line"><span class="comment"># python3</span></span><br><span class="line">easy_install3 nose</span><br></pre></td></tr></table></figure>
+<p>開啟python並運行(注意環境還是要source上方兩個檔案)：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line">numpy.test()</span><br></pre></td></tr></table></figure>
+<p>接著編譯scipy，把site.cfg從numpy複製到scipy的資料夾中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cp site.cfg ../scipy/site.cfg</span><br><span class="line"><span class="built_in">cd</span> ../scipy</span><br><span class="line">python setup.py config --compiler=intelem --fcompiler=intelem build_clib --compiler=intelem --fcompiler=intelem build_ext --compiler=intelem --fcompiler=intelem install</span><br><span class="line"><span class="comment"># python 3</span></span><br><span class="line">python3 setup.py config --compiler=intelem --fcompiler=intelem build_clib --compiler=intelem --fcompiler=intelem build_ext --compiler=intelem --fcompiler=intelem install</span><br></pre></td></tr></table></figure>
+<p>開啟python測試scipy(注意環境還是要source上方兩個檔案)：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scipy</span><br><span class="line">scipy.test()</span><br></pre></td></tr></table></figure>
+<p>我跑scipy的測試會失敗三個，看了一下<a href="http://stackoverflow.com/questions/9239989/error-when-testing-scipy" target="_blank" rel="noopener">別人的問答</a>，他們認為應該不是太嚴重的錯，我也沒有再裡他了。最後如果中間有出錯，請記得移除掉你安裝套件的位置，假設你使用的python是2.7版就是執行下方指令，在加上tab補全剩下的檔名：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo rm -r /usr/<span class="built_in">local</span>/lib/python2.7/dist-packages/numpy</span><br><span class="line">sudo rm -r /usr/<span class="built_in">local</span>/lib/python2.7/dist-packages/scipy</span><br><span class="line"><span class="comment"># python 3.4</span></span><br><span class="line">sudo rm -r /usr/<span class="built_in">local</span>/lib/python3.4/dist-packages/numpy</span><br><span class="line">sudo rm -r /usr/<span class="built_in">local</span>/lib/python3.4/dist-packages/scipy</span><br></pre></td></tr></table></figure>
+<p>Add $LD_LIBRARY_PATH in environment by using <code>subl ~/.bashrc</code>.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=/opt/intel/composer_xe_2013_sp1.3.174/compiler/lib/intel64:/opt/intel/composer_xe_2013_sp1.3.174/mkl/lib/intel64:<span class="variable">$LD_LIBRARY_PATH</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201405/2014-05-19-syntax-highlight-in-jekyll.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1247,7 +2042,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">134</span>
+                  <span class="site-state-item-count">138</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1258,7 +2053,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">分類</span>
                 </a>
               </div>
@@ -1269,7 +2064,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">154</span>
+                  <span class="site-state-item-count">155</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
