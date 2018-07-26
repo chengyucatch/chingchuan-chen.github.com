@@ -371,7 +371,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp.html">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ching-Chuan Chen">
@@ -390,7 +390,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp.html" itemprop="url">kernal matrix computation in Rcpp</a></h1>
+                <a class="post-title-link" href="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html" itemprop="url">Rcpp call F77 blas/lapack</a></h1>
         
 
         <div class="post-meta">
@@ -443,8 +443,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp.html" itemprop="commentCount">0</span> comments
+                <a href="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html" itemprop="commentCount">0</span> comments
                 </a>
               </span>
             
@@ -452,7 +452,7 @@
 
           
           
-             <span id="/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp.html" class="leancloud_visitors" data-flag-title="kernal matrix computation in Rcpp">
+             <span id="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html" class="leancloud_visitors" data-flag-title="Rcpp call F77 blas/lapack">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -477,7 +477,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  714
+                  612
                 </span>
               
 
@@ -503,19 +503,18 @@
 
       
         
-          <p>會有這篇是剛好想到之前在PTT PO的文章</p>
-<p><a href="https://www.ptt.cc/bbs/R_Language/M.1429191476.A.F82.html" target="_blank" rel="noopener">文章1</a>，<a href="https://www.ptt.cc/bbs/C_and_CPP/M.1392479791.A.222.html" target="_blank" rel="noopener">文章2</a></p>
-<p>就想說順便來把這兩個拿來比較一下，於是就有了這一篇的誕生</p>
-<p>這篇剛好也是我試到一個RcppEigen比較慢的例子</p>
-<p>當做之前的RcppArmadillo vs RcppEigen的延伸</p>
-<p>我這次也觀察到一個現象是RcppArmadillo在這個計算上會使用BLAS</p>
-<p>所以它這裡會用我R的Multi-threaded MKL BLAS去算</p>
-<p>而RcppEigen機制不太確定，但是有趣的事情是Eigen還可以透過include omp配上<code>Eigen::initParallel</code>來加速</p>
-<p>但是這裡RcppArmadillo毫無疑問的直接打趴RcppEigen(攤手</p>
-<p>下一篇會再把RcppParallel拉進來一起玩</p>
+          <p>剛好有點時間來研究一下Rcpp怎樣直接使用底層Fortran 77的BLAS跟LAPACK函數</p>
+<p>我覺得最難的還是要去讀BLAS或LAPACK的文件，然後配置適當的input餵進去</p>
+<p>我這裡就簡單demo一下怎麼樣用LAPACK的dsyevr去計算symmetric matrix的eigenvalues跟eigenvectors</p>
+<p>(BLAS部分其實很接近，有興趣的人可以自己改成用BLAS的函數去做，一樣用F77_CALL即可)</p>
+<p>裡面還是有不少配置，我沒有好好活用，不過我覺得就先這樣吧，等到有需要再慢慢深入去寫</p>
+<p>畢竟我現在直接使用BLAS/LAPACK的場合真的不多，寫那麼底層對我真的有點困難Orz</p>
+<p>我還是乖乖去用RcppEigen跟RcppArmadillo好了~”~</p>
+<p>不過直接用BLAS，可以gain到一些performance，也有比較多flexible的設定</p>
+<p>深入去玩的話，我覺得對程式效能改進有一定幫助</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp.html#more" rel="contents">
+            <a class="btn" href="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html#more" rel="contents">
               閱讀全文 &raquo;
             </a>
           </div>
