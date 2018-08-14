@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://chingchuan-chen.github.io/posts/201808/2018-08-15-build-gpu-version-of-lightgbm-in-windows.html</loc>
+    
+    <lastmod>2018-08-14T17:12:33.761Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-27-installation-of-slurm.html</loc>
     
-    <lastmod>2018-07-26T17:52:20.320Z</lastmod>
+    <lastmod>2018-08-14T17:11:40.682Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201502/2015-02-20-excel-and-winbash.html</loc>
+    
+    <lastmod>2018-08-14T17:10:28.515Z</lastmod>
     
   </url>
   
@@ -264,13 +278,6 @@
     <loc>http://chingchuan-chen.github.io/posts/201502/2015-02-28-hotkeys-in-sublime-text.html</loc>
     
     <lastmod>2018-03-14T17:10:27.859Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://chingchuan-chen.github.io/posts/201502/2015-02-20-excel-and-winbash.html</loc>
-    
-    <lastmod>2018-03-14T17:10:08.957Z</lastmod>
     
   </url>
   

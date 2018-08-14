@@ -120,18 +120,18 @@
 
 
 
-<meta name="description" content="寫了一個bat 去複製檔案~~~緣由：這個單位每天都要用excel做日報表一般作法是複製改裡面的日期，一次做大概半年用這種事情相當耗時…">
+<meta name="description" content="寫了一個windows batch 去複製檔案~~~ 緣由：這個單位每天都要用excel做日報表一般作法是複製改裡面的日期，一次做大概半年用這種事情相當耗時…">
 <meta name="keywords" content="windows bat,excel,copy">
 <meta property="og:type" content="article">
-<meta property="og:title" content="利用winbash快速複製excel檔案(逐月)，並在excel依檔名變更日期">
+<meta property="og:title" content="利用windows batch快速複製excel檔案(逐月)，並在excel依檔名變更日期">
 <meta property="og:url" content="http://chingchuan-chen.github.io/posts/201502/2015-02-20-excel-and-winbash.html">
 <meta property="og:site_name" content="Celestial">
-<meta property="og:description" content="寫了一個bat 去複製檔案~~~緣由：這個單位每天都要用excel做日報表一般作法是複製改裡面的日期，一次做大概半年用這種事情相當耗時…">
+<meta property="og:description" content="寫了一個windows batch 去複製檔案~~~ 緣由：這個單位每天都要用excel做日報表一般作法是複製改裡面的日期，一次做大概半年用這種事情相當耗時…">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:updated_time" content="2018-03-14T17:10:08.957Z">
+<meta property="og:updated_time" content="2018-08-14T17:10:28.515Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="利用winbash快速複製excel檔案(逐月)，並在excel依檔名變更日期">
-<meta name="twitter:description" content="寫了一個bat 去複製檔案~~~緣由：這個單位每天都要用excel做日報表一般作法是複製改裡面的日期，一次做大概半年用這種事情相當耗時…">
+<meta name="twitter:title" content="利用windows batch快速複製excel檔案(逐月)，並在excel依檔名變更日期">
+<meta name="twitter:description" content="寫了一個windows batch 去複製檔案~~~ 緣由：這個單位每天都要用excel做日報表一般作法是複製改裡面的日期，一次做大概半年用這種事情相當耗時…">
 
 
 
@@ -167,7 +167,7 @@
 
 
 
-  <title>利用winbash快速複製excel檔案(逐月)，並在excel依檔名變更日期 | Celestial</title>
+  <title>利用windows batch快速複製excel檔案(逐月)，並在excel依檔名變更日期 | Celestial</title>
   
 <script>
   window.fbAsyncInit = function() {
@@ -392,7 +392,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">利用winbash快速複製excel檔案(逐月)，並在excel依檔名變更日期</h1>
+          <h1 class="post-title" itemprop="name headline">利用windows batch快速複製excel檔案(逐月)，並在excel依檔名變更日期</h1>
         
 
         <div class="post-meta">
@@ -454,7 +454,7 @@
 
           
           
-             <span id="/posts/201502/2015-02-20-excel-and-winbash.html" class="leancloud_visitors" data-flag-title="利用winbash快速複製excel檔案(逐月)，並在excel依檔名變更日期">
+             <span id="/posts/201502/2015-02-20-excel-and-winbash.html" class="leancloud_visitors" data-flag-title="利用windows batch快速複製excel檔案(逐月)，並在excel依檔名變更日期">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -484,7 +484,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  516
+                  517
                 </span>
               
 
@@ -509,17 +509,18 @@
       
 
       
-        <p>寫了一個bat 去複製檔案~~~<br>緣由：<br>這個單位每天都要用excel做日報表<br>一般作法是複製改裡面的日期，一次做大概半年用<br>這種事情相當耗時…</p>
+        <p>寫了一個windows batch 去複製檔案~~~</p>
+<p>緣由：<br>這個單位每天都要用excel做日報表<br>一般作法是複製改裡面的日期，一次做大概半年用<br>這種事情相當耗時…</p>
 <a id="more"></a>
 <p>改進方式：</p>
 <ol>
 <li>EXCEL可以根據呼叫該檔檔名，根據該檔檔名去變動日期<br>EX: 1040216日報表.xls 裡面日期會顯示 104年02月16日<br>EXCEL指令：</li>
 </ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">=CONCATENATE( LEFT(MID(CELL(<span class="string">"filename"</span>), SEARCH(<span class="string">"["</span>,CELL(<span class="string">"filename"</span>))+1,</span><br><span class="line">   SEARCH(<span class="string">"]"</span>,CELL(<span class="string">"filename"</span>)) - SEARCH(<span class="string">"["</span>,CELL(<span class="string">"filename"</span>))-1), 3), <span class="string">"年"</span>,</span><br><span class="line">  RIGHT(LEFT(MID(CELL(<span class="string">"filename"</span>), SEARCH(<span class="string">"["</span>,CELL(<span class="string">"filename"</span>)) + 1,</span><br><span class="line">  SEARCH(<span class="string">"]"</span>,CELL(<span class="string">"filename"</span>))-SEARCH(<span class="string">"["</span>,CELL(<span class="string">"filename"</span>))-1), 5),2), <span class="string">"月"</span>,</span><br><span class="line">  RIGHT(LEFT(MID(CELL(<span class="string">"filename"</span>),SEARCH(<span class="string">"["</span>,CELL(<span class="string">"filename"</span>)) + 1,</span><br><span class="line">    SEARCH(<span class="string">"]"</span>,CELL(<span class="string">"filename"</span>))-SEARCH(<span class="string">"["</span>,CELL(<span class="string">"filename"</span>))-1), 7),2), <span class="string">"日"</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">=CONCATENATE( LEFT(MID(CELL("filename"), SEARCH("[",CELL("filename"))+<span class="number">1</span>,</span><br><span class="line">   SEARCH("]",CELL("filename")) - SEARCH("[",CELL("filename"))-<span class="number">1</span>), <span class="number">3</span>), "年",</span><br><span class="line">  RIGHT(LEFT(MID(CELL("filename"), SEARCH("[",CELL("filename")) + <span class="number">1</span>,</span><br><span class="line">  SEARCH("]",CELL("filename"))-SEARCH("[",CELL("filename"))-<span class="number">1</span>), <span class="number">5</span>),<span class="number">2</span>), "月",</span><br><span class="line">  RIGHT(LEFT(MID(CELL("filename"),SEARCH("[",CELL("filename")) + <span class="number">1</span>,</span><br><span class="line">    SEARCH("]",CELL("filename"))-SEARCH("[",CELL("filename"))-<span class="number">1</span>), <span class="number">7</span>),<span class="number">2</span>), "日")</span><br></pre></td></tr></table></figure>
 <ol>
 <li>BAT檔案做COPY，自動根據月份做判斷複製相對應的份數，並且改成適當的檔名<br>母檔：YYYMMDD<strong><em>.xls<br>複製成 1040201</em></strong>.xls 到 1040228***.xls</li>
 </ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">@Echo Off</span><br><span class="line"><span class="built_in">set</span> <span class="string">"year=1990"</span></span><br><span class="line"><span class="built_in">set</span> <span class="string">"month=01"</span></span><br><span class="line"><span class="keyword">if</span> %month% == 01 goto d31</span><br><span class="line"><span class="keyword">if</span> %month% == 02 goto d28</span><br><span class="line"><span class="keyword">if</span> %month% == 03 goto d31</span><br><span class="line"><span class="keyword">if</span> %month% == 04 goto d30</span><br><span class="line"><span class="keyword">if</span> %month% == 05 goto d31</span><br><span class="line"><span class="keyword">if</span> %month% == 06 goto d30</span><br><span class="line"><span class="keyword">if</span> %month% == 07 goto d31</span><br><span class="line"><span class="keyword">if</span> %month% == 08 goto d31</span><br><span class="line"><span class="keyword">if</span> %month% == 09 goto d30</span><br><span class="line"><span class="keyword">if</span> %month% == 10 goto d31</span><br><span class="line"><span class="keyword">if</span> %month% == 11 goto d30</span><br><span class="line"><span class="keyword">if</span> %month% == 12 goto d31</span><br><span class="line"></span><br><span class="line">:d31</span><br><span class="line"><span class="keyword">for</span> /d %%i IN (0 1 2) DO (</span><br><span class="line">        <span class="keyword">for</span> %%j IN (0 1 2 3 4 5 6 7 8 9) DO (</span><br><span class="line">        copy <span class="string">"YYYYMMDD測試檔案.xls"</span> <span class="string">"%year%%month%%%i%%j測試檔案.xls"</span></span><br><span class="line">        )</span><br><span class="line">)</span><br><span class="line">del <span class="string">"%year%%month%00測試檔案.xls"</span></span><br><span class="line">copy <span class="string">"YYYYMMDD測試檔案.xls"</span> <span class="string">"%year%%month%30測試檔案.xls"</span></span><br><span class="line">copy <span class="string">"YYYYMMDD測試檔案.xls"</span> <span class="string">"%year%%month%31測試檔案.xls"</span></span><br><span class="line"></span><br><span class="line">:d30</span><br><span class="line"><span class="keyword">for</span> /d %%i IN (0 1 2) DO (</span><br><span class="line">        <span class="keyword">for</span> %%j IN (0 1 2 3 4 5 6 7 8 9) DO (</span><br><span class="line">        copy <span class="string">"YYYYMMDD測試檔案.xls"</span> <span class="string">"%year%%month%%%i%%j測試檔案.xls"</span></span><br><span class="line">        )</span><br><span class="line">)</span><br><span class="line">del <span class="string">"%year%%month%00測試檔案.xls"</span></span><br><span class="line">copy <span class="string">"YYYYMMDD測試檔案.xls"</span> <span class="string">"%year%%month%30測試檔案.xls"</span></span><br><span class="line"></span><br><span class="line">:d28</span><br><span class="line"><span class="keyword">for</span> /d %%i IN (0 1 2) DO (</span><br><span class="line">        <span class="keyword">for</span> %%j IN (0 1 2 3 4 5 6 7 8 9) DO (</span><br><span class="line">        copy <span class="string">"YYYYMMDD測試檔案.xls"</span> <span class="string">"%year%%month%%%i%%j測試檔案.xls"</span></span><br><span class="line">        )</span><br><span class="line">)</span><br><span class="line">del <span class="string">"%year%%month%00測試檔案.xls"</span></span><br><span class="line">del <span class="string">"%year%%month%29測試檔案.xls"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">Echo</span> Off</span><br><span class="line"><span class="built_in">set</span> "year=<span class="number">1990</span>"</span><br><span class="line"><span class="built_in">set</span> "month=<span class="number">01</span>"</span><br><span class="line"><span class="keyword">if</span> <span class="variable">%month%</span> == <span class="number">01</span> <span class="keyword">goto</span> d31</span><br><span class="line"><span class="keyword">if</span> <span class="variable">%month%</span> == <span class="number">02</span> <span class="keyword">goto</span> d28</span><br><span class="line"><span class="keyword">if</span> <span class="variable">%month%</span> == <span class="number">03</span> <span class="keyword">goto</span> d31</span><br><span class="line"><span class="keyword">if</span> <span class="variable">%month%</span> == <span class="number">04</span> <span class="keyword">goto</span> d30</span><br><span class="line"><span class="keyword">if</span> <span class="variable">%month%</span> == <span class="number">05</span> <span class="keyword">goto</span> d31</span><br><span class="line"><span class="keyword">if</span> <span class="variable">%month%</span> == <span class="number">06</span> <span class="keyword">goto</span> d30</span><br><span class="line"><span class="keyword">if</span> <span class="variable">%month%</span> == <span class="number">07</span> <span class="keyword">goto</span> d31</span><br><span class="line"><span class="keyword">if</span> <span class="variable">%month%</span> == <span class="number">08</span> <span class="keyword">goto</span> d31</span><br><span class="line"><span class="keyword">if</span> <span class="variable">%month%</span> == <span class="number">09</span> <span class="keyword">goto</span> d30</span><br><span class="line"><span class="keyword">if</span> <span class="variable">%month%</span> == <span class="number">10</span> <span class="keyword">goto</span> d31</span><br><span class="line"><span class="keyword">if</span> <span class="variable">%month%</span> == <span class="number">11</span> <span class="keyword">goto</span> d30</span><br><span class="line"><span class="keyword">if</span> <span class="variable">%month%</span> == <span class="number">12</span> <span class="keyword">goto</span> d31</span><br><span class="line"></span><br><span class="line">:d31</span><br><span class="line"><span class="keyword">for</span> /d <span class="variable">%%i</span> <span class="keyword">IN</span> (<span class="number">0</span> <span class="number">1</span> <span class="number">2</span>) <span class="keyword">DO</span> (</span><br><span class="line">        <span class="keyword">for</span> <span class="variable">%%j</span> <span class="keyword">IN</span> (<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>) <span class="keyword">DO</span> (</span><br><span class="line">        <span class="built_in">copy</span> "YYYYMMDD測試檔案.xls" "<span class="variable">%year%</span><span class="variable">%month%</span><span class="variable">%%i</span><span class="variable">%%j</span>測試檔案.xls"</span><br><span class="line">        )</span><br><span class="line">)</span><br><span class="line"><span class="built_in">del</span> "<span class="variable">%year%</span><span class="variable">%month%</span><span class="number">00</span>測試檔案.xls"</span><br><span class="line"><span class="built_in">copy</span> "YYYYMMDD測試檔案.xls" "<span class="variable">%year%</span><span class="variable">%month%</span><span class="number">30</span>測試檔案.xls"</span><br><span class="line"><span class="built_in">copy</span> "YYYYMMDD測試檔案.xls" "<span class="variable">%year%</span><span class="variable">%month%</span><span class="number">31</span>測試檔案.xls"</span><br><span class="line"></span><br><span class="line">:d30</span><br><span class="line"><span class="keyword">for</span> /d <span class="variable">%%i</span> <span class="keyword">IN</span> (<span class="number">0</span> <span class="number">1</span> <span class="number">2</span>) <span class="keyword">DO</span> (</span><br><span class="line">        <span class="keyword">for</span> <span class="variable">%%j</span> <span class="keyword">IN</span> (<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>) <span class="keyword">DO</span> (</span><br><span class="line">        <span class="built_in">copy</span> "YYYYMMDD測試檔案.xls" "<span class="variable">%year%</span><span class="variable">%month%</span><span class="variable">%%i</span><span class="variable">%%j</span>測試檔案.xls"</span><br><span class="line">        )</span><br><span class="line">)</span><br><span class="line"><span class="built_in">del</span> "<span class="variable">%year%</span><span class="variable">%month%</span><span class="number">00</span>測試檔案.xls"</span><br><span class="line"><span class="built_in">copy</span> "YYYYMMDD測試檔案.xls" "<span class="variable">%year%</span><span class="variable">%month%</span><span class="number">30</span>測試檔案.xls"</span><br><span class="line"></span><br><span class="line">:d28</span><br><span class="line"><span class="keyword">for</span> /d <span class="variable">%%i</span> <span class="keyword">IN</span> (<span class="number">0</span> <span class="number">1</span> <span class="number">2</span>) <span class="keyword">DO</span> (</span><br><span class="line">        <span class="keyword">for</span> <span class="variable">%%j</span> <span class="keyword">IN</span> (<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>) <span class="keyword">DO</span> (</span><br><span class="line">        <span class="built_in">copy</span> "YYYYMMDD測試檔案.xls" "<span class="variable">%year%</span><span class="variable">%month%</span><span class="variable">%%i</span><span class="variable">%%j</span>測試檔案.xls"</span><br><span class="line">        )</span><br><span class="line">)</span><br><span class="line"><span class="built_in">del</span> "<span class="variable">%year%</span><span class="variable">%month%</span><span class="number">00</span>測試檔案.xls"</span><br><span class="line"><span class="built_in">del</span> "<span class="variable">%year%</span><span class="variable">%month%</span><span class="number">29</span>測試檔案.xls"</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -664,7 +665,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">136</span>
+                  <span class="site-state-item-count">137</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -675,7 +676,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">分類</span>
                 </a>
               </div>
@@ -686,7 +687,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">154</span>
+                  <span class="site-state-item-count">155</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
