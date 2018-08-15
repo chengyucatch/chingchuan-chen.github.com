@@ -371,6 +371,392 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp.html" itemprop="url">kernal matrix computation in Rcpp</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-01-01T00:00:00+08:00">
+                2017-01-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/R/" itemprop="url" rel="index">
+                    <span itemprop="name">R</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp.html" class="leancloud_visitors" data-flag-title="kernal matrix computation in Rcpp">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  714
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>會有這篇是剛好想到之前在PTT PO的文章</p>
+<p><a href="https://www.ptt.cc/bbs/R_Language/M.1429191476.A.F82.html" target="_blank" rel="noopener">文章1</a>，<a href="https://www.ptt.cc/bbs/C_and_CPP/M.1392479791.A.222.html" target="_blank" rel="noopener">文章2</a></p>
+<p>就想說順便來把這兩個拿來比較一下，於是就有了這一篇的誕生</p>
+<p>這篇剛好也是我試到一個RcppEigen比較慢的例子</p>
+<p>當做之前的RcppArmadillo vs RcppEigen的延伸</p>
+<p>我這次也觀察到一個現象是RcppArmadillo在這個計算上會使用BLAS</p>
+<p>所以它這裡會用我R的Multi-threaded MKL BLAS去算</p>
+<p>而RcppEigen機制不太確定，但是有趣的事情是Eigen還可以透過include omp配上<code>Eigen::initParallel</code>來加速</p>
+<p>但是這裡RcppArmadillo毫無疑問的直接打趴RcppEigen(攤手</p>
+<p>下一篇會再把RcppParallel拉進來一起玩</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp.html#more" rel="contents">
+              閱讀全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html" itemprop="url">RcppEigen Work with RcppParallel (Part 2)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-12-31T00:00:00+08:00">
+                2016-12-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/R/" itemprop="url" rel="index">
+                    <span itemprop="name">R</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html" class="leancloud_visitors" data-flag-title="RcppEigen Work with RcppParallel (Part 2)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  540
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>我在把RcppEigen跟RcppParallel合體的時候</p>
+<p>看了下面這篇的程式：</p>
+<p><a href="https://gist.github.com/JWiley/d9cba55603471f75d438" target="_blank" rel="noopener">C++ code</a>，<a href="https://gist.github.com/JWiley/8fe93ae105b1fb244f93" target="_blank" rel="noopener">R code</a></p>
+<p>我也有發現他在R mail群裡面回答說這個程式時不時會crash</p>
+<p>我就想到我第一部分提到的Rcpp::NumericVector會在RcppParallel會crash的問題</p>
+<p>那我就修改了一下，發現程式就穩定了，我也把我修改後的程式放上來 (稍微改的漂亮一些)</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html#more" rel="contents">
+              閱讀全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201612/2016-12-31-weighted-least-square-algorithm.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -701,197 +1087,6 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall.html#more" rel="contents">
-              閱讀全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ching-Chuan Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Celestial">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html" itemprop="url">RcppEigen Work with RcppParallel (Part 2)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-12-31T00:00:00+08:00">
-                2016-12-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/R/" itemprop="url" rel="index">
-                    <span itemprop="name">R</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html" itemprop="commentCount">0</span> comments
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html" class="leancloud_visitors" data-flag-title="RcppEigen Work with RcppParallel (Part 2)">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">閱讀次數&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字數統計&#58;</span>
-                
-                <span title="字數統計">
-                  540
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>我在把RcppEigen跟RcppParallel合體的時候</p>
-<p>看了下面這篇的程式：</p>
-<p><a href="https://gist.github.com/JWiley/d9cba55603471f75d438" target="_blank" rel="noopener">C++ code</a>，<a href="https://gist.github.com/JWiley/8fe93ae105b1fb244f93" target="_blank" rel="noopener">R code</a></p>
-<p>我也有發現他在R mail群裡面回答說這個程式時不時會crash</p>
-<p>我就想到我第一部分提到的Rcpp::NumericVector會在RcppParallel會crash的問題</p>
-<p>那我就修改了一下，發現程式就穩定了，我也把我修改後的程式放上來 (稍微改的漂亮一些)</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html#more" rel="contents">
               閱讀全文 &raquo;
             </a>
           </div>
@@ -2065,195 +2260,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201610/2016-10-21-R-web-service-with-opencpu.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ching-Chuan Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Celestial">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/201610/2016-10-21-R-web-service-with-opencpu.html" itemprop="url">R web service with opencpu</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-10-21T00:00:00+08:00">
-                2016-10-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/R/" itemprop="url" rel="index">
-                    <span itemprop="name">R</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/posts/201610/2016-10-21-R-web-service-with-opencpu.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201610/2016-10-21-R-web-service-with-opencpu.html" itemprop="commentCount">0</span> comments
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/posts/201610/2016-10-21-R-web-service-with-opencpu.html" class="leancloud_visitors" data-flag-title="R web service with opencpu">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">閱讀次數&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字數統計&#58;</span>
-                
-                <span title="字數統計">
-                  440
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>昨天後來再google發現opencpu這個更強大的套件</p>
-<p>昨天太累就沒試了XD</p>
-<p>我把前幾天弄得<code>unnest</code>函數在配上opencpu</p>
-<p>就可以輕鬆做到unnested json的轉換了</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/201610/2016-10-21-R-web-service-with-opencpu.html#more" rel="contents">
-              閱讀全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2306,7 +2312,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">137</span>
+                  <span class="site-state-item-count">138</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -2328,7 +2334,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">155</span>
+                  <span class="site-state-item-count">156</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
