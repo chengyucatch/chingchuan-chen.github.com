@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-14-compile-julia-in-windows.html</loc>
+    
+    <lastmod>2018-08-16T15:45:15.316Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://chingchuan-chen.github.io/posts/201808/2018-08-16-build-gpu-version-of-lightgbm-in-centos-7.html</loc>
     
     <lastmod>2018-08-15T15:18:20.637Z</lastmod>
@@ -33,13 +40,6 @@
     <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-26-installation-of-vms.html</loc>
     
     <lastmod>2018-07-26T14:49:00.022Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-14-compile-julia-in-windows.html</loc>
-    
-    <lastmod>2018-07-13T17:41:22.497Z</lastmod>
     
   </url>
   

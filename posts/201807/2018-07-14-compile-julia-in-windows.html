@@ -128,7 +128,7 @@
 <meta property="og:site_name" content="Celestial">
 <meta property="og:description" content="這篇主要是紀錄在Windows編譯Julia">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:updated_time" content="2018-07-13T17:41:22.497Z">
+<meta property="og:updated_time" content="2018-08-16T15:45:15.316Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Compile Julia on Windows with Intel MKL">
 <meta name="twitter:description" content="這篇主要是紀錄在Windows編譯Julia">
@@ -484,7 +484,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  494
+                  505
                 </span>
               
 
@@ -514,7 +514,7 @@
 <p>首先是安裝cygwin64，下載好exe之後，下指令安裝需要的東西:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setup-x86_64.exe -s http://ftp.yzu.edu.tw/cygwin/ -q -P cmake,gcc-g++,git,make,patch,curl,m4,python,p7zip,mingw64-x86_64-gcc-g++,mingw64-x86_64-gcc-fortran</span><br></pre></td></tr></table></figure>
 <p>打開cygwin terminal:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># clone source code</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/JuliaLang/julia.git</span><br><span class="line">mv julia julia-master</span><br><span class="line"><span class="built_in">cd</span> julia-master</span><br><span class="line"><span class="comment"># create make info</span></span><br><span class="line">tee Make.user &lt;&lt; EOF</span><br><span class="line">XC_HOST = x86_64-w64-mingw32</span><br><span class="line">USE_INTEL_MKL = 1</span><br><span class="line">MKLROOT = /cygdrive/c/Program\ Files\ \(x86\)/IntelSWTools/compilers_and_libraries_2017/windows/mkl</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把dll複製過來</span></span><br><span class="line">mkdir -p usr/bin</span><br><span class="line">cp <span class="variable">$MKLROOT</span>/../redist/intel64_win/compiler/libiomp5md.dll usr/bin/</span><br><span class="line">cp <span class="variable">$MKLROOT</span>/../redist/intel64_win/mkl/mkl_rt.dll usr/bin/</span><br><span class="line">cp <span class="variable">$MKLROOT</span>/../redist/intel64_win/mkl/mkl_core.dll usr/bin/</span><br><span class="line">cp <span class="variable">$MKLROOT</span>/../redist/intel64_win/mkl/mkl_def.dll usr/bin/</span><br><span class="line">cp <span class="variable">$MKLROOT</span>/../redist/intel64_win/mkl/mkl_intel_thread.dll usr/bin/</span><br><span class="line">cp <span class="variable">$MKLROOT</span>/../redist/intel64_win/mkl/mkl_blacs_lp64.dll usr/bin/</span><br><span class="line">cp usr/bin/mkl_rt.dll usr/bin/libmkl_rt.dll</span><br><span class="line"></span><br><span class="line"><span class="comment"># 開始編譯</span></span><br><span class="line">make -j 28</span><br><span class="line"><span class="comment"># 編譯extra</span></span><br><span class="line">make win-extras</span><br><span class="line"><span class="comment"># create binary distribution</span></span><br><span class="line">make binary-dist</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># clone source code</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/JuliaLang/julia.git</span><br><span class="line">mv julia julia-master</span><br><span class="line"><span class="built_in">cd</span> julia-master</span><br><span class="line"><span class="comment"># create make info</span></span><br><span class="line">tee Make.user &lt;&lt; EOF</span><br><span class="line">XC_HOST = x86_64-w64-mingw32</span><br><span class="line">USE_INTEL_MKL = 1</span><br><span class="line">MKLROOT = /cygdrive/c/Program\ Files\ \(x86\)/IntelSWTools/compilers_and_libraries_2017/windows/mkl</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把dll複製過來</span></span><br><span class="line">MKLROOT=/cygdrive/c/Program\ Files\ \(x86\)/IntelSWTools/compilers_and_libraries_2017/windows/mkl</span><br><span class="line">mkdir -p usr/bin</span><br><span class="line">cp <span class="string">"<span class="variable">$MKLROOT</span>/../redist/intel64_win/compiler/libiomp5md.dll"</span> usr/bin/</span><br><span class="line">cp <span class="string">"<span class="variable">$MKLROOT</span>/../redist/intel64_win/mkl/mkl_rt.dll"</span> usr/bin/</span><br><span class="line">cp <span class="string">"<span class="variable">$MKLROOT</span>/../redist/intel64_win/mkl/mkl_core.dll"</span> usr/bin/</span><br><span class="line">cp <span class="string">"<span class="variable">$MKLROOT</span>/../redist/intel64_win/mkl/mkl_def.dll"</span> usr/bin/</span><br><span class="line">cp <span class="string">"<span class="variable">$MKLROOT</span>/../redist/intel64_win/mkl/mkl_intel_thread.dll"</span> usr/bin/</span><br><span class="line">cp <span class="string">"<span class="variable">$MKLROOT</span>/../redist/intel64_win/mkl/mkl_blacs_lp64.dll"</span> usr/bin/</span><br><span class="line">cp usr/bin/mkl_rt.dll usr/bin/libmkl_rt.dll</span><br><span class="line"></span><br><span class="line"><span class="comment"># 開始編譯</span></span><br><span class="line">make -j 28</span><br><span class="line"><span class="comment"># 編譯extra</span></span><br><span class="line">make win-extras</span><br><span class="line"><span class="comment"># create binary distribution</span></span><br><span class="line">make binary-dist</span><br></pre></td></tr></table></figure>
 <p>然後就會出現<code>julia-53db863142-win64.exe</code>類似這種檔案在你的Cygwin資料夾下面了，點擊兩下後就可以安裝了</p>
 <p>下面比較測試一下OpenBLAS跟MKL (@Ryzen ThreadRipper <a href="mailto:1950X@3.7GHz" target="_blank" rel="noopener">1950X@3.7GHz</a>, 128 GB RAM)</p>
 <p>程式碼如下</p>
@@ -571,8 +571,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/posts/201807/2018-07-13-extend-disk-space-centos-7-vm.html" rel="next" title="Extend The Disk Space of CentOS 7 VM">
-                <i class="fa fa-chevron-left"></i> Extend The Disk Space of CentOS 7 VM
+              <a href="/posts/201807/2018-07-13-npm-mirror.html" rel="next" title="Create A Mirror of NPM Registry">
+                <i class="fa fa-chevron-left"></i> Create A Mirror of NPM Registry
               </a>
             
           </div>
@@ -685,7 +685,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">156</span>
+                  <span class="site-state-item-count">153</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
