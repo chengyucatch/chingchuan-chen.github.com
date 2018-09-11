@@ -2,205 +2,212 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://chingchuan-chen.github.io/posts/201807/2018-09-11-compile-julia-in-centos-7.html</loc>
+    
+    <lastmod>2018-09-11T14:11:52.032Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-14-compile-julia-in-windows.html</loc>
     
-    <lastmod>2018-08-16T15:45:15.316Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://chingchuan-chen.github.io/posts/201808/2018-08-16-build-gpu-version-of-lightgbm-in-centos-7.html</loc>
-    
-    <lastmod>2018-08-15T15:18:20.637Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://chingchuan-chen.github.io/posts/201808/2018-08-15-build-gpu-version-of-lightgbm-in-windows.html</loc>
-    
-    <lastmod>2018-08-14T17:12:33.761Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-27-installation-of-slurm.html</loc>
-    
-    <lastmod>2018-08-14T17:11:40.682Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://chingchuan-chen.github.io/posts/201502/2015-02-20-excel-and-winbash.html</loc>
-    
-    <lastmod>2018-08-14T17:10:28.515Z</lastmod>
+    <lastmod>2018-09-11T12:58:23.120Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-26-installation-of-vms.html</loc>
     
-    <lastmod>2018-07-26T14:49:00.022Z</lastmod>
+    <lastmod>2018-09-11T12:37:53.707Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201808/2018-08-16-build-gpu-version-of-lightgbm-in-centos-7.html</loc>
+    
+    <lastmod>2018-08-15T15:15:31.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201808/2018-08-15-build-gpu-version-of-lightgbm-in-windows.html</loc>
+    
+    <lastmod>2018-08-14T17:12:14.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-27-installation-of-slurm.html</loc>
+    
+    <lastmod>2018-08-14T17:11:40.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201502/2015-02-20-excel-and-winbash.html</loc>
+    
+    <lastmod>2018-08-14T17:10:22.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-13-npm-mirror.html</loc>
     
-    <lastmod>2018-07-13T17:31:39.876Z</lastmod>
+    <lastmod>2018-07-13T17:31:39.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-13-extend-disk-space-centos-7-vm.html</loc>
     
-    <lastmod>2018-07-13T14:44:43.489Z</lastmod>
+    <lastmod>2018-07-13T14:44:43.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-25-pyspark-with-mongodb.html</loc>
     
-    <lastmod>2018-07-06T13:35:53.984Z</lastmod>
+    <lastmod>2018-07-06T13:35:53.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/about/index.html</loc>
     
-    <lastmod>2018-06-08T15:59:12.566Z</lastmod>
+    <lastmod>2018-06-08T15:59:12.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-25-installation-of-python-3.5.5-in-centos-7.4.html</loc>
     
-    <lastmod>2018-04-26T16:53:43.794Z</lastmod>
+    <lastmod>2018-04-26T16:53:43.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-14-Python-installation.html</loc>
     
-    <lastmod>2018-04-26T15:25:44.900Z</lastmod>
+    <lastmod>2018-04-26T15:25:44.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-25-installation-of-go-1.10-in-centos-7.4.html</loc>
     
-    <lastmod>2018-04-25T17:51:32.869Z</lastmod>
+    <lastmod>2018-04-25T17:51:32.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-24-python-call-go-part2.html</loc>
     
-    <lastmod>2018-04-24T14:56:11.182Z</lastmod>
+    <lastmod>2018-04-24T14:56:11.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201607/2016-07-26-use-cx_Oracle-to-manipulate-oracle-database-in-Python.html</loc>
     
-    <lastmod>2018-04-21T06:56:18.382Z</lastmod>
+    <lastmod>2018-04-21T06:56:18.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201607/2016-07-25-use-ROracle-to-manipulate-oracle-database-in-R.html</loc>
     
-    <lastmod>2018-04-18T17:20:17.576Z</lastmod>
+    <lastmod>2018-04-18T17:20:17.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201607/2016-07-24-deployment-of-oracle-database.html</loc>
     
-    <lastmod>2018-04-18T17:17:36.398Z</lastmod>
+    <lastmod>2018-04-18T17:17:36.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-16-python-call-go.html</loc>
     
-    <lastmod>2018-04-17T11:02:31.957Z</lastmod>
+    <lastmod>2018-04-17T11:02:31.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-16-kivy.html</loc>
     
-    <lastmod>2018-04-16T16:43:07.796Z</lastmod>
+    <lastmod>2018-04-16T16:42:39.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201804/2018-04-15-PyCharm-and-Cython.html</loc>
     
-    <lastmod>2018-04-16T16:32:41.728Z</lastmod>
+    <lastmod>2018-04-16T16:32:10.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201803/2018-03-15-R-call-javascript.html</loc>
     
-    <lastmod>2018-03-15T15:20:05.599Z</lastmod>
+    <lastmod>2018-03-15T15:20:05.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201711/2017-11-19-Swish-Beta-Function-In-Keras.html</loc>
     
-    <lastmod>2018-03-14T18:01:24.581Z</lastmod>
+    <lastmod>2018-03-14T18:01:24.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201504/2015-04-20-shiny-app-for-ising-model.html</loc>
     
-    <lastmod>2018-03-14T17:17:25.191Z</lastmod>
+    <lastmod>2018-03-14T17:17:25.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201504/2015-04-27-how-to-use-xelatex-in-sublime-text.html</loc>
     
-    <lastmod>2018-03-14T17:17:22.188Z</lastmod>
+    <lastmod>2018-03-14T17:17:22.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201504/2015-04-19-Implementation-for-summing-a-list-of-matrices-part-2.html</loc>
     
-    <lastmod>2018-03-14T17:16:55.272Z</lastmod>
+    <lastmod>2018-03-14T17:16:55.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201504/2015-04-19-bsxfun-in-R.html</loc>
     
-    <lastmod>2018-03-14T17:16:20.333Z</lastmod>
+    <lastmod>2018-03-14T17:16:20.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201504/2015-04-14-Using-Rcpp-function-in-doSNOW-and-snowfall.html</loc>
     
-    <lastmod>2018-03-14T17:16:06.384Z</lastmod>
+    <lastmod>2018-03-14T17:16:06.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201504/2015-04-10-hadoop-and-python.html</loc>
     
-    <lastmod>2018-03-14T17:15:41.814Z</lastmod>
+    <lastmod>2018-03-14T17:15:41.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201504/2015-04-09-installation-of-spyder2-and-spyder3.html</loc>
     
-    <lastmod>2018-03-14T17:15:20.780Z</lastmod>
+    <lastmod>2018-03-14T17:15:20.000Z</lastmod>
     
   </url>
   
@@ -214,777 +221,777 @@
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201504/2015-04-06-installation-of-hbase-and-hive-in-mint-17.html</loc>
     
-    <lastmod>2018-03-14T17:14:39.567Z</lastmod>
+    <lastmod>2018-03-14T17:14:39.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201504/2015-04-06-build-hadoop-environment-in-mint-17.html</loc>
     
-    <lastmod>2018-03-14T17:14:21.364Z</lastmod>
+    <lastmod>2018-03-14T17:14:21.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201503/2015-03-30-combinations-of-protein-in-Rcpp.html</loc>
     
-    <lastmod>2018-03-14T17:13:57.297Z</lastmod>
+    <lastmod>2018-03-14T17:13:57.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201503/2015-03-27-drawing-planes-in-R.html</loc>
     
-    <lastmod>2018-03-14T17:13:40.593Z</lastmod>
+    <lastmod>2018-03-14T17:13:40.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201503/2015-03-28-the-length-of-runs-of-equal-values-in-a-vector.html</loc>
     
-    <lastmod>2018-03-14T17:13:37.742Z</lastmod>
+    <lastmod>2018-03-14T17:13:37.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201503/2015-03-26-regular-expression-in-R.html</loc>
     
-    <lastmod>2018-03-14T17:12:54.394Z</lastmod>
+    <lastmod>2018-03-14T17:12:54.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201503/2015-03-18-splitting-characters-in-R.html</loc>
     
-    <lastmod>2018-03-14T17:12:34.392Z</lastmod>
+    <lastmod>2018-03-14T17:12:34.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201503/2015-03-20-processing-string-in-R.html</loc>
     
-    <lastmod>2018-03-14T17:12:24.577Z</lastmod>
+    <lastmod>2018-03-14T17:12:24.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201503/2015-03-14-Computing-the-transition-matrix-for-multi-state-id.html</loc>
     
-    <lastmod>2018-03-14T17:11:32.486Z</lastmod>
+    <lastmod>2018-03-14T17:11:32.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201503/2015-03-04-Taking-average-%20every-k-periods.html</loc>
     
-    <lastmod>2018-03-14T17:11:19.243Z</lastmod>
+    <lastmod>2018-03-14T17:11:19.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201502/2015-02-28-hotkeys-in-sublime-text.html</loc>
     
-    <lastmod>2018-03-14T17:10:27.859Z</lastmod>
+    <lastmod>2018-03-14T17:10:27.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201502/2015-02-15-pasrsing-html-with-javascript.html</loc>
     
-    <lastmod>2018-03-14T17:09:34.050Z</lastmod>
+    <lastmod>2018-03-14T17:09:34.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201502/2015-02-12-Faster-R-in-windows.html</loc>
     
-    <lastmod>2018-03-14T17:09:11.599Z</lastmod>
+    <lastmod>2018-03-14T17:09:11.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201501/2015-01-18-Implementation-for-summing-a-list-of-matrices.html</loc>
     
-    <lastmod>2018-03-14T17:08:47.706Z</lastmod>
+    <lastmod>2018-03-14T17:08:47.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201501/2015-01-14-unique-rows-of-matrix-in-mex.html</loc>
     
-    <lastmod>2018-03-14T17:08:13.025Z</lastmod>
+    <lastmod>2018-03-14T17:08:13.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201408/2014-09-02-grouping-in-a-fixed-time-interval.html</loc>
     
-    <lastmod>2018-03-14T17:07:16.999Z</lastmod>
+    <lastmod>2018-03-14T17:07:16.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201408/2014-08-20-tables-combining.html</loc>
     
-    <lastmod>2018-03-14T17:07:10.592Z</lastmod>
+    <lastmod>2018-03-14T17:07:10.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201408/2014-08-03-R-with-GPU-performance-of-HiPLARM.html</loc>
     
-    <lastmod>2018-03-14T17:05:41.945Z</lastmod>
+    <lastmod>2018-03-14T17:05:41.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201408/2014-08-03-R-with-GPU-performance-of-gputools.html</loc>
     
-    <lastmod>2018-03-14T17:05:29.477Z</lastmod>
+    <lastmod>2018-03-14T17:05:29.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201408/2014-08-03-R-with-GPU.html</loc>
     
-    <lastmod>2018-03-14T17:05:27.167Z</lastmod>
+    <lastmod>2018-03-14T17:05:27.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201407/2014-07-30-Rcpp-Attributes-for-Sparse-Matrix.html</loc>
     
-    <lastmod>2018-03-14T17:05:02.523Z</lastmod>
+    <lastmod>2018-03-14T17:05:02.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201408/2014-08-02-Search-Maximum-Point-by-Point.html</loc>
     
-    <lastmod>2018-03-14T17:04:59.760Z</lastmod>
+    <lastmod>2018-03-14T17:04:59.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201407/2014-07-29-R-data-table-sum-by-groups.html</loc>
     
-    <lastmod>2018-03-14T17:04:23.227Z</lastmod>
+    <lastmod>2018-03-14T17:04:23.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201407/2014-07-29-R-data-table-subsets.html</loc>
     
-    <lastmod>2018-03-14T17:04:20.231Z</lastmod>
+    <lastmod>2018-03-14T17:04:20.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201407/2014-07-29-R-data-table-melt-and-cast.html</loc>
     
-    <lastmod>2018-03-14T17:04:16.926Z</lastmod>
+    <lastmod>2018-03-14T17:04:16.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201407/2014-07-29-R-data-table-collating-data.html</loc>
     
-    <lastmod>2018-03-14T17:04:12.613Z</lastmod>
+    <lastmod>2018-03-14T17:04:12.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201407/2014-07-22-R-performance.html</loc>
     
-    <lastmod>2018-03-14T17:03:53.058Z</lastmod>
+    <lastmod>2018-03-14T17:03:53.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-01-magrittr.html</loc>
     
-    <lastmod>2018-03-14T17:02:38.732Z</lastmod>
+    <lastmod>2018-03-14T17:02:38.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-02-data-table.html</loc>
     
-    <lastmod>2018-03-14T17:02:38.275Z</lastmod>
+    <lastmod>2018-03-14T17:02:38.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-03-dplyr.html</loc>
     
-    <lastmod>2018-03-14T17:02:18.493Z</lastmod>
+    <lastmod>2018-03-14T17:02:18.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-04-tidyr.html</loc>
     
-    <lastmod>2018-03-14T17:01:54.356Z</lastmod>
+    <lastmod>2018-03-14T17:01:54.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201601/2016-01-18-RcppParallel_and_RRO_about_intel_MKL_multithread.html</loc>
     
-    <lastmod>2018-03-14T17:01:28.049Z</lastmod>
+    <lastmod>2018-03-14T17:01:28.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201604/2016-04-11-initialization_of_ubuntu.html</loc>
     
-    <lastmod>2018-03-14T17:01:03.694Z</lastmod>
+    <lastmod>2018-03-14T17:01:03.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201604/2016-04-22-Installation_of_mongodb_in_ubuntu.html</loc>
     
-    <lastmod>2018-03-14T17:00:45.771Z</lastmod>
+    <lastmod>2018-03-14T17:00:45.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201604/2016-04-22-Installation_of_RRO_in_ubuntu.html</loc>
     
-    <lastmod>2018-03-14T17:00:38.333Z</lastmod>
+    <lastmod>2018-03-14T17:00:38.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201605/2016-05-10-centos-fakeraid.html</loc>
     
-    <lastmod>2018-03-14T17:00:04.472Z</lastmod>
+    <lastmod>2018-03-14T17:00:04.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201605/2016-05-11-initialization_of_centos.html</loc>
     
-    <lastmod>2018-03-14T16:59:29.962Z</lastmod>
+    <lastmod>2018-03-14T16:59:29.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201607/2016-07-10-pipe-operators-in-R.html</loc>
     
-    <lastmod>2018-03-14T16:59:12.296Z</lastmod>
+    <lastmod>2018-03-14T16:59:12.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201607/2016-07-23-deployment-spark-phoenix-hbase-yarn-zookeeper-hadoop.html</loc>
     
-    <lastmod>2018-03-14T16:58:50.230Z</lastmod>
+    <lastmod>2018-03-14T16:58:50.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201607/2016-07-30-deployment-of-cassandra-in-centos.html</loc>
     
-    <lastmod>2018-03-14T16:57:16.849Z</lastmod>
+    <lastmod>2018-03-14T16:57:16.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201607/2016-07-28-test-on-apache-sqoop.html</loc>
     
-    <lastmod>2018-03-14T16:57:12.209Z</lastmod>
+    <lastmod>2018-03-14T16:57:12.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201608/2016-08-01-export-oracle-data-to-cassandra-using-python.html</loc>
     
-    <lastmod>2018-03-14T16:55:55.792Z</lastmod>
+    <lastmod>2018-03-14T16:55:55.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201608/2016-08-05-deployment-of-spark-based-on-cassandra.html</loc>
     
-    <lastmod>2018-03-14T16:55:37.472Z</lastmod>
+    <lastmod>2018-03-14T16:55:37.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201608/2016-08-10-nexus-local-maven-repository.html</loc>
     
-    <lastmod>2018-03-14T16:55:19.201Z</lastmod>
+    <lastmod>2018-03-14T16:55:19.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201608/2016-08-12-deployment-of-spark-2_0_0-based-on-cassandra.html</loc>
     
-    <lastmod>2018-03-14T16:54:56.651Z</lastmod>
+    <lastmod>2018-03-14T16:54:56.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201608/2016-08-13-use-scala-migrate-oracle-data-to-cassandra-through-sparksql.html</loc>
     
-    <lastmod>2018-03-14T16:54:36.793Z</lastmod>
+    <lastmod>2018-03-14T16:54:36.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201608/2016-08-23-deployment-of-mesos-spark.html</loc>
     
-    <lastmod>2018-03-14T16:54:35.897Z</lastmod>
+    <lastmod>2018-03-14T16:54:35.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201609/2016-09-07-simple-file-server-centos.html</loc>
     
-    <lastmod>2018-03-14T16:54:06.243Z</lastmod>
+    <lastmod>2018-03-14T16:54:06.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201608/2016-08-26-spark-on-mesos-dynamic-resource-allocation.html</loc>
     
-    <lastmod>2018-03-14T16:54:02.092Z</lastmod>
+    <lastmod>2018-03-14T16:54:02.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201609/2016-09-08-sparklyr-and-use-it-with-cassandra.html</loc>
     
-    <lastmod>2018-03-14T16:53:21.668Z</lastmod>
+    <lastmod>2018-03-14T16:53:21.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201609/2016-09-09-sparkr.html</loc>
     
-    <lastmod>2018-03-14T16:53:07.046Z</lastmod>
+    <lastmod>2018-03-14T16:53:07.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201609/2016-09-10-sparkrlyr-extensions.html</loc>
     
-    <lastmod>2018-03-14T16:52:56.477Z</lastmod>
+    <lastmod>2018-03-14T16:52:56.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201609/2016-09-14-python-supervisor-monitor.html</loc>
     
-    <lastmod>2018-03-14T16:46:21.994Z</lastmod>
+    <lastmod>2018-03-14T16:46:21.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201609/2016-09-15-spark-assembly.html</loc>
     
-    <lastmod>2018-03-14T16:45:41.762Z</lastmod>
+    <lastmod>2018-03-14T16:45:41.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201609/2016-09-19-return-hadoop-architecture.html</loc>
     
-    <lastmod>2018-03-14T16:45:39.497Z</lastmod>
+    <lastmod>2018-03-14T16:45:39.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201609/2016-09-20-apache-drill.html</loc>
     
-    <lastmod>2018-03-14T16:45:38.506Z</lastmod>
+    <lastmod>2018-03-14T16:45:38.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201609/2016-09-21-apache-hive-ACID.html</loc>
     
-    <lastmod>2018-03-14T16:44:53.326Z</lastmod>
+    <lastmod>2018-03-14T16:44:53.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201609/2016-09-21-apache-hive-with-apache-drill.html</loc>
     
-    <lastmod>2018-03-14T16:44:47.440Z</lastmod>
+    <lastmod>2018-03-14T16:44:47.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201609/2016-09-22-spark-on-hive.html</loc>
     
-    <lastmod>2018-03-14T16:44:36.921Z</lastmod>
+    <lastmod>2018-03-14T16:44:36.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201609/2016-09-23-performance-benchmark-of-the-sql-tools-on-Hadoop.html</loc>
     
-    <lastmod>2018-03-14T16:44:03.825Z</lastmod>
+    <lastmod>2018-03-14T16:44:03.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201609/2016-09-26-spark-and-hive.html</loc>
     
-    <lastmod>2018-03-14T16:42:08.620Z</lastmod>
+    <lastmod>2018-03-14T16:42:08.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201610/2016-10-04-library-R-packages-with-install-automatically.md.html</loc>
     
-    <lastmod>2018-03-14T16:41:08.011Z</lastmod>
+    <lastmod>2018-03-14T16:41:08.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201610/2016-10-14-buildup-mongodb-sharding-server.html</loc>
     
-    <lastmod>2018-03-14T16:40:54.877Z</lastmod>
+    <lastmod>2018-03-14T16:40:54.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201610/2016-10-15-using-R-to-load-data-into-mongodb-from-oracle.html</loc>
     
-    <lastmod>2018-03-14T16:40:37.675Z</lastmod>
+    <lastmod>2018-03-14T16:40:37.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201610/2016-10-19-unnest-in-R-datatable.html</loc>
     
-    <lastmod>2018-03-14T16:40:23.374Z</lastmod>
+    <lastmod>2018-03-14T16:40:23.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201610/2016-10-20-R-web-service.html</loc>
     
-    <lastmod>2018-03-14T16:40:11.107Z</lastmod>
+    <lastmod>2018-03-14T16:40:11.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201610/2016-10-21-R-web-service-with-opencpu.html</loc>
     
-    <lastmod>2018-03-14T16:40:04.110Z</lastmod>
+    <lastmod>2018-03-14T16:40:04.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201610/2016-10-25-installation-of-opencpu-in-centos.html</loc>
     
-    <lastmod>2018-03-14T16:39:53.419Z</lastmod>
+    <lastmod>2018-03-14T16:39:53.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201610/2016-10-28-gitlab-with-rstudio.html</loc>
     
-    <lastmod>2018-03-14T16:39:30.616Z</lastmod>
+    <lastmod>2018-03-14T16:39:30.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201611/2016-11-05-ddply-vs-rbindlist.html</loc>
     
-    <lastmod>2018-03-14T16:39:08.490Z</lastmod>
+    <lastmod>2018-03-14T16:39:08.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201611/2016-11-26-R-parallel-pkgs.html</loc>
     
-    <lastmod>2018-03-14T16:38:33.290Z</lastmod>
+    <lastmod>2018-03-14T16:38:33.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201612/2016-12-10-locally-quantile-regression-in-R.html</loc>
     
-    <lastmod>2018-03-14T16:38:17.213Z</lastmod>
+    <lastmod>2018-03-14T16:38:17.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html</loc>
     
-    <lastmod>2018-03-14T16:37:40.600Z</lastmod>
+    <lastmod>2018-03-14T16:37:40.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall.html</loc>
     
-    <lastmod>2018-03-14T16:37:35.101Z</lastmod>
+    <lastmod>2018-03-14T16:37:35.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html</loc>
     
-    <lastmod>2018-03-14T16:37:30.753Z</lastmod>
+    <lastmod>2018-03-14T16:37:30.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201612/2016-12-31-weighted-least-square-algorithm.html</loc>
     
-    <lastmod>2018-03-14T16:37:20.345Z</lastmod>
+    <lastmod>2018-03-14T16:37:20.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201405/2014-05-14-how-to-build-blog-by-using-jekyll.html</loc>
     
-    <lastmod>2018-03-14T16:36:38.806Z</lastmod>
+    <lastmod>2018-03-14T16:36:38.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp.html</loc>
     
-    <lastmod>2018-03-14T16:30:25.752Z</lastmod>
+    <lastmod>2018-03-14T16:30:25.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp-continued.html</loc>
     
-    <lastmod>2018-03-14T16:30:19.975Z</lastmod>
+    <lastmod>2018-03-14T16:30:19.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html</loc>
     
-    <lastmod>2018-03-14T16:29:42.661Z</lastmod>
+    <lastmod>2018-03-14T16:29:42.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack-continued.html</loc>
     
-    <lastmod>2018-03-14T16:29:37.574Z</lastmod>
+    <lastmod>2018-03-14T16:29:37.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201701/2017-01-02-Rcpp-link-blaze.html</loc>
     
-    <lastmod>2018-03-14T16:29:15.559Z</lastmod>
+    <lastmod>2018-03-14T16:29:15.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201701/2017-01-02-Rcpp-link-blaze-part-2.html</loc>
     
-    <lastmod>2018-03-14T16:29:11.051Z</lastmod>
+    <lastmod>2018-03-14T16:29:11.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201701/2017-01-02-update-RcppEigen-to-3-3-1.html</loc>
     
-    <lastmod>2018-03-14T16:28:57.686Z</lastmod>
+    <lastmod>2018-03-14T16:28:57.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201701/2017-01-04-using-gcc-5.3-with-R-in-centos-7.html</loc>
     
-    <lastmod>2018-03-14T16:28:37.390Z</lastmod>
+    <lastmod>2018-03-14T16:28:37.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201702/2017-02-15-use-ambari-and-hdp-deploy-hadoop-cluster.html</loc>
     
-    <lastmod>2018-03-14T16:27:59.893Z</lastmod>
+    <lastmod>2018-03-14T16:27:59.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201703/2017-03-10-wrapr-examples.html</loc>
     
-    <lastmod>2018-03-14T16:27:36.470Z</lastmod>
+    <lastmod>2018-03-14T16:27:36.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201703/2017-03-11-installation-mxnet-gpu-version-in-windows.html</loc>
     
-    <lastmod>2018-03-14T16:27:14.878Z</lastmod>
+    <lastmod>2018-03-14T16:27:14.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201703/2017-03-12-Rcpp-type-template.html</loc>
     
-    <lastmod>2018-03-14T16:26:58.489Z</lastmod>
+    <lastmod>2018-03-14T16:26:58.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201703/2017-03-14-using-caret-to-tune-model-parameters.html</loc>
     
-    <lastmod>2018-03-14T16:26:29.452Z</lastmod>
+    <lastmod>2018-03-14T16:26:29.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201703/2017-03-31-Rcpp-object-check.html</loc>
     
-    <lastmod>2018-03-14T16:26:07.023Z</lastmod>
+    <lastmod>2018-03-14T16:26:07.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201704/2017-04-10-grid-search-in-data.table.html</loc>
     
-    <lastmod>2018-03-14T16:25:38.461Z</lastmod>
+    <lastmod>2018-03-14T16:25:38.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201704/2017-04-14-transform-variables-of-data-frame.html</loc>
     
-    <lastmod>2018-03-14T16:25:25.114Z</lastmod>
+    <lastmod>2018-03-14T16:25:25.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201704/2017-04-16-mxnet-io-csviter.html</loc>
     
-    <lastmod>2018-03-14T16:24:43.473Z</lastmod>
+    <lastmod>2018-03-14T16:24:43.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201704/2017-04-23-introduce-to-foreach-and-iterators.html</loc>
     
-    <lastmod>2018-03-14T16:24:03.496Z</lastmod>
+    <lastmod>2018-03-14T16:24:03.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201704/2017-04-23-RcppArmadillo-call-F77-blas-lapacl.html</loc>
     
-    <lastmod>2018-03-14T16:23:42.077Z</lastmod>
+    <lastmod>2018-03-14T16:23:42.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201704/2017-04-24-building-gpu-version-of-mxnet-in-windows.html</loc>
     
-    <lastmod>2018-03-14T16:23:21.991Z</lastmod>
+    <lastmod>2018-03-14T16:23:21.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201705/2017-05-25-use-R-to-construct-web-service.html</loc>
     
-    <lastmod>2018-03-14T16:22:27.405Z</lastmod>
+    <lastmod>2018-03-14T16:22:27.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201707/2017-07-20-inconsolata-in-centos.html</loc>
     
-    <lastmod>2018-03-14T16:22:09.209Z</lastmod>
+    <lastmod>2018-03-14T16:22:09.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201708/2017-08-12-Rcpp-link-system-library.html</loc>
     
-    <lastmod>2018-03-14T16:21:34.873Z</lastmod>
+    <lastmod>2018-03-14T16:21:34.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201710/2017-10-06-RcppArmadillo-Use-NVBLAS.html</loc>
     
-    <lastmod>2018-03-14T16:15:49.180Z</lastmod>
+    <lastmod>2018-03-14T16:15:49.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201405/2014-05-16-how-to-compile-R-with-mkl.html</loc>
     
-    <lastmod>2018-03-14T16:15:12.653Z</lastmod>
+    <lastmod>2018-03-14T16:15:12.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201407/2014-07-10-Some-tips-on-linux.html</loc>
     
-    <lastmod>2018-03-14T16:14:52.202Z</lastmod>
+    <lastmod>2018-03-14T16:14:52.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201405/2014-05-20-how-to-build-numpy-and-scipy-with-MKL.html</loc>
     
-    <lastmod>2018-03-14T16:14:48.700Z</lastmod>
+    <lastmod>2018-03-14T16:14:48.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201405/2014-05-19-syntax-highlight-in-jekyll.html</loc>
     
-    <lastmod>2018-03-14T16:14:42.876Z</lastmod>
+    <lastmod>2018-03-14T16:14:42.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201405/2014-05-18-sublime-text-in-linux.html</loc>
     
-    <lastmod>2018-03-14T16:14:38.937Z</lastmod>
+    <lastmod>2018-03-14T16:14:38.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201407/2014-07-19-Rcpp-Attributes.html</loc>
     
-    <lastmod>2018-03-14T16:12:57.458Z</lastmod>
+    <lastmod>2018-03-14T16:12:57.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201407/2014-07-19-Rcpp-Attributes-with-lasso.html</loc>
     
-    <lastmod>2018-03-14T16:12:41.985Z</lastmod>
+    <lastmod>2018-03-14T16:12:41.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201407/2014-07-20-Rcpp-Attributes-for-kernelMatrix-with-openmp.html</loc>
     
-    <lastmod>2018-03-14T16:11:36.575Z</lastmod>
+    <lastmod>2018-03-14T16:11:36.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/categories/index.html</loc>
     
-    <lastmod>2018-03-14T16:05:05.164Z</lastmod>
+    <lastmod>2018-03-14T16:05:05.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/tags/index.html</loc>
     
-    <lastmod>2018-03-14T16:04:57.610Z</lastmod>
+    <lastmod>2018-03-14T16:04:57.000Z</lastmod>
     
   </url>
   
