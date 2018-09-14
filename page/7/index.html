@@ -371,7 +371,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201609/2016-09-22-spark-on-hive.html">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201609/2016-09-21-apache-hive-ACID.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ching-Chuan Chen">
@@ -390,7 +390,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/posts/201609/2016-09-22-spark-on-hive.html" itemprop="url">Apache Spark on Apache Hive</a></h1>
+                <a class="post-title-link" href="/posts/201609/2016-09-21-apache-hive-ACID.html" itemprop="url">Apache Hive and ACID</a></h1>
         
 
         <div class="post-meta">
@@ -443,8 +443,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/posts/201609/2016-09-22-spark-on-hive.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201609/2016-09-22-spark-on-hive.html" itemprop="commentCount">0</span> comments
+                <a href="/posts/201609/2016-09-21-apache-hive-ACID.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201609/2016-09-21-apache-hive-ACID.html" itemprop="commentCount">0</span> comments
                 </a>
               </span>
             
@@ -452,7 +452,7 @@
 
           
           
-             <span id="/posts/201609/2016-09-22-spark-on-hive.html" class="leancloud_visitors" data-flag-title="Apache Spark on Apache Hive">
+             <span id="/posts/201609/2016-09-21-apache-hive-ACID.html" class="leancloud_visitors" data-flag-title="Apache Hive and ACID">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -477,7 +477,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  429
+                  1,464
                 </span>
               
 
@@ -503,13 +503,18 @@
 
       
         
-          <p>這篇主要是用Spark去連接現存的Hive</p>
-<p>可能有人會先好奇說為什麼不用Spark本身的Thrift Server</p>
-<p>我稍微看了一下，Spark的Thrift Server只能跑Local</p>
-<p>也就是說你的資料只能在一台電腦上跑，因此，這樣是有風險的</p>
+          <p>Hive支援ACID，可以讓資料庫做transactions</p>
+<p>其具備以下四種性質</p>
+<ol>
+<li>原子性(atomicity)：做就要做完，不做就全部都不做，不會做一半</li>
+<li>一致性(consistency)：資料庫的資訊是完整的</li>
+<li>隔離性(isolation)：可以同時讀寫多個transactions，讓讀寫不會互相影響</li>
+<li>持久性(durability)：資料的修改是永久的，不會丟失</li>
+</ol>
+<p>那麼Hive支援這個有什麼好處？讓Hive能夠如同RMDB去做資料的UPDATE, DELETE</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/201609/2016-09-22-spark-on-hive.html#more" rel="contents">
+            <a class="btn" href="/posts/201609/2016-09-21-apache-hive-ACID.html#more" rel="contents">
               閱讀全文 &raquo;
             </a>
           </div>
@@ -1128,6 +1133,193 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201609/2016-09-14-python-supervisor-monitor.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/201609/2016-09-14-python-supervisor-monitor.html" itemprop="url">使用python的套件supervisor監控程式 - 以Cassandra, Spark, Mesos為例</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-09-15T00:00:00+08:00">
+                2016-09-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/BigData/" itemprop="url" rel="index">
+                    <span itemprop="name">BigData</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201609/2016-09-14-python-supervisor-monitor.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201609/2016-09-14-python-supervisor-monitor.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201609/2016-09-14-python-supervisor-monitor.html" class="leancloud_visitors" data-flag-title="使用python的套件supervisor監控程式 - 以Cassandra, Spark, Mesos為例">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  731
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Python的supervisor是一套簡單、輕量的監控系統服務之工具</p>
+<p>透過簡單的安裝跟些許的設定即可以達到想要的效果</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/201609/2016-09-14-python-supervisor-monitor.html#more" rel="contents">
+              閱讀全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201609/2016-09-15-spark-assembly.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1266,193 +1458,6 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/posts/201609/2016-09-15-spark-assembly.html#more" rel="contents">
-              閱讀全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201609/2016-09-14-python-supervisor-monitor.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ching-Chuan Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Celestial">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/201609/2016-09-14-python-supervisor-monitor.html" itemprop="url">使用python的套件supervisor監控程式 - 以Cassandra, Spark, Mesos為例</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-09-15T00:00:00+08:00">
-                2016-09-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/BigData/" itemprop="url" rel="index">
-                    <span itemprop="name">BigData</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/posts/201609/2016-09-14-python-supervisor-monitor.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201609/2016-09-14-python-supervisor-monitor.html" itemprop="commentCount">0</span> comments
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/posts/201609/2016-09-14-python-supervisor-monitor.html" class="leancloud_visitors" data-flag-title="使用python的套件supervisor監控程式 - 以Cassandra, Spark, Mesos為例">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">閱讀次數&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字數統計&#58;</span>
-                
-                <span title="字數統計">
-                  731
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Python的supervisor是一套簡單、輕量的監控系統服務之工具</p>
-<p>透過簡單的安裝跟些許的設定即可以達到想要的效果</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/201609/2016-09-14-python-supervisor-monitor.html#more" rel="contents">
               閱讀全文 &raquo;
             </a>
           </div>
