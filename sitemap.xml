@@ -2,30 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://chingchuan-chen.github.io/posts/201807/2018-09-11-compile-julia-in-centos-7.html</loc>
+    <loc>http://chingchuan-chen.github.io/posts/201809/2018-09-18-write-A-general-plot-function-with-R.html</loc>
     
-    <lastmod>2018-09-11T14:11:52.032Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-14-compile-julia-in-windows.html</loc>
-    
-    <lastmod>2018-09-11T12:58:23.120Z</lastmod>
+    <lastmod>2018-09-18T16:05:10.386Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-26-installation-of-vms.html</loc>
+    <loc>http://chingchuan-chen.github.io/posts/201809/2018-09-11-compile-julia-in-centos-7.html</loc>
     
-    <lastmod>2018-09-11T12:37:53.707Z</lastmod>
+    <lastmod>2018-09-18T14:20:21.537Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201808/2018-08-16-build-gpu-version-of-lightgbm-in-centos-7.html</loc>
     
-    <lastmod>2018-08-15T15:15:31.000Z</lastmod>
+    <lastmod>2018-09-18T14:20:18.212Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-14-compile-julia-in-windows.html</loc>
+    
+    <lastmod>2018-09-11T12:58:23.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201807/2018-07-26-installation-of-vms.html</loc>
+    
+    <lastmod>2018-09-11T12:37:53.000Z</lastmod>
     
   </url>
   
@@ -408,14 +415,14 @@
   </url>
   
   <url>
-    <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-02-data-table.html</loc>
+    <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-01-magrittr.html</loc>
     
     <lastmod>2018-03-14T17:02:38.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-01-magrittr.html</loc>
+    <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-02-data-table.html</loc>
     
     <lastmod>2018-03-14T17:02:38.000Z</lastmod>
     
