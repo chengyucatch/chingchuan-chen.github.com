@@ -2,23 +2,44 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://chingchuan-chen.github.io/posts/201812/2018-11-02-how-does-R-process-existed-connections-when-exit.html</loc>
+    
+    <lastmod>2018-12-16T11:32:53.659Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201812/2018-12-16-how-does-R-process-existed-connections-when-exit.html</loc>
+    
+    <lastmod>2018-12-16T11:29:07.501Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201812/2018-12-04-Rstudio-server-in-docker.html</loc>
+    
+    <lastmod>2018-12-16T10:42:17.670Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://chingchuan-chen.github.io/posts/201809/2018-09-18-write-A-general-plot-function-with-R.html</loc>
     
-    <lastmod>2018-09-18T16:12:49.677Z</lastmod>
+    <lastmod>2018-09-18T16:12:49.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201809/2018-09-11-compile-julia-in-centos-7.html</loc>
     
-    <lastmod>2018-09-18T14:20:21.537Z</lastmod>
+    <lastmod>2018-09-18T14:20:21.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://chingchuan-chen.github.io/posts/201808/2018-08-16-build-gpu-version-of-lightgbm-in-centos-7.html</loc>
     
-    <lastmod>2018-09-18T14:20:18.212Z</lastmod>
+    <lastmod>2018-09-18T14:20:18.000Z</lastmod>
     
   </url>
   
@@ -415,14 +436,14 @@
   </url>
   
   <url>
-    <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-01-magrittr.html</loc>
+    <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-02-data-table.html</loc>
     
     <lastmod>2018-03-14T17:02:38.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-02-data-table.html</loc>
+    <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-01-magrittr.html</loc>
     
     <lastmod>2018-03-14T17:02:38.000Z</lastmod>
     

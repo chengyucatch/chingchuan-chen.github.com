@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/earlyaccess//css?family=Noto Sans TC:300,300italic,400,400italic,700,700italic|Noto Sans TC:300,300italic,400,400italic,700,700italic|Inconsolata:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Data Science, R, MATLAB, Rcpp, Big Data, Ambari, Spark">
+
+
+
+
+
+
+
+
+  <meta property="fb:admins" content="celestial0230">
+  <meta property="fb:app_id" content="418813441900729">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Celestial">
+<meta property="og:url" content="http://chingchuan-chen.github.io/page/15/index.html">
+<meta property="og:site_name" content="Celestial">
+<meta property="og:locale" content="zh-tw">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Celestial">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chingchuan-chen.github.io/page/15/">
+
+
+
+
+
+  <title>Celestial</title>
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '418813441900729',
+      xfbml      : true,
+      version    : 'v2.10'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-72564040-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Celestial</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站點地圖
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            關於
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201405/2014-05-18-sublime-text-in-linux.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/201405/2014-05-18-sublime-text-in-linux.html" itemprop="url">Sublime Text 3 in Linux</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-05-18T00:00:00+08:00">
+                2014-05-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201405/2014-05-18-sublime-text-in-linux.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201405/2014-05-18-sublime-text-in-linux.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201405/2014-05-18-sublime-text-in-linux.html" class="leancloud_visitors" data-flag-title="Sublime Text 3 in Linux">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  808
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>以下文章參考下列四個網址：</p>
+<ol>
+<li><a href="https://www.sinosky.org/linux-sublime-text-fcitx.html" target="_blank" rel="noopener">完美解决 Linux 下 Sublime Text 中文输入</a></li>
+<li><a href="http://askubuntu.com/questions/396938/how-do-i-make-sublime-text-3-the-default-text-editor" target="_blank" rel="noopener">How do I make Sublime Text 3 the default text editor</a></li>
+</ol>
+<p>linux上，中文輸入法一直是難題，應用程式沒辦法支援中文輸入是非常常見的事情，連sublime text也是。還不只如此，還有輸入法的戰爭，我在進入linux時，最一開使用的輸入法是gcin，然後去用hime，最後因為sublime text的解決方法只能只用fcitx，最後用了這個輸入法。</p>
+<p>我看了不少文章提供各種sublime text輸入的問題，我覺得下列方法是最方便的：</p>
+<ol>
+<li>把下列的程式碼存為sublime_imfix.c:</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">sublime-imfix.c</span></span><br><span class="line"><span class="comment">Use LD_PRELOAD to interpose some function to fix sublime input method support for linux.</span></span><br><span class="line"><span class="comment">By Cjacker Huang</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">gcc -shared -o libsublime-imfix.so sublime-imfix.c `pkg-config --libs --cflags gtk+-2.0` -fPIC</span></span><br><span class="line"><span class="comment">LD_PRELOAD=./libsublime-imfix.so subl</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;gtk/gtk.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;gdk/gdkx.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> GdkSegment GdkRegionBox;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">GdkRegion</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">long</span> size;</span><br><span class="line">  <span class="keyword">long</span> numRects;</span><br><span class="line">  GdkRegionBox *rects;</span><br><span class="line">  GdkRegionBox extents;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">GtkIMContext *local_context;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">gdk_region_get_clipbox (<span class="keyword">const</span> GdkRegion *region,</span><br><span class="line">            GdkRectangle    *rectangle)</span><br><span class="line">&#123;</span><br><span class="line">  g_return_if_fail (region != <span class="literal">NULL</span>);</span><br><span class="line">  g_return_if_fail (rectangle != <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">  rectangle-&gt;x = region-&gt;extents.x1;</span><br><span class="line">  rectangle-&gt;y = region-&gt;extents.y1;</span><br><span class="line">  rectangle-&gt;width = region-&gt;extents.x2 - region-&gt;extents.x1;</span><br><span class="line">  rectangle-&gt;height = region-&gt;extents.y2 - region-&gt;extents.y1;</span><br><span class="line">  GdkRectangle rect;</span><br><span class="line">  rect.x = rectangle-&gt;x;</span><br><span class="line">  rect.y = rectangle-&gt;y;</span><br><span class="line">  rect.width = <span class="number">0</span>;</span><br><span class="line">  rect.height = rectangle-&gt;height;</span><br><span class="line">  <span class="comment">//The caret width is 2;</span></span><br><span class="line">  <span class="comment">//Maybe sometimes we will make a mistake, but for most of the time, it should be the caret.</span></span><br><span class="line">  <span class="keyword">if</span>(rectangle-&gt;width == <span class="number">2</span> &amp;&amp; GTK_IS_IM_CONTEXT(local_context)) &#123;</span><br><span class="line">        gtk_im_context_set_cursor_location(local_context, rectangle);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//this is needed, for example, if you input something in file dialog and return back the edit area</span></span><br><span class="line"><span class="comment">//context will lost, so here we set it again.</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> GdkFilterReturn <span class="title">event_filter</span> <span class="params">(GdkXEvent *xevent, GdkEvent *event, gpointer im_context)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    XEvent *xev = (XEvent *)xevent;</span><br><span class="line">    <span class="keyword">if</span>(xev-&gt;type == KeyRelease &amp;&amp; GTK_IS_IM_CONTEXT(im_context)) &#123;</span><br><span class="line">       GdkWindow * win = g_object_get_data(G_OBJECT(im_context),<span class="string">"window"</span>);</span><br><span class="line">       <span class="keyword">if</span>(GDK_IS_WINDOW(win))</span><br><span class="line">         gtk_im_context_set_client_window(im_context, win);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> GDK_FILTER_CONTINUE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">gtk_im_context_set_client_window</span> <span class="params">(GtkIMContext *context,</span></span></span><br><span class="line"><span class="function"><span class="params">          GdkWindow    *window)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  GtkIMContextClass *klass;</span><br><span class="line">  g_return_if_fail (GTK_IS_IM_CONTEXT (context));</span><br><span class="line">  klass = GTK_IM_CONTEXT_GET_CLASS (context);</span><br><span class="line">  <span class="keyword">if</span> (klass-&gt;set_client_window)</span><br><span class="line">    klass-&gt;set_client_window (context, window);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(!GDK_IS_WINDOW (window))</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  g_object_set_data(G_OBJECT(context),<span class="string">"window"</span>,window);</span><br><span class="line">  <span class="keyword">int</span> width = gdk_window_get_width(window);</span><br><span class="line">  <span class="keyword">int</span> height = gdk_window_get_height(window);</span><br><span class="line">  <span class="keyword">if</span>(width != <span class="number">0</span> &amp;&amp; height !=<span class="number">0</span>) &#123;</span><br><span class="line">    gtk_im_context_focus_in(context);</span><br><span class="line">    local_context = context;</span><br><span class="line">  &#125;</span><br><span class="line">  gdk_window_add_filter (window, event_filter, context);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>Ctrl+Alt+T打開你的Terminal視窗到你儲存上面檔案的地方，鍵入：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install build-essential libgtk2.0-dev</span><br><span class="line">gcc -shared -o libsublime-imfix.so sublime-imfix.c `pkg-config --libs --cflags gtk+-2.0` -fPIC</span><br><span class="line">sudo mv libsublime-imfix.so /opt/sublime_text/</span><br></pre></td></tr></table></figure>
+<p>這樣就完成編譯，並且將檔案放置到安裝目錄了。</p>
+<ol>
+<li>修改啟動部份</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo subl /usr/share/applications/sublime-text.desktop</span><br></pre></td></tr></table></figure>
+<p>在每一個<code>Exec=</code>後面都加上下面的指令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">env LD_PRELOAD=/opt/sublime_text/libsublime-imfix.so</span><br></pre></td></tr></table></figure>
+<p>然後輸入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo subl /usr/bin/subl</span><br></pre></td></tr></table></figure>
+<p>更動內容為</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="built_in">export</span> LD_PRELOAD=/opt/sublime_text/libsublime-imfix.so</span><br><span class="line"><span class="built_in">exec</span> /opt/sublime_text/sublime_text <span class="string">"<span class="variable">$@</span>"</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>如果想要把sublime text更動為預設編輯器，先使用下列指令確定是否有安裝成功：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls /usr/share/applications/sublime-text.desktop</span><br></pre></td></tr></table></figure>
+<p>接著打開linux的default列表：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo subl /usr/share/applications/defaults.list</span><br></pre></td></tr></table></figure>
+<p>按下Ctrl+H replace gedit with sublime-text。接著打開user的設定列表：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subl ~/.<span class="built_in">local</span>/share/applications/mimeapps.list</span><br></pre></td></tr></table></figure>
+<p>修改或添加下列下列文字：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[Added Associations]</span><br><span class="line">text/plain=ubuntu-software-center.desktop;shotwell.desktop;sublime-text.desktop;</span><br><span class="line">text/x-chdr=shotwell-viewer.desktop;</span><br><span class="line"></span><br><span class="line">[Default Applications]</span><br><span class="line">text/plain=sublime-text.desktop</span><br><span class="line">text/x-c++src=sublime-text.desktop</span><br><span class="line">text/x-chdr=sublime-text.desktop</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201405/2014-05-16-how-to-compile-R-with-mkl.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/201405/2014-05-16-how-to-compile-R-with-mkl.html" itemprop="url">如何compile R with Intel C++ compiler and Intel MKL</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-05-16T00:00:00+08:00">
+                2014-05-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/R/" itemprop="url" rel="index">
+                    <span itemprop="name">R</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201405/2014-05-16-how-to-compile-R-with-mkl.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201405/2014-05-16-how-to-compile-R-with-mkl.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201405/2014-05-16-how-to-compile-R-with-mkl.html" class="leancloud_visitors" data-flag-title="如何compile R with Intel C++ compiler and Intel MKL">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  2,430
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>以下文章參考下列四個網址：</p>
+<ol>
+<li><a href="https://software.intel.com/en-us/articles/using-intel-mkl-with-r" target="_blank" rel="noopener">Using Intel MKL with R</a></li>
+<li><a href="https://software.intel.com/en-us/articles/build-r-301-with-intel-c-compiler-and-intel-mkl-on-linux" target="_blank" rel="noopener">Build R-3.0.1 with Intel C++ Compiler and Intel MKL on Linux</a></li>
+<li><a href="http://www.r-bloggers.com/compiling-r-3-0-1-with-mkl-support/" target="_blank" rel="noopener">Compiling R 3.0.1 with MKL support</a></li>
+<li><a href="http://cran.r-project.org/doc/manuals/r-devel/R-admin.html" target="_blank" rel="noopener">R Installation and Administraction</a></li>
+</ol>
+<p>開始之前，先用Default R and R with Openblas來測試看看，I use testing script found in <a href="http://r.research.att.com/benchmarks/" target="_blank" rel="noopener">Simon Urbanek’s</a>，Openblas部份參考這個網站<a href="http://www.r-bloggers.com/for-faster-r-use-openblas-instead-better-than-atlas-trivial-to-switch-to-on-ubuntu/" target="_blank" rel="noopener">For faster R use OpenBLAS instead: better than ATLAS, trivial to switch to on Ubuntu</a>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># to install package in /usr/lib/R/library</span></span><br><span class="line">sudo chmod -R 774 /usr/lib/R</span><br><span class="line">sudo chown -R celest.celest /usr/lib/R</span><br><span class="line">sudo chmod -R 774 /usr/<span class="built_in">local</span>/lib/R</span><br><span class="line">sudo chown -R celest.celest /usr/<span class="built_in">local</span>/lib/R</span><br><span class="line"><span class="comment"># install required package</span></span><br><span class="line">R -e <span class="string">"install.packages('SuppDists', repos = 'http://cran.rstudio.com/')"</span></span><br><span class="line"><span class="comment"># run benchmark</span></span><br><span class="line">R -e <span class="string">"source('http://r.research.att.com/benchmarks/R-benchmark-25.R')"</span></span><br><span class="line"><span class="comment"># install OpenBLAS</span></span><br><span class="line">sudo apt-get install libopenblas-base libatlas3gf-base</span><br><span class="line"><span class="comment"># check the BLAS is replaced with OpenBLAS</span></span><br><span class="line">sudo update-alternatives --config libblas.so.3</span><br><span class="line">sudo update-alternatives --config liblapack.so.3</span><br><span class="line"><span class="comment"># run benchmark again</span></span><br><span class="line">R -e <span class="string">"source('http://r.research.att.com/benchmarks/R-benchmark-25.R')"</span></span><br></pre></td></tr></table></figure>
+<p>測試結果如下：<br>Default R：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">   R Benchmark <span class="number">2.5</span></span><br><span class="line">   ===============</span><br><span class="line">Number of times each test is run__________________________:  <span class="number">3</span></span><br><span class="line"></span><br><span class="line">   I. Matrix calculation</span><br><span class="line">   ---------------------</span><br><span class="line">Creation, transp., deformation of a 250<span class="number">0x2500</span> matrix (sec):  <span class="number">0.812333333333334</span></span><br><span class="line">240<span class="number">0x2400</span> normal distributed random matrix ^1000____ (sec):  <span class="number">0.474666666666667</span></span><br><span class="line">Sorting of <span class="number">7</span>,<span class="number">000</span>,<span class="number">000</span> random values__________________ (sec):  <span class="number">0.563333333333333</span></span><br><span class="line">280<span class="number">0x2800</span> cross-product matrix (b = a<span class="string">' * a)_________ (sec):  8.99466666666667</span></span><br><span class="line"><span class="string">Linear regr. over a 3000x3000 matrix (c = a \ b'</span>)___ (sec):  <span class="number">4.42166666666667</span></span><br><span class="line">                      --------------------------------------------</span><br><span class="line">                 Trimmed geom. mean (<span class="number">2</span> extremes eliminated):  <span class="number">1.26481956425649</span></span><br><span class="line"></span><br><span class="line">   II. Matrix functions</span><br><span class="line">   --------------------</span><br><span class="line">FFT over <span class="number">2</span>,<span class="number">400</span>,<span class="number">000</span> random values____________________ (sec):  <span class="number">0.396000000000001</span></span><br><span class="line">Eigenvalues of a 64<span class="number">0x640</span> random matrix______________ (sec):  <span class="number">0.718000000000001</span></span><br><span class="line">Determinant of a 250<span class="number">0x2500</span> random matrix____________ (sec):  <span class="number">3.03633333333334</span></span><br><span class="line">Cholesky decomposition of a 300<span class="number">0x3000</span> matrix________ (sec):  <span class="number">3.42433333333333</span></span><br><span class="line">Inverse of a 160<span class="number">0x1600</span> random matrix________________ (sec):  <span class="number">2.56266666666666</span></span><br><span class="line">                      --------------------------------------------</span><br><span class="line">                Trimmed geom. mean (<span class="number">2</span> extremes eliminated):  <span class="number">1.77441555997029</span></span><br><span class="line"></span><br><span class="line">   III. Programmation</span><br><span class="line">   ------------------</span><br><span class="line"><span class="number">3</span>,<span class="number">500</span>,<span class="number">000</span> Fibonacci numbers calculation (vector calc)(sec):  <span class="number">0.543999999999992</span></span><br><span class="line">Creation of a 300<span class="number">0x3000</span> Hilbert matrix (matrix calc) (sec):  <span class="number">0.294333333333337</span></span><br><span class="line">Grand common divisors of <span class="number">400</span>,<span class="number">000</span> pairs (recursion)__ (sec):  <span class="number">0.686666666666658</span></span><br><span class="line">Creation of a 50<span class="number">0x500</span> Toeplitz matrix (loops)_______ (sec):  <span class="number">0.49266666666666</span></span><br><span class="line">Escoufier<span class="string">'s method on a 45x45 matrix (mixed)________ (sec):  0.378999999999991</span></span><br><span class="line"><span class="string">                      --------------------------------------------</span></span><br><span class="line"><span class="string">                Trimmed geom. mean (2 extremes eliminated):  0.466584631384852</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Total time for all 15 tests_________________________ (sec):  27.8006666666666</span></span><br><span class="line"><span class="string">Overall mean (sum of I, II and III trimmed means/3)_ (sec):  1.01548017027814</span></span><br><span class="line"><span class="string">                      --- End of test ---</span></span><br></pre></td></tr></table></figure>
+<p>R with Openblas:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">   R Benchmark <span class="number">2.5</span></span><br><span class="line">   ===============</span><br><span class="line">Number of times each test is run__________________________:  <span class="number">3</span></span><br><span class="line"></span><br><span class="line">   I. Matrix calculation</span><br><span class="line">   ---------------------</span><br><span class="line">Creation, transp., deformation of a 250<span class="number">0x2500</span> matrix (sec):  <span class="number">0.755666666666667</span></span><br><span class="line">240<span class="number">0x2400</span> normal distributed random matrix ^1000____ (sec):  <span class="number">0.473</span></span><br><span class="line">Sorting of <span class="number">7</span>,<span class="number">000</span>,<span class="number">000</span> random values__________________ (sec):  <span class="number">0.572</span></span><br><span class="line">280<span class="number">0x2800</span> cross-product matrix (b = a<span class="string">' * a)_________ (sec):  0.411</span></span><br><span class="line"><span class="string">Linear regr. over a 3000x3000 matrix (c = a \ b'</span>)___ (sec):  <span class="number">0.213</span></span><br><span class="line">                      --------------------------------------------</span><br><span class="line">                 Trimmed geom. mean (<span class="number">2</span> extremes eliminated):  <span class="number">0.480875883392325</span></span><br><span class="line"></span><br><span class="line">   II. Matrix functions</span><br><span class="line">   --------------------</span><br><span class="line">FFT over <span class="number">2</span>,<span class="number">400</span>,<span class="number">000</span> random values____________________ (sec):  <span class="number">0.372666666666666</span></span><br><span class="line">Eigenvalues of a 64<span class="number">0x640</span> random matrix______________ (sec):  <span class="number">0.895</span></span><br><span class="line">Determinant of a 250<span class="number">0x2500</span> random matrix____________ (sec):  <span class="number">0.271333333333335</span></span><br><span class="line">Cholesky decomposition of a 300<span class="number">0x3000</span> matrix________ (sec):  <span class="number">0.243333333333333</span></span><br><span class="line">Inverse of a 160<span class="number">0x1600</span> random matrix________________ (sec):  <span class="number">0.328000000000001</span></span><br><span class="line">                      --------------------------------------------</span><br><span class="line">                Trimmed geom. mean (<span class="number">2</span> extremes eliminated):  <span class="number">0.321291459145567</span></span><br><span class="line"></span><br><span class="line">   III. Programmation</span><br><span class="line">   ------------------</span><br><span class="line"><span class="number">3</span>,<span class="number">500</span>,<span class="number">000</span> Fibonacci numbers calculation (vector calc)(sec):  <span class="number">0.522333333333335</span></span><br><span class="line">Creation of a 300<span class="number">0x3000</span> Hilbert matrix (matrix calc) (sec):  <span class="number">0.259666666666668</span></span><br><span class="line">Grand common divisors of <span class="number">400</span>,<span class="number">000</span> pairs (recursion)__ (sec):  <span class="number">0.674333333333337</span></span><br><span class="line">Creation of a 50<span class="number">0x500</span> Toeplitz matrix (loops)_______ (sec):  <span class="number">0.499333333333335</span></span><br><span class="line">Escoufier<span class="string">'s method on a 45x45 matrix (mixed)________ (sec):  0.352999999999994</span></span><br><span class="line"><span class="string">                      --------------------------------------------</span></span><br><span class="line"><span class="string">                Trimmed geom. mean (2 extremes eliminated):  0.451548428599678</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Total time for all 15 tests_________________________ (sec):  6.84366666666667</span></span><br><span class="line"><span class="string">Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.411666478563312</span></span><br><span class="line"><span class="string">                      --- End of test ---</span></span><br></pre></td></tr></table></figure>
+<p>可以看到total time已經從27.8秒到6.8秒左右，改善幅度已經不少，接著來compile R:</p>
+<ol>
+<li>取得R與其開發包，並安裝需要的套件，在terminal use following commands:</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:webupd8team/java &amp;&amp; sudo apt-get update &amp;&amp; sudo apt-get install oracle-java8-installer &amp;&amp; sudo apt-get install oracle-java8-set-default</span><br><span class="line">apt-cache search readline xorg-dev &amp;&amp; sudo apt-get install libreadline6 libreadline6-dev texinfo texlive texlive-binaries texlive-latex-base xorg-dev tcl8.6-dev tk8.6-dev libtiff5 libtiff5-dev libjpeg-dev libpng12-dev libcairo2-dev libglu1-mesa-dev libgsl0-dev libicu-dev R-base R-base-dev libnlopt-dev libstdc++6 build-essential libcurl4-openssl-dev texlive-fonts-extra libxml2-dev aptitude</span><br><span class="line"><span class="comment"># sudo apt-get install texlive-latex-extra</span></span><br></pre></td></tr></table></figure>
+<p>有一個工具要另外安裝，方式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz</span><br><span class="line">tar -xvzf libiconv-1.14.tar.gz</span><br><span class="line"><span class="built_in">cd</span> libiconv-1.14 &amp;&amp; ./configure --prefix=/usr/<span class="built_in">local</span>/libiconv</span><br><span class="line">make &amp;&amp; sudo make install</span><br></pre></td></tr></table></figure>
+<p>但是我在make過程中有出錯，我google之後找到的解法是修改<code>srclib/stdio.in.h</code>的698列:<br>原本的script:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_GL_WARN_ON_USE (gets, <span class="string">"gets is a security hole - use fgets instead"</span>);</span><br></pre></td></tr></table></figure>
+<p>修改後的scipt:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(__GLIBC__) &amp;&amp; !defined(__UCLIBC__) &amp;&amp; !__GLIBC_PREREQ(2, 16)</span></span><br><span class="line"> _GL_WARN_ON_USE (gets, <span class="string">"gets is a security hole - use fgets instead"</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p>之後再重新make就成功了。</p>
+<ol>
+<li>取得R source code:</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget http://cran.csie.ntu.edu.tw/src/base/R-3/R-3.2.3.tar.gz</span><br><span class="line">tar -xvzf R-3.2.3.tar.gz</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>取得Intel C++ compiler and Intel MKL，你可以取得non-commercial license for this two software in intel website. 另外，64bit linux system不支援32 bits的compiler，安裝時記得取消掉IA32的安裝。</p>
+</li>
+<li><p>compilitation:</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">sudo -s</span><br><span class="line"><span class="built_in">source</span> /opt/intel/composer_xe_2015/mkl/bin intel64</span><br><span class="line"><span class="built_in">source</span> /opt/intel/composer_xe_2015/bin/compilervars.sh intel64</span><br><span class="line">MKL_path=/opt/intel/composer_xe_2015/mkl</span><br><span class="line">ICC_path=/opt/intel/composer_xe_2015/compiler</span><br><span class="line"><span class="built_in">export</span> LD=<span class="string">"xild"</span></span><br><span class="line"><span class="built_in">export</span> AR=<span class="string">"xiar"</span></span><br><span class="line"><span class="built_in">export</span> CC=<span class="string">"icc"</span></span><br><span class="line"><span class="built_in">export</span> CXX=<span class="string">"icpc"</span></span><br><span class="line"><span class="built_in">export</span> CFLAGS=<span class="string">"-wd188 -ip -std=gnu99 -g -O3 -openmp -parallel -xHost -ipo -fp-model precise -fp-model source"</span></span><br><span class="line"><span class="built_in">export</span> CXXFLAGS=<span class="string">"-g -O3 -openmp -parallel -xHost -ipo -fp-model precise -fp-model source"</span></span><br><span class="line"><span class="built_in">export</span> F77=ifort</span><br><span class="line"><span class="built_in">export</span> FFLAGS=<span class="string">"-g -O3 -openmp -parallel -xHost -ipo -fp-model source"</span></span><br><span class="line"><span class="built_in">export</span> FC=ifort</span><br><span class="line"><span class="built_in">export</span> FCFLAGS=<span class="string">"-g -O3 -openmp -parallel -xHost -ipo -fp-model source"</span></span><br><span class="line"><span class="built_in">export</span> ICC_LIBS=<span class="variable">$ICC_path</span>/lib/intel64</span><br><span class="line"><span class="built_in">export</span> IFC_LIBS=<span class="variable">$ICC_path</span>/lib/intel64</span><br><span class="line"><span class="built_in">export</span> LDFLAGS=<span class="string">"-L<span class="variable">$ICC_LIBS</span> -L<span class="variable">$IFC_LIBS</span> -L<span class="variable">$MKL_path</span>/lib/intel64 -L/usr/lib -L/usr/local/lib -openmp"</span></span><br><span class="line"><span class="built_in">export</span> SHLIB_CXXLD=icpc</span><br><span class="line"><span class="built_in">export</span> SHLIB_LDFLAGS=<span class="string">"-shared -fPIC"</span></span><br><span class="line"><span class="built_in">export</span> SHLIB_CXXLDFLAGS=<span class="string">"-shared -fPIC"</span></span><br><span class="line">MKL=<span class="string">"-L<span class="variable">$MKL_path</span>/lib/intel64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread -ldl -lm"</span></span><br><span class="line">./configure --with-blas=<span class="string">"<span class="variable">$MKL</span>"</span> --with-lapack --with-x --<span class="built_in">enable</span>-memory-profiling --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh --<span class="built_in">enable</span>-R-shlib --<span class="built_in">enable</span>-BLAS-shlib --<span class="built_in">enable</span>-prebuilt-html</span><br></pre></td></tr></table></figure>
+<p>如果順利會出現下方的畫面：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">R is now configured <span class="keyword">for</span> x86_64-pc-linux-gnu</span><br><span class="line"></span><br><span class="line">  Source directory:          .</span><br><span class="line">  Installation directory:    /usr/<span class="built_in">local</span></span><br><span class="line"></span><br><span class="line">  C compiler:                icc  -wd188 -ip -std=gnu99 -g -O3 -openmp -parallel -xHost -ipo -fp-model precise -fp-model <span class="built_in">source</span></span><br><span class="line">  Fortran 77 compiler:       ifort  -g -O3 -openmp -parallel -xHost -ipo -fp-model <span class="built_in">source</span></span><br><span class="line"></span><br><span class="line">  C++ compiler:              icpc  -g -O3 -openmp -parallel -xHost -ipo -fp-model precise -fp-model <span class="built_in">source</span></span><br><span class="line">  C++ 11 compiler:           icpc  -std=c++11 -g -O3 -openmp -parallel -xHost -ipo -fp-model precise -fp-model <span class="built_in">source</span></span><br><span class="line">  Fortran 90/95 compiler:    ifort -g -O3 -openmp -parallel -xHost -ipo -fp-model <span class="built_in">source</span></span><br><span class="line">  Obj-C compiler:</span><br><span class="line"></span><br><span class="line">  Interfaces supported:      X11, tcltk</span><br><span class="line">  External libraries:        readline, BLAS(MKL), zlib, bzlib, lzma, PCRE, curl</span><br><span class="line">  Additional capabilities:   PNG, JPEG, TIFF, NLS, cairo, ICU</span><br><span class="line">  Options enabled:           shared R library, shared BLAS, R profiling, memory profiling, static HTML</span><br><span class="line"></span><br><span class="line">  Capabilities skipped:</span><br><span class="line">  Options not enabled:</span><br><span class="line"></span><br><span class="line">  Recommended packages:      yes</span><br></pre></td></tr></table></figure>
+<p>出現上方畫面就可以開始make跟install了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">make &amp;&amp; make check</span><br><span class="line"><span class="comment"># removing R before installation</span></span><br><span class="line">rm /usr/lib/libR.so</span><br><span class="line">rm -r /usr/lib/R</span><br><span class="line">rm -r /usr/bin/Rscript</span><br><span class="line">rm -r /usr/<span class="built_in">local</span>/lib/R</span><br><span class="line">make docs</span><br><span class="line">make install</span><br><span class="line">chown -R celest.celest /usr/<span class="built_in">local</span>/lib/R</span><br><span class="line">chmod -R 775 /usr/<span class="built_in">local</span>/lib/R</span><br><span class="line"><span class="comment"># to add mkl and intel c compiler into path</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'source /opt/intel/composer_xe_2015/mkl/bin/mklvars.sh intel64'</span> &gt;&gt; /etc/bash.bashrc</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'source /opt/intel/composer_xe_2015/bin/compilervars.sh intel64'</span> &gt;&gt; /etc/bash.bashrc</span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line"><span class="comment"># install required package</span></span><br><span class="line">R -e <span class="string">"install.packages('SuppDists', repos = 'http://cran.rstudio.com/')"</span></span><br><span class="line"><span class="comment"># run benchmark</span></span><br><span class="line">R -e <span class="string">"source('http://r.research.att.com/benchmarks/R-benchmark-25.R')"</span></span><br><span class="line"><span class="comment"># to run rstudio-server, you have two options, first:</span></span><br><span class="line"><span class="comment"># echo 'rsession-which-r=/usr/local/bin/R' &gt;&gt; /etc/rstudio/rserver.conf</span></span><br><span class="line"><span class="comment"># second , please use option configure with --prefix=/usr</span></span><br></pre></td></tr></table></figure>
+<p>然後他就會幫你把R安裝於<code>usr/local/lib/R</code>中。</p>
+<ol>
+<li>測試結果</li>
+</ol>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">   R Benchmark <span class="number">2.5</span></span><br><span class="line">   ===============</span><br><span class="line">Number of times each test is run__________________________:  <span class="number">3</span></span><br><span class="line"></span><br><span class="line">   I. Matrix calculation</span><br><span class="line">   ---------------------</span><br><span class="line">Creation, transp., deformation of a 250<span class="number">0x2500</span> matrix (sec):  <span class="number">0.683</span></span><br><span class="line">240<span class="number">0x2400</span> normal distributed random matrix ^1000____ (sec):  <span class="number">0.259666666666667</span></span><br><span class="line">Sorting of <span class="number">7</span>,<span class="number">000</span>,<span class="number">000</span> random values__________________ (sec):  <span class="number">0.560333333333333</span></span><br><span class="line">280<span class="number">0x2800</span> cross-product matrix (b = a<span class="string">' * a)_________ (sec):  0.44</span></span><br><span class="line"><span class="string">Linear regr. over a 3000x3000 matrix (c = a \ b'</span>)___ (sec):  <span class="number">0.193666666666666</span></span><br><span class="line">                      --------------------------------------------</span><br><span class="line">                 Trimmed geom. mean (<span class="number">2</span> extremes eliminated):  <span class="number">0.400041560496478</span></span><br><span class="line"></span><br><span class="line">   II. Matrix functions</span><br><span class="line">   --------------------</span><br><span class="line">FFT over <span class="number">2</span>,<span class="number">400</span>,<span class="number">000</span> random values____________________ (sec):  <span class="number">0.393666666666667</span></span><br><span class="line">Eigenvalues of a 64<span class="number">0x640</span> random matrix______________ (sec):  <span class="number">0.326999999999999</span></span><br><span class="line">Determinant of a 250<span class="number">0x2500</span> random matrix____________ (sec):  <span class="number">0.215666666666666</span></span><br><span class="line">Cholesky decomposition of a 300<span class="number">0x3000</span> matrix________ (sec):  <span class="number">0.183999999999999</span></span><br><span class="line">Inverse of a 160<span class="number">0x1600</span> random matrix________________ (sec):  <span class="number">0.182333333333332</span></span><br><span class="line">                      --------------------------------------------</span><br><span class="line">                Trimmed geom. mean (<span class="number">2</span> extremes eliminated):  <span class="number">0.234990082575285</span></span><br><span class="line"></span><br><span class="line">   III. Programmation</span><br><span class="line">   ------------------</span><br><span class="line"><span class="number">3</span>,<span class="number">500</span>,<span class="number">000</span> Fibonacci numbers calculation (vector calc)(sec):  <span class="number">0.274333333333333</span></span><br><span class="line">Creation of a 300<span class="number">0x3000</span> Hilbert matrix (matrix calc) (sec):  <span class="number">0.221333333333333</span></span><br><span class="line">Grand common divisors of <span class="number">400</span>,<span class="number">000</span> pairs (recursion)__ (sec):  <span class="number">0.275666666666667</span></span><br><span class="line">Creation of a 50<span class="number">0x500</span> Toeplitz matrix (loops)_______ (sec):  <span class="number">0.255</span></span><br><span class="line">Escoufier<span class="string">'s method on a 45x45 matrix (mixed)________ (sec):  0.338999999999999</span></span><br><span class="line"><span class="string">                      --------------------------------------------</span></span><br><span class="line"><span class="string">                Trimmed geom. mean (2 extremes eliminated):  0.268164327390206</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Total time for all 15 tests_________________________ (sec):  4.80466666666666</span></span><br><span class="line"><span class="string">Overall mean (sum of I, II and III trimmed means/3)_ (sec):  0.293214347493761</span></span><br><span class="line"><span class="string">                      --- End of test ---</span></span><br></pre></td></tr></table></figure>
+<p>最後只需要用到4.8秒就可以完成了，可是complitation過程是滿麻煩的，雖然參考了多個網站，可是參數的設定都不太一樣，linux又有權限的限制，而且就算編譯成功，Rcpp這個套件不見得能夠成功，因此花了很久才終於編譯成功，並且能夠直接開啟，只是要利用到c, cpp or fortran時還是需要source compilervars.sh才能夠運行，而且我安裝了三四十個套件都沒有問題了。最後，如果沒有特別要求速度下，其實直接用OpenBLAS就可以省下很多麻煩。另外，我做了一個小小的測試於Rcpp上，速度有不少的提昇(因為用intel C++ compiler，大概增加5~10倍)，測試結果就不放上來了。以上資訊供大家參考，轉載請註明來源，謝謝。</p>
+<p>最後附上測試環境: My environment is mint 17.3, R 3.2.3 compiled by Intel c++, fortran compiler with Intel MKL. My CPU is <a href="mailto:3770K@4.4GHz" target="_blank" rel="noopener">3770K@4.4GHz</a>.</p>
+<p>To use the html help page and change the default language of R to english, you can do that:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'options("help_type"="html")'</span> &gt; ~/.Rprofile</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'LANGUAGE="en"'</span> &gt; ~/.Renviron</span><br></pre></td></tr></table></figure>
+<p>如果要讓Rstudio Server裡面成功啟動並且可以使用<code>icpc</code>，請在<code>/usr/lib/rstudio-server/R/ServerOptions.R</code>裡面加入下方：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sys.setenv(PATH = <span class="string">"/opt/intel/composer_xe_2015.1.133/bin/intel64:/opt/intel/composer_xe_2015.1.133/debugger/gdb/intel64_mic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:$PATH"</span>)</span><br></pre></td></tr></table></figure>
+<p>java config and install some useful packages:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">R CMD javareconf</span><br><span class="line">install.packages(c(<span class="string">'devtools'</span>, <span class="string">'testthat'</span>))</span><br><span class="line">devtools::install_github(c(<span class="string">'klutometis/roxygen'</span>, <span class="string">'hadley/assertthat'</span>, <span class="string">'RcppCore/Rcpp'</span>, <span class="string">'hadley/devtools'</span>, <span class="string">'hadley/testthat'</span>, <span class="string">'hadley/lazyeval'</span>))</span><br><span class="line">devtools::install_github(c(<span class="string">'smbache/magrittr'</span>, <span class="string">'Rdatatable/data.table'</span>, <span class="string">'hadley/reshape'</span>, <span class="string">'hadley/plyr'</span>, <span class="string">'hadley/dplyr'</span>))</span><br><span class="line">devtools::install_github(c(<span class="string">'RcppCore/RcppArmadillo'</span>, <span class="string">'RcppCore/RcppEigen'</span>, <span class="string">'RcppCore/RcppParallel'</span>))</span><br><span class="line">devtools::install_github(c(<span class="string">'hadley/tidyr'</span>, <span class="string">'hadley/purrr'</span>, <span class="string">'yihui/knitr'</span>))</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201405/2014-05-14-how-to-build-blog-by-using-jekyll.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/201405/2014-05-14-how-to-build-blog-by-using-jekyll.html" itemprop="url">如何利用jekyll建立你的blogger</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-05-14T00:00:00+08:00">
+                2014-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/jekyll/" itemprop="url" rel="index">
+                    <span itemprop="name">jekyll</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201405/2014-05-14-how-to-build-blog-by-using-jekyll.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201405/2014-05-14-how-to-build-blog-by-using-jekyll.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201405/2014-05-14-how-to-build-blog-by-using-jekyll.html" class="leancloud_visitors" data-flag-title="如何利用jekyll建立你的blogger">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  1,728
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>以下詳細介紹如何在windows環境下使用sublime text在github上建立屬於你自己的部落格</p>
+<p>以下教學來自下列兩個網站</p>
+<ul>
+<li><a href="http://yizeng.me/2013/05/10/setup-jekyll-on-windows/" target="_blank" rel="noopener">yizeng的blogger</a></li>
+<li>[madhur的blogger](<a href="http://www.madhur.co.in/blog/2011/09/01/runningjekyllwindows.html" target="_blank" rel="noopener">http://www.madhur.co.in/blog/2011/09/01/runningjekyllwindows.html</a></li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/201405/2014-05-14-how-to-build-blog-by-using-jekyll.html#more" rel="contents">
+              閱讀全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/14/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span>
+  </nav>
+
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Ching-Chuan Chen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">143</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">155</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ChingChuan-Chen" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zw12356@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/u/0/110171317328627391486" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/celestial0230" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-thumbs-up"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ching-Chuan Chen</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('10');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("H7MfFf5lhyq2111iytpoFtIz-gzGzoHsz", "tGTKdvBYYQCIIlvxXJGJM2cc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

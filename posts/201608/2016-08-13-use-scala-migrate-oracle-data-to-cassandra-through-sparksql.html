@@ -6,10 +6,10 @@
 
 
 <html class="theme-next mist use-motion" lang="zh-tw">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -86,9 +86,9 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
@@ -106,7 +106,7 @@
 
 
 
-  <meta name="keywords" content="BigData,Oracle,Spark,Cassandra,Mesos,Scala," />
+  <meta name="keywords" content="BigData,Oracle,Cassandra,Spark,Mesos,Scala,">
 
 
 
@@ -115,13 +115,13 @@
 
 
 
-  <meta property="fb:admins" content="celestial0230" />
-  <meta property="fb:app_id" content="418813441900729" />
+  <meta property="fb:admins" content="celestial0230">
+  <meta property="fb:app_id" content="418813441900729">
 
 
 
 <meta name="description" content="這篇主要有兩個目的：  幫ROracle澄清其實沒那麼難用，只是要把table name跟column name都轉成大寫，就不會有double quote了  在scala用sparkSQL連ojdbc7，把Oracle資料拉出來，再透過spark-cassandra-connector把資料倒進Cassandra">
-<meta name="keywords" content="BigData,Oracle,Spark,Cassandra,Mesos,Scala">
+<meta name="keywords" content="BigData,Oracle,Cassandra,Spark,Mesos,Scala">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用scala透過sparkSQL去搬移Oracle DB的資料到Cassandra上">
 <meta property="og:url" content="http://chingchuan-chen.github.io/posts/201608/2016-08-13-use-scala-migrate-oracle-data-to-cassandra-through-sparksql.html">
@@ -163,7 +163,7 @@
 
 
 
-  <link rel="canonical" href="http://chingchuan-chen.github.io/posts/201608/2016-08-13-use-scala-migrate-oracle-data-to-cassandra-through-sparksql.html"/>
+  <link rel="canonical" href="http://chingchuan-chen.github.io/posts/201608/2016-08-13-use-scala-migrate-oracle-data-to-cassandra-through-sparksql.html">
 
 
 
@@ -208,7 +208,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-tw">
 
   
   
@@ -218,13 +218,13 @@
   <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Celestial</span>
         <span class="logo-line-after"><i></i></span>
@@ -254,7 +254,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首頁
           </a>
@@ -264,7 +264,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             歸檔
           </a>
@@ -274,7 +274,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             標籤
           </a>
@@ -284,7 +284,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分類
           </a>
@@ -294,7 +294,7 @@
         <li class="menu-item menu-item-sitemap">
           <a href="/sitemap.xml" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
             
             站點地圖
           </a>
@@ -304,7 +304,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
             
             關於
           </a>
@@ -317,7 +317,7 @@
             <a href="javascript:;" class="popup-trigger">
           
             
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
             
             檢索
           </a>
@@ -338,9 +338,7 @@
       <i class="fa fa-times-circle"></i>
     </span>
     <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="搜索..." spellcheck="false"
-             type="text" id="local-search-input">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
     </div>
   </div>
   <div id="local-search-result"></div>
@@ -372,20 +370,20 @@
   
   
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201608/2016-08-13-use-scala-migrate-oracle-data-to-cassandra-through-sparksql.html">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ching-Chuan Chen">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Celestial">
     </span>
 
@@ -417,7 +415,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -428,7 +426,7 @@
                 <span class="post-meta-item-text">分類於</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
                   <a href="/categories/BigData/" itemprop="url" rel="index">
                     <span itemprop="name">BigData</span>
                   </a>
@@ -471,7 +469,7 @@
           
             <span class="post-meta-divider">|</span>
             <span class="page-pv"><i class="fa fa-file-o"></i>
-            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
             </span>
           
 
@@ -559,9 +557,9 @@
           
             <a href="/tags/Oracle/" rel="tag"># Oracle</a>
           
-            <a href="/tags/Spark/" rel="tag"># Spark</a>
-          
             <a href="/tags/Cassandra/" rel="tag"># Cassandra</a>
+          
+            <a href="/tags/Spark/" rel="tag"># Spark</a>
           
             <a href="/tags/Mesos/" rel="tag"># Mesos</a>
           
@@ -639,11 +637,7 @@
 
   
     <div class="comments" id="comments">
-      <div class="fb-comments"
-           data-href="http://chingchuan-chen.github.io/posts/201608/2016-08-13-use-scala-migrate-oracle-data-to-cassandra-through-sparksql.html"
-           data-numposts="10"
-           data-width="100%"
-           data-colorscheme="light">
+      <div class="fb-comments" data-href="http://chingchuan-chen.github.io/posts/201608/2016-08-13-use-scala-migrate-oracle-data-to-cassandra-through-sparksql.html" data-numposts="10" data-width="100%" data-colorscheme="light">
       </div>
     </div>
 
@@ -675,7 +669,7 @@
 
       <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">Ching-Chuan Chen</p>
               <p class="site-description motion-element" itemprop="description"></p>
@@ -688,7 +682,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-count">143</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -710,7 +704,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">154</span>
+                  <span class="site-state-item-count">155</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
