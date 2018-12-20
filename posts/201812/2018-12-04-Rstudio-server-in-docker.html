@@ -106,7 +106,7 @@
 
 
 
-  <meta name="keywords" content="R,Database,">
+  <meta name="keywords" content="R,docker,">
 
 
 
@@ -121,14 +121,14 @@
 
 
 <meta name="description" content="安裝Docker-ce，並啟動。然後pull image，就可以啟動了。 123456789101112# install dockeryum install -y yum-utils device-mapper-persistent-data lvm2sudo yum-config-manager --add-repo https://download.docker.com/linux/cent">
-<meta name="keywords" content="R,Database">
+<meta name="keywords" content="R,docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Start an RStudio Server With R built on MKL">
 <meta property="og:url" content="http://chingchuan-chen.github.io/posts/201812/2018-12-04-Rstudio-server-in-docker.html">
 <meta property="og:site_name" content="Celestial">
 <meta property="og:description" content="安裝Docker-ce，並啟動。然後pull image，就可以啟動了。 123456789101112# install dockeryum install -y yum-utils device-mapper-persistent-data lvm2sudo yum-config-manager --add-repo https://download.docker.com/linux/cent">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:updated_time" content="2018-12-16T10:42:17.670Z">
+<meta property="og:updated_time" content="2018-12-20T17:10:08.404Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Start an RStudio Server With R built on MKL">
 <meta name="twitter:description" content="安裝Docker-ce，並啟動。然後pull image，就可以啟動了。 123456789101112# install dockeryum install -y yum-utils device-mapper-persistent-data lvm2sudo yum-config-manager --add-repo https://download.docker.com/linux/cent">
@@ -482,7 +482,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  113
+                  114
                 </span>
               
 
@@ -508,7 +508,7 @@
 
       
         <p>安裝<code>Docker-ce</code>，並啟動。然後pull image，就可以啟動了。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># install docker</span></span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">yum install docker-ce</span><br><span class="line">systemctl <span class="built_in">enable</span> docker</span><br><span class="line">systemctl start docker</span><br><span class="line"></span><br><span class="line"><span class="comment"># pull images and start</span></span><br><span class="line">docker pull jamal0230/centos-rstudio-mkl-r:latest</span><br><span class="line"></span><br><span class="line"><span class="comment"># run RStudio server with R built on MKL. The account is user with password password.</span></span><br><span class="line">docker run -d -p 8787:8787 -e USER=user -e PASSWORD=password --name rstudio jamal0230/centos-rstudio-mkl-r:latest</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># install docker</span></span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">yum install docker-ce -y</span><br><span class="line">systemctl <span class="built_in">enable</span> docker</span><br><span class="line">systemctl start docker</span><br><span class="line"></span><br><span class="line"><span class="comment"># pull images and start</span></span><br><span class="line">docker pull jamal0230/centos-rstudio-mkl-r:latest</span><br><span class="line"></span><br><span class="line"><span class="comment"># run RStudio server with R built on MKL. The account is user with password password.</span></span><br><span class="line">docker run -d -p 8787:8787 -e USER=user -e PASSWORD=password --name rstudio jamal0230/centos-rstudio-mkl-r:latest</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -528,7 +528,7 @@
           
             <a href="/tags/R/" rel="tag"># R</a>
           
-            <a href="/tags/Database/" rel="tag"># Database</a>
+            <a href="/tags/docker/" rel="tag"># docker</a>
           
         </div>
       
@@ -647,7 +647,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">142</span>
+                  <span class="site-state-item-count">143</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
