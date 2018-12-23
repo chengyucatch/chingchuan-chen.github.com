@@ -558,7 +558,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201701/2017-01-02-Rcpp-link-blaze.html">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201701/2017-01-02-Rcpp-link-blaze-part-2.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ching-Chuan Chen">
@@ -577,7 +577,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/posts/201701/2017-01-02-Rcpp-link-blaze.html" itemprop="url">Rcpp Link Blaze</a></h1>
+                <a class="post-title-link" href="/posts/201701/2017-01-02-Rcpp-link-blaze-part-2.html" itemprop="url">Rcpp Link Blaze (part 2)</a></h1>
         
 
         <div class="post-meta">
@@ -630,8 +630,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/posts/201701/2017-01-02-Rcpp-link-blaze.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201701/2017-01-02-Rcpp-link-blaze.html" itemprop="commentCount">0</span> comments
+                <a href="/posts/201701/2017-01-02-Rcpp-link-blaze-part-2.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201701/2017-01-02-Rcpp-link-blaze-part-2.html" itemprop="commentCount">0</span> comments
                 </a>
               </span>
             
@@ -639,7 +639,7 @@
 
           
           
-             <span id="/posts/201701/2017-01-02-Rcpp-link-blaze.html" class="leancloud_visitors" data-flag-title="Rcpp Link Blaze">
+             <span id="/posts/201701/2017-01-02-Rcpp-link-blaze-part-2.html" class="leancloud_visitors" data-flag-title="Rcpp Link Blaze (part 2)">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -664,7 +664,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  795
+                  474
                 </span>
               
 
@@ -690,201 +690,10 @@
 
       
         
-          <p>補充：我把程式放到GitHub，可以到這下載來玩：<a href="https://github.com/ChingChuan-Chen/rcpp_link_blaze" target="_blank" rel="noopener">Link</a></p>
-<p>Blaze claim it is fast. <a href="https://bitbucket.org/blaze-lib/blaze/wiki/Benchmarks" target="_blank" rel="noopener">Link</a></p>
-<p>所以我就來試試看Rcpp去link玩玩看</p>
+          <p>如果include <code>blaze/Blaze.h</code>會發現出了好幾個錯誤，這裡提供一些解法：</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/201701/2017-01-02-Rcpp-link-blaze.html#more" rel="contents">
-              閱讀全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack-continued.html">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ching-Chuan Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Celestial">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack-continued.html" itemprop="url">Rcpp call F77 blas/lapack (continued)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-01-01T00:00:00+08:00">
-                2017-01-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/R/" itemprop="url" rel="index">
-                    <span itemprop="name">R</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack-continued.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack-continued.html" itemprop="commentCount">0</span> comments
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack-continued.html" class="leancloud_visitors" data-flag-title="Rcpp call F77 blas/lapack (continued)">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">閱讀次數&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字數統計&#58;</span>
-                
-                <span title="字數統計">
-                  731
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>想一想還是繼續把上一篇補完</p>
-<p>所以這次就活用了LAPACK查詢，去得到the optimal sizes of the WORK array and IWORK array</p>
-<p>R code沒什麼更動，只是多了一些check results的動作</p>
-<p>也試試看第2,3個input得到的結果是否正確</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack-continued.html#more" rel="contents">
+            <a class="btn" href="/posts/201701/2017-01-02-Rcpp-link-blaze-part-2.html#more" rel="contents">
               閱讀全文 &raquo;
             </a>
           </div>
@@ -1130,6 +939,200 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html" itemprop="url">Rcpp call F77 blas/lapack</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-01-01T00:00:00+08:00">
+                2017-01-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/R/" itemprop="url" rel="index">
+                    <span itemprop="name">R</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html" class="leancloud_visitors" data-flag-title="Rcpp call F77 blas/lapack">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  612
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>剛好有點時間來研究一下Rcpp怎樣直接使用底層Fortran 77的BLAS跟LAPACK函數</p>
+<p>我覺得最難的還是要去讀BLAS或LAPACK的文件，然後配置適當的input餵進去</p>
+<p>我這裡就簡單demo一下怎麼樣用LAPACK的dsyevr去計算symmetric matrix的eigenvalues跟eigenvectors</p>
+<p>(BLAS部分其實很接近，有興趣的人可以自己改成用BLAS的函數去做，一樣用F77_CALL即可)</p>
+<p>裡面還是有不少配置，我沒有好好活用，不過我覺得就先這樣吧，等到有需要再慢慢深入去寫</p>
+<p>畢竟我現在直接使用BLAS/LAPACK的場合真的不多，寫那麼底層對我真的有點困難Orz</p>
+<p>我還是乖乖去用RcppEigen跟RcppArmadillo好了~”~</p>
+<p>不過直接用BLAS，可以gain到一些performance，也有比較多flexible的設定</p>
+<p>深入去玩的話，我覺得對程式效能改進有一定幫助</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html#more" rel="contents">
+              閱讀全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-kernal-matrix-computation-in-Rcpp-continued.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1321,7 +1324,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack-continued.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ching-Chuan Chen">
@@ -1340,7 +1343,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html" itemprop="url">Rcpp call F77 blas/lapack</a></h1>
+                <a class="post-title-link" href="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack-continued.html" itemprop="url">Rcpp call F77 blas/lapack (continued)</a></h1>
         
 
         <div class="post-meta">
@@ -1393,8 +1396,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html" itemprop="commentCount">0</span> comments
+                <a href="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack-continued.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack-continued.html" itemprop="commentCount">0</span> comments
                 </a>
               </span>
             
@@ -1402,7 +1405,7 @@
 
           
           
-             <span id="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html" class="leancloud_visitors" data-flag-title="Rcpp call F77 blas/lapack">
+             <span id="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack-continued.html" class="leancloud_visitors" data-flag-title="Rcpp call F77 blas/lapack (continued)">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1427,7 +1430,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  612
+                  731
                 </span>
               
 
@@ -1453,18 +1456,13 @@
 
       
         
-          <p>剛好有點時間來研究一下Rcpp怎樣直接使用底層Fortran 77的BLAS跟LAPACK函數</p>
-<p>我覺得最難的還是要去讀BLAS或LAPACK的文件，然後配置適當的input餵進去</p>
-<p>我這裡就簡單demo一下怎麼樣用LAPACK的dsyevr去計算symmetric matrix的eigenvalues跟eigenvectors</p>
-<p>(BLAS部分其實很接近，有興趣的人可以自己改成用BLAS的函數去做，一樣用F77_CALL即可)</p>
-<p>裡面還是有不少配置，我沒有好好活用，不過我覺得就先這樣吧，等到有需要再慢慢深入去寫</p>
-<p>畢竟我現在直接使用BLAS/LAPACK的場合真的不多，寫那麼底層對我真的有點困難Orz</p>
-<p>我還是乖乖去用RcppEigen跟RcppArmadillo好了~”~</p>
-<p>不過直接用BLAS，可以gain到一些performance，也有比較多flexible的設定</p>
-<p>深入去玩的話，我覺得對程式效能改進有一定幫助</p>
+          <p>想一想還是繼續把上一篇補完</p>
+<p>所以這次就活用了LAPACK查詢，去得到the optimal sizes of the WORK array and IWORK array</p>
+<p>R code沒什麼更動，只是多了一些check results的動作</p>
+<p>也試試看第2,3個input得到的結果是否正確</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack.html#more" rel="contents">
+            <a class="btn" href="/posts/201701/2017-01-01-Rcpp-call-F77-blas-lapack-continued.html#more" rel="contents">
               閱讀全文 &raquo;
             </a>
           </div>
@@ -1895,6 +1893,195 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html" itemprop="url">Differences between RcppEigen and RcppArmadillo</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-12-31T00:00:00+08:00">
+                2016-12-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/R/" itemprop="url" rel="index">
+                    <span itemprop="name">R</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html" class="leancloud_visitors" data-flag-title="Differences between RcppEigen and RcppArmadillo">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  911
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>R maillist有討論過這個問題，而且回的非常長</p>
+<p>我稍微看了一下，發問者試了RcppArmadillo跟RcppEigen</p>
+<p>發現RcppEigen的SVD decomposition不是那麼合用，而且不太好去做coding</p>
+<p>RcppArmadillo比較好去coding</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html#more" rel="contents">
+              閱讀全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -2036,195 +2223,6 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html#more" rel="contents">
-              閱讀全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ching-Chuan Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Celestial">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html" itemprop="url">Differences between RcppEigen and RcppArmadillo</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-12-31T00:00:00+08:00">
-                2016-12-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/R/" itemprop="url" rel="index">
-                    <span itemprop="name">R</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html" itemprop="commentCount">0</span> comments
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html" class="leancloud_visitors" data-flag-title="Differences between RcppEigen and RcppArmadillo">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">閱讀次數&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字數統計&#58;</span>
-                
-                <span title="字數統計">
-                  911
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>R maillist有討論過這個問題，而且回的非常長</p>
-<p>我稍微看了一下，發問者試了RcppArmadillo跟RcppEigen</p>
-<p>發現RcppEigen的SVD decomposition不是那麼合用，而且不太好去做coding</p>
-<p>RcppArmadillo比較好去coding</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html#more" rel="contents">
               閱讀全文 &raquo;
             </a>
           </div>
