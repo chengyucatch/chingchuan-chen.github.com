@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://chingchuan-chen.github.io/posts/201902/2019-02-03-Julia-MKL-build-in-docker.html</loc>
+    
+    <lastmod>2019-02-04T15:35:49.382Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://chingchuan-chen.github.io/posts/201809/2018-09-11-compile-julia-in-centos-7.html</loc>
+    
+    <lastmod>2019-02-03T07:57:38.570Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://chingchuan-chen.github.io/posts/201812/2018-12-21-SLURM-cluster-in-docker.html</loc>
     
     <lastmod>2018-12-30T12:41:36.155Z</lastmod>
@@ -33,13 +47,6 @@
     <loc>http://chingchuan-chen.github.io/posts/201809/2018-09-18-write-A-general-plot-function-with-R.html</loc>
     
     <lastmod>2018-09-18T16:12:49.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://chingchuan-chen.github.io/posts/201809/2018-09-11-compile-julia-in-centos-7.html</loc>
-    
-    <lastmod>2018-09-18T14:20:21.000Z</lastmod>
     
   </url>
   
@@ -436,14 +443,14 @@
   </url>
   
   <url>
-    <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-02-data-table.html</loc>
+    <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-01-magrittr.html</loc>
     
     <lastmod>2018-03-14T17:02:38.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-01-magrittr.html</loc>
+    <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-02-data-table.html</loc>
     
     <lastmod>2018-03-14T17:02:38.000Z</lastmod>
     

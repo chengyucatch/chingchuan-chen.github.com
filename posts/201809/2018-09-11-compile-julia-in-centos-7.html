@@ -128,7 +128,7 @@
 <meta property="og:site_name" content="Celestial">
 <meta property="og:description" content="這篇主要是紀錄在CentOS 7編譯Julia">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:updated_time" content="2018-09-18T14:20:21.000Z">
+<meta property="og:updated_time" content="2019-02-03T07:57:38.570Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Compile Julia on CentOS 7 with Intel MKL and Intel C++">
 <meta name="twitter:description" content="這篇主要是紀錄在CentOS 7編譯Julia">
@@ -482,7 +482,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  160
+                  161
                 </span>
               
 
@@ -509,7 +509,7 @@
       
         <p>這篇主要是紀錄在CentOS 7編譯Julia</p>
 <a id="more"></a>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># clone source code</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/JuliaLang/julia.git</span><br><span class="line">git checkout v1.0.0</span><br><span class="line"><span class="comment"># create make info</span></span><br><span class="line">tee Make.user &lt;&lt; EOF</span><br><span class="line">USE_INTEL_MKL = 1</span><br><span class="line">MKLROOT = /opt/intel/mkl</span><br><span class="line">EOF</span><br><span class="line"><span class="comment"># install needed components</span></span><br><span class="line">yum install gcc gcc-c++ libatomic gfortran wget m4 bzip2 -y</span><br><span class="line">wget https://cmake.org/files/v3.11/cmake-3.11.4.tar.gz</span><br><span class="line">tar xzvf cmake-3.11.4.tar.gz</span><br><span class="line"><span class="built_in">cd</span> cmake-3.11.4</span><br><span class="line">./bootstrap --prefix=/usr</span><br><span class="line">gmake</span><br><span class="line">make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把so複製過來</span></span><br><span class="line">MKLROOT=/opt/intel/mkl</span><br><span class="line">mkdir -p usr/bin</span><br><span class="line">cp <span class="string">"<span class="variable">$MKLROOT</span>/lib/intel64/libiomp5md.dll"</span> usr/bin/</span><br><span class="line">cp <span class="variable">$MKLROOT</span>/lib/intel64/lib* usr/bin</span><br><span class="line">cp /opt/intel/compilers_and_libraries/linux/lib/intel64/libiomp5* usr/bin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 開始編譯</span></span><br><span class="line">make -j 15</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># clone source code</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/JuliaLang/julia.git</span><br><span class="line">git checkout v1.0.0</span><br><span class="line"><span class="comment"># create make info</span></span><br><span class="line">tee Make.user &lt;&lt; EOF</span><br><span class="line">USE_INTEL_MKL = 1</span><br><span class="line">MKLROOT = /opt/intel/mkl</span><br><span class="line">EOF</span><br><span class="line"><span class="comment"># install needed components</span></span><br><span class="line">yum install gcc gcc-c++ libatomic gcc-gfortran wget m4 bzip2 -y</span><br><span class="line">wget https://cmake.org/files/v3.11/cmake-3.11.4.tar.gz</span><br><span class="line">tar xzvf cmake-3.11.4.tar.gz</span><br><span class="line"><span class="built_in">cd</span> cmake-3.11.4</span><br><span class="line">./bootstrap --prefix=/usr</span><br><span class="line">gmake</span><br><span class="line">make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把so複製過來</span></span><br><span class="line">MKLROOT=/opt/intel/mkl</span><br><span class="line">mkdir -p usr/bin</span><br><span class="line">cp <span class="string">"<span class="variable">$MKLROOT</span>/lib/intel64/libiomp5md.dll"</span> usr/bin/</span><br><span class="line">cp <span class="variable">$MKLROOT</span>/lib/intel64/lib* usr/bin</span><br><span class="line">cp /opt/intel/compilers_and_libraries/linux/lib/intel64/libiomp5* usr/bin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 開始編譯</span></span><br><span class="line">make -j 15</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -648,7 +648,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">143</span>
+                  <span class="site-state-item-count">144</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -735,7 +735,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-thumbs-up"></i>
   </span>
