@@ -106,7 +106,7 @@
 
 
 
-  <meta name="keywords" content="MKL,R,BLAS,Microsoft R Open,RcppParallel,">
+  <meta name="keywords" content="Python,R,linux,Julia,">
 
 
 
@@ -120,18 +120,18 @@
 
 
 
-<meta name="description" content="Revolution R Open (Now named Microsoft R Open) provides Intel MKL multi-threaded BLAS.RcppParallel provides parallel tools for R via Intel TBB. (Note: On other platforms, it use TinyThread library.)Ho">
-<meta name="keywords" content="MKL,R,BLAS,Microsoft R Open,RcppParallel">
+<meta name="description" content="Simply record the configuration files.">
+<meta name="keywords" content="Python,R,linux,Julia">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RcppParallel and RRO: about Intel MKL multithread">
-<meta property="og:url" content="http://chingchuan-chen.github.io/posts/201601/2016-01-18-RcppParallel_and_RRO_about_intel_MKL_multithread.html">
+<meta property="og:title" content="Reverse Proxy for RStudio Server and JupyterLab-Hub with SSL in NGINX">
+<meta property="og:url" content="http://chingchuan-chen.github.io/posts/201902/2019-02-27-nginx-reverse-proxy-for-rstudio-server-and-jupyterhub-with-ssl.html">
 <meta property="og:site_name" content="Celestial">
-<meta property="og:description" content="Revolution R Open (Now named Microsoft R Open) provides Intel MKL multi-threaded BLAS.RcppParallel provides parallel tools for R via Intel TBB. (Note: On other platforms, it use TinyThread library.)Ho">
+<meta property="og:description" content="Simply record the configuration files.">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:updated_time" content="2018-03-14T17:01:28.000Z">
+<meta property="og:updated_time" content="2019-02-25T14:59:12.423Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RcppParallel and RRO: about Intel MKL multithread">
-<meta name="twitter:description" content="Revolution R Open (Now named Microsoft R Open) provides Intel MKL multi-threaded BLAS.RcppParallel provides parallel tools for R via Intel TBB. (Note: On other platforms, it use TinyThread library.)Ho">
+<meta name="twitter:title" content="Reverse Proxy for RStudio Server and JupyterLab-Hub with SSL in NGINX">
+<meta name="twitter:description" content="Simply record the configuration files.">
 
 
 
@@ -161,13 +161,13 @@
 
 
 
-  <link rel="canonical" href="http://chingchuan-chen.github.io/posts/201601/2016-01-18-RcppParallel_and_RRO_about_intel_MKL_multithread.html">
+  <link rel="canonical" href="http://chingchuan-chen.github.io/posts/201902/2019-02-27-nginx-reverse-proxy-for-rstudio-server-and-jupyterhub-with-ssl.html">
 
 
 
 
 
-  <title>RcppParallel and RRO: about Intel MKL multithread | Celestial</title>
+  <title>Reverse Proxy for RStudio Server and JupyterLab-Hub with SSL in NGINX | Celestial</title>
   
 <script>
   window.fbAsyncInit = function() {
@@ -373,7 +373,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201601/2016-01-18-RcppParallel_and_RRO_about_intel_MKL_multithread.html">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201902/2019-02-27-nginx-reverse-proxy-for-rstudio-server-and-jupyterhub-with-ssl.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ching-Chuan Chen">
@@ -390,7 +390,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">RcppParallel and RRO: about Intel MKL multithread</h1>
+          <h1 class="post-title" itemprop="name headline">Reverse Proxy for RStudio Server and JupyterLab-Hub with SSL in NGINX</h1>
         
 
         <div class="post-meta">
@@ -402,8 +402,8 @@
               
                 <span class="post-meta-item-text">發表於</span>
               
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-01-18T00:00:00+08:00">
-                2016-01-18
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-02-27T00:00:00+08:00">
+                2019-02-27
               </time>
             
 
@@ -425,8 +425,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/R/" itemprop="url" rel="index">
-                    <span itemprop="name">R</span>
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
                   </a>
                 </span>
 
@@ -443,8 +443,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/posts/201601/2016-01-18-RcppParallel_and_RRO_about_intel_MKL_multithread.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201601/2016-01-18-RcppParallel_and_RRO_about_intel_MKL_multithread.html" itemprop="commentCount">0</span> comments
+                <a href="/posts/201902/2019-02-27-nginx-reverse-proxy-for-rstudio-server-and-jupyterhub-with-ssl.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201902/2019-02-27-nginx-reverse-proxy-for-rstudio-server-and-jupyterhub-with-ssl.html" itemprop="commentCount">0</span> comments
                 </a>
               </span>
             
@@ -452,7 +452,7 @@
 
           
           
-             <span id="/posts/201601/2016-01-18-RcppParallel_and_RRO_about_intel_MKL_multithread.html" class="leancloud_visitors" data-flag-title="RcppParallel and RRO: about Intel MKL multithread">
+             <span id="/posts/201902/2019-02-27-nginx-reverse-proxy-for-rstudio-server-and-jupyterhub-with-ssl.html" class="leancloud_visitors" data-flag-title="Reverse Proxy for RStudio Server and JupyterLab-Hub with SSL in NGINX">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -482,7 +482,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  1,245
+                  478
                 </span>
               
 
@@ -507,117 +507,20 @@
       
 
       
-        <p>Revolution R Open (Now named Microsoft R Open) provides Intel MKL multi-threaded BLAS.<br>RcppParallel provides parallel tools for R via Intel TBB. (Note: On other platforms, it use TinyThread library.)<br>However, does RcppParallel conflict with Intel MKL multi-threaded BLAS?</p>
+        <p>Simply record the configuration files.</p>
 <a id="more"></a>
-<p>We do a simple test on this issue. The cross-validation is simple but time-consuming which is a great method for testing the power of parallel.<br>Therefore, we use leave-one-out-cross-validation to compute the mean squared errors of regression model.<br>Leave-one-out-cross-validation is a important tool for measuring the performance of model.<br>We use Rcpp, RcppArmadillo and RcppParallel to Leave-one-out-cross-validation. You can find the code of test below.<br>Results:</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:right">expr (Unit: seconds)</th>
-<th style="text-align:right">min</th>
-<th style="text-align:right">lq</th>
-<th style="text-align:right">mean</th>
-<th style="text-align:right">median</th>
-<th style="text-align:right">uq</th>
-<th style="text-align:right">max</th>
-<th>neval</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:right">         LOOCV_R(y, X)</td>
-<td style="text-align:right">44.094387</td>
-<td style="text-align:right">44.293443</td>
-<td style="text-align:right">45.217615</td>
-<td style="text-align:right">44.712347</td>
-<td style="text-align:right">45.149469</td>
-<td style="text-align:right">51.166242</td>
-<td>20</td>
-</tr>
-<tr>
-<td style="text-align:right">———————–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td>——-</td>
-</tr>
-<tr>
-<td style="text-align:right">  fastLOOCV_noRP(y, X)</td>
-<td style="text-align:right">26.710105</td>
-<td style="text-align:right">26.811101</td>
-<td style="text-align:right">26.869819</td>
-<td style="text-align:right">26.854140</td>
-<td style="text-align:right">26.905504</td>
-<td style="text-align:right">27.094317</td>
-<td>20</td>
-</tr>
-<tr>
-<td style="text-align:right">———————–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td>——-</td>
-</tr>
-<tr>
-<td style="text-align:right">       fastLOOCV(y, X)</td>
-<td style="text-align:right">6.411246</td>
-<td style="text-align:right">6.494743</td>
-<td style="text-align:right">6.720013</td>
-<td style="text-align:right">6.574210</td>
-<td style="text-align:right">6.697720</td>
-<td style="text-align:right">8.210375</td>
-<td>20</td>
-</tr>
-<tr>
-<td style="text-align:right">———————–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td>——-</td>
-</tr>
-<tr>
-<td style="text-align:right"> fastLOOCV_mkl_1(y, X)</td>
-<td style="text-align:right">6.527082</td>
-<td style="text-align:right">6.997851</td>
-<td style="text-align:right">7.099617</td>
-<td style="text-align:right">7.148261</td>
-<td style="text-align:right">7.327877</td>
-<td style="text-align:right">7.465877</td>
-<td>20</td>
-</tr>
-<tr>
-<td style="text-align:right">———————–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td style="text-align:right">———–:</td>
-<td>——-</td>
-</tr>
-<tr>
-<td style="text-align:right"> fastLOOCV_mkl_2(y, X)</td>
-<td style="text-align:right">6.364546</td>
-<td style="text-align:right">6.529459</td>
-<td style="text-align:right">6.564495</td>
-<td style="text-align:right">6.557765</td>
-<td style="text-align:right">6.637208</td>
-<td style="text-align:right">6.668344</td>
-<td>20</td>
-</tr>
-</tbody>
-</table>
-<p>According to our test, the performance of RcppArmadillo is about 1.6x as fast as R.<br>For our concern, the performance of using default number of MKL threads (12) is very close to using 2 MKL threads,<br>and is better than using 1 MKL threads. From this test, we think that the performance of RcppParallel is<br>deeply affected the number of threads Intel MKL used.<br>We suggest not to change the number of threads Intel MKL used, just keep it default.</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(Rcpp)</span><br><span class="line"><span class="keyword">library</span>(RcppArmadillo)</span><br><span class="line"><span class="keyword">library</span>(RcppParallel)</span><br><span class="line"></span><br><span class="line">sourceCpp(code = <span class="string">'</span></span><br><span class="line"><span class="string">// [[Rcpp::plugins(cpp11)]]</span></span><br><span class="line"><span class="string">// [[Rcpp::depends(RcppArmadillo, RcppParallel)]]</span></span><br><span class="line"><span class="string">#include &lt;RcppArmadillo.h&gt;</span></span><br><span class="line"><span class="string">#include &lt;RcppParallel.h&gt;</span></span><br><span class="line"><span class="string">using namespace RcppParallel;</span></span><br><span class="line"><span class="string">using namespace arma;</span></span><br><span class="line"><span class="string">using namespace Rcpp;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">double fastMSE_RcppArma(vec y, mat X, vec yTest, mat XTest)</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string"> vec coef = solve(join_rows(ones&lt;vec&gt;(y.n_elem), X), y);</span></span><br><span class="line"><span class="string"> return as_scalar(pow(yTest - join_rows(ones&lt;vec&gt;(yTest.n_elem), XTest)*coef, 2));</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">struct MSE_Compute: public Worker &#123;</span></span><br><span class="line"><span class="string"> mat&amp; X;</span></span><br><span class="line"><span class="string"> vec&amp; y;</span></span><br><span class="line"><span class="string"> uvec&amp; index;</span></span><br><span class="line"><span class="string"> vec&amp; mse;</span></span><br><span class="line"><span class="string"> MSE_Compute(mat&amp; X, vec&amp; y, uvec&amp; index, vec&amp; mse):</span></span><br><span class="line"><span class="string">   X(X), y(y), index(index), mse(mse) &#123;&#125;</span></span><br><span class="line"><span class="string"> void operator()(std::size_t begin, std::size_t end)</span></span><br><span class="line"><span class="string"> &#123;</span></span><br><span class="line"><span class="string">   for (uword row_index = begin; row_index &lt; end; row_index++)</span></span><br><span class="line"><span class="string">   &#123;</span></span><br><span class="line"><span class="string">     mse(row_index) = fastMSE_RcppArma(y.elem(find(index != row_index)),</span></span><br><span class="line"><span class="string">       X.rows(find(index != row_index)), y.elem(find(index == row_index)),</span></span><br><span class="line"><span class="string">       X.rows(find(index == row_index)));</span></span><br><span class="line"><span class="string">   &#125;</span></span><br><span class="line"><span class="string"> &#125;</span></span><br><span class="line"><span class="string">&#125;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// [[Rcpp::export]]</span></span><br><span class="line"><span class="string">NumericVector fastLOOCV(NumericVector yr, NumericMatrix Xr)</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string"> int n = Xr.nrow(), p = Xr.ncol();</span></span><br><span class="line"><span class="string"> mat X(Xr.begin(), n, p, false);</span></span><br><span class="line"><span class="string"> if (yr.size() != n)</span></span><br><span class="line"><span class="string">   Rcpp::stop("The size of y must be equal to the number of rows of X." );</span></span><br><span class="line"><span class="string"> vec y(yr.begin(), n, false),</span></span><br><span class="line"><span class="string"> mse = zeros&lt;vec&gt;(n);</span></span><br><span class="line"><span class="string"> uvec index = linspace&lt;uvec&gt;(0, y.n_elem - 1, y.n_elem);</span></span><br><span class="line"><span class="string"> MSE_Compute mseResults(X, y, index, mse);</span></span><br><span class="line"><span class="string"> parallelFor(0, n, mseResults);</span></span><br><span class="line"><span class="string"> return wrap(mse);</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// [[Rcpp::export]]</span></span><br><span class="line"><span class="string">NumericVector fastLOOCV_noRP(NumericVector yr, NumericMatrix Xr)</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string"> int n = Xr.nrow(), p = Xr.ncol();</span></span><br><span class="line"><span class="string"> mat X(Xr.begin(), n, p, false);</span></span><br><span class="line"><span class="string"> if (yr.size() != n)</span></span><br><span class="line"><span class="string">   Rcpp::stop("The size of y must be equal to the number of rows of X." );</span></span><br><span class="line"><span class="string"> vec y(yr.begin(), n, false),</span></span><br><span class="line"><span class="string"> mse = zeros&lt;vec&gt;(n);</span></span><br><span class="line"><span class="string"> uvec index = linspace&lt;uvec&gt;(0, y.n_elem - 1, y.n_elem);</span></span><br><span class="line"><span class="string"> for (uword row_index = 0; row_index &lt; y.n_elem; row_index++)</span></span><br><span class="line"><span class="string"> &#123;</span></span><br><span class="line"><span class="string">   mse(row_index) = fastMSE_RcppArma(y.elem(find(index != row_index)),</span></span><br><span class="line"><span class="string">       X.rows(find(index != row_index)), y.elem(find(index == row_index)),</span></span><br><span class="line"><span class="string">       X.rows(find(index == row_index)));</span></span><br><span class="line"><span class="string"> &#125;</span></span><br><span class="line"><span class="string"> return wrap(mse);</span></span><br><span class="line"><span class="string">&#125;'</span>)</span><br><span class="line"></span><br><span class="line">start_RppParallel &lt;- <span class="keyword">function</span>(verbose=<span class="literal">FALSE</span>, numMKLthreads = <span class="number">1</span>)&#123;</span><br><span class="line">  <span class="keyword">if</span> (!identical(system.file(package=<span class="string">"RevoUtilsMath"</span>), <span class="string">""</span>))</span><br><span class="line">  &#123;</span><br><span class="line">    RevoUtilsMath::setMKLthreads(numMKLthreads)</span><br><span class="line">    RcppParallel::setThreadOptions(parallel::detectCores(<span class="literal">FALSE</span>, <span class="literal">TRUE</span>)/numMKLthreads)</span><br><span class="line">    <span class="keyword">if</span> (verbose)</span><br><span class="line">    &#123;</span><br><span class="line">      cat(sprintf(<span class="string">'RcppParallel uses %i threads.\n'</span>, parallel::detectCores(<span class="literal">FALSE</span>, <span class="literal">FALSE</span>)))</span><br><span class="line">      cat(<span class="string">'RevoUtilsMath is installed with multi-threaded BLAS, change the number of MKL threads.\n'</span>)</span><br><span class="line">      cat(sprintf(<span class="string">'Multithreaded BLAS/LAPACK libraries detected. Using %s cores for math algorithms.\n'</span>, RevoUtilsMath::getMKLthreads()))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">end_RppParallel &lt;- <span class="keyword">function</span>(verbose=<span class="literal">FALSE</span>)&#123;</span><br><span class="line">  <span class="keyword">if</span> (!identical(system.file(package=<span class="string">"RevoUtilsMath"</span>), <span class="string">""</span>))</span><br><span class="line">  &#123;</span><br><span class="line">    RevoUtilsMath::setMKLthreads(parallel::detectCores(<span class="literal">FALSE</span>, <span class="literal">FALSE</span>))</span><br><span class="line">    <span class="keyword">if</span> (verbose)</span><br><span class="line">    &#123;</span><br><span class="line">      cat(<span class="string">'RevoUtilsMath is installed with multi-threaded BLAS, recover the number of MKL threads.\n'</span>)</span><br><span class="line">      cat(sprintf(<span class="string">'Multithreaded BLAS/LAPACK libraries detected. Using %s cores for math algorithms.\n'</span>, RevoUtilsMath::getMKLthreads()))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fastLOOCV_mkl_1 &lt;- <span class="keyword">function</span>(y, X, verbose = <span class="literal">FALSE</span>)&#123;</span><br><span class="line">  start_RppParallel(verbose, <span class="number">1</span>)</span><br><span class="line">  mses &lt;- fastLOOCV(y, X)</span><br><span class="line">  end_RppParallel(verbose)</span><br><span class="line">  <span class="keyword">return</span>(mses)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fastLOOCV_mkl_2 &lt;- <span class="keyword">function</span>(y, X, verbose = <span class="literal">FALSE</span>)&#123;</span><br><span class="line">  start_RppParallel(verbose, <span class="number">2</span>)</span><br><span class="line">  mses &lt;- fastLOOCV(y, X)</span><br><span class="line">  end_RppParallel(verbose)</span><br><span class="line">  <span class="keyword">return</span>(mses)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">LOOCV_R &lt;- <span class="keyword">function</span>(y, X)&#123;</span><br><span class="line">  mses &lt;- vector(<span class="string">'numeric'</span>, length(y))</span><br><span class="line">  <span class="keyword">for</span> (i <span class="keyword">in</span> seq_along(y))</span><br><span class="line">  &#123;</span><br><span class="line">    lmCoefs &lt;- coef(lm(y[-i] ~ X[-i, ]))</span><br><span class="line">    mses[i] &lt;- mean((y[i] - c(<span class="number">1</span>, X[i, ]) %*% lmCoefs)**<span class="number">2</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span>(mses)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">set.seed(<span class="number">10</span>)</span><br><span class="line">N &lt;- <span class="number">500</span></span><br><span class="line">p &lt;- N*<span class="number">0.95</span></span><br><span class="line">X &lt;- matrix(rnorm(N*p), N)</span><br><span class="line">lm_coef &lt;- replicate(p, rnorm(<span class="number">1</span>, rnorm(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>), rgamma(<span class="number">1</span>,<span class="number">10</span>,<span class="number">2</span>)))</span><br><span class="line">addingCol = matrix(sample(p, p, <span class="literal">TRUE</span>), p/<span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line">addingCol = addingCol[addingCol[ ,<span class="number">1</span>] != addingCol[ ,<span class="number">2</span>], ]</span><br><span class="line"><span class="keyword">for</span> (i <span class="keyword">in</span> <span class="number">1</span>:ncol(addingCol))</span><br><span class="line">  X[ , addingCol[i,<span class="number">1</span>]] = X[ , addingCol[i,<span class="number">1</span>]] + X[ , addingCol[i,<span class="number">2</span>]]</span><br><span class="line">y &lt;- <span class="number">9</span> + rowSums(sweep(X, <span class="number">2</span>, lm_coef, <span class="string">'*'</span>)) + rnorm(N, <span class="number">0</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">st &lt;- proc.time()</span><br><span class="line">mses_R &lt;- LOOCV_R(y, X)</span><br><span class="line">proc.time() - st</span><br><span class="line"><span class="comment">#   user  system elapsed</span></span><br><span class="line"><span class="comment">#  39.61    0.92   43.97</span></span><br><span class="line"></span><br><span class="line">st &lt;- proc.time()</span><br><span class="line">mses_cpp1 &lt;- fastLOOCV_noRP(y, X)</span><br><span class="line">proc.time() - st</span><br><span class="line"><span class="comment">#   user  system elapsed</span></span><br><span class="line"><span class="comment">#  38.88    6.54   27.02</span></span><br><span class="line">all.equal(mses_R, as.vector(mses_cpp1)) <span class="comment"># TRUE</span></span><br><span class="line"></span><br><span class="line">st &lt;- proc.time()</span><br><span class="line">mses_cpp2 &lt;- fastLOOCV(y, X)</span><br><span class="line">proc.time() - st</span><br><span class="line"><span class="comment">#   user  system elapsed</span></span><br><span class="line"><span class="comment">#  52.77    7.91    6.52</span></span><br><span class="line">all.equal(mses_R, as.vector(mses_cpp2)) <span class="comment"># TRUE</span></span><br><span class="line"></span><br><span class="line">st &lt;- proc.time()</span><br><span class="line">mses_cpp3 &lt;- fastLOOCV_mkl_1(y, X)</span><br><span class="line">proc.time() - st</span><br><span class="line"><span class="comment">#   user  system elapsed</span></span><br><span class="line"><span class="comment">#  63.21   12.31    7.18</span></span><br><span class="line">all.equal(mses_R, as.vector(mses_cpp3)) <span class="comment"># TRUE</span></span><br><span class="line"></span><br><span class="line">st &lt;- proc.time()</span><br><span class="line">mses_cpp4 &lt;- fastLOOCV_mkl_2(y, X)</span><br><span class="line">proc.time() - st</span><br><span class="line"><span class="comment">#   user  system elapsed</span></span><br><span class="line"><span class="comment">#  53.32    7.62    6.47</span></span><br><span class="line">all.equal(mses_R, as.vector(mses_cpp4)) <span class="comment"># TRUE</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">library</span>(microbenchmark)</span><br><span class="line">microbenchmark(LOOCV_R(y, X), fastLOOCV_noRP(y, X), fastLOOCV(y, X),</span><br><span class="line">               fastLOOCV_mkl_1(y, X), fastLOOCV_mkl_2(y, X), times = <span class="number">20L</span>)</span><br><span class="line"><span class="comment"># Unit: seconds</span></span><br><span class="line"><span class="comment">#                   expr       min        lq      mean    median        uq       max neval</span></span><br><span class="line"><span class="comment">#          LOOCV_R(y, X) 44.094387 44.293443 45.217615 44.712347 45.149469 51.166242    20</span></span><br><span class="line"><span class="comment">#   fastLOOCV_noRP(y, X) 26.710105 26.811101 26.869819 26.854140 26.905504 27.094317    20</span></span><br><span class="line"><span class="comment">#        fastLOOCV(y, X)  6.411246  6.494743  6.720013  6.574210  6.697720  8.210375    20</span></span><br><span class="line"><span class="comment">#  fastLOOCV_mkl_1(y, X)  6.527082  6.997851  7.099617  7.148261  7.327877  7.465877    20</span></span><br><span class="line"><span class="comment">#  fastLOOCV_mkl_2(y, X)  6.364546  6.529459  6.564495  6.557765  6.637208  6.668344    20</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The information of machine: i7-5820K@4.0GHz with 32GB ram.</span></span><br><span class="line"><span class="comment"># The information of session: RRO 3.2.3 on windows 7 64bit.</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>Install NGINX, <a href="https://www.rstudio.com/products/rstudio/download-server/" target="_blank" rel="noopener">RStudio server</a>, <a href="https://github.com/jupyterhub/jupyterhub" target="_blank" rel="noopener">JupyterHub</a>, <a href="https://github.com/jupyterlab/jupyterlab" target="_blank" rel="noopener">JupyterLab</a> and <a href="https://github.com/jupyterhub/jupyterlab-hubhttps://github.com/jupyterhub/jupyterhub" target="_blank" rel="noopener">Jupyterlab-hub extension</a>.</li>
+<li><p>Setup NGINX</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># generate SSL</span></span><br><span class="line">mkdir /etc/nginx/ssl</span><br><span class="line">sudo openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt</span><br><span class="line"></span><br><span class="line"><span class="comment"># config</span></span><br><span class="line">tee /etc/nginx/conf.d/rstudio_jupyter.conf &lt;&lt; EOF</span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  <span class="built_in">return</span> 301 https://<span class="variable">$host</span><span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">map <span class="variable">$http_upgrade</span> <span class="variable">$connection_upgrade</span> &#123;</span><br><span class="line">  default upgrade;</span><br><span class="line">  <span class="string">''</span>        close;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">  listen 443 ssl default_server;</span><br><span class="line">  listen [::]:443 ssl default_server;</span><br><span class="line"></span><br><span class="line">  server_name _;</span><br><span class="line">  ssl_certificate /etc/nginx/ssl/nginx.crt;</span><br><span class="line">  ssl_certificate_key /etc/nginx/ssl/nginx.key;</span><br><span class="line">  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">  ssl_prefer_server_ciphers on;</span><br><span class="line"></span><br><span class="line">  add_header Strict-Transport-Security <span class="string">"max-age=15768000"</span>;</span><br><span class="line">  client_max_body_size 512M;</span><br><span class="line">  fastcgi_buffers 64 4K;</span><br><span class="line"></span><br><span class="line">  location /rstudio/ &#123;</span><br><span class="line">    rewrite ^/rstudio/(.*)$ /<span class="variable">$1</span> <span class="built_in">break</span>;</span><br><span class="line">    proxy_pass http://localhost:8787;</span><br><span class="line">    proxy_redirect http://localhost:8787/ <span class="variable">$scheme</span>://<span class="variable">$host</span>/rstudio/;</span><br><span class="line">    proxy_http_version 1.1;</span><br><span class="line">    proxy_set_header Host <span class="variable">$host</span>;</span><br><span class="line">    proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">    proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">    proxy_set_header Upgrade <span class="variable">$http_upgrade</span>;</span><br><span class="line">    proxy_set_header Connection <span class="variable">$connection_upgrade</span>;</span><br><span class="line">    proxy_read_timeout 86400;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  location ~* /jupyter.* &#123;</span><br><span class="line">    proxy_pass http://localhost:8000;</span><br><span class="line">    proxy_http_version 1.1;</span><br><span class="line">    proxy_set_header Host <span class="variable">$host</span>;</span><br><span class="line">    proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">    proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">    proxy_set_header Upgrade <span class="variable">$http_upgrade</span>;</span><br><span class="line">    proxy_set_header Connection <span class="variable">$connection_upgrade</span>;</span><br><span class="line">    proxy_read_timeout 86400;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Setup RStudio Server</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">'/www-address/d'</span> /etc/rstudio/rserver.conf</span><br><span class="line">tee -a /etc/rstudio/rserver.conf &lt;&lt; EOF</span><br><span class="line">www-address=127.0.0.1</span><br><span class="line">EOF</span><br><span class="line">systemctl restart rstudio-server</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Setup JupyterHub</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">mkdir /jupyter</span><br><span class="line"><span class="comment"># setup config</span></span><br><span class="line">tee /jupyter/jupyterhub_config.py &lt;&lt; EOF</span><br><span class="line">c.JupyterHub.authenticator_class = <span class="string">'jupyterhub.auth.PAMAuthenticator'</span></span><br><span class="line">c.JupyterHub.base_url = <span class="string">'/jupyter'</span></span><br><span class="line">c.JupyterHub.config_file = <span class="string">'/jupyter/jupyterhub_config.py'</span></span><br><span class="line">c.JupyterHub.cookie_secret_file = <span class="string">'/jupyter/jupyterhub_cookie_secret'</span></span><br><span class="line">c.JupyterHub.data_files_path = <span class="string">'/usr/local/share/jupyterhub'</span></span><br><span class="line">c.JupyterHub.db_url = <span class="string">'sqlite://jupyterhub.sqlite'</span></span><br><span class="line">c.JupyterHub.hub_connect_ip = <span class="string">'127.0.0.1'</span></span><br><span class="line">c.JupyterHub.hub_ip = <span class="string">'127.0.0.1'</span></span><br><span class="line">c.JupyterHub.ip = <span class="string">'127.0.0.1'</span></span><br><span class="line">c.JupyterHub.cmd = [<span class="string">'jupyter-labhub'</span>]</span><br><span class="line">c.JupyterHub.admin_users = <span class="built_in">set</span>([<span class="string">'user'</span>])</span><br><span class="line">EOF</span><br><span class="line"><span class="comment"># setup service</span></span><br><span class="line">tee /jupyter/jupyterhub.service &lt;&lt; EOF</span><br><span class="line">[Unit]</span><br><span class="line">Description=Jupyterhub</span><br><span class="line">After=syslog.target network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">User=root</span><br><span class="line">Environment=<span class="string">"PATH=/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"</span></span><br><span class="line">ExecStart=/jupyter/start_jupyterhub.sh</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">EOF</span><br><span class="line"><span class="comment"># link to service folder</span></span><br><span class="line">ln -s /jupyter/jupyterhub.service /etc/systemd/system/jupyterhub.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># start shell scrtipt</span></span><br><span class="line">tee /jupyter/start_jupyterhub.sh &lt;&lt; EOF</span><br><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line">/usr/<span class="built_in">local</span>/bin/jupyterhub -f /jupyter/jupyterhub_config.py</span><br><span class="line">EOF</span><br><span class="line">chmod +x /jupyter/start_jupyterhub.sh</span><br><span class="line"></span><br><span class="line">systemctl start jupyterhub</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
 
       
     </div>
@@ -635,15 +538,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/MKL/" rel="tag"># MKL</a>
+            <a href="/tags/Python/" rel="tag"># Python</a>
           
             <a href="/tags/R/" rel="tag"># R</a>
           
-            <a href="/tags/BLAS/" rel="tag"># BLAS</a>
+            <a href="/tags/linux/" rel="tag"># linux</a>
           
-            <a href="/tags/Microsoft-R-Open/" rel="tag"># Microsoft R Open</a>
-          
-            <a href="/tags/RcppParallel/" rel="tag"># RcppParallel</a>
+            <a href="/tags/Julia/" rel="tag"># Julia</a>
           
         </div>
       
@@ -674,8 +575,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/posts/201507/2015-07-04-tidyr.html" rel="next" title="introduction to tidyr">
-                <i class="fa fa-chevron-left"></i> introduction to tidyr
+              <a href="/posts/201902/2019-02-03-Julia-MKL-build-in-docker.html" rel="next" title="Start an Jupyter Lab With Julia built with MKL on Docker">
+                <i class="fa fa-chevron-left"></i> Start an Jupyter Lab With Julia built with MKL on Docker
               </a>
             
           </div>
@@ -683,10 +584,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/posts/201604/2016-04-11-initialization_of_ubuntu.html" rel="prev" title="Initialization of ubuntu">
-                Initialization of ubuntu <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -717,7 +614,7 @@
 
   
     <div class="comments" id="comments">
-      <div class="fb-comments" data-href="http://chingchuan-chen.github.io/posts/201601/2016-01-18-RcppParallel_and_RRO_about_intel_MKL_multithread.html" data-numposts="10" data-width="100%" data-colorscheme="light">
+      <div class="fb-comments" data-href="http://chingchuan-chen.github.io/posts/201902/2019-02-27-nginx-reverse-proxy-for-rstudio-server-and-jupyterhub-with-ssl.html" data-numposts="10" data-width="100%" data-colorscheme="light">
       </div>
     </div>
 

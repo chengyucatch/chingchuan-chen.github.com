@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://chingchuan-chen.github.io/posts/201902/2019-02-27-nginx-reverse-proxy-for-rstudio-server-and-jupyterhub-with-ssl.html</loc>
+    
+    <lastmod>2019-02-25T14:59:12.423Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://chingchuan-chen.github.io/posts/201902/2019-02-03-Julia-MKL-build-in-docker.html</loc>
     
-    <lastmod>2019-02-04T15:35:49.382Z</lastmod>
+    <lastmod>2019-02-05T01:42:17.804Z</lastmod>
     
   </url>
   
@@ -443,14 +450,14 @@
   </url>
   
   <url>
-    <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-01-magrittr.html</loc>
+    <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-02-data-table.html</loc>
     
     <lastmod>2018-03-14T17:02:38.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-02-data-table.html</loc>
+    <loc>http://chingchuan-chen.github.io/posts/201507/2015-07-01-magrittr.html</loc>
     
     <lastmod>2018-03-14T17:02:38.000Z</lastmod>
     

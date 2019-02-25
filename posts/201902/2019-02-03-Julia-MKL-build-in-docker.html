@@ -128,7 +128,7 @@
 <meta property="og:site_name" content="Celestial">
 <meta property="og:description" content="安裝Docker-ce，並啟動。然後pull image，就可以啟動了。 123456789101112# install dockeryum install -y yum-utils device-mapper-persistent-data lvm2sudo yum-config-manager --add-repo https://download.docker.com/linux/cent">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:updated_time" content="2019-02-04T15:35:49.382Z">
+<meta property="og:updated_time" content="2019-02-05T01:42:17.804Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Start an Jupyter Lab With Julia built with MKL on Docker">
 <meta name="twitter:description" content="安裝Docker-ce，並啟動。然後pull image，就可以啟動了。 123456789101112# install dockeryum install -y yum-utils device-mapper-persistent-data lvm2sudo yum-config-manager --add-repo https://download.docker.com/linux/cent">
@@ -482,7 +482,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  107
+                  113
                 </span>
               
 
@@ -508,7 +508,7 @@
 
       
         <p>安裝<code>Docker-ce</code>，並啟動。然後pull image，就可以啟動了。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># install docker</span></span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">yum install docker-ce -y</span><br><span class="line">systemctl <span class="built_in">enable</span> docker</span><br><span class="line">systemctl start docker</span><br><span class="line"></span><br><span class="line"><span class="comment"># pull images and start</span></span><br><span class="line">docker pull jamal0230/centos-mkl-julia-jupyter:latest</span><br><span class="line"></span><br><span class="line"><span class="comment"># run Jupyter Lab with Julia built with MKL.</span></span><br><span class="line">docker run -d -p 8888:8888 -e PASSWORD=password -e ENABLE_SSL=yes --name julia_jupyter jamal0230/centos-mkl-julia-jupyter:latest</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># install docker</span></span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">yum install docker-ce -y</span><br><span class="line">systemctl <span class="built_in">enable</span> docker</span><br><span class="line">systemctl start docker</span><br><span class="line"></span><br><span class="line"><span class="comment"># pull images and start</span></span><br><span class="line">docker pull jamal0230/centos-mkl-julia-jupyter:latest</span><br><span class="line"></span><br><span class="line"><span class="comment"># run Jupyter Lab with Julia built with MKL. Then connect to https://localhost:8888</span></span><br><span class="line">docker run -d -p 8888:8888 -e PASSWORD=password -e USE_HTTPS=yes --name julia_jupyter jamal0230/centos-mkl-julia-jupyter:latest</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -568,6 +568,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/201902/2019-02-27-nginx-reverse-proxy-for-rstudio-server-and-jupyterhub-with-ssl.html" rel="prev" title="Reverse Proxy for RStudio Server and JupyterLab-Hub with SSL in NGINX">
+                Reverse Proxy for RStudio Server and JupyterLab-Hub with SSL in NGINX <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -643,7 +647,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">144</span>
+                  <span class="site-state-item-count">145</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -665,7 +669,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">155</span>
+                  <span class="site-state-item-count">156</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
