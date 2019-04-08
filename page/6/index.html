@@ -560,7 +560,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ching-Chuan Chen">
@@ -579,7 +579,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html" itemprop="url">Differences between RcppEigen and RcppArmadillo</a></h1>
+                <a class="post-title-link" href="/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html" itemprop="url">RcppEigen Work with RcppParallel (Part 2)</a></h1>
         
 
         <div class="post-meta">
@@ -632,8 +632,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html" itemprop="commentCount">0</span> comments
+                <a href="/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html" itemprop="commentCount">0</span> comments
                 </a>
               </span>
             
@@ -641,7 +641,7 @@
 
           
           
-             <span id="/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html" class="leancloud_visitors" data-flag-title="Differences between RcppEigen and RcppArmadillo">
+             <span id="/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html" class="leancloud_visitors" data-flag-title="RcppEigen Work with RcppParallel (Part 2)">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -666,7 +666,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  911
+                  540
                 </span>
               
 
@@ -692,13 +692,15 @@
 
       
         
-          <p>R maillist有討論過這個問題，而且回的非常長</p>
-<p>我稍微看了一下，發問者試了RcppArmadillo跟RcppEigen</p>
-<p>發現RcppEigen的SVD decomposition不是那麼合用，而且不太好去做coding</p>
-<p>RcppArmadillo比較好去coding</p>
+          <p>我在把RcppEigen跟RcppParallel合體的時候</p>
+<p>看了下面這篇的程式：</p>
+<p><a href="https://gist.github.com/JWiley/d9cba55603471f75d438" target="_blank" rel="noopener">C++ code</a>，<a href="https://gist.github.com/JWiley/8fe93ae105b1fb244f93" target="_blank" rel="noopener">R code</a></p>
+<p>我也有發現他在R mail群裡面回答說這個程式時不時會crash</p>
+<p>我就想到我第一部分提到的Rcpp::NumericVector會在RcppParallel會crash的問題</p>
+<p>那我就修改了一下，發現程式就穩定了，我也把我修改後的程式放上來 (稍微改的漂亮一些)</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/201612/2016-12-31-Differences-between-RcppEigen-and-RcppArmadillo.html#more" rel="contents">
+            <a class="btn" href="/posts/201612/2016-12-31-RcppEigen-Work-With-RcppParall-part-2.html#more" rel="contents">
               閱讀全文 &raquo;
             </a>
           </div>
@@ -1696,195 +1698,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201610/2016-10-20-R-web-service.html">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ching-Chuan Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Celestial">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/posts/201610/2016-10-20-R-web-service.html" itemprop="url">R web service</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-10-21T00:00:00+08:00">
-                2016-10-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/R/" itemprop="url" rel="index">
-                    <span itemprop="name">R</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/posts/201610/2016-10-20-R-web-service.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201610/2016-10-20-R-web-service.html" itemprop="commentCount">0</span> comments
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/posts/201610/2016-10-20-R-web-service.html" class="leancloud_visitors" data-flag-title="R web service">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">閱讀次數&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字數統計&#58;</span>
-                
-                <span title="字數統計">
-                  427
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>R也可以開啟一個簡單的server</p>
-<p>讓使用者透過PUT或是GET去query想要的資訊</p>
-<p>以下是實作</p>
-<p>使用RStudio的<code>httpuv</code>這個套件來做</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/posts/201610/2016-10-20-R-web-service.html#more" rel="contents">
-              閱讀全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201610/2016-10-21-R-web-service-with-opencpu.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -2024,6 +1837,195 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/posts/201610/2016-10-21-R-web-service-with-opencpu.html#more" rel="contents">
+              閱讀全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201610/2016-10-20-R-web-service.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ching-Chuan Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Celestial">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/posts/201610/2016-10-20-R-web-service.html" itemprop="url">R web service</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-10-21T00:00:00+08:00">
+                2016-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/R/" itemprop="url" rel="index">
+                    <span itemprop="name">R</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/201610/2016-10-20-R-web-service.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201610/2016-10-20-R-web-service.html" itemprop="commentCount">0</span> comments
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/posts/201610/2016-10-20-R-web-service.html" class="leancloud_visitors" data-flag-title="R web service">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">閱讀次數&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  427
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>R也可以開啟一個簡單的server</p>
+<p>讓使用者透過PUT或是GET去query想要的資訊</p>
+<p>以下是實作</p>
+<p>使用RStudio的<code>httpuv</code>這個套件來做</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/posts/201610/2016-10-20-R-web-service.html#more" rel="contents">
               閱讀全文 &raquo;
             </a>
           </div>
