@@ -2050,7 +2050,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201704/2017-04-23-RcppArmadillo-call-F77-blas-lapacl.html">
+    <link itemprop="mainEntityOfPage" href="http://chingchuan-chen.github.io/posts/201704/2017-04-23-introduce-to-foreach-and-iterators.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ching-Chuan Chen">
@@ -2069,7 +2069,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/posts/201704/2017-04-23-RcppArmadillo-call-F77-blas-lapacl.html" itemprop="url">RcppArmadillo call F77 blas/lapack</a></h1>
+                <a class="post-title-link" href="/posts/201704/2017-04-23-introduce-to-foreach-and-iterators.html" itemprop="url">Introduce to foreach and iterators</a></h1>
         
 
         <div class="post-meta">
@@ -2122,8 +2122,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/posts/201704/2017-04-23-RcppArmadillo-call-F77-blas-lapacl.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201704/2017-04-23-RcppArmadillo-call-F77-blas-lapacl.html" itemprop="commentCount">0</span> comments
+                <a href="/posts/201704/2017-04-23-introduce-to-foreach-and-iterators.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="http://chingchuan-chen.github.io/posts/201704/2017-04-23-introduce-to-foreach-and-iterators.html" itemprop="commentCount">0</span> comments
                 </a>
               </span>
             
@@ -2131,7 +2131,7 @@
 
           
           
-             <span id="/posts/201704/2017-04-23-RcppArmadillo-call-F77-blas-lapacl.html" class="leancloud_visitors" data-flag-title="RcppArmadillo call F77 blas/lapack">
+             <span id="/posts/201704/2017-04-23-introduce-to-foreach-and-iterators.html" class="leancloud_visitors" data-flag-title="Introduce to foreach and iterators">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -2156,7 +2156,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  329
+                  3,311
                 </span>
               
 
@@ -2182,13 +2182,13 @@
 
       
         
-          <p>前幾篇有提過在Rcpp, RcppEigen中call F77 blas/lapack</p>
-<p>最近也大概抓到RcppArmadillo call F77的方法</p>
-<p>因為Armadillo本身就有宣告BLAS跟LAPACK functions</p>
-<p>其實只需要include Armadillo宣告的header file即可</p>
+          <h2 id="Introduction-apply-functions-Reduce-and-do-call"><a href="#Introduction-apply-functions-Reduce-and-do-call" class="headerlink" title="Introduction *apply functions, Reduce and do.call"></a>Introduction <code>*apply</code> functions, <code>Reduce</code> and <code>do.call</code></h2><p>我一直沒時間寫<code>*apply</code>系列函數的介紹</p>
+<p>不過最近用了<code>foreach</code>跟<code>iterators</code></p>
+<p>發現其實這兩個套件就可以完全取代<code>*apply</code>系列函數</p>
+<p>而且對新手來說寫起來也不容易搞錯</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/posts/201704/2017-04-23-RcppArmadillo-call-F77-blas-lapacl.html#more" rel="contents">
+            <a class="btn" href="/posts/201704/2017-04-23-introduce-to-foreach-and-iterators.html#more" rel="contents">
               閱讀全文 &raquo;
             </a>
           </div>
